@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using MSIT158_2_API.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +16,10 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 //////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddDbContext<SelectShopContext>(
+options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("SelectShopConnection")
+));
 
 var app = builder.Build();
 
