@@ -1,0 +1,90 @@
+﻿@model MSIT158_2_FinalProject.Models.TProduct
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>編輯商品</h1>
+
+<h4>商品明細</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <input asp-for="ProductId" class="form-control" />
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stocks" class="control-label"></label>
+                <input asp-for="Stocks" class="form-control" />
+                <span asp-validation-for="Stocks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LabelId" class="control-label"></label>
+                <input asp-for="LabelId" class="form-control" />
+                <span asp-validation-for="LabelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubCategoryId" class="control-label"></label>
+                <input asp-for="SubCategoryId" class="form-control" />
+                <span asp-validation-for="SubCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductPhoto" class="control-label"></label>
+                <input asp-for="ProductPhoto" class="form-control" />
+                <span asp-validation-for="ProductPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitPrice" class="control-label"></label>
+                <input asp-for="UnitPrice" class="form-control" />
+                <span asp-validation-for="UnitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActiveId" class="control-label"></label>
+                <input asp-for="ActiveId" class="form-control" />
+                <span asp-validation-for="ActiveId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LaunchTime" class="control-label"></label>
+                <input asp-for="LaunchTime" class="form-control" />
+                <span asp-validation-for="LaunchTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cost" class="control-label"></label>
+                <input asp-for="Cost" class="form-control" />
+                <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+@*             <div class="form-group">
+                上傳商品照片:
+                <div class="col-md-10">
+                    <input type="file" name="photo" />
+                </div>
+                </div> *@
+            <div class="form-group">
+                <input type="submit" value="儲存並返回" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">回到商品列表</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
