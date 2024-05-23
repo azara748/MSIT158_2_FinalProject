@@ -16,6 +16,13 @@ builder.Services.AddDbContext<SelectShopContext>(
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 //·s¼WSession
+//////////////////////////////////////////////////////////////////////////////////
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+//////////////////////////////////////////////////////////////////////////////////
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,9 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseSession();
 //±Ò¥ÎSession
+//////////////////////////////////////////////////////////////////////////////////
+app.UseCors("AllowAll");
+//////////////////////////////////////////////////////////////////////////////////
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
