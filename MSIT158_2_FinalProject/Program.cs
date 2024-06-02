@@ -16,6 +16,8 @@ builder.Services.AddDbContext<SelectShopContext>(
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 //新增Session
+builder.Services.AddSwaggerGen();
+//新增Swagger
 //////////////////////////////////////////////////////////////////////////////////
 builder.Services.AddCors(options =>
 {
@@ -34,6 +36,9 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseSession();
 //啟用Session
+app.UseSwagger();
+app.UseSwaggerUI();
+//啟用Swagger
 //////////////////////////////////////////////////////////////////////////////////
 app.UseCors("AllowAll");
 //////////////////////////////////////////////////////////////////////////////////
