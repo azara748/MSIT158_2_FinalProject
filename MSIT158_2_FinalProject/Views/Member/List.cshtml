@@ -7,6 +7,31 @@
 
 <h1>會員資料一覽表</h1>
 
+<div class="row mb-3">
+    <div class="col-3">
+        <select class="form-select" aria-label="Default select example" id="idst1">
+        </select>
+    </div>
+    <div class="col-6">
+        <nav>
+            <ul class="pagination" id="ul1">
+            </ul>
+        </nav>
+    </div>
+    <div class="col-1">
+        <select class="form-select" aria-label="Default select example" id="idst2">
+            <option selected>升冪</option>
+            <option value="asc">景點編號升冪</option>
+            <option value="desc">景點編號降冪</option>
+        </select>
+    </div>
+    <div class="col-2">
+        <input type="search" placeholder="搜尋景點資料" class="form-control" id="inputSearch" />
+    </div>
+</div>
+
+
+
 <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault_1">
     <label class="form-check-label" for="flexSwitchCheckDefault_1">序號</label>
@@ -34,7 +59,23 @@
 <p>
     <a asp-action="Create">新增會員</a>
 </p>
-<table class="table">
+
+<div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">序</th>
+                <th scope="col">姓名</th>
+                <th scope="col">密碼</th>
+                <th scope="col">電子信箱</th>
+            </tr>
+        </thead>
+        <tbody id="idtbody1">
+
+        </tbody>
+    </table>
+</div>
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -123,9 +164,52 @@
         </tr>
 }
     </tbody>
-</table>
+</table> *@
 @section Scripts {
     <script>
+        const divSpots = document.querySelector('#div1');
+        const divtbody = document.querySelector('#idtbody1');
+        const ulPaging = document.querySelector('#ul1');
+        const ulPagename = document.querySelector('#ul2');
+        const inpSearch = document.querySelector('#inputSearch');
+        const sltop = document.querySelector('#idst1');
+        const sltop2 = document.querySelector('#idst2');
 
+
+        const searchData = {
+            "categoryId": 0,
+            "keyword": "",
+            "page": 1,
+            "pageSize": 21,
+            "sortType": "asc",
+            "sortBy": "SpotId"
+        };
+
+        const MemberList = async () => {
+            const url = 'https://localhost:7160/api/TMembers';
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log(data);
+            console.log('data = ' + data);
+            console.log(data[3].memberName);
+
+            //顯示會員資料
+            const MLists = data.map(mlist => {
+                const { memberId, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vipid, memberPhoto, wallet } = mlist;
+                return(
+                    `
+            <tr>
+                <th scope="row">${memberId}</th>
+                <td>${memberName}</td>
+                <td>${password}</td>
+                <td>${eMail}</td>
+            </tr>    
+                    `
+                )
+            })
+            // 將生成的表格行字符串加入到 `tbody` 中
+            divtbody.innerHTML = MLists.join("");
+        };
+        MemberList();
     </script>
 }

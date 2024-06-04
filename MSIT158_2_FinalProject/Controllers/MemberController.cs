@@ -23,7 +23,7 @@ namespace MSIT158_2_FinalProject.Controllers
                 r.EMail.Contains(vm.txtKeyword) ||
                 r.Address.Contains(vm.txtKeyword) ||
                 r.Sex.Contains(vm.txtKeyword));
-            return View(datas);
+            return View();
         }
     }
 }
