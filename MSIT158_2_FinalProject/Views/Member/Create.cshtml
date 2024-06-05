@@ -98,6 +98,7 @@
             console.log("test");
             const url = 'https://localhost:7160/api/Members';
             console.log("test2");
+            try {
             const response = await fetch(url, {
                 method: 'POST',
                 body: fromdata
@@ -107,6 +108,8 @@
             const data = await response.text();
             console.log(data);
             divResult.textContent = data;
+            divResult.textContent = '提交成功！';
+            } catch (error) { divResult.textContent = `提交失败：${error.message}`; }
         })
     </script>
     @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@

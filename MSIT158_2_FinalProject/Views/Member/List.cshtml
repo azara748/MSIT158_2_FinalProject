@@ -30,8 +30,8 @@
 </div>
 
 
-<div class="row mb-3">
-<div class="form-check form-switch col-1">
+<div class="row mb-3" id="div2">
+@* <div class="form-check form-switch col-1">
     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_1" checked>
     <label class="form-check-label" for="flexSwitchCheckChecked_1">序號</label>
 </div>
@@ -78,7 +78,7 @@
 <div class="form-check form-switch col-1">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_12" checked>
         <label class="form-check-label" for="flexSwitchCheckChecked_12">會員等級</label>
-</div>
+</div> *@
 </div>
 
 <p>
@@ -207,6 +207,34 @@
         const inpSearch = document.querySelector('#inputSearch');
         const sltop = document.querySelector('#idst1');
         const sltop2 = document.querySelector('#idst2');
+        const divf = document.querySelector('#div2');
+        const switchnames = [
+            '序號',
+            '姓名',
+            '電子信箱',
+            '密碼',
+            '加鹽',
+            '照片',
+            '地址',
+            '手機',
+            '生日',
+            '性別',
+            '點數',
+            '會員等級'
+        ];
+        //顯示隱藏按鈕
+        const switchs = switchnames.map((name, index) => {
+            return (
+                `
+<div class="form-check form-switch col-1">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_${index + 1}" checked>
+    <label class="form-check-label" for="flexSwitchCheckChecked_${index + 1}">${name}</label>
+</div>
+                `
+            )
+        });
+        divf.innerHTML = switchs.join("");
+
 
 
         const searchData = {
