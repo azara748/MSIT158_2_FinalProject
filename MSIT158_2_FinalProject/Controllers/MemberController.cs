@@ -25,5 +25,60 @@ namespace MSIT158_2_FinalProject.Controllers
                 r.Sex.Contains(vm.txtKeyword));
             return View();
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(TMember p)
+        {
+            _context.TMembers.Add(p);
+            _context.SaveChanges();
+            return RedirectToAction("List");
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id != null)
+            {
+                TMember r = _context.TMembers.FirstOrDefault(x => x.MemberId == id);
+                if (r != null)
+                {
+                    _context.TMembers.Remove(r);
+                    _context.SaveChanges();
+                }
+            }
+            return RedirectToAction("List");
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("List");
+            TMember r = _context.TMembers.FirstOrDefault(x => x.MemberId == id);
+            if (r == null)
+                return RedirectToAction("List");
+            return View(r);
+        }
+        [HttpPost]
+        public IActionResult Edit(TMember memberIn)
+        {
+            TMember memberDb = _context.TMembers.FirstOrDefault(x => x.MemberId == memberIn.MemberId);
+            if (memberDb != null)
+            {
+                memberDb.MemberName = memberIn.MemberName;
+                memberDb.Address = memberIn.Address;
+                memberDb.Cellphone = memberIn.Cellphone;
+                memberDb.Birthday = memberIn.Birthday;
+                memberDb.Sex = memberIn.Sex;
+                memberDb.Password = memberIn.Password;
+                memberDb.Points = memberIn.Points;
+                memberDb.Vipid = memberIn.Vipid;
+                memberDb.Wallet = memberIn.Wallet;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("List");
+        }
     }
 }
