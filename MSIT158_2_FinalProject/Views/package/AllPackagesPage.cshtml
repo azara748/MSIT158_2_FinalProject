@@ -5,7 +5,7 @@
 }
 
 <h1>AllPackagesPage</h1>
-<select id="selector">
+<select id="selector" class="form-select" style="width:10em; margin-bottom:1em">
     <option></option>
 </select>
 
@@ -24,6 +24,7 @@
 @section Scripts{
     <script>
         const table = document.querySelector("#table");
+        const selector = document.querySelector("#selector");
         (async () => {
             const response = await fetch('@Url.Content("~/package/AllPackages")')
             if (!response.ok) {
@@ -42,6 +43,17 @@
                 `
             });
             table.innerHTML = package.join("");
+
+            const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
+            if (!pCategoryRes.ok) {
+                console.log(`erroe message:${response.status}`)
+                return
+            }
+            const pCategoryDatas = await pCategoryRes.json()
+            console.log("styles:" + pCategoryDatas);
+            const seletorPackage = pCategoryDatas.map(c => `<option value="${c}">${c}</option>`)
+            selector.innerHTML = seletorPackage.join("");
+
         })()
 
 

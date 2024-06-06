@@ -20,7 +20,8 @@ namespace MSIT158_2_FinalProject.Controllers
 
         public ActionResult PackageCategory()
         {
-           
+           var category = _context.TPackageStyles.Select(c=> c.StyleName).ToList();
+            return Json(category);
         }
 
         public ActionResult AllPackagesPage()
