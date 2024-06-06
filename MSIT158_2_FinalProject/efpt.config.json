@@ -1,0 +1,142 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "SelectShopContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "MSIT158_2_FinalProject",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[tActive]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tAllPackage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tAppraisal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCart]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCollect]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDepartment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tEmployee]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tEventLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tKeyword]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tLabel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tMaterialColor]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tMember]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPackageMaterial]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPackageStyle]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPackageWayDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPay]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPayType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tProduct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tPurchase]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tReview]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tSubCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVip]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

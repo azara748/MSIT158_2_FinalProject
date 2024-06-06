@@ -1,0 +1,116 @@
+﻿@model MSIT158_2_FinalProject.Models.TMember
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>新增會員資料</h1>
+
+<h4>填寫會員資訊</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="userFrom">
+            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+           
+            <div class="form-group">
+                @* <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control" /> *@
+                <label for="InputName" class="form-label">姓名</label>
+                <input type="text" class="form-control" id="InputName" name="name">
+                @* <span asp-validation-for="MemberName" class="text-danger"></span> *@
+            </div>
+            @* <div class="form-group">
+                <label asp-for="Cellphone" class="control-label"></label>
+                <input asp-for="Cellphone" class="form-control" />
+                <span asp-validation-for="Cellphone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salt" class="control-label"></label>
+                <input asp-for="Salt" class="form-control" />
+                <span asp-validation-for="Salt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EMail" class="control-label"></label>
+                <input asp-for="EMail" class="form-control" />
+                <span asp-validation-for="EMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Points" class="control-label"></label>
+                <input asp-for="Points" class="form-control" />
+                <span asp-validation-for="Points" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vipid" class="control-label"></label>
+                <input asp-for="Vipid" class="form-control" />
+                <span asp-validation-for="Vipid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberPhoto" class="control-label"></label>
+                <input asp-for="MemberPhoto" class="form-control" />
+                <span asp-validation-for="MemberPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Wallet" class="control-label"></label>
+                <input asp-for="Wallet" class="form-control" />
+                <span asp-validation-for="Wallet" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="送出並新增" class="btn btn-primary" id="buttonSubmit" />
+            </div>
+        </form>
+        <div id="div1" class="alert alert-info mt-3"></div>
+    </div>
+</div>
+
+<div>
+    @* <a asp-action="List">取消</a> *@
+</div>
+
+@section Scripts {
+    <script>
+        const divResult = document.querySelector("#div1");
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+        btnSubmit.addEventListener('click', async (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+
+
+            //將資料放進FormData
+            const myForm = document.querySelector('#userFrom');
+            const fromdata = new FormData(myForm);
+            console.log("test");
+            const url = 'https://localhost:7160/api/Members';
+            console.log("test2");
+            try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: fromdata
+            });
+            console.log("test3");
+            console.log(response);
+            const data = await response.text();
+            console.log(data);
+            divResult.textContent = data;
+            divResult.textContent = '提交成功！';
+            } catch (error) { divResult.textContent = `提交失败：${error.message}`; }
+        })
+    </script>
+    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+}
