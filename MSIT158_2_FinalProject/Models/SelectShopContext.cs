@@ -63,6 +63,8 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TSubCategory> TSubCategories { get; set; }
 
+    public virtual DbSet<TVip> TVips { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=SelectShop;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
@@ -294,9 +296,14 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.MemberPhoto).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.Salt).HasMaxLength(50);
             entity.Property(e => e.Sex).HasMaxLength(50);
-            entity.Property(e => e.Vip).HasColumnName("VIP");
+            entity.Property(e => e.Vipid).HasColumnName("VIPID");
             entity.Property(e => e.Wallet).HasColumnType("money");
+
+            entity.HasOne(d => d.Vip).WithMany(p => p.TMembers)
+                .HasForeignKey(d => d.Vipid)
+                .HasConstraintName("FK_tMember_tVip");
         });
 
         modelBuilder.Entity<TOrder>(entity =>
@@ -316,6 +323,9 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RecMemberId).HasColumnName("RecMemberID");
+            entity.Property(e => e.RecipientEamil).HasMaxLength(50);
+            entity.Property(e => e.RecipientName).HasMaxLength(50);
+            entity.Property(e => e.RecipientPhone).HasMaxLength(50);
             entity.Property(e => e.ShippingMethodId).HasColumnName("Shipping_MethodID");
             entity.Property(e => e.StatusId).HasColumnName("StatusID");
             entity.Property(e => e.StoreName).HasMaxLength(50);
@@ -516,6 +526,21 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.TSubCategories)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK_tSubCategory_tCategory");
+        });
+
+        modelBuilder.Entity<TVip>(entity =>
+        {
+            entity.HasKey(e => e.Vipid);
+
+            entity.ToTable("tVip");
+
+            entity.Property(e => e.Vipid).HasColumnName("VIPID");
+            entity.Property(e => e.Vipname)
+                .HasMaxLength(50)
+                .HasColumnName("VIPName");
+            entity.Property(e => e.Vipphoto)
+                .HasMaxLength(50)
+                .HasColumnName("VIPPhoto");
         });
 
         OnModelCreatingPartial(modelBuilder);
