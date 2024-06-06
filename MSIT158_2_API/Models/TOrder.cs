@@ -31,12 +31,6 @@ public partial class TOrder
 
     public string? StoreName { get; set; }
 
-    public string? RecipientName { get; set; }
-
-    public string? RecipientPhone { get; set; }
-
-    public string? RecipientEamil { get; set; }
-
     public virtual TMember? Member { get; set; }
 
     public virtual TStatus? Status { get; set; }

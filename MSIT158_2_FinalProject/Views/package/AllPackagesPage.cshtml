@@ -5,6 +5,9 @@
 }
 
 <h1>AllPackagesPage</h1>
+<select id="selector">
+    <option></option>
+</select>
 
 <section>
     <table class="table">
@@ -17,9 +20,7 @@
         </tbody>
     </table>
 </section>
-<img src="c:\storeproject\web\finalproject\msit158_2_finalproject\wwwroot\assets\img\packageimages\20240327133633.jpg" />
-<img src="c:\storeproject\web\finalproject\msit158_2_finalproject\wwwroot\assets\img\logo-ct.png" />
-<img src="c:\storeproject\web\finalproject\msit158_2_finalproject\wwwroot\assets\img\home-decor-1.jpg" />
+
 @section Scripts{
     <script>
         const table = document.querySelector("#table");
@@ -35,7 +36,7 @@
                 return `
                         <tr>
                         <td>${p.packName}</td>
-                                <td><img src=~\assets\img\packageimages\ ${p.picture} alt="${p.packName}" width="100" height="100" /></td>
+                        <td><img src="${'@Url.Content("~/assets/img/packageimages/")' + p.picture}" alt="${p.packName}" width="100" height="100" /></td>
                         <td>${p.price}</td>
                     </tr>
                 `

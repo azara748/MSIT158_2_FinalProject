@@ -19,13 +19,11 @@ public partial class TMember
 
     public string? Password { get; set; }
 
-    public string? Salt { get; set; }
-
     public string? EMail { get; set; }
 
     public int? Points { get; set; }
 
-    public int? Vipid { get; set; }
+    public bool? Vip { get; set; }
 
     public string? MemberPhoto { get; set; }
 
@@ -38,6 +36,4 @@ public partial class TMember
     public virtual ICollection<TOrder> TOrders { get; set; } = new List<TOrder>();
 
     public virtual ICollection<TReview> TReviews { get; set; } = new List<TReview>();
-
-    public virtual TVip? Vip { get; set; }
 }

@@ -18,6 +18,11 @@ namespace MSIT158_2_FinalProject.Controllers
             return Json(allPackage);
         }
 
+        public ActionResult PackageCategory()
+        {
+           
+        }
+
         public ActionResult AllPackagesPage()
         {
             return View();
