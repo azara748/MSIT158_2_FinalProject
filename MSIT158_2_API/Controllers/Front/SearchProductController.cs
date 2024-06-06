@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
+using NuGet.Protocol;
 
 namespace MSIT158_2_API.Controllers.Front
 {
@@ -71,7 +72,7 @@ namespace MSIT158_2_API.Controllers.Front
             }
 
             return NoContent();
-        }
+		}
 
 		// POST: api/SearchProduct
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -83,54 +84,115 @@ namespace MSIT158_2_API.Controllers.Front
 
 		//    return CreatedAtAction("GetTProduct", new { id = tProduct.ProductId }, tProduct);
 		//}
+		//public async Task<ActionResult<IEnumerable<TProduct>>> GetProductBySearch(SearchProductDTO searchProductDTO)
+		//[HttpPost]
+		//public async Task<ActionResult<IEnumerable<ShowProductDTO>>> GetProductBySearch(SearchProductDTO searchProductDTO)
+		//{ //次分類
+		//var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
+		//主分類
+		//query = searchProductDTO.CatId == 0 ? _context.TProducts : _context.TProducts..Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
+		//品牌
+		//query = searchProductDTO.LabelId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.LabelId == searchProductDTO.LabelId);
+		//活動
+		//query = searchProductDTO.ActiveId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.ActiveId == searchProductDTO.ActiveId);
+		// 使用 AsQueryable 來延遲查詢
+		//query = _context.TProducts.AsQueryable();
+		// searchword查詢
+		//if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+		//{
+		//	query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
+		//}
+
+		//         var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
+		//         if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+		//         {
+		//             query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
+		//         }
+
+		//         var getphoto = query.Select(p => p.ProductPhoto != null ? Convert.ToBase64String(ProductPhoto) : null);
+
+
+
+		//ProductPhotoDTO photoDTO = new ProductPhotoDTO();
+		//         photoDTO.result = await query.ToListAsync();
+		//         photoDTO.photo = getphoto;
+		//return Ok(photoDTO);
+		//var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
+
+
+
+
+		//                            SubCatName = c.SubCategoryCname,
+		//                   ProductName = p.ProductName,
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<TProduct>>> GetProductBySearch(SearchProductDTO searchProductDTO)
-		{ //次分類
-		  //var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
-		  //主分類
-		  //query = searchProductDTO.CatId == 0 ? _context.TProducts : _context.TProducts..Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
-		  //品牌
-		  //query = searchProductDTO.LabelId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.LabelId == searchProductDTO.LabelId);
-		  //活動
-		  //query = searchProductDTO.ActiveId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.ActiveId == searchProductDTO.ActiveId);
-		  // 使用 AsQueryable 來延遲查詢
-		  //query = _context.TProducts.AsQueryable();
-		  // searchword查詢
-		  //if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-		  //{
-		  //	query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
-		  //}
+		public async Task<ActionResult<IEnumerable<ShowProductDTO>>> GetProductBySearch(SearchProductDTO searchProductDTO)
+		{
+			var query = from p in _context.TProducts
+						join c in _context.TSubCategories on p.SubCategoryId equals c.SubCategoryId
+						join a in _context.TActives on p.ActiveId equals a.ActiveId
+						join l in _context.TLabels on p.LabelId equals l.LabelId
+						select new ShowProductDTO
+						{
+							ProductName = p.ProductName,
+							SubCatName = c.SubCategoryCname,
+							Stocks = p.Stocks,
+							LanchTime = p.LaunchTime,
+							UnitPrice = p.UnitPrice,
+							Discount = a.Discount,
+							LabelName = l.LabelName,
+							Productphoto = p.ProductPhoto
+						};
 
-			//         var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
-			//         if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-			//         {
-			//             query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
-			//         }
-
-			//         var getphoto = query.Select(p => p.ProductPhoto != null ? Convert.ToBase64String(ProductPhoto) : null);
-
-
-
-			//ProductPhotoDTO photoDTO = new ProductPhotoDTO();
-			//         photoDTO.result = await query.ToListAsync();
-			//         photoDTO.photo = getphoto;
-			//return Ok(photoDTO);
-			var query = searchProductDTO.SubCatId == 0 ? _context.TProducts : _context.TProducts.Where(s => s.SubCategoryId == searchProductDTO.SubCatId);
-			if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-			{
-				query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
-			}
-
-			var products = await query.ToListAsync();
-			return Ok(products);
-			//var productPhotos = products.Select(p => new ProductPhotoDTO
+			var result = await query.ToListAsync();
+			//if (!string.IsNullOrEmpty(searchProductDTO.searchword))
 			//{
-			//	photo = p.ProductPhoto != null ? Convert.ToBase64String(p.ProductPhoto) : null
-			//}).ToList();
-
-			//return Ok(productPhotos);
+			//	query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
+			//}
+			return Ok(result);
 		}
-	
+			//LanchTime = !string.IsNullOrEmpty(p.LanchTime) ? p.LanchTime : "新上市",
+		
+		//         if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+		//         {
+		//             query = query.Where(p => p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword));
+		//}
+
+		//         ShowProductDTO sp = new ShowProductDTO();
+		//         sp.tProduct = await _context.TProducts.ToListAsync();
+		//         sp.tSubCategory = await _context.TSubCategories.ToListAsync();
+
+		//var productList = await query.ToListAsync();
+
+		//ShowProductDTO sp = new ShowProductDTO();
+		//sp.ProductResult = await _context.TProducts.ToListAsync();
+		//return Ok(sp);
+
+		////總共有多少筆資料
+		//int totalCount = query.Count();
+		////每頁要顯示幾筆資料
+		//int pageSize = searchProductDTO.pagesSize;
+		////目前第幾頁
+		//int page = searchProductDTO.page;
+		////計算總共有幾頁
+		//int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+		////分頁
+		//query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+		////包裝要傳給client端的資料
+		//SpotsPagingDTO spotsPaging = new SpotsPagingDTO();
+		//spotsPaging.TotalCount = totalCount;
+		//spotsPaging.TotalPages = totalPages;
+		//spotsPaging.SpotsResult = await spots.ToListAsync();
+
+
+		//var productPhotos = products.Select(p => new ProductPhotoDTO
+		//{
+		//	photo = p.ProductPhoto != null ? Convert.ToBase64String(p.ProductPhoto) : null
+		//}).ToList();
+
+		//return Ok(productPhotos);
+
+
 
 
 		// DELETE: api/SearchProduct/5
