@@ -30,13 +30,13 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public IActionResult Create(TMember p)
-        {
-            _context.TMembers.Add(p);
-            _context.SaveChanges();
-            return RedirectToAction("List");
-        }
+        //[HttpPost]
+        //public IActionResult Create(TMember p)
+        //{
+        //    _context.TMembers.Add(p);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("List");
+        //}
 
         public IActionResult Delete(int? id)
         {

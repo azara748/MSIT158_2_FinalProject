@@ -18,16 +18,26 @@ namespace MSIT158_2_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TMember>> PostTMember(CMemberDTO p)
+        public async Task<ActionResult<TMember>> PostTMember([FromBody] CMemberDTO p)
         {
+
             TMember m = new TMember();
             m.MemberName = p.MemberName;
             _db.TMembers.Add(m);
             await _db.SaveChangesAsync();
+
             return Ok(new { message = "新增成功", m });
         }
 
-
+        //[HttpPost]
+        //public IActionResult PostTMember(string p)
+        //{
+        //    TMember m = new TMember();
+        //    //m.MemberName = p.MemberName;
+        //    //_db.TMembers.Add(m);
+        //    //await _db.SaveChangesAsync();
+        //    return Ok(new { message = "新增成功", m });
+        //}
 
     }
 }

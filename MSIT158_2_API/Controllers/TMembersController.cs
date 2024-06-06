@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
+using MSIT158_2_API.Models.DTO;
 
 namespace MSIT158_2_API.Controllers
 {
@@ -75,12 +76,20 @@ namespace MSIT158_2_API.Controllers
         // POST: api/TMembers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TMember>> PostTMember(TMember tMember)
+        public async Task<ActionResult<TMember>> PostTMember([FromBody] CMemberDTO p)
         {
-            _context.TMembers.Add(tMember);
+            TMember m = new TMember();
+            m.MemberName = p.MemberName;
+            m.Cellphone = p.Cellphone;
+            m.EMail = p.EMail;
+            m.Address = p.Address;
+            m.Sex = p.Sex;
+            m.Password = p.Password;
+            _context.TMembers.Add(m);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTMember", new { id = tMember.MemberId }, tMember);
+            //CreatedAtAction("GetTMember", new { id = tMember.MemberId }, tMember);
+            return Ok(new { message = "新增成功", m });
         }
 
         // DELETE: api/TMembers/5
