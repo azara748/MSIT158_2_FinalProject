@@ -72,8 +72,11 @@ namespace MSIT158_2_FinalProject.Controllers
             }
             return View();
         }
-
-
+        //建立新帳號
+        public IActionResult MemberCreate()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
