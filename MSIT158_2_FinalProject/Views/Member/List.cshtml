@@ -278,7 +278,7 @@
                 <td>
                 <button type="button" class="btn btn-warning"><a href="/Member/Edit/${memberId}">修改</a></button> |
                 <a href="/Member/Details/${memberId}">Details</a> |
-                <a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+                <button type="button" class="btn btn-warning" value="${memberId}" onclick="return confirm('確定要刪除嗎?')"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a></button>
                 </td>
             </tr>    
                     `

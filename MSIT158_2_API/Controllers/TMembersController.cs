@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
+using MSIT158_2_API.ViewModel;
 
 namespace MSIT158_2_API.Controllers
 {
@@ -25,6 +26,25 @@ namespace MSIT158_2_API.Controllers
         {
             _context = context;
         }
+        [HttpPost("Memberlogin")]
+        public async Task<ActionResult<TMember>> POSTMemberLogin([FromBody] CLoginViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(
+                t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
+
+            if (user != null && user.Password.Equals(vm.txtPassword))
+            {
+                string json = JsonSerializer.Serialize(user);
+                HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+
+                return RedirectToAction("Index");
+            }
+            return Ok();
+        }
+
+
+
+
 
         [HttpPost("MemberSearch")]
         public async Task<ActionResult<CMembersPagingDTO>> GetMembers([FromBody] CSearchDTO searchDTO)
