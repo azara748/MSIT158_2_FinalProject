@@ -125,10 +125,10 @@
                                         @* 登入標題end *@
                                         @* 登入輸入 *@
                                         <div class="card-body">
-                                            <form role="form" method="post" action="~/Home/BIndex" id="userFrom">
+                                            <form role="form" method="post" action="~/Home/BackLogin" id="userFrom">
                                                 <div class="mb-3">
                                                     @* <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email"> *@
-                                                    @Html.TextBox("txtAccont", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" })
+                                                    @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" })
                                                 </div>
                                                 <div class="mb-3">
                                                     @* <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password"> *@

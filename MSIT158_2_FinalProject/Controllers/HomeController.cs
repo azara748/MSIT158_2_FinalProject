@@ -22,9 +22,8 @@ namespace MSIT158_2_FinalProject.Controllers
             //var a = _context.TOrders.FirstOrDefault();
             //return Json(a);
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-            return View();
-
-                return RedirectToAction("Login");
+                return View();
+            return RedirectToAction("Login");
         }
         public IActionResult Login()
         {
@@ -45,10 +44,10 @@ namespace MSIT158_2_FinalProject.Controllers
             }
             return View();
         }
-
+        //«á¥xµn¤J
         public IActionResult BackIndex()
         {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_EMPLOYEE))
                 return View();
             return RedirectToAction("BackLogin");
         }
@@ -58,18 +57,18 @@ namespace MSIT158_2_FinalProject.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult BLogin(CLoginViewModel vm)
+        public IActionResult BackLogin(CLoginViewModel vm)
         {
             TEmployee emp = _context.TEmployees.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
-
+            TEmployee x = _context.TEmployees.FirstOrDefault(x=>x.EMail.Equals(vm.txtEmail));
 
             if (emp != null && emp.Password.Equals(vm.txtPassword))
             {
                 string json = JsonSerializer.Serialize(emp);
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
 
-                return RedirectToAction("BIndex");
+                return RedirectToAction("BackIndex");
             }
             return View();
         }
