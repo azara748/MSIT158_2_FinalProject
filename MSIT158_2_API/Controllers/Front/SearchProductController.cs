@@ -127,27 +127,45 @@ namespace MSIT158_2_API.Controllers.Front
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<ShowProductDTO>>> GetProductBySearch(SearchProductDTO searchProductDTO)
 		{
-			var query = from p in _context.TProducts
+			var query = _context.TProducts
+						.Include(p=>p.SubCategory)
+
+			var query2 = from p in _context.TProducts
 						join c in _context.TSubCategories on p.SubCategoryId equals c.SubCategoryId
 						join a in _context.TActives on p.ActiveId equals a.ActiveId
 						join l in _context.TLabels on p.LabelId equals l.LabelId
 						select new ShowProductDTO
 						{
 							ProductName = p.ProductName,
+							SubCategoryId = p.SubCategoryId,
 							SubCatName = c.SubCategoryCname,
 							Stocks = p.Stocks,
 							LanchTime = p.LaunchTime,
 							UnitPrice = p.UnitPrice,
 							Discount = a.Discount,
 							LabelName = l.LabelName,
-							Productphoto = p.ProductPhoto
-						};
+							Productphoto = p.ProductPhoto,
+						} into sp
+						select sp;
+				query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
 
-			var result = await query.ToListAsync();
-			//if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-			//{
-			//	query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
-			//}
+				if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+      			{
+				query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
+				}
+
+				int totalCount = query.Count();
+				int pageSize = searchProductDTO.pagesSize;
+				int page = searchProductDTO.page;
+				int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+			 //   query = query.Skip((page - 1) * pageSize).Take(pageSize);
+				//var result = query.ToList();
+
+
+			// 測試
+			var pagedQuery = query.Skip((page - 1) * pageSize).Take(pageSize);
+			var result = await pagedQuery.ToListAsync();
+			result.ForEach(sp => sp.TotalPages = totalPages);
 			return Ok(result);
 		}
 			//LanchTime = !string.IsNullOrEmpty(p.LanchTime) ? p.LanchTime : "新上市",

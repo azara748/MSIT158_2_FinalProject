@@ -225,18 +225,18 @@
 				<div class="row" id="idshowpro">
 				</div>
 				<!-- /store products -->
-				<!-- store bottom filter -->
+				<!-- 分頁按鈕 -->
 				<div class="store-filter clearfix">
 					<span class="store-qty">Showing 20-100 products</span>
-					<ul class="store-pagination">
-						<li class="active">1</li>
+					<ul class="store-pagination" id="idpageul">
+@* 						<li class="active">1</li>
 						<li><a href="#">2</a></li>
 						<li><a href="#">3</a></li>
 						<li><a href="#">4</a></li>
-						<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i></a></li> *@
 					</ul>
 				</div>
-				<!-- /store bottom filter -->
+				<!-- /分頁按鈕 -->
 			</div>
 			<!-- /STORE -->
 		</div>
@@ -256,58 +256,139 @@
 @section Scripts
 {
     <script>
+		const idpageul = document.getElementById("idpageul");
+		const div1 = document.getElementById('idshowpro');
+
         const searchData = {
-			searchword: "",
+			"searchword": "",
+			"page": 1,
+			"pagesSize": 9,
+			"subcatId":0
 		};
-        const div1 = document.getElementById('idshowpro');
-        (async function loadPro() {
-            const url = 'https://localhost:7160/api/SearchProduct';
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(searchData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            //顯示資料
+
+		const pagingHandler = page => {
+			searchData.page = page;
+			loadPro();
+		}
+
+
+		const loadPro = async () => {
+			const url = 'https://localhost:7160/api/SearchProduct';
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(searchData),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const data = await response.json();
+			//顯示商品資料
 			const pros = data.map(pro => {
-				const { productName, discount, subCatName, unitPrice, productphoto} = pro;
-					return (`<div class="col-md-4 col-xs-6">
-									<div class="product">
-										<div class="product-img">
-								${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-											<div class="product-label">
-															<span class="sale">${discount*10}折優惠</span>
-																	<span class="new">${LanchTime = null ? LanchTime : "新上市"}</span>
-											</div>
-										</div>
-											<div class="product-body">
-																		<p class="product-category">${subCatName}</p>
-												<h3 class="product-name"><a href="#">${productName}</a></h3>
-																		<h4 class="product-price">$${Math.round(unitPrice * 0.9)}<del class="product-old-price">$${unitPrice}</del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
+				const { productName, discount, subCatName, unitPrice, productphoto } = pro;
+				return (`<div class="col-md-4 col-xs-6">
+											<div class="product">
+												<div class="product-img">
+										${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+													<div class="product-label">
+																	<span class="sale">${discount * 10}折優惠</span>
+																			<span class="new">${LanchTime = null ? LanchTime : "新上市"}</span>
+													</div>
 												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
-																	<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
-																			<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+													<div class="product-body">
+																				<p class="product-category">${subCatName}</p>
+														<h3 class="product-name"><a href="#">${productName}</a></h3>
+																				<h4 class="product-price">$${Math.round(unitPrice * 0.9)}<del class="product-old-price">$${unitPrice}</del></h4>
+														<div class="product-rating">
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+														</div>
+														<div class="product-btns">
+															<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+																			<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
+																					<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+														</div>
+													</div>
+													<div class="add-to-cart">
+																<button class="add-to-cart-btn"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
+													</div>
 												</div>
-											</div>
-											<div class="add-to-cart">
-														<button class="add-to-cart-btn"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
-											</div>
-										</div>
-									</div>`)
+											</div>`)
 
-            })
-            div1.innerHTML = pros.join("");
+			})
+			div1.innerHTML = pros.join("");
+			console.log(data[0].totalPages);
+			loadPage(data[0].totalPages);
+		}
+		//顯示分類按鈕
+		(async function loadSubcat() {
+			const urlC = 'https://localhost:7160/api/TSubCategories';
+			const responseC = await fetch(urlC);
+			const dataC = await responseC.json();
+			const liCat = dataC.map(cats => {
+				const { } = cats;
+				return 
+			});
 
-        })();
+
+		//顯示分頁簡單版
+		const loadPage = (max) => {
+			let liPages = "";
+			for (let i = 1, max = data[0].totalPages; i <= max; i++) {
+				liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`
+			}
+			idpageul.innerHTML = liPages;
+		}
+
+		loadPro();
+
+		// //B.顯示分頁按鈕-下一頁
+		// const loadMore = (max, start) => {
+		// 	//顯示更多分頁按鈕 (start 至 start+7)
+		// 	let liPages = "";
+		// 	let whichpage = Math.ceil(max / 8);
+		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+		// 	liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+		// 	for (let i = start; i < end; i++) {
+		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+		// 	}
+		// 	if (end <= max) {
+		// 		liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+		// 	}
+		// 	ulPaging.innerHTML = liPages;
+		// }
+		// //B.顯示分頁按鈕-回上頁
+		// const goBack = (max, start) => {
+		// 	let liPages = "";
+		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+		// 	if (start > 1) {
+		// 		liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+		// 	}
+		// 	for (let i = start; i < end; i++) {
+		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+		// 	}
+		// 	liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+		// 	ulPaging.innerHTML = liPages;
+		// }
+
+		//顯示分頁按鈕
+		// const loadPage = (max) => {
+		// 	let liPages = "";
+		// 	let whichpage = Math.ceil(max / 8);
+		// 	if (whichpage > 1) {
+		// 		for (let i = 1; i < 9; i++) {
+		// 			liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+		// 		}
+		// 		liPages += `<li onclick="loadMore(${max},9)">></a></li>`;
+		// 	}
+		// 	else {
+		// 		for (let i = 1; i <= max; i++) {
+		// 			liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`;
+		// 		}
+		// 	}
+		// 	ulPaging.innerHTML = liPages;
+		// }
    </script>
 }
