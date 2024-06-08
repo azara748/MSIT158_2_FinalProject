@@ -1,0 +1,30 @@
+﻿<form id="upimg">
+    <img src="~/img/cccccc.jpg" id="im1" style="width: 100px;height: 100px;object-fit: contain;"/>
+<div class="mb-3">
+    <label for="formFile" class="form-label">上傳圖片</label>
+        <input class="form-control" type="file" id="formFile" accept="image/*" onchange="ch1()" name="IMG" style="width:19.6rem">
+</div>
+</form>
+<script>   
+     async function ch1() {
+        var d;
+        if (formFile.files[0].type.match("image.*")) {
+            await UP()
+            var rd = new FileReader();
+            rd.onload = function (e) {
+                d = this.result;
+                var blob = new Blob([d], { type: "image/jpg" })
+                var uri = window.URL || window.webkitURL;
+                im1.src = uri.createObjectURL(blob)
+            };
+            rd.readAsArrayBuffer(formFile.files[0]);
+        }
+        else
+            alert("請選擇圖片")
+    }
+    async function UP() {
+        var c = new FormData(upimg);
+        var a = await fetch(`@Url.Content("~/FMB/Index1")`, { method: "POST", body: c })
+        var b = await a.text()
+    }
+    </script>

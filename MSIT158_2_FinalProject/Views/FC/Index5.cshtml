@@ -165,7 +165,7 @@
                                 lode.style.display = 'block'
                             }
                             function 結帳2() {
-                                if (!emailRule.test(sele6.value) || sele5.value.length < 3 || sele4.value.length < 10 || sele3.value.length < 6) {
+                                if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
                                     window.alert("請輸入正確格式")
                                     確認5()
                                     確認4()
@@ -187,7 +187,7 @@
                                 sele2.selectedIndex = 4
                             }
                             function 確認5() {
-                                if (sele5.value.length < 3)
+                                if (sele5.value.length < 2)
                                     sele5.style.borderColor = "red";
                                     else
                                     sele5.style.borderColor = "";

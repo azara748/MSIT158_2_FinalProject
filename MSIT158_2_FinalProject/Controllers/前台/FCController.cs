@@ -32,7 +32,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             if (mid == 0) return RedirectToAction("Login", "HOME");
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId, x.Checking });
+            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId });
             ViewBag.會員購物車 = 會員購物車;
             var 總價 = 會員購物車.Sum(x => x.UnitPrice * x.Qty);
             ViewBag.總價 = 總價;
@@ -50,7 +50,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             }
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId, x.Checking });
+            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId});
             return Json(會員購物車);
         }
         public IActionResult Index3(int id)
@@ -77,7 +77,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid);
             ViewBag.會員購物車 = 會員購物車;
-            var 購物車詳細 = 會員購物車.Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) => new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId, x.Checking });
+            var 購物車詳細 = 會員購物車.Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) => new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId});
             ViewBag.購物車詳細 = 購物車詳細;
             ViewBag.總價 = Convert.ToInt32(購物車詳細.Sum(x => x.Qty * x.UnitPrice));
             ViewBag.運費 = 60;

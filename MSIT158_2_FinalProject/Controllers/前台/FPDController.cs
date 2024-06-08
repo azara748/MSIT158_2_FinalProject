@@ -49,7 +49,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 		{
 			SelectShopContext db = new SelectShopContext();
 			var 此商品全部評價 = db.TReviews.Where(x => x.ProductId == a.pid).Join(db.TMembers, x => x.MemberId, y => y.MemberId, (x, y) =>
-			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto} ).Skip((a.page - 1) * 7).Take(7);
+			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto} ).OrderByDescending(x=>x.ReviewDate).Skip((a.page - 1) * 7).Take(7);
 			return Json(此商品全部評價);
 		}
         public IActionResult Index3([FromBody] TCart a)
@@ -62,7 +62,6 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 mid = m.MemberId;
             }
             SelectShopContext db = new SelectShopContext();
-            a.Checking = false;
 			new fM購物車().add購物車2(a);
             return Content("ok", "text/plain");
         }      

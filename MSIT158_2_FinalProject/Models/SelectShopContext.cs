@@ -65,6 +65,10 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TVip> TVips { get; set; }
 
+    public virtual DbSet<TWordCensorship> TWordCensorships { get; set; }
+
+    public virtual DbSet<TWordSeverity> TWordSeverities { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=SelectShop;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
@@ -127,12 +131,16 @@ public partial class SelectShopContext : DbContext
 
             entity.Property(e => e.CartId).HasColumnName("CartID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.PackageId).HasColumnName("PackageID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Member).WithMany(p => p.TCarts)
                 .HasForeignKey(d => d.MemberId)
                 .HasConstraintName("FK_tCart_tMember");
+
+            entity.HasOne(d => d.Package).WithMany(p => p.TCarts)
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("FK_tCart_tAllPackage");
 
             entity.HasOne(d => d.Product).WithMany(p => p.TCarts)
                 .HasForeignKey(d => d.ProductId)
@@ -321,6 +329,7 @@ public partial class SelectShopContext : DbContext
                 .HasMaxLength(10)
                 .HasColumnName("GUI");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.Memo).HasMaxLength(50);
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RecMemberId).HasColumnName("RecMemberID");
             entity.Property(e => e.RecipientEamil).HasMaxLength(50);
@@ -541,6 +550,31 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Vipphoto)
                 .HasMaxLength(50)
                 .HasColumnName("VIPPhoto");
+        });
+
+        modelBuilder.Entity<TWordCensorship>(entity =>
+        {
+            entity.HasKey(e => e.WordCensorshipId).HasName("PK_TCensorship");
+
+            entity.ToTable("tWordCensorship");
+
+            entity.Property(e => e.WordCensorshipId).HasColumnName("WordCensorshipID");
+            entity.Property(e => e.Word).HasMaxLength(50);
+            entity.Property(e => e.WordSeverityId).HasColumnName("WordSeverityID");
+
+            entity.HasOne(d => d.WordSeverity).WithMany(p => p.TWordCensorships)
+                .HasForeignKey(d => d.WordSeverityId)
+                .HasConstraintName("FK_tWordCensorship_tWordSeverity");
+        });
+
+        modelBuilder.Entity<TWordSeverity>(entity =>
+        {
+            entity.HasKey(e => e.WordSeverityId).HasName("PK_tSeverity");
+
+            entity.ToTable("tWordSeverity");
+
+            entity.Property(e => e.WordSeverityId).HasColumnName("WordSeverityID");
+            entity.Property(e => e.Severitylevel).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

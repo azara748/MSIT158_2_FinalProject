@@ -37,6 +37,8 @@ public partial class TOrder
 
     public string? RecipientEamil { get; set; }
 
+    public string? Memo { get; set; }
+
     public virtual TMember? Member { get; set; }
 
     public virtual TStatus? Status { get; set; }

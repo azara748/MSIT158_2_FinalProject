@@ -50,16 +50,16 @@ public class fM購物車
 		db.Remove(a);
 		db.SaveChanges();
 	}
-    public void delete所選(int mid)
-    {
-        SelectShopContext db = new SelectShopContext();
-        var a = db.TCarts;
-		foreach (var x in a)
-		{
-			if((bool)x.Checking)db.Remove(x);
-		}
-        db.SaveChanges();
-    }
+  //  public void delete所選(int mid)
+  //  {
+  //      SelectShopContext db = new SelectShopContext();
+  //      var a = db.TCarts;
+		//foreach (var x in a)
+		//{
+		//	if((bool)x.Checking)db.Remove(x);
+		//}
+  //      db.SaveChanges();
+  //  }
 	 public void 結帳(TOrder o)
     {
         SelectShopContext db = new SelectShopContext();      

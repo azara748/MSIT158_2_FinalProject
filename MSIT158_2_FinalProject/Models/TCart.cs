@@ -13,11 +13,11 @@ public partial class TCart
 
     public int? Qty { get; set; }
 
-    public bool? Checking { get; set; }
-
-    public decimal? UnitPrice { get; set; }
+    public int? PackageId { get; set; }
 
     public virtual TMember? Member { get; set; }
+
+    public virtual TAllPackage? Package { get; set; }
 
     public virtual TProduct? Product { get; set; }
 }
