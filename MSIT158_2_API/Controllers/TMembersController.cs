@@ -20,7 +20,7 @@ namespace MSIT158_2_API.Controllers
     public class TMembersController : ControllerBase
     {
         private readonly SelectShopContext _context;
-        private static string pp = "";
+        private static string _pp = "";
         // 建構子注入資料庫上下文
         public TMembersController(SelectShopContext context)
         {
@@ -32,14 +32,14 @@ namespace MSIT158_2_API.Controllers
             TMember user = _context.TMembers.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
 
+            string json = "";
             if (user != null && user.Password.Equals(vm.txtPassword))
             {
-                string json = JsonSerializer.Serialize(user);
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
-
-                return RedirectToAction("Index");
+                json = JsonSerializer.Serialize(user);
+                _pp = json;
+                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
             }
-            return Ok();
+            return Ok(new { message = "登入成功", json });
         }
 
 
@@ -255,6 +255,10 @@ namespace MSIT158_2_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTMember(int id, CMemberEditDTO memberIn)
         {
+            if (id != memberIn.MemberId)
+            {
+                return BadRequest();
+            }
             TMember memberDb = _context.TMembers.FirstOrDefault(x => x.MemberId == memberIn.MemberId);
             if (memberDb != null)
             {
@@ -270,13 +274,9 @@ namespace MSIT158_2_API.Controllers
                 memberDb.Salt = memberIn.Salt;
                 memberDb.EMail = memberIn.EMail;
                 memberDb.MemberPhoto = memberIn.MemberPhoto;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
-            //if (id != tMember.MemberId)
-            //{
-            //    return BadRequest();
-            //}
 
             //_context.Entry(tMember).State = EntityState.Modified;
 
@@ -296,7 +296,8 @@ namespace MSIT158_2_API.Controllers
             //    }
             //}
 
-            return NoContent();
+            //return NoContent();
+            return Ok(new { message = "修改成功", memberDb });
         }
 
         // POST: api/TMembers

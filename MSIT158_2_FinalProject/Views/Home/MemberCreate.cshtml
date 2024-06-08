@@ -123,11 +123,11 @@
                     console.log("test2");
                     console.log(response);
                     const data = await response.text();
-                    console.log("test2");
-                    const json = JSON.parse(data);
                     console.log("test3");
-                    const message = json.message;
+                    const json = JSON.parse(data);
                     console.log("test4");
+                    const message = json.message;
+                    console.log("test5");
                     const Jname = json.m.memberName;
                     console.log(Jname);
                     divResult.innerHTML = `<p>${Jname}：${message}</p>`;

@@ -21,9 +21,10 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             //var a = _context.TOrders.FirstOrDefault();
             //return Json(a);
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-                return View();
-            return RedirectToAction("Login");
+            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            //    return View();
+            //return RedirectToAction("Login");
+            return View();
         }
         public IActionResult Login()
         {
@@ -32,16 +33,16 @@ namespace MSIT158_2_FinalProject.Controllers
         [HttpPost]
         public IActionResult Login(CLoginViewModel vm)
         {
-            TMember user = _context.TMembers.FirstOrDefault(
-                t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
+            //TMember user = _context.TMembers.FirstOrDefault(
+            //    t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
 
-            if (user != null && user.Password.Equals(vm.txtPassword))
-            {
-                string json = JsonSerializer.Serialize(user);
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+            //if (user != null && user.Password.Equals(vm.txtPassword))
+            //{
+            //    string json = JsonSerializer.Serialize(user);
+            //    HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
 
-                return RedirectToAction("Index");
-            }
+            //    return RedirectToAction("Index");
+            //}
             return View();
         }
         //«á¥xµn¤J
