@@ -133,10 +133,13 @@
                     </div>
                     <a class="primary-btn order-submit" onclick="結帳()" type="submit" id="bu1">其他支付方式</a>
                     <a class="primary-btn order-submit" onclick="結帳2()" type="submit" id="bu2">貨到付款</a>
-                    <div class="d-flex justify-content-center">
+                    <div>
+                        <br />
+                    <div class="d-flex justify-content-center">                      
                         <div class="spinner-border text-danger" role="status" id="lode" style="display:none;text-align:center;width: 8rem; height: 8rem;">
                             <span class="visually-hidden">Loading...</span>
                         </div>
+                    </div>
                     </div>
                     <input type="hidden" value="1" name="StatusId" id="Status" />
                     <input type="hidden" value="@ViewBag.會員資料.MemberName" name="StatusId" id="MemberName" />
@@ -157,7 +160,7 @@
                                     return
                                 }
                                 document.getElementById("myForm").submit();
-                                bu1.style.visibility = 'hidden'
+                                bu1.style.display = 'none'
                                 bu2.style.display = 'none'
                                 lode.style.display = 'block'
                             }
@@ -170,9 +173,9 @@
                                     確認6()
                                     return
                                 }                               
-                                Status.value = 2;
+                                Status.value = 2;                         
                                 document.getElementById("myForm").submit();
-                                bu1.style.visibility = 'hidden'
+                                bu1.style.display = 'none'
                                 bu2.style.display = 'none'
                                 lode.style.display = 'block'
                             }
