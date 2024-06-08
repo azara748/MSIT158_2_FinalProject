@@ -2,6 +2,7 @@
 using MSIT158_2_FinalProject.Models;
 using MSIT158_2_FinalProject.Models.前台;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace MSIT158_2_FinalProject.Controllers.前台
 {
@@ -34,20 +35,33 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 			ViewBag.d2 = 此商品全部評價.Where(x => x.RankId == 2).Count();
 			ViewBag.d1 = 此商品全部評價.Where(x => x.RankId == 1).Count();
             ViewBag.品牌= db.TLabels.FirstOrDefault(x => x.LabelId == Product.LabelId);
-
+            int mid = 0;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            ViewBag.mid = mid;
             return View();
 		}
         public IActionResult Index2([FromBody] DTO商品頁評價 a)
 		{
 			SelectShopContext db = new SelectShopContext();
 			var 此商品全部評價 = db.TReviews.Where(x => x.ProductId == a.pid).Join(db.TMembers, x => x.MemberId, y => y.MemberId, (x, y) =>
-			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto } ).Skip((a.page - 1) * 7).Take(7);
+			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto} ).Skip((a.page - 1) * 7).Take(7);
 			return Json(此商品全部評價);
 		}
         public IActionResult Index3([FromBody] TCart a)
         {
+            int mid = 0;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
             SelectShopContext db = new SelectShopContext();
-            a.MemberId = 2;
             a.Checking = false;
 			new fM購物車().add購物車2(a);
             return Content("ok", "text/plain");

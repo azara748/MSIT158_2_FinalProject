@@ -370,8 +370,9 @@
             for (let i = 0; i < b[i].memberName.length - 1;i++)
                     name+="*"
                 var img=""
-                if (b[i].memberPhoto!=null)
-                 img = `${b[i].memberName.memberPhoto}`
+            if (b[i].memberPhoto != null) { 
+                img = `${b[i].memberPhoto}` 
+            }
                 else img = `392531_account_friend_human_man_member_icon.jpg`
                 t += `<li><div class="review-heading"><img src="/img/${img}" style="width:32px;height:32px;;object-fit: contain;"/><label class="name">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
             for (let i2 = 0; i2 < 5; i2++) {
@@ -415,6 +416,10 @@
         console.log(qty.value)
     }
     function addcart() {
+            if (mid.value == 0) {
+                location.href = "/HOME/Login"
+                return
+            }
                 add()
                 async function add() {
                 var Data2 = {
@@ -434,7 +439,13 @@
                 cart1()
             }         
     }
+
+    ////////////////////////////////////////////
         function addcart2(pid2) {
+            if (mid.value == 0) {
+                location.href = "/HOME/Login"
+                return
+            }
             add()
             async function add() {
                 var Data2 = {
@@ -506,6 +517,6 @@
         cart1()
     </script>
 }
-<input type="hidden" value="2" id="mid" />
+<input type="hidden" value="@ViewBag.mid" id="mid" />
 <input type="hidden" value="@ViewBag.Product.ProductId" id="pid" />
 <input type="hidden" value="@ViewBag.Product.Stocks" id="Stocks" />
