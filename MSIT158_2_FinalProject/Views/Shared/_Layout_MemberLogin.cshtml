@@ -178,35 +178,29 @@
                                 @* 登入API按鈕end *@
                                 @* 登入輸入 *@
                                 <div class="card-body">
-                                    <form role="form" method="post" action="~/Home/Login" id="userFrom">
-                                        @* <div class="mb-3">
-                                            <input type="text" class="form-control" placeholder="Name" aria-label="Name">
-                                        </div> *@
-                                        <div class="mb-3">
-                                            @* <input type="email" class="form-control" placeholder="Email" aria-label="Email"> *@
-                                            @Html.TextBox("txtAccont", "mi.lacinia.mattis@protonmail.com", new { @class = "form-control", type = "email", placeholder = "Email", @aria_label = "Email" })
-                                        </div>
-                                        <div class="mb-3">
-                                            @* <input type="password" class="form-control" placeholder="Password" aria-label="Password"> *@
-                                            @Html.Password("txtPassword", "Amy", new { @class = "form-control", placeholder = "Password", @aria_label = "Password" })
-                                        </div>
                                         @RenderBody()
-                                        @* 我同意 *@
-                                        @* <div class="form-check form-check-info text-start">
+                                    @* <form role="form" method="post" action="~/Home/Login" id="userFrom">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Name" aria-label="Name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" placeholder="Password" aria-label="Password">
+                                        </div>                                        
+                                        <div class="form-check form-check-info text-start">
                                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
                                             </label>
-                                        </div> *@
-                                        @* 我同意end *@
-                                        @* 登入按鈕 *@
+                                        </div>                                        
                                         <div class="text-center">
                                             <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">登入</button>
-                                        </div>
-                                        @* 登入按鈕end *@
+                                        </div>                            
                                         <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p>
                                         <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">忘記密碼</a></p>
-                                    </form>
+                                    </form> *@
                                 </div>
                                 @* 登入輸入end *@
                             </div>

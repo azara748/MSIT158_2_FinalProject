@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "BackLogin";
+    Layout = "_Layout_EmployeeLogin";
+}
+
+@* <h1>管理員登入系統</h1> *@
+
+<form role="form" method="post" action="~/Home/BackLogin" id="userFrom">
+    <div class="mb-3">
+        @* <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email"> *@
+        @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" })
+    </div>
+    <div class="mb-3">
+        @* <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password"> *@
+        @Html.Password("txtPassword", "11111", new { @class = "form-control form-control-lg", placeholder = "Password", @aria_label = "Password" })
+    </div>
+    @* 記住我 *@
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">記住我</label>
+    </div>
+    @* 記住我end *@
+    <div class="text-center">
+        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">登入</button>
+    </div>
+</form>

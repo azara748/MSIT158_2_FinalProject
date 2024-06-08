@@ -88,19 +88,8 @@
 <div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
     <table class="table table-primary table-hover">
         <thead>
-            <tr>
-                <th scope="col" id="idth1">序</th>
-                <th scope="col" id="idth2">姓名</th>
-                <th scope="col" id="idth3">電子信箱</th>
-                <th scope="col" id="idth4">密碼</th>
-                <th scope="col" id="idth5">加鹽</th>
-                <th scope="col" id="idth6">照片</th>
-                <th scope="col" id="idth7">地址</th>
-                <th scope="col" id="idth8">手機</th>
-                <th scope="col" id="idth9">生日</th>
-                <th scope="col" id="idth10">性別</th>
-                <th scope="col" id="idth11">點數</th>
-                <th scope="col" id="idth12">會員等級</th>
+            <tr id="idtr1">
+                
             </tr>
         </thead>
         <tbody id="idtbody1">
@@ -208,6 +197,7 @@
         const sltop = document.querySelector('#idst1');
         const sltop2 = document.querySelector('#idst2');
         const divf = document.querySelector('#div2');
+        const thss = document.querySelector('#idtr1');
         const switchnames = [
             '序號',
             '姓名',
@@ -234,7 +224,11 @@
             )
         });
         divf.innerHTML = switchs.join("");
-
+        //顯示標題
+        const ths = switchnames.map((name, index) => {
+            return (`<th scope="col" id="idth${index + 1}">${name}</th>`)
+        });
+        thss.innerHTML = ths.join("");
 
 
         const searchData = {
@@ -242,18 +236,19 @@
             "keyword": "",
             "page": 1,
             "pageSize": 30,
-            "sortType": "asc",
+            "sortType": "desc",
             "sortBy": "SpotId"
         };
 
         const loadMemberList = async () => {
-            const url = 'https://localhost:7160/api/MemberSearch';
+            const url = 'https://localhost:7160/api/TMembers/MemberSearch';
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(searchData),
                 headers: { 'Content-Type': 'application/json' }
             });
             const data = await response.json();
+            console.log(data);
 
             //顯示會員資料
             const MLists = data.membersResult.map(mlist => {
@@ -277,7 +272,7 @@
                 <td>
                 <button type="button" class="btn btn-warning"><a href="/Member/Edit/${memberId}">修改</a></button> |
                 <a href="/Member/Details/${memberId}">Details</a> |
-                <a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+                <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a></button>
                 </td>
             </tr>    
                     `
@@ -296,8 +291,22 @@
             ulPaging.innerHTML = liPages;
             //隱藏功能開關
             displaybtn();
+            
         };
         loadMemberList();
+
+        //刪除會員
+        console.log('test1');
+        async function deleteMember(memberId) {
+            if (confirm('確定要刪除嗎?')) {
+                const url2 = `https://localhost:7160/api/TMembers/${memberId}`;
+                const response = await fetch(url2, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                loadMemberList();
+            }
+        };
 
         //顯示選擇頁數按鈕
         let sltPages = "";
@@ -331,6 +340,8 @@
             searchData.page = 1;
             loadMemberList();
         })
+        
+
 
 
         //隱藏功能按鈕
@@ -343,7 +354,7 @@
                 checks[i] = document.querySelector(`#flexSwitchCheckChecked_${i}`);
                 ths[i] = document.querySelector(`#idth${i}`);
                 tds[i] = document.querySelectorAll(`#idtd${i}`);
-
+                checks[i].checked = true;
 
                 // 使用闭包来保持对 i 的正确引用
                 (function (index) {
