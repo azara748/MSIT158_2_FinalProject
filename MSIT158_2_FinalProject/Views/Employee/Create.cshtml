@@ -1,0 +1,124 @@
+﻿@model MSIT158_2_FinalProject.Models.TEmployee
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>新增員工資料</h1>
+
+<h4>填寫員工資訊</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+            
+            <div class="form-group">
+                <label asp-for="EmployeeName" class="control-label"></label>
+                <input asp-for="EmployeeName" class="form-control" id="InputName" name="EmployeeName" />
+                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cellphone" class="control-label"></label>
+                <input asp-for="Cellphone" class="form-control" id="InputCellphone" name="Cellphone" />
+                <span asp-validation-for="Cellphone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" id="InputAddress" name="Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Birthday" class="control-label"></label>
+                <input asp-for="Birthday" class="form-control" id="InputBirthday" name="Birthday" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" id="InputPassword" name="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EMail" class="control-label"></label>
+                <input asp-for="EMail" class="form-control" id="InputEMail" name="EMail" />
+                <span asp-validation-for="EMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeePhoto" class="control-label"></label>
+                <input asp-for="EmployeePhoto" class="form-control" id="InputEmployeePhoto" name="EmployeePhoto" />
+                <span asp-validation-for="EmployeePhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OnBoardDate" class="control-label"></label>
+                <input asp-for="OnBoardDate" class="form-control" id="InputOnBoardDate" name="OnBoardDate" />
+                <span asp-validation-for="OnBoardDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepId" class="control-label"></label>
+                <input asp-for="DepId" class="form-control" id="InputDepId" name="DepId" />
+                <span asp-validation-for="DepId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="送出並新增" class="btn btn-primary" id="buttonSubmit" />
+            </div>
+        </form>
+        <div id="div1" class="alert alert-info mt-3"></div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List">返回</a>
+</div>
+
+@section Scripts {
+    <script>
+        const divResult = document.querySelector("#div1");
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+        btnSubmit.addEventListener('click', async (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+            const employeeName = document.querySelector('#InputName').value;
+            const employeephone = document.querySelector('#InputCellphone').value;
+            const employeeAddress = document.querySelector('#InputAddress').value;
+            const employeeBirthday = document.querySelector('#InputBirthday').value;
+            const employeePassword = document.querySelector('#InputPassword').value;
+            const employeeEMail = document.querySelector('#InputEMail').value;
+            const employeePhoto = document.querySelector('#InputEmployeePhoto').value;
+            const employeeDate = document.querySelector('#InputOnBoardDate').value;
+            const employeeDepId = document.querySelector('#InputDepId').value;
+            if (employeeName && employeeEMail && employeePassword) {
+                const employeeData = {
+                    "EmployeeName": employeeName,
+                    "Cellphone": employeephone,
+                    "Address": employeeAddress,
+                    "Birthday": employeeBirthday,
+                    "Password": employeePassword,
+                    "EMail": employeeEMail,
+                    // "EmployeePhoto": employeePhoto,
+                    "OnBoardDate": employeeDate,
+                    "DepId": employeeDepId
+                };
+
+                const url = 'https://localhost:7160/api/TEmployees/Create';
+                console.log("test1");
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(employeeData),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.text();
+                const json = JSON.parse(data);
+                const message = json.message;
+                const Jname = json.e.employeeName;
+                console.log(Jname);
+                divResult.innerHTML = `<p>員工姓名：${Jname}/${message}</p>`;
+                // 等待3秒後自動轉跳
+                setTimeout(() => {
+                    window.location.href = "/Employee/List";
+                }, 3000);
+            }
+        })
+    </script>
+   @*  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+}

@@ -154,7 +154,7 @@
                 const Jname = json.memberDb.memberName;
                 console.log('Jname');
                 console.log(Jname);
-                divResult.innerHTML = `<p>${Jname}：${message}</p>`;
+                divResult.innerHTML = `<p>會員姓名：${Jname}/${message}</p>`;
                 if (message) {
                     setTimeout(() => {
                         window.location.href = "/Member/List";

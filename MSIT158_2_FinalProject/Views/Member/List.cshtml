@@ -25,7 +25,7 @@
         </select>
     </div>
     <div class="col-2">
-        <input type="search" placeholder="搜尋景點資料" class="form-control" id="inputSearch" />
+        <input type="search" placeholder="搜尋會員資料" class="form-control" id="inputSearch" />
     </div>
 </div>
 
@@ -240,60 +240,60 @@
             "sortBy": "SpotId"
         };
 
-        const loadMemberList = async () => {
-            const url = 'https://localhost:7160/api/TMembers/MemberSearch';
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(searchData),
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await response.json();
-            console.log(data);
+            const loadMemberList = async () => {
+                const url = 'https://localhost:7160/api/TMembers/MemberSearch';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(searchData),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.json();
+                console.log(data);
 
-            //顯示會員資料
-            const MLists = data.membersResult.map(mlist => {
-                const { memberId, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vipid, memberPhoto, wallet } = mlist;
-                const count = 0;
-                return(
-                    `
-            <tr>
-                <th scope="row" id="idtd1">${memberId}</th>
-                <td id="idtd2">${memberName}</td>
-                <td id="idtd3">${eMail}</td>
-                <td id="idtd4">${password}</td>
-                <td id="idtd5">${salt}</td>
-                <td id="idtd6">${memberPhoto}</td>
-                <td id="idtd7">${address}</td>
-                <td id="idtd8">${cellphone}</td>
-                <td id="idtd9">${birthday}</td>
-                <td id="idtd10">${sex}</td>
-                <td id="idtd11">${points}</td>
-                <td id="idtd12">${vipid}</td>
-                <td>
-                <button type="button" class="btn btn-warning"><a href="/Member/Edit/${memberId}">修改</a></button> |
-                <a href="/Member/Details/${memberId}">Details</a> |
-                <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a></button>
-                </td>
-            </tr>    
-                    `
-                )
-            })
-            // 將生成的表格行字符串加入到 `tbody` 中
-            divtbody.innerHTML = MLists.join("");
+                //顯示會員資料
+                const MLists = data.membersResult.map(mlist => {
+                    const { memberId, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vipid, memberPhoto, wallet } = mlist;
+                    const count = 0;
+                    return(
+                        `
+                <tr>
+                    <th scope="row" id="idtd1">${memberId}</th>
+                    <td id="idtd2">${memberName}</td>
+                    <td id="idtd3">${eMail}</td>
+                    <td id="idtd4">${password}</td>
+                    <td id="idtd5">${salt}</td>
+                    <td id="idtd6">${memberPhoto}</td>
+                    <td id="idtd7">${address}</td>
+                    <td id="idtd8">${cellphone}</td>
+                    <td id="idtd9">${birthday}</td>
+                    <td id="idtd10">${sex}</td>
+                    <td id="idtd11">${points}</td>
+                    <td id="idtd12">${vipid}</td>
+                    <td>
+                    <button type="button" class="btn btn-warning"><a href="/Member/Edit/${memberId}">修改</a></button> |
+                    <a href="/Member/Details/${memberId}">Details</a> |
+                    <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a></button>
+                    </td>
+                </tr>    
+                        `
+                    )
+                })
+                // 將生成的表格行字符串加入到 `tbody` 中
+                divtbody.innerHTML = MLists.join("");
 
             
 
-            //顯示分頁按鈕
-            let liPages = "";
-            for (let i = 1, max = data.totalPages; i <= max; i++) {
-                liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
-            }
-            ulPaging.innerHTML = liPages;
-            //隱藏功能開關
-            displaybtn();
+                //顯示分頁按鈕
+                let liPages = "";
+                for (let i = 1, max = data.totalPages; i <= max; i++) {
+                    liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
+                }
+                ulPaging.innerHTML = liPages;
+                //隱藏功能開關
+                displaybtn();
             
-        };
-        loadMemberList();
+            };
+            loadMemberList();
 
         //刪除會員
         console.log('test1');
@@ -319,7 +319,7 @@
             if (event.keyCode === 13) {
                 console.log(event);
                 searchData.keyword = event.target.value;
-                searchData.categoryId = 0;
+                searchData.memberId = 0;
                 searchData.page = 1;
                 loadMemberList();
             }
@@ -350,11 +350,12 @@
             const ths = {};
             const tds = {};
 
-            for (let i = 1; i <= 12; i++) {
+            for (let i = 1; i <= 15; i++) {
                 checks[i] = document.querySelector(`#flexSwitchCheckChecked_${i}`);
                 ths[i] = document.querySelector(`#idth${i}`);
                 tds[i] = document.querySelectorAll(`#idtd${i}`);
                 checks[i].checked = true;
+                ths[i].style.display = '';
 
                 // 使用闭包来保持对 i 的正确引用
                 (function (index) {

@@ -79,14 +79,14 @@
             <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" id="buttonSubmit">登入</button>
         </div>
         <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p>
-        <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">忘記密碼</a></p>
+        <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></p>
     </form>
 </div>
 @* 登入輸入end *@
 
 
 @section Scripts{
-    <script>       
+    <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
 
         btnSubmit.addEventListener('click', async (evt) => {
@@ -102,6 +102,7 @@
 
                 const url = 'https://localhost:7160/api/TMembers/Memberlogin';
                 console.log("test1");
+                console.log(memberData);
                 const response = await fetch(url, {
                     method: 'POST',
                     body: JSON.stringify(memberData),
@@ -121,14 +122,50 @@
                 const name = jsonmember.json;
                 const jsonp = JSON.parse(name);
                 const Jname = jsonp.MemberName;
+                const Jemail = jsonp.EMail;
                 console.log("test6");
                 console.log(name);
                 console.log(Jname);
+                console.log(Jemail);
+                if (Jemail) {
+                    const memberData2 = {
+                        "txtEmail": Jemail
+                    };
 
-                if (message) {
-                    alert(`${Jname}：${message}`);
-                    window.location.href = "/Home/Index";
+                    const url2 = 'https://localhost:7160/api/TMembers/MemberCheck';
+                    console.log("test7");
+                    console.log(memberData2);
+                    const response2 = await fetch(url2, {
+                        method: 'POST',
+                        body: JSON.stringify(memberData2),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    console.log("test8");
+                    console.log(response2);
+                    const datas = await response2.text();
+                    console.log("test3");
+                    console.log(datas);
+                    const jsonmember2 = JSON.parse(datas);
+                    console.log("test4");
+                    console.log(jsonmember2);
+                    const message2 = jsonmember2.message;
+                    console.log("test5");
+                    console.log(message2);
+                    const name2 = jsonmember2.json;
+                    const jsonp2 = JSON.parse(name2);
+                    const Jname2 = jsonp2.MemberName;
+                    const Jemail2 = jsonp2.EMail;
+                    console.log("test6");
+                    console.log(name2);
+                    console.log(Jname2);
+                    console.log(Jemail2);
+
+                    if (message2) {
+                        alert(`${Jname2}：${message2}`);
+                        window.location.href = "/Home/Index";
+                    }
                 }
+                
             }
 
         });

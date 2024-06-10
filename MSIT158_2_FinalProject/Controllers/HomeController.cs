@@ -48,9 +48,10 @@ namespace MSIT158_2_FinalProject.Controllers
         //後台登入
         public IActionResult BackIndex()
         {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_EMPLOYEE))
+            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_EMPLOYEE))
+            //    return View();
+            //return RedirectToAction("BackLogin");
                 return View();
-            return RedirectToAction("BackLogin");
         }
 
         public IActionResult BackLogin()
@@ -60,17 +61,17 @@ namespace MSIT158_2_FinalProject.Controllers
         [HttpPost]
         public IActionResult BackLogin(CLoginViewModel vm)
         {
-            TEmployee emp = _context.TEmployees.FirstOrDefault(
-                t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
-            TEmployee x = _context.TEmployees.FirstOrDefault(x=>x.EMail.Equals(vm.txtEmail));
+            //TEmployee emp = _context.TEmployees.FirstOrDefault(
+            //    t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
+            //TEmployee x = _context.TEmployees.FirstOrDefault(x=>x.EMail.Equals(vm.txtEmail));
 
-            if (emp != null && emp.Password.Equals(vm.txtPassword))
-            {
-                string json = JsonSerializer.Serialize(emp);
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
+            //if (emp != null && emp.Password.Equals(vm.txtPassword))
+            //{
+            //    string json = JsonSerializer.Serialize(emp);
+            //    HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
 
-                return RedirectToAction("BackIndex");
-            }
+            //    return RedirectToAction("BackIndex");
+            //}
             return View();
         }
         //建立新帳號
@@ -78,6 +79,12 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
+        //忘記密碼
+        public IActionResult MemberForgetPassword()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {

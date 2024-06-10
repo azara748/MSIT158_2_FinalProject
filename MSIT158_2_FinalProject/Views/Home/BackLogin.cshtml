@@ -8,12 +8,12 @@
 
 <form role="form" method="post" action="~/Home/BackLogin" id="userFrom">
     <div class="mb-3">
-        @* <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email"> *@
-        @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" })
+        <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" value="ivy@gmail.com" name="txtEmail" id="Inputemail">
+        @* @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" }) *@
     </div>
     <div class="mb-3">
-        @* <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password"> *@
-        @Html.Password("txtPassword", "11111", new { @class = "form-control form-control-lg", placeholder = "Password", @aria_label = "Password" })
+        <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" value="11111" name="txtPassword" id="InputPassword">
+        @* @Html.Password("txtPassword", "11111", new { @class = "form-control form-control-lg", placeholder = "Password", @aria_label = "Password" }) *@
     </div>
     @* 記住我 *@
     <div class="form-check form-switch">
@@ -22,6 +22,94 @@
     </div>
     @* 記住我end *@
     <div class="text-center">
-        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">登入</button>
+        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" id="buttonSubmit">登入</button>
     </div>
 </form>
+
+@section Scripts{
+    <script>
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+        btnSubmit.addEventListener('click', async (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+
+            const femail = document.querySelector('#Inputemail').value;
+            const fpassword = document.querySelector('#InputPassword').value;
+            if (femail && fpassword) {
+                const memberData = {
+                    "txtEmail": femail,
+                    "txtPassword": fpassword
+                };
+
+                const url = 'https://localhost:7160/api/TEmployees/Employeelogin';
+                console.log("test1");
+                console.log(memberData);
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(memberData),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                console.log("test2");
+                console.log(response);
+                const data = await response.text();
+                console.log("test3");
+                console.log(data);
+                const jsonmember = JSON.parse(data);
+                console.log("test4");
+                console.log(jsonmember);
+                const message = jsonmember.message;
+                console.log("test5");
+                console.log(message);
+                const name = jsonmember.json;
+                const jsonp = JSON.parse(name);
+                const Jname = jsonp.EmployeeName;
+                const Jemail = jsonp.EMail;
+                console.log("test6");
+                console.log(name);
+                console.log(Jname);
+                console.log(Jemail);
+                if (Jemail) {
+                    const memberData2 = {
+                        "txtEmail": Jemail
+                    };
+
+                    const url2 = 'https://localhost:7160/api/TEmployees/EmployeeCheck';
+                    console.log("test7");
+                    console.log(memberData2);
+                    const response2 = await fetch(url2, {
+                        method: 'POST',
+                        body: JSON.stringify(memberData2),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    console.log("test8");
+                    console.log(response2);
+                    const datas = await response2.text();
+                    console.log("test3");
+                    console.log(datas);
+                    const jsonmember2 = JSON.parse(datas);
+                    console.log("test4");
+                    console.log(jsonmember2);
+                    const message2 = jsonmember2.message;
+                    console.log("test5");
+                    console.log(message2);
+                    const name2 = jsonmember2.json;
+                    const jsonp2 = JSON.parse(name2);
+                    const Jname2 = jsonp2.EmployeeName;
+                    const Jemail2 = jsonp2.EMail;
+                    console.log("test6");
+                    console.log(name2);
+                    console.log(Jname2);
+                    console.log(Jemail2);
+
+                    if (message2) {
+                        alert(`${Jname2}：${message2}`);
+                        window.location.href = "/Home/BackIndex";
+                    }
+                }
+
+            }
+
+        });
+
+    </script>
+}
