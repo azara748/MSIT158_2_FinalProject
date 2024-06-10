@@ -43,6 +43,8 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TOrder> TOrders { get; set; }
 
+    public virtual DbSet<TPackageCart> TPackageCarts { get; set; }
+
     public virtual DbSet<TPackageMaterial> TPackageMaterials { get; set; }
 
     public virtual DbSet<TPackageStyle> TPackageStyles { get; set; }
@@ -131,16 +133,11 @@ public partial class SelectShopContext : DbContext
 
             entity.Property(e => e.CartId).HasColumnName("CartID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.PackageId).HasColumnName("PackageID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
             entity.HasOne(d => d.Member).WithMany(p => p.TCarts)
                 .HasForeignKey(d => d.MemberId)
                 .HasConstraintName("FK_tCart_tMember");
-
-            entity.HasOne(d => d.Package).WithMany(p => p.TCarts)
-                .HasForeignKey(d => d.PackageId)
-                .HasConstraintName("FK_tCart_tAllPackage");
 
             entity.HasOne(d => d.Product).WithMany(p => p.TCarts)
                 .HasForeignKey(d => d.ProductId)
@@ -346,6 +343,25 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Status).WithMany(p => p.TOrders)
                 .HasForeignKey(d => d.StatusId)
                 .HasConstraintName("FK_tOrder_tStatus");
+        });
+
+        modelBuilder.Entity<TPackageCart>(entity =>
+        {
+            entity.HasKey(e => e.PackageCartId).HasName("PK_PackageCart");
+
+            entity.ToTable("tPackageCart");
+
+            entity.Property(e => e.PackageCartId).HasColumnName("PackageCartID");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.PackageId).HasColumnName("PackageID");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.TPackageCarts)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_PackageCart_tMember");
+
+            entity.HasOne(d => d.Package).WithMany(p => p.TPackageCarts)
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("FK_PackageCart_tAllPackage");
         });
 
         modelBuilder.Entity<TPackageMaterial>(entity =>

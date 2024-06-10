@@ -37,6 +37,8 @@ public partial class TMember
 
     public virtual ICollection<TOrder> TOrders { get; set; } = new List<TOrder>();
 
+    public virtual ICollection<TPackageCart> TPackageCarts { get; set; } = new List<TPackageCart>();
+
     public virtual ICollection<TReview> TReviews { get; set; } = new List<TReview>();
 
     public virtual TVip? Vip { get; set; }

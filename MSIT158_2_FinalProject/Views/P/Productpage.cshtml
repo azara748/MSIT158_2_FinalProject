@@ -9,7 +9,7 @@
                     @if (ViewBag.Product.ProductPhoto != null)
                     {
                         <div class="product-preview">
-                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(ViewBag.Product.ProductPhoto)" alt="">
+                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(ViewBag.Product.ProductPhoto)" style="object-fit: contain;" alt="">
                         </div>
                     }
                     @* <div class="product-preview">
@@ -32,7 +32,7 @@
                     @if (ViewBag.Product.ProductPhoto != null)
                     {
                         <div class="product-preview">
-                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(ViewBag.Product.ProductPhoto)" alt="">
+                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(ViewBag.Product.ProductPhoto)" style="object-fit: contain;" alt="">
                         </div>
                     }
                     @* <div class="product-preview">
@@ -67,7 +67,7 @@
                                 }
                             }
                         </div>
-                        <a class="review-link" href="#" id="rc">@ViewBag.評價數</a>
+                        <a class="review-link" href="#tab3" id="rc">@ViewBag.評價數 件評價</a>
                     </div>
                     <div>
                         <h3 class="product-price">$@Convert.ToInt32(ViewBag.Product.UnitPrice)<del class="product-old-price">$@Convert.ToInt32((double)ViewBag.Product.UnitPrice * 1.2)</del></h3>
@@ -255,12 +255,12 @@
                                 <!-- /Rating -->
                                 <!-- Reviews -->
                                 <div class="col-md-6">
-                                <div id="reviews">
-                                <ul class="reviews" id="u1">
-                               </ul>
-                                <ul class="reviews-pagination" id="u2">                              
-                                </ul>
-                                </div>
+                                    <div id="reviews">
+                                        <ul class="reviews" id="u1">
+                                        </ul>
+                                        <ul class="reviews-pagination" id="u2">
+                                        </ul>
+                                    </div>
                                 </div>
                                 <!-- /Reviews -->
                                 <!-- Review Form -->
@@ -308,126 +308,124 @@
                     <h3 class="title">相關商品</h3>
                 </div>
             </div>
-                <!-- product -->
+            <!-- product -->
             @foreach (var v in ViewBag.相關商品)
-                {
-                    <div class="col-md-3 col-xs-6">
-                        <div class="product">
-                        <a class="product-img" href="~/FPD/Index/@v.ProductId">
-                                <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" alt="" style="width:259px;height:259px;object-fit: contain;">
-                                <div class="product-label">
-                                    @* <span class="sale">-30%</span> *@
-                                </div>
-                            </a>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">@v.ProductName</a></h3>
-                            <h4 class="product-price">$@Convert.ToInt32(v.UnitPrice) <del class="product-old-price">$@Convert.ToInt32((double)v.UnitPrice*1.2)</del></h4>
-                                <div class="product-rating">
-                                </div>
-                                <div class="product-btns">
-                                    <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                                    <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                </div>
+            {
+                <div class="col-md-3 col-xs-6">
+                    <div class="product">
+                        <a class="product-img" href="~/P/Productpage/@v.ProductId">
+                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" alt="" style="width:259px;height:259px;object-fit: contain;">
+                            <div class="product-label">
+                                @* <span class="sale">-30%</span> *@
                             </div>
-                            <div class="add-to-cart">
-                            <button class="add-to-cart-btn" onclick="addcart2(@v.ProductId)"><i class="fa fa-shopping-cart"></i> 加入購物車</button>
+                        </a>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">@v.ProductName</a></h3>
+                            <h4 class="product-price">$@Convert.ToInt32(v.UnitPrice) <del class="product-old-price">$@Convert.ToInt32((double)v.UnitPrice * 1.2)</del></h4>
+                            <div class="product-rating">
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
                             </div>
                         </div>
+                        <div class="add-to-cart">
+                            <button class="add-to-cart-btn" onclick="addcart2(@v.ProductId)"><i class="fa fa-shopping-cart"></i> 加入購物車</button>
+                        </div>
                     </div>
-                    <!-- /product -->
-                }
+                </div>
+                <!-- /product -->
+            }
         </div>
         <!-- /row -->
     </div>
     <!-- /container -->
 </div>
 <!-- /Section -->
-@section Scripts{
-<script>
-    var page = 1 
-    var b=""
-    async function go() {
-        var Data = {
-            "pid": pid.value,
-            "page": page,
-        }
-            var a = await fetch(`@Url.Content("~/FPD/Index2") `, {
+@section Scripts {
+    <script>
+        var page = 1
+        var b = ""
+        async function go() {
+            var Data = {
+                "pid": pid.value,
+                "page": page,
+            }
+            var a = await fetch(`@Url.Content("~/P/ReviewsAPI") `, {
                 method: 'POST',
                 body: JSON.stringify(Data),
                 headers: {
                     'Content-Type': 'application/json'
                 },
             })
-        b = await a.json()
-        go2()
-    }
-    function go2(){
-        var t = ""
-        for (let i = 0; i < b.length; i++) {
-                var name = b[i].memberName.substring(0,1)
-            for (let i = 0; i < b[i].memberName.length - 1;i++)
-                    name+="*"
-                var img=""
-            if (b[i].memberPhoto != null) { 
-                img = `${b[i].memberPhoto}` 
-            }
+            b = await a.json()
+            await go2()
+        }
+        function go2() {
+            var t = ""
+            for (let i = 0; i < b.length; i++) {           
+                var name = b[i].memberName.substring(0, 1)
+                for (let i2 = 1; i2 < b[i].memberName.length; i2++)
+                    name += "*"
+                var img = ""
+                if (b[i].memberPhoto != null) {
+                    img = `${b[i].memberPhoto}`
+                }
                 else img = `392531_account_friend_human_man_member_icon.jpg`
                 t += `<li><div class="review-heading"><img src="/img/${img}" style="width:32px;height:32px;;object-fit: contain;"/><label class="name">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
-            for (let i2 = 0; i2 < 5; i2++) {
-                if (i2 < b[i].rankId)
-                    t += `<i class="fa fa-star"></i>`
-                else t += `<i class="fa fa-star-o empty"></i>`
+                for (let i2 = 0; i2 < 5; i2++) {
+                    if (i2 < b[i].rankId)
+                        t += `<i class="fa fa-star"></i>`
+                    else t += `<i class="fa fa-star-o empty"></i>`
+                }
+                let l = b[i].comment;
+                if (l == null) l = ""
+                t += `</div></div><div class="review-body"><p>${l}</p></div></li>`
             }
-            let l = b[i].comment;
-            if (l ==null)l=""
-            t += `</div></div><div class="review-body"><p>${l}</p></div></li>`
+            u1.innerHTML = t;
+            go3()
         }
-        u1.innerHTML = t;
-        go3()
-    }
-    function go3() {
-        var t2=""
-        var rcc = Number(rc.innerHTML)
-        var allp = rcc / 7
-        if (rcc <= 7) allp = 2
-        else allp++
-        for (let i3 = 1; i3 < allp;i3++)
-        {
-            if (i3 == page)
-                t2 += `<li class="active"><a href="javascript:void(0)" onclick="gopage(${i3})">${i3}</a></li>`
-            else
-                t2 += `<li><a href="javascript:void(0)" onclick="gopage(${i3})">${i3}</a></li>`
+        function go3() {
+            var t2 = ""
+            var rcc = Number(rc.innerHTML)
+            var allp = rcc / 7
+            if (rcc <= 7) allp = 2
+            else allp++
+            for (let i3 = 1; i3 < allp; i3++) {
+                if (i3 == page)
+                    t2 += `<li class="active"><a href="javascript:void(0)" onclick="gopage(${i3})">${i3}</a></li>`
+                else
+                    t2 += `<li><a href="javascript:void(0)" onclick="gopage(${i3})">${i3}</a></li>`
+            }
+            t2 += ` <li><a href="javascript:void(0)" onclick="gopage()"><i class="fa fa-angle-right"></i></a></li> `
+            u2.innerHTML = t2;
         }
-        t2 += ` <li><a href="javascript:void(0)" onclick="gopage()"><i class="fa fa-angle-right"></i></a></li> `
-        u2.innerHTML = t2;
-    }
-    function gopage(gogo=0) {
-        if (gogo == 0 && page < Number(rc.innerHTML)/7) page++
-        else if (page == Number(rc.innerHTML) / 7) return
-        else page =gogo
-        go()       
-    }
-     go()
-    function cp() {
-        if (qty.value > Stocks.value - 1)
-            qty.value = (Stocks.value - 1)
-        console.log(qty.value)
-    }
-    function addcart() {
+        function gopage(gogo = 0) {
+            if (gogo == 0 && page < Number(rc.innerHTML) / 7) page++
+            else if (page == Number(rc.innerHTML) / 7) return
+            else page = gogo
+            go()
+        }
+        go()
+        function cp() {
+            if (qty.value > Stocks.value - 1)
+                qty.value = (Stocks.value - 1)
+        }
+        function addcart() {
             if (mid.value == 0) {
                 location.href = "/HOME/Login"
                 return
             }
-                add()
-                async function add() {
+            add()
+            async function add() {
                 var Data2 = {
                     "memberId": mid.value,
                     "ProductId": pid.value,
-                    "qty": Number(qty.value) 
+                    "qty": Number(qty.value)
                 }
-                var a2 = await fetch(`@Url.Content("~/FPD/Index3")`, {
+                var a2 = await fetch(`@Url.Content("~/P/addCartAPI")`, {
                     method: 'POST',
                     body: JSON.stringify(Data2),
                     headers: {
@@ -437,10 +435,10 @@
                 var b2 = await a2.text()
                 if (b2 == "ok") window.alert("加入購物車成功")
                 cart1()
-            }         
-    }
+            }
+        }
 
-    ////////////////////////////////////////////
+        ////////////////////////////////////////////
         function addcart2(pid2) {
             if (mid.value == 0) {
                 location.href = "/HOME/Login"
@@ -453,7 +451,7 @@
                     "ProductId": pid2,
                     "qty": 1
                 }
-                var a2 = await fetch(`@Url.Content("~/FPD/Index3")`, {
+                var a2 = await fetch(`@Url.Content("~/P/addCartAPI")`, {
                     method: 'POST',
                     body: JSON.stringify(Data2),
                     headers: {
@@ -469,30 +467,46 @@
         var 總價 = 0;
         var 運費 = 60;
         var b = ""
+        var bp = ""
         var count = 0
         async function cart1() {
-            var a = await fetch(`@Url.Content("~/FC/Index2")`)
-            b = await a.json()
-            console.log(b)
+            var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
+            var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
+             b = await a.json()
+             bp = await ap.json()
             cart2()
         }
         function cart2() {
             var t = ``
-            count =0
+            count = 0
             總價 = 0;
             for (let f in b) {
                 count++
                 總價 += b[f].unitPrice * b[f].qty;
                 t += `<div  id="c${f}"><div class="product-widget">
-                                                    <div class="product-img">
-                                                                <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="">
-                                                    </div>
-                                                    <div class="product-body">
-                                                                <h3 class="product-name"><a href="#">${b[f].productName}</a></h3>
-                                                                        <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
-                                                    </div>
-                                                            <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].qty},${b[f].cartId})"><i class="fa fa-close"></i></button>
-                                                        </div></div>`
+                                                            <div class="product-img">
+                                                                                <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
+                                                            </div>
+                                                            <div class="product-body">
+                                                                        <h3 class="product-name"><a href="#">${b[f].productName}</a></h3>
+                                                                                <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
+                                                            </div>
+                                                                    <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].qty},${b[f].cartId})"><i class="fa fa-close"></i></button>
+                                                                </div></div>`
+            }
+            for (let f in bp) {
+                count++
+                總價 += bp[f].price * bp[f].qty;
+                t += `<div  id="p${f}"><div class="product-widget">
+                                                                    <div class="product-img">
+                                                                       <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
+                                                                    </div>
+                                                                    <div class="product-body">
+                                                                                        <h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
+                                                                                                <h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
+                                                                    </div>
+                                                                                            <button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].qty},${bp[f].packageCartId})"><i class="fa fa-close"></i></button>
+                                                                        </div></div>`
             }
             cart.innerHTML = t
             cart3()
@@ -500,17 +514,27 @@
         function cart3() {
             SUBTOTAL.innerHTML = '$' + 總價
             cartqty.innerHTML = count
-            Items.innerHTML = count+"件商品"
+            Items.innerHTML = count + "樣商品"
         }
-        async function dedet(d, p,q, id) {
-            if(!confirm("確定要刪除嗎?"))return
-            var a2 = await fetch(`@Url.Content("~/FC/Index3")/${id}`)
+        async function dedet(d, p, q, id) {
+            if (!confirm("確定要刪除嗎?")) return
+            var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
             document.getElementById("c" + d).innerHTML = "";
-            總價 -= Number(p*q)
-            console.log(p * q)
-            count-=q
+            總價 -= Number(p * q)
+            count --
+            SUBTOTAL.innerHTML = '$' + 總價
+            cart3()
+        }
+        async function dedet2(d, p, q, id) {
+            if (!confirm("確定要刪除嗎?")) return
+            var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
+            var b2 = await a2.text()
+            if (b2 != "ok") return
+            document.getElementById("p" + d).innerHTML = "";
+            總價 -= Number(p * q)
+            count -- 
             SUBTOTAL.innerHTML = '$' + 總價
             cart3()
         }

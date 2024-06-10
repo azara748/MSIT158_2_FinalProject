@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\assets\**" />
+    <Compile Remove="DTO\**" />
     <Content Remove="Controllers\assets\**" />
+    <Content Remove="DTO\**" />
     <EmbeddedResource Remove="Controllers\assets\**" />
+    <EmbeddedResource Remove="DTO\**" />
     <None Remove="Controllers\assets\**" />
+    <None Remove="DTO\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +39,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DTO\" />
   </ItemGroup>
 
 </Project>

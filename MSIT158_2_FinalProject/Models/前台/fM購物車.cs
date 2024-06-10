@@ -29,38 +29,67 @@ public class fM購物車
 		else b.Qty += a.Qty;
 		db.SaveChanges();
 	}
-	public void plus購物車(int id)
+    public void add包裝(TPackageCart a)
+    {
+        SelectShopContext db = new SelectShopContext();
+        var b = db.TPackageCarts.FirstOrDefault(x => x.PackageId == a.PackageId && x.MemberId == a.PackageId);
+        if (b == null) db.Add(a);
+        else b.Qty += a.Qty;
+        db.SaveChanges();
+    }
+    public void plus購物車(int id)
 	{
 		SelectShopContext db = new SelectShopContext();
 		var a = db.TCarts.FirstOrDefault(x => x.CartId == id);
 		a.Qty++;
 		db.SaveChanges();
 	}
-	public void minus購物車(int id)
+    public void plus購物車2(int id)
+    {
+        SelectShopContext db = new SelectShopContext();
+        var a = db.TPackageCarts.FirstOrDefault(x => x.PackageCartId == id);
+        a.Qty++;
+        db.SaveChanges();
+    }
+    public void minus購物車(int id)
 	{
 		SelectShopContext db = new SelectShopContext();
 		var a = db.TCarts.FirstOrDefault(x => x.CartId == id);
 		a.Qty--;
 		db.SaveChanges();
 	}
-	public void delete購物車(int id)
+    public void minus購物車2(int id)
+    {
+        SelectShopContext db = new SelectShopContext();
+        var a = db.TPackageCarts.FirstOrDefault(x => x.PackageCartId == id);
+        a.Qty--;
+        db.SaveChanges();
+    }
+    public void delete購物車(int id)
 	{
 		SelectShopContext db = new SelectShopContext();
 		var a = db.TCarts.FirstOrDefault(x => x.CartId == id);
 		db.Remove(a);
 		db.SaveChanges();
 	}
-  //  public void delete所選(int mid)
-  //  {
-  //      SelectShopContext db = new SelectShopContext();
-  //      var a = db.TCarts;
-		//foreach (var x in a)
-		//{
-		//	if((bool)x.Checking)db.Remove(x);
-		//}
-  //      db.SaveChanges();
-  //  }
-	 public void 結帳(TOrder o)
+    public void delete購物車2(int id)
+    {
+        SelectShopContext db = new SelectShopContext();
+        var a = db.TPackageCarts.FirstOrDefault(x => x.PackageCartId == id);
+        db.Remove(a);
+        db.SaveChanges();
+    }
+    //  public void delete所選(int mid)
+    //  {
+    //      SelectShopContext db = new SelectShopContext();
+    //      var a = db.TCarts;
+    //foreach (var x in a)
+    //{
+    //	if((bool)x.Checking)db.Remove(x);
+    //}
+    //      db.SaveChanges();
+    //  }
+    public void 結帳(TOrder o)
     {
         SelectShopContext db = new SelectShopContext();      
         db.TOrders.Add(o);

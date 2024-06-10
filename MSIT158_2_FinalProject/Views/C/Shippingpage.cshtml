@@ -112,7 +112,7 @@
                             <div><strong>金額</strong></div>
                         </div>
                         @{
-                            foreach (var item in ViewBag.購物車詳細)
+                            foreach (var item in ViewBag.會員購物車)
                             {
                                     <div class="order-products">
                                         <div class="order-col">
@@ -120,6 +120,15 @@
                                             <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
                                         </div>
                                     </div>
+                            }
+                            foreach (var item in ViewBag.會員購物車2)
+                            {
+                                <div class="order-products">
+                                    <div class="order-col">
+                                        <div>@item.Qty x @item.PackName</div>
+                                        <div>@Convert.ToInt32(item.Price * item.Qty)</div>
+                                    </div>
+                                </div>
                             }
                         }
                         <div class="order-col">

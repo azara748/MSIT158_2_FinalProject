@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using MSIT158_2_FinalProject.Models;
 using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace MSIT158_2_FinalProject.Controllers.前台
 {
-    public class FCController : Controller
+    public class CController : Microsoft.AspNetCore.Mvc.Controller
     {
         //public override void OnActionExecuting(ActionExecutingContext context)
         //{
@@ -20,7 +21,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
         //        }));
         //    }
         //}
-        public IActionResult Index()
+        public IActionResult Cartspage()
         {
             int mid = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
@@ -29,17 +30,20 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 TMember m = JsonSerializer.Deserialize<TMember>(js);
                 mid = m.MemberId;
             }
-            if (mid == 0) return RedirectToAction("Login", "HOME");
+            else return RedirectToAction("Login", "HOME");
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
             new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId });
-            ViewBag.會員購物車 = 會員購物車;
-            var 總價 = 會員購物車.Sum(x => x.UnitPrice * x.Qty);
-            ViewBag.總價 = 總價;
+            ViewBag.會員購物車 = 會員購物車;           
             ViewBag.運費 = 60;
+            var 會員購物車2 =db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId ,y => y.PackageId, (x, y) =>
+            new { y.Picture, y.PackName, y.Price, x.Qty, x.PackageCartId });
+            ViewBag.會員購物車2 = 會員購物車2;
+            var 總價 = 會員購物車.Sum(x => x.UnitPrice * x.Qty)+ 會員購物車2.Sum(x => x.Price * x.Qty);
+            ViewBag.總價 = 總價;
             return View(會員購物車);
         }
-        public IActionResult Index2()
+        public IActionResult miniCartsAPI()
         {
             int mid = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
@@ -53,18 +57,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId});
             return Json(會員購物車);
         }
-        public IActionResult Index3(int id)
-        {
-            new fM購物車().delete購物車(id);
-            return Content("ok", "text/plain");
-        }
-        public IActionResult Index4(int id, string q)
-        {
-            if (q == "p") new fM購物車().plus購物車(id);
-            else new fM購物車().minus購物車(id);
-            return Content("ok", "text/plain");
-        }
-        public IActionResult Index5()
+        public IActionResult miniCartsAPI2()
         {
             int mid = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
@@ -73,20 +66,58 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 TMember m = JsonSerializer.Deserialize<TMember>(js);
                 mid = m.MemberId;
             }
-            if (mid == 0) return RedirectToAction("Login", "HOME");
             SelectShopContext db = new SelectShopContext();
-            var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid);
-            ViewBag.會員購物車 = 會員購物車;
-            var 購物車詳細 = 會員購物車.Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) => new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId});
-            ViewBag.購物車詳細 = 購物車詳細;
-            ViewBag.總價 = Convert.ToInt32(購物車詳細.Sum(x => x.Qty * x.UnitPrice));
-            ViewBag.運費 = 60;
+            var 會員購物車2 = db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId, y => y.PackageId, (x, y) =>
+           new { y.Picture, y.PackName, y.Price, x.Qty, x.PackageCartId });
+            return Json(會員購物車2);
+        }
+        public IActionResult deleteCartAPI(int id)
+        {
+            new fM購物車().delete購物車(id);
+            return Content("ok", "text/plain");
+        }
+        public IActionResult qtyCartAPI(int id, string q)
+        {
+            if (q == "p") new fM購物車().plus購物車(id);
+            else new fM購物車().minus購物車(id);
+            return Content("ok", "text/plain");
+        }
+        public IActionResult deleteCartAPI2(int id)
+        {
+            new fM購物車().delete購物車2(id);
+            return Content("ok", "text/plain");
+        }
+        public IActionResult qtyCartAPI2(int id, string q)
+        {
+            if (q == "p") new fM購物車().plus購物車2(id);
+            else new fM購物車().minus購物車2(id);
+            return Content("ok", "text/plain");
+        }
+        public IActionResult Shippingpage()
+        {
+            int mid = 0;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            else return RedirectToAction("Login", "HOME");
+            SelectShopContext db = new SelectShopContext();
             var 會員資料 = db.TMembers.FirstOrDefault(x => x.MemberId == mid);
-            ViewBag.會員資料 = 會員資料;
+            var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) => 
+            new {  y.ProductName, y.UnitPrice,  x.Qty});
+            var 會員購物車2 = db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId, y => y.PackageId, (x, y) =>
+            new { y.PackName, y.Price, x.Qty});
+            ViewBag.運費 = 60;
+            ViewBag.會員購物車 = 會員購物車;
+            ViewBag.會員資料 = 會員資料;         
+            ViewBag.會員購物車2 = 會員購物車2;
+            ViewBag.總價 =  Convert.ToInt32(會員購物車.Sum(x => x.UnitPrice * x.Qty) + 會員購物車2.Sum(x => x.Price * x.Qty));
             return View();
         }
         [HttpPost]
-        public IActionResult Index5(TOrder value)
+        public IActionResult Shippingpage(TOrder value)
         {
             int mid = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
@@ -96,10 +127,11 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 mid = m.MemberId;
             }
             value.MemberId = mid;
+            value.ShippingMethodId = 1;
+            value.OrderDate = DateTime.Now;
             SelectShopContext db = new SelectShopContext();
             db.TOrders.Add(value);
-            db.SaveChanges();
-            int lo = db.TOrders.OrderBy(x => x.OrderId).FirstOrDefault().OrderId;
+            int lo = db.TOrders.OrderByDescending(x => x.OrderId).FirstOrDefault().OrderId+1;
             var a = db.TCarts.Where(x => x.MemberId == value.MemberId);
             foreach (var x in a)
             {
@@ -108,10 +140,20 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 p.ProductId = x.ProductId;
                 p.Qty = x.Qty;
                 db.TPurchases.Add(p);
-                db.TCarts.Remove(x);
             }
+            db.TCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
+            var b = db.TPackageCarts.Where(x => x.MemberId == value.MemberId);
+            foreach (var x in b)
+            {
+                TPackageWayDetail p = new TPackageWayDetail();
+                p.OrderId = lo;
+                p.PackageId = x.PackageId;
+                p.PackQty = x.Qty;
+                db.TPackageWayDetails.Add(p);
+            }
+            db.TPackageCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
             db.SaveChanges();
-            return RedirectToAction("Index","FPD");
+            return RedirectToAction("Productpage", "P");
         }
         //public IActionResult Index6([FromBody]TOrder value)
         //{

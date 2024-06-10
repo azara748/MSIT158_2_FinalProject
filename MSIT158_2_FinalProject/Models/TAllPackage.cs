@@ -27,7 +27,7 @@ public partial class TAllPackage
 
     public virtual TPackageStyle? PackageStyle { get; set; }
 
-    public virtual ICollection<TCart> TCarts { get; set; } = new List<TCart>();
+    public virtual ICollection<TPackageCart> TPackageCarts { get; set; } = new List<TPackageCart>();
 
     public virtual ICollection<TPackageWayDetail> TPackageWayDetails { get; set; } = new List<TPackageWayDetail>();
 }

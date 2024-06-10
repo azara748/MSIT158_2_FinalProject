@@ -6,9 +6,9 @@ using System.Text.Json;
 
 namespace MSIT158_2_FinalProject.Controllers.前台
 {
-	public class FPDController : Controller
+	public class PController : Microsoft.AspNetCore.Mvc.Controller
 	{
-		public IActionResult Index(int id = 15)
+		public IActionResult Productpage(int id = 15)
 		{
 			SelectShopContext db = new SelectShopContext();
 			TProduct Product = db.TProducts.FirstOrDefault(x => x.ProductId == id);
@@ -45,14 +45,14 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             ViewBag.mid = mid;
             return View();
 		}
-        public IActionResult Index2([FromBody] DTO商品頁評價 a)
+        public IActionResult ReviewsAPI([FromBody] DTO商品頁評價 a)
 		{
 			SelectShopContext db = new SelectShopContext();
 			var 此商品全部評價 = db.TReviews.Where(x => x.ProductId == a.pid).Join(db.TMembers, x => x.MemberId, y => y.MemberId, (x, y) =>
 			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto} ).OrderByDescending(x=>x.ReviewDate).Skip((a.page - 1) * 7).Take(7);
 			return Json(此商品全部評價);
 		}
-        public IActionResult Index3([FromBody] TCart a)
+        public IActionResult addCartAPI([FromBody] TCart a)
         {
             int mid = 0;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
@@ -64,7 +64,31 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             SelectShopContext db = new SelectShopContext();
 			new fM購物車().add購物車2(a);
             return Content("ok", "text/plain");
-        }      
+        }
+        public IActionResult addPackageCartAPI(int id,int qty=1)
+        {
+            int mid = 0;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            else return Content("沒登入", "text/plain");
+            SelectShopContext db = new SelectShopContext();
+            TPackageCart p = new TPackageCart();
+            p.MemberId = mid;
+            p.PackageId = id;
+            p.Qty = qty;
+            new fM購物車().add包裝(p);
+            return Content("ok", "text/plain");
+        }
+        /*
+         * async function addPackageCart(id,qty) {
+            var a2 = await fetch(`@Url.Content("~/P/addPackageCartAPI")/${id}/?qty=${qty}`)
+            var b2 = await a2.text()
+            if (b2 == "ok")alert("加入購物車成功")}
+         */
     }
 }
 	
