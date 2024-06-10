@@ -260,10 +260,10 @@
 		const div1 = document.getElementById('idshowpro');
 
         const searchData = {
+			"subcatId": 0,
 			"searchword": "",
 			"page": 1,
-			"pagesSize": 9,
-			"subcatId":0
+			"pagesSize": 9
 		};
 
 		const pagingHandler = page => {
@@ -282,9 +282,13 @@
 				}
 			});
 			const data = await response.json();
+
+			const products = data.Products;
+			const totalPages = data.TotalPages;
+
 			//顯示商品資料
-			const pros = data.map(pro => {
-				const { productName, discount, subCatName, unitPrice, productphoto } = pro;
+			const pros = products.map(pro => {
+				const { productName, discount, subCatName, unitPrice, productphoto, totalPages } = pro;
 				return (`<div class="col-md-4 col-xs-6">
 											<div class="product">
 												<div class="product-img">
@@ -319,30 +323,31 @@
 
 			})
 			div1.innerHTML = pros.join("");
-			console.log(data[0].totalPages);
-			loadPage(data[0].totalPages);
+			console.log(totalPages);
+			loadPage(totalPages);
 		}
-		//顯示分類按鈕
-		(async function loadSubcat() {
-			const urlC = 'https://localhost:7160/api/TSubCategories';
-			const responseC = await fetch(urlC);
-			const dataC = await responseC.json();
-			const liCat = dataC.map(cats => {
-				const { } = cats;
-				return 
-			});
+		// //顯示分類按鈕
+		// (async function loadSubcat() {
+		// 	const urlC = 'https://localhost:7160/api/TSubCategories';
+		// 	const responseC = await fetch(urlC);
+		// 	const dataC = await responseC.json();
+		// 	const liCat = dataC.map(cats => {
+		// 		const { } = cats;
+		// 		return 
+		// 	});
 
 
 		//顯示分頁簡單版
 		const loadPage = (max) => {
 			let liPages = "";
-			for (let i = 1, max = data[0].totalPages; i <= max; i++) {
+			for (let i = 1, max = data.totalPages; i <= max; i++) {
 				liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`
 			}
 			idpageul.innerHTML = liPages;
 		}
 
 		loadPro();
+		loadPage();
 
 		// //B.顯示分頁按鈕-下一頁
 		// const loadMore = (max, start) => {

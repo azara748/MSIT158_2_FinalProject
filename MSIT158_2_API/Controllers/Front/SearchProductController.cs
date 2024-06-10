@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -128,45 +129,43 @@ namespace MSIT158_2_API.Controllers.Front
 		public async Task<ActionResult<IEnumerable<ShowProductDTO>>> GetProductBySearch(SearchProductDTO searchProductDTO)
 		{
 			var query = _context.TProducts
-						.Include(p=>p.SubCategory)
+						.Include(p => p.SubCategory)
+						.Include(p => p.Active)
+						.Include(p => p.Label)
+						.AsQueryable();
 
-			var query2 = from p in _context.TProducts
-						join c in _context.TSubCategories on p.SubCategoryId equals c.SubCategoryId
-						join a in _context.TActives on p.ActiveId equals a.ActiveId
-						join l in _context.TLabels on p.LabelId equals l.LabelId
-						select new ShowProductDTO
-						{
-							ProductName = p.ProductName,
-							SubCategoryId = p.SubCategoryId,
-							SubCatName = c.SubCategoryCname,
-							Stocks = p.Stocks,
-							LanchTime = p.LaunchTime,
-							UnitPrice = p.UnitPrice,
-							Discount = a.Discount,
-							LabelName = l.LabelName,
-							Productphoto = p.ProductPhoto,
-						} into sp
-						select sp;
-				query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
+			query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
 
-				if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-      			{
+			if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+			{
 				query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword));
-				}
+			}
 
-				int totalCount = query.Count();
-				int pageSize = searchProductDTO.pagesSize;
-				int page = searchProductDTO.page;
-				int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-			 //   query = query.Skip((page - 1) * pageSize).Take(pageSize);
-				//var result = query.ToList();
+			int totalCount = query.Count();
+			int pageSize = searchProductDTO.pagesSize;
+			int page = searchProductDTO.page;
+			int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
+			query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
-			// 測試
-			var pagedQuery = query.Skip((page - 1) * pageSize).Take(pageSize);
-			var result = await pagedQuery.ToListAsync();
-			result.ForEach(sp => sp.TotalPages = totalPages);
-			return Ok(result);
+			var result = new List<ShowProductDTO>();
+			
+			foreach (var pro in query) { 
+				ShowProductDTO sp = new ShowProductDTO();
+				sp.ProductName = pro.ProductName;
+				sp.SubCategoryId = pro.SubCategoryId;
+				sp.SubCatName = pro.SubCategory.SubCategoryCname;
+				sp.Stocks = pro.Stocks;
+				sp.LanchTime = pro.LaunchTime;
+				sp.UnitPrice = pro.UnitPrice;
+				sp.Discount = pro.Active.Discount;
+				sp.LabelName = pro.Label.LabelName;
+				sp.Productphoto = pro.ProductPhoto;
+				sp.TotalPages = totalPages;
+	 			result.Add(sp);
+			};
+			return Ok(new { Products = result, TotalPages = totalPages });
+
 		}
 			//LanchTime = !string.IsNullOrEmpty(p.LanchTime) ? p.LanchTime : "新上市",
 		
