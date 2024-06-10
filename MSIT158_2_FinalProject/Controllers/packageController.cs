@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MSIT158_2_FinalProject.Models;
+using MSIT158_2_FinalProject.Models.DTO;
 
 namespace MSIT158_2_FinalProject.Controllers
 {
@@ -14,14 +16,72 @@ namespace MSIT158_2_FinalProject.Controllers
 
         public ActionResult AllPackages()
         {
-            var allPackage = _context.TAllPackages.Select(p =>new { p.PackName,p.Picture,p.Price });
+            var allPackage = _context.TAllPackages.Select(p => new { p.PackageId, p.PackName, p.Picture, p.Price });
             return Json(allPackage);
         }
 
         public ActionResult PackageCategory()
         {
-           var category = _context.TPackageStyles.Select(c=>new {c.PackageStyleId, c.StyleName }).ToList();
+            var category = _context.TPackageStyles.Select(c => new { c.PackageStyleId, c.StyleName }).ToList();
             return Json(category);
+        }
+
+        public ActionResult Material()
+        {
+            var packageMaterial = _context.TPackageMaterials
+             .Select(s => s.MaterialName ).Distinct().ToList();
+    
+
+            return Json(packageMaterial);
+        }
+
+        //[Route("api/materials")]
+        //[HttpGet("{name}")]
+        public ActionResult MaterialColor(string name)
+        {
+            
+            Console.WriteLine($"Searching for material name: {name}");
+
+            var pMaterialColor = _context.TPackageMaterials
+                .Join(_context.TMaterialColors,
+                    ma => ma.ColorId,
+                    co => co.ColorId,
+                    (ma, co) => new pMaColorClass
+                    {
+                        MaterialColorId = ma.ColorId,
+                        MaterialName = ma.MaterialName,
+                        ColorName = co.ColorName,
+                    }).Where(p => p.MaterialName == name).ToList();
+
+            if (pMaterialColor == null )
+            {
+                return NotFound();
+            }
+
+            return Json(pMaterialColor);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<packageMaterialName>> GetPackagesWithMaterialNames()
+        {
+            var packages = _context.TAllPackages
+                .Join(_context.TPackageMaterials,
+                    package => package.MaterialId,
+                    material => material.MaterialId,
+                    (package, material) => new packageMaterialName
+                    {
+                        PackageId = package.PackageId,
+                        MaterialId = package.MaterialId,
+                        MaterialName = material.MaterialName,
+                        Description = package.Description,
+                        Price = package.Price,
+                        Picture = package.Picture,
+                        PackageStyleId = package.PackageStyleId,
+                        PackName = package.PackName,
+                    })
+                .ToList();
+
+            return Ok(packages);
         }
 
         public ActionResult AllPackagesPage()
@@ -57,9 +117,81 @@ namespace MSIT158_2_FinalProject.Controllers
         }
 
         // GET: packageController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult EditPackage(int id)
         {
-            return View();
+            //var package = _context.TAllPackages.Find(id);
+            //if(package ==null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(package);
+
+            var package = _context.TAllPackages
+                .Join(_context.TPackageMaterials,
+                    package => package.MaterialId,
+                    material => material.MaterialId,
+                    (package, material) => new {package, material})
+                .Join(_context.TMaterialColors,
+                    pm =>pm.material.ColorId,
+                    color => color.ColorId,
+                    (pm, color) => new packageMaterialName
+                    {
+                        PackageId = pm.package.PackageId,
+                        MaterialId = pm.package.MaterialId,
+                        MaterialName = pm.material.MaterialName,
+                        MaterialColorId= pm.material.ColorId,
+                        ColorName = color.ColorName,
+                        Description =  pm.package.Description,
+                        Price = pm.package.Price,
+                        Picture = pm.package.Picture,
+                        PackageStyleId = pm.package.PackageStyleId,
+                        PackName = pm.package.PackName,
+                    }).FirstOrDefault(p => p.PackageId == id);
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            return View(package);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePackage(int id, [FromBody] TAllPackage updatedPackage)
+        {
+            if (id != updatedPackage.PackageId)
+            {
+                return BadRequest();
+            }
+
+            var package = await _context.TAllPackages.FindAsync(id);
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            package.PackName = updatedPackage.PackName;
+            package.Price = updatedPackage.Price;
+            package.Description = updatedPackage.Description;
+            package.MaterialId = updatedPackage.MaterialId;
+            package.PackageStyleId = updatedPackage.PackageStyleId;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.TAllPackages.Any(e => e.PackageId == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // POST: packageController/Edit/5

@@ -1,0 +1,137 @@
+﻿@* @model MSIT158_2_FinalProject.Models.TAllPackage  *@
+@model MSIT158_2_FinalProject.Models.DTO.packageMaterialName 
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "EditPackage";
+    Layout = "_Layout_Backstage";
+}
+
+
+<h1>EditPackage</h1>
+<form>
+    <input type="hidden" id="packageId" value="@Model.PackageId" />
+    <div class="form-group">
+        <label for="exampleFormControlInput1">包裝名稱</label>
+        <input type="text" class="form-control" id="packageName" value="@Model.PackName">
+    </div>
+
+    <figure class="figure">
+        <img src="..." class="figure-img img-fluid rounded" alt="...">
+        <figcaption class="figure-caption">A caption for the above image.</figcaption>
+    </figure>
+
+    <div class="form-group">
+        <label for="exampleFormControlFile1">照片上傳</label>
+        <input type="file" class="form-control-file" id="imageUpload" value="@Model.Picture">
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">包裝單價</label>
+        <input type="text" class="form-control" id="packagePrice" value="@Model.Price">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">包裝形式</label>
+        <select class="form-control" id="packageStyle" >
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">包裝材質</label>
+        <select class="form-control" id="packageMaterial" value="@Model.MaterialId">
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">顏色</label>
+        <select class="form-control" id="mColor" value="">
+            <option>請先選取包裝材質</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">包裝介紹</label>
+        <textarea class="form-control" id="description" rows="3" value="@Model.Description"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">儲存</button>
+</form>
+ @section Scripts{
+    <script>
+        const packageName = document.querySelector("#packageName").value;
+        const imageUpload = document.querySelector("#imageUpload");
+        const packagePrice = document.querySelector("#packagePrice").value;
+        const packageStyle = document.querySelector("#packageStyle");
+        const packageMaterial = document.querySelector("#packageMaterial");
+        const mColor = document.querySelector("#mColor");
+        const description = document.querySelector("#description").value;
+        const submit = document.querySelector("#submit");
+
+
+        const packageStyleId = @Model.PackageStyleId;
+        const packageMaterialName = @Html.Raw(JsonConvert.SerializeObject(Model.MaterialName));
+        console.log(packageMaterialName);
+
+        (async () => {
+            const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
+            if (!pCategoryRes.ok) {
+                console.log(`erroe message:${pCategoryRes.status}`)
+                return
+            }
+            const pCategoryDatas = await pCategoryRes.json()
+            console.log("styles:", pCategoryDatas);
+            
+            const seletorPackage = pCategoryDatas.map(s => { 
+                 const isSelectedS = s.packageStyleId == packageStyleId ? 'disabled selected' : '';
+                return `<option id="${s.packageStyleId}" value="${s.styleName}" ${isSelectedS}>${s.styleName}</option>`
+                    })
+            packageStyle.innerHTML = seletorPackage.join("");
+
+
+            const pMaterialRes= await fetch('@Url.Content("~/package/Material")')
+            if (!pMaterialRes.ok) {
+                console.log(`erroe message:${pMaterialRes.status}`)
+                return
+            }
+            const pMaterialDatas = await pMaterialRes.json()
+            console.log("styles:", pMaterialDatas);
+
+            const seletorPackageMaterial = pMaterialDatas.map(s => {
+                const isSelected = s == packageMaterialName ? 'disabled selected' : '';
+                return `<option id="ma${s}" value="${s}" ${isSelected}>${s}</option>`
+            })
+            packageMaterial.innerHTML = seletorPackageMaterial.join("");
+
+
+            const pMaColor = await fetch(`@Url.Content("~/package/MaterialColor?name=")${encodeURIComponent(packageMaterialName)}`);
+            if (!pMaColor.ok) {
+                console.log(`erroe message:${pMaColor.status}`)
+                return
+            }
+            const pMaColorDatas = await pMaColor.json()
+            const seletorPMaColor = pMaColorDatas.map(s => {
+                console.log(s);
+                return `<option id="co${s.materialColorId}" value="${s.colorlName}" >${s.colorName}</option>`
+            })
+            mColor.innerHTML = seletorPMaColor.join("");
+        })()
+
+        // const updatedPackage = {
+        //     packageId: parseInt(packageId),
+        //     packName: String(packName),
+        //     price: parseFloat(price),
+        //     description: String,
+        //     materialId: parseInt(materialId),
+        //     packageStyleId: parseInt(packageStyleId)
+        // };
+        // const response = await fetch(`/api/Packages/${packageId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(updatedPackage)
+        // });
+
+        // if (response.ok) {
+        //     alert('Package updated successfully!');
+        // } else {
+        //     alert('Failed to update package.');
+        // }
+
+    </script> 
+}
