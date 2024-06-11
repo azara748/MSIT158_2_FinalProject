@@ -78,8 +78,10 @@
         <div class="text-center">
             <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" id="buttonSubmit">登入</button>
         </div>
-        <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p>
-        <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></p>
+        <p class="text-sm mt-3 mb-0">沒有帳號? <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></button></p>
+        <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></button>
+        @* <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p> *@
+        @* <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></p> *@
     </form>
 </div>
 @* 登入輸入end *@

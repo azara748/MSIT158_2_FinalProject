@@ -185,7 +185,7 @@ namespace MSIT158_2_API.Controllers
 
         //登入加密&確認密碼
         [HttpPost("CheckPassword")]
-        public async Task<ActionResult<TMember>> PostTMemberCheckPassword([FromBody] CMemberEditDTO p/*, [FromBody] string repassword*/)
+        public async Task<ActionResult<TMember>> PostTMemberCheckPassword([FromBody] CMemberEditDTO p, string repassword)
         {
 
             var is_name = _context.TMembers.Any(x => x.MemberName == p.MemberName);

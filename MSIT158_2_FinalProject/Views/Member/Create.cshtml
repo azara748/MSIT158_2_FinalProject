@@ -62,7 +62,7 @@
             </div> *@
             <div class="form-group">
             <label asp-for="MemberPhoto" class="control-label"></label>
-            <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="MemberPhoto" />
+            <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="MemberPhoto" name="avatar" type="file"/>
             <span asp-validation-for="MemberPhoto" class="text-danger"></span>
             </div>
             @* <div class="form-group">
@@ -81,7 +81,7 @@
 </div>
 
 <div>
-    <a asp-action="List">返回</a>
+    <button type="button" class="btn btn-light"><a asp-action="List">返回</a></button>    
 </div>
 
 @section Scripts {
@@ -107,8 +107,20 @@
                 "EMail": memberEmail,
                 "MemberPhoto": memberPhoto
             };
+           // console.log("test1");
+            //將資料放進FormData
+            const myForm = document.querySelector('#userFrom');
 
+           
 
+           // console.log(myForm);
+            const fromdata = new FormData(myForm);
+            //測試FormData中有無資料
+            for (const pair of fromdata.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+          //  console.log(fromdata);
 
             const url = 'https://localhost:7160/api/TMembers/Create';
             console.log("test2");

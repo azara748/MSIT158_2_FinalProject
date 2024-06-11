@@ -133,11 +133,18 @@ namespace MSIT158_2_API.Controllers
         // PUT: api/TEmployees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTEmployee(int id, CTEmployeeDTO employeeIn)
+        public async Task<IActionResult> PutTEmployee(int id,[FromForm] CTEmployeeDTO employeeIn, IFormFile avatar)
         {
             if (id != employeeIn.EmployeeId)
             {
                 return BadRequest();
+            }
+            //檔案上傳轉成二進位
+            byte[] imgByte = null;
+            using (var memoryStream = new MemoryStream())
+            {
+                avatar.CopyTo(memoryStream);
+                imgByte = memoryStream.ToArray();
             }
             TEmployee employeeDb = _context.TEmployees.FirstOrDefault(x => x.EmployeeId == employeeIn.EmployeeId);
             if (employeeDb != null)
@@ -150,7 +157,7 @@ namespace MSIT158_2_API.Controllers
                 employeeDb.Password = employeeIn.Password;
                 employeeDb.OnBoardDate = employeeIn.OnBoardDate;
                 employeeDb.DepId = employeeIn.DepId;
-                employeeDb.EmployeePhoto = employeeIn.EmployeePhoto;
+                employeeDb.EmployeePhoto = imgByte;
                 await _context.SaveChangesAsync();
             }
 
@@ -180,8 +187,17 @@ namespace MSIT158_2_API.Controllers
         // POST: api/TEmployees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
-        public async Task<ActionResult<TEmployee>> PostTEmployee(CTEmployeeDTO p)
+        public async Task<ActionResult<TEmployee>> PostTEmployee([FromForm] CTEmployeeDTO p, IFormFile avatar)
         {
+            //檔案上傳轉成二進位
+            byte[] imgByte = null;
+            using (var memoryStream = new MemoryStream())
+            {
+                avatar.CopyTo(memoryStream);
+                imgByte = memoryStream.ToArray();
+            }
+
+
             TEmployee e = new TEmployee();
             e.EmployeeId = p.EmployeeId;
             e.EmployeeName = p.EmployeeName;
@@ -190,9 +206,9 @@ namespace MSIT158_2_API.Controllers
             e.Birthday = p.Birthday;
             e.Password = p.Password;
             e.EMail = p.EMail;
-            //e.EmployeePhoto = p.EmployeePhoto;
             e.OnBoardDate = p.OnBoardDate;
             e.DepId = p.DepId;
+            e.EmployeePhoto = imgByte;            
             _context.TEmployees.Add(e);
             await _context.SaveChangesAsync();
 

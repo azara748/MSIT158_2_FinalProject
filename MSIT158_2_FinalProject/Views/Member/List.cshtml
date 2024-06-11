@@ -82,7 +82,7 @@
 </div>
 
 <p>
-    <a asp-action="Create">新增會員</a>
+    <button type="button" class="btn btn-light"><a asp-action="Create">新增會員</a></button>    
 </p>
 
 <div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
@@ -203,14 +203,15 @@
             '姓名',
             '電子信箱',
             '密碼',
-            '加鹽',
-            '照片',
+            '密碼加鹽',
+            '會員照片',
             '地址',
             '手機',
             '生日',
             '性別',
             '點數',
-            '會員等級'
+            '會員等級',
+            '功能按鈕'
         ];
         //顯示隱藏按鈕
         const switchs = switchnames.map((name, index) => {
@@ -269,10 +270,10 @@
                     <td id="idtd10">${sex}</td>
                     <td id="idtd11">${points}</td>
                     <td id="idtd12">${vipid}</td>
-                    <td>
-                    <button type="button" class="btn btn-warning"><a href="/Member/Edit/${memberId}">修改</a></button> |
-                    <a href="/Member/Details/${memberId}">Details</a> |
-                    <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')">刪除</a></button>
+                    <td id="idtd13">
+                    <button type="button" class="btn btn-success"><a href="/Member/Edit/${memberId}">修改</a></button> |
+                    <!-- <a href="/Member/Details/${memberId}">Details</a> | -->
+                    <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')"></a>刪除</button>
                     </td>
                 </tr>    
                         `

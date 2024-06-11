@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "FacebookAuth";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Auth App</title>
+</head>
+<body>
+    <button id="signInButton">Create Account / Sign In Facebook</button>
+    <button id="signOutButton">Sign Out</button>
+
+    <div id="message">
+        <p>You have signed in as <span id="userName"></span> with the email <span id="userEmail"></span> </p>
+    </div>
+
+
+</body>
+</html>
+
+@section Scripts {
+    <script type="module">
+        // 從所需的 SDK 中匯入你需要的函式
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // TODO: 添加你想使用的 Firebase 產品的 SDK
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+
+
+        import { getAuth, FacebookAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+        // 在這裡添加你自己的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+            authDomain: "fir-t1-a5947.firebaseapp.com",
+            projectId: "fir-t1-a5947",
+            storageBucket: "fir-t1-a5947.appspot.com",
+            messagingSenderId: "617649416210",
+            appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+        };
+
+        //================================================
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const provider = new FacebookAuthProvider()
+
+        const signInButton = document.getElementById("signInButton");
+        const signOutButton = document.getElementById("signOutButton");
+        const message = document.getElementById("message");
+        const userName = document.getElementById("userName");
+        const userEmail = document.getElementById("userEmail");
+
+        signOutButton.style.display = "none";
+        message.style.display = "none";
+
+        const userSignIn = async () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user
+                    console.log('test1');
+                    console.log(user);
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message
+                })
+        }
+
+        const userSignOut = async () => {
+            signOut(auth).then(() => {
+                alert("You have signed out successfully!");
+            }).catch((error) => { })
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                signOutButton.style.display = "block";
+                message.style.display = "block";
+                console.log('test2');
+                userName.innerHTML = user.displayName;
+                userEmail.innerHTML = user.email
+            } else {
+                signOutButton.style.display = "none";
+                message.style.display = "none";
+            }
+        })
+
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+    </script>
+}
+

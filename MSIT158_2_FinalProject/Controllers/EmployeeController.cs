@@ -45,5 +45,14 @@ namespace MSIT158_2_FinalProject.Controllers
             }
             return RedirectToAction("List");
         }
+        public IActionResult Details(int id) 
+        {
+            if (id == null)
+                return RedirectToAction("List");
+            TEmployee r = _context.TEmployees.FirstOrDefault(x => x.EmployeeId == id);
+            if (r == null)
+                return RedirectToAction("List");
+            return View(r);
+        }
     }
 }

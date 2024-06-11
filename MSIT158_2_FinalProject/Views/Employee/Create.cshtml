@@ -11,8 +11,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+        <form asp-action="Create" id="userForm" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">
                 <label asp-for="EmployeeName" class="control-label"></label>
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="EmployeePhoto" class="control-label"></label>
-                <input asp-for="EmployeePhoto" class="form-control" id="InputEmployeePhoto" name="EmployeePhoto" />
+                <input asp-for="EmployeePhoto" class="form-control" id="InputEmployeePhoto" name="avatar" type="file" />
                 <span asp-validation-for="EmployeePhoto" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -68,7 +68,7 @@
 </div>
 
 <div>
-    <a asp-action="List">返回</a>
+    <button type="button" class="btn btn-light"><a asp-action="List">返回</a></button>
 </div>
 
 @section Scripts {
@@ -87,37 +87,49 @@
             const employeePhoto = document.querySelector('#InputEmployeePhoto').value;
             const employeeDate = document.querySelector('#InputOnBoardDate').value;
             const employeeDepId = document.querySelector('#InputDepId').value;
-            if (employeeName && employeeEMail && employeePassword) {
-                const employeeData = {
-                    "EmployeeName": employeeName,
-                    "Cellphone": employeephone,
-                    "Address": employeeAddress,
-                    "Birthday": employeeBirthday,
-                    "Password": employeePassword,
-                    "EMail": employeeEMail,
-                    // "EmployeePhoto": employeePhoto,
-                    "OnBoardDate": employeeDate,
-                    "DepId": employeeDepId
-                };
 
+            // const employeeData = {
+            //     "EmployeeName": employeeName,
+            //     "Cellphone": employeephone,
+            //     "Address": employeeAddress,
+            //     "Birthday": employeeBirthday,
+            //     "Password": employeePassword,
+            //     "EMail": employeeEMail,
+            //     // "EmployeePhoto": employeePhoto,
+            //     "OnBoardDate": employeeDate,
+            //     "DepId": employeeDepId
+            // };
+
+
+            //將資料放進FormData
+            const myForm = document.querySelector('#userForm');
+            const fromdata = new FormData(myForm);
+            //測試FormData中有無資料
+            for (const pair of fromdata.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+            if (employeeName && employeeEMail && employeePassword) {
                 const url = 'https://localhost:7160/api/TEmployees/Create';
                 console.log("test1");
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: JSON.stringify(employeeData),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: fromdata
                 });
+                console.log("test2");
                 const data = await response.text();
                 const json = JSON.parse(data);
                 const message = json.message;
                 const Jname = json.e.employeeName;
                 console.log(Jname);
                 divResult.innerHTML = `<p>員工姓名：${Jname}/${message}</p>`;
-                // 等待3秒後自動轉跳
-                setTimeout(() => {
-                    window.location.href = "/Employee/List";
-                }, 3000);
-            }
+                if (Jname != null) {
+                    // 等待3秒後自動轉跳
+                    setTimeout(() => {
+                        window.location.href = "/Employee/List";
+                    }, 3000);
+                }
+            }           
         })
     </script>
    @*  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@

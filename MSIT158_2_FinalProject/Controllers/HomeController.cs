@@ -84,6 +84,17 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
+        //google 第三方登入(API)
+        public IActionResult GoogleAuth()
+        {
+            return View();
+        }
+        //FB 第三方登入(API)
+        public IActionResult FacebookAuth()
+        {
+            return View();
+        }
+
 
 
         public IActionResult Privacy()

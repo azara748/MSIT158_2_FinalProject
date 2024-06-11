@@ -62,7 +62,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MemberPhoto" class="control-label"></label>
-                <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="MemberPhoto" />
+                <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="avatar" type="file" />
                 <span asp-validation-for="MemberPhoto" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -79,7 +79,7 @@
 </div>
 
 <div>
-    <a asp-action="List">返回</a>
+    <button type="button" class="btn btn-light"><a asp-action="List">返回</a></button>
 </div>
 
 @section Scripts {

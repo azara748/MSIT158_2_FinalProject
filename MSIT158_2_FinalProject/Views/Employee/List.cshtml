@@ -32,7 +32,7 @@
 <div class="row mb-3" id="div2">
 </div>
 <p>
-    <a asp-action="Create">新增員工</a>
+    <button type="button" class="btn btn-light"><a asp-action="Create">新增員工</a></button>    
 </p>
 
 <div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
@@ -144,8 +144,9 @@
             '密碼',
             '電子信箱',
             '員工照片',
-            '上班日',
-            '主管序號'
+            '到職日',
+            '部門序號',
+            '功能按鈕'
         ];
         //顯示隱藏按鈕
         const switchs = switchnames.map((name, index) => {
@@ -202,9 +203,9 @@
                             <td id="idtd8">${employeePhoto ? `<img style="width: 100px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片"/>` : '沒有可用的圖片'}</td>
                             <td id="idtd9">${onBoardDate}</td>
                             <td id="idtd10">${depId}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning"><a href="/Employee/Edit/${employeeId}">修改</a></button> |
-                            <a href="/Member/Details/${employeeId}">Details</a> |
+                        <td id="idtd11">
+                            <button type="button" class="btn btn-success"><a href="/Employee/Edit/${employeeId}">修改</a></button> |
+                            <!-- <a href="/Employee/Details/${employeeId}">Details</a> | -->
                             <button type="button" class="btn btn-warning" value="${employeeId}" id="iddelete_${employeeId}" onclick="deleteEmployee(${employeeId})">刪除</button>
                         </td>
                     </tr>
