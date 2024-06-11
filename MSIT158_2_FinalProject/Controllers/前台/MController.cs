@@ -28,17 +28,17 @@ namespace MSIT158_2_FinalProject.Controllers.前台
        join pro in db.TProducts
        on p.ProductId equals pro.ProductId
        where o.MemberId == mid
-            select new
+       select new
        {
-                OrderId = o.OrderId,
-                OrderDate = o.OrderDate,
-                StatusId=o.StatusId,
-                Reviewed=o.Reviewed,
-                Qty=p.Qty,
-           UnitPrice = pro.UnitPrice,         
+           OrderId = o.OrderId,
+           OrderDate = o.OrderDate,
+           StatusId = o.StatusId,
+           Reviewed = o.Reviewed,
+           Qty = p.Qty,
+           UnitPrice = pro.UnitPrice,
            Photo = pro.ProductPhoto,
-                Photo2="",
-                Name = pro.ProductName,         
+           Photo2 = "",
+           Name = pro.ProductName,
        };
             var v2 =
           from o in db.TOrders
@@ -46,7 +46,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
         on o.OrderId equals pkw.OrderId
           join apk in db.TAllPackages
         on pkw.PackageId equals apk.PackageId
-          where o.MemberId== mid
+          where o.MemberId == mid
           select new
           {
               OrderId = o.OrderId,
@@ -57,7 +57,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
               UnitPrice = apk.Price,
               Photo = (byte[])null,
               Photo2 = apk.Picture,
-              Name = apk.PackName,           
+              Name = apk.PackName,
           };
 
             var v = v1.Union(v2)
@@ -73,8 +73,8 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                name = g.FirstOrDefault().Name,
                圖片 = g.FirstOrDefault().Photo,
                圖片2 = g.FirstOrDefault().Photo2,
-           }).OrderByDescending(x=>x.OrderDate).ToList();
-          
+           }).OrderByDescending(x => x.OrderDate).ToList();
+
 
 
 
@@ -137,7 +137,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             StatusId = o.StatusId,
             Reviewed = o.Reviewed,
             Qty = p.Qty,
-            UnitPrice = pro.UnitPrice,     
+            UnitPrice = pro.UnitPrice,
         };
             var v2 =
           from o in db.TOrders
@@ -153,7 +153,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
               StatusId = o.StatusId,
               Reviewed = o.Reviewed,
               Qty = pkw.PackQty,
-              UnitPrice = apk.Price,            
+              UnitPrice = apk.Price,
           };
 
             var v = v1.Union(v2)
@@ -165,10 +165,14 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                g.Key.StatusId,
                g.Key.Reviewed,
                總數 = g.Sum(x => x.Qty),
-               總價 = g.Sum(x => x.Qty * x.UnitPrice),            
+               總價 = g.Sum(x => x.Qty * x.UnitPrice),
            }).ToList();
 
             ViewBag.o = v.FirstOrDefault();
+            return View();
+        }
+        public IActionResult Reviewepage()
+        {
             return View();
         }
     }
