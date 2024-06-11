@@ -6,8 +6,7 @@
 		public string? searchword { get; set; }
 		public int page { get; set; } = 1;
 		public int pagesSize { get; set; } = 9;
-		//public string? sortBy { get; set; }
-		//public string? sortType { get; set; }
-		public List<ShowProductDTO> showProducts { get; set; }
+		public string? sortBy { get; set; }
+		public string? sortType { get; set; }
 	}
 }

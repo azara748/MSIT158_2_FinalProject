@@ -160,7 +160,7 @@
 					<h3 class="aside-title">Top selling</h3>
 					<div class="product-widget">
 						<div class="product-img">
-							<img src="./img/product01.png" alt="">
+@* 							<img src="./img/product01.png" alt=""> *@
 						</div>
 						<div class="product-body">
 							<p class="product-category">Category</p>
@@ -171,7 +171,7 @@
 
 					<div class="product-widget">
 						<div class="product-img">
-							<img src="./img/product02.png" alt="">
+@* 							<img src="./img/product02.png" alt=""> *@
 						</div>
 						<div class="product-body">
 							<p class="product-category">Category</p>
@@ -182,7 +182,7 @@
 
 					<div class="product-widget">
 						<div class="product-img">
-							<img src="./img/product03.png" alt="">
+@* 							<img src="./img/product03.png" alt=""> *@
 						</div>
 						<div class="product-body">
 							<p class="product-category">Category</p>
@@ -200,25 +200,39 @@
 				<div class="store-filter clearfix">
 					<div class="store-sort">
 						<label>
-							商品排序:
-							<select class="input-select">
-								<option value="1">金額低到高</option>
-								<option value="2">金額高到低</option>
+							<strong>
+								商品排序:
+								</strong>
+							<select class="input-select" id="idshowsort">
+								<option value="UnitPrice|asc">金額低到高</option>
+								<option value="UnitPrice|desc">金額高到低</option>
+								<option value="bestsale|asc">熱銷度低到高</option>
+								<option value="bestsale|desc">熱銷度高到低</option>
 							</select>
 						</label>
-
 						<label>
+							<strong>
 							顯示商品數:
-							<select class="input-select">
-								<option value="18">18</option>
-								<option value="27">27</option>
+							</strong>
+							<select class="input-select" id="idshowhowmanypro">
+								<option value="9" selected>每頁9項商品</option>
+								<option value="18">每頁18項商品</option>
+								<option value="27">每頁27項商品</option>
 							</select>
+						</label>
+						<label>
+							<strong>
+								搜尋結果:
+								</strong>
+									共&nbsp;
+							<span id="searchresult" style="color:darkred"></span>&nbsp;項商品&nbsp;&nbsp;
+							<strong>
+								搜尋條件:
+								</strong>
+							<span id="searchcriteria" style="color:darkred"></span>
 						</label>
 					</div>
-					<ul class="store-grid">
-						<li class="active"><i class="fa fa-th"></i></li>
-						<li><a href="#"><i class="fa fa-th-list"></i></a></li>
-					</ul>
+
 				</div>
 				<!-- /store top filter -->
 				<!-- 搜尋結果區 -->
@@ -227,7 +241,6 @@
 				<!-- /store products -->
 				<!-- 分頁按鈕 -->
 				<div class="store-filter clearfix">
-					<span class="store-qty">Showing 20-100 products</span>
 					<ul class="store-pagination" id="idpageul">
 @* 						<li class="active">1</li>
 						<li><a href="#">2</a></li>
@@ -256,22 +269,32 @@
 @section Scripts
 {
     <script>
+		//分頁按鈕
 		const idpageul = document.getElementById("idpageul");
+		//商品展示區
 		const div1 = document.getElementById('idshowpro');
+		//搜尋框&按鈕
+		const form = document.getElementById('idform');
+		const inpSearch = document.getElementById('idinputsearch');
+		const searchButton = document.getElementById('idsearchButton');
+		//顯示數量
+		const showhowmanypro = document.getElementById('idshowhowmanypro');
+		//顯示排序
+		const showsort = document.getElementById('idshowsort');
+		//搜尋結果文字顯示
+		const searchresult = document.getElementById('searchresult');
+		const searchcriteria = document.getElementById('searchcriteria');
+
 
         const searchData = {
 			"subcatId": 0,
 			"searchword": "",
 			"page": 1,
-			"pagesSize": 9
+			"pagesSize": 9,
+			"sortBy": "",
+			"sortType": "asc"
 		};
-
-		const pagingHandler = page => {
-			searchData.page = page;
-			loadPro();
-		}
-
-
+		//顯示商品
 		const loadPro = async () => {
 			const url = 'https://localhost:7160/api/SearchProduct';
 			const response = await fetch(url, {
@@ -282,12 +305,7 @@
 				}
 			});
 			const data = await response.json();
-
-			const products = data.Products;
-			const totalPages = data.TotalPages;
-
-			//顯示商品資料
-			const pros = products.map(pro => {
+			const pros = data.showProducts.map(pro => {
 				const { productName, discount, subCatName, unitPrice, productphoto, totalPages } = pro;
 				return (`<div class="col-md-4 col-xs-6">
 											<div class="product">
@@ -323,77 +341,36 @@
 
 			})
 			div1.innerHTML = pros.join("");
-			console.log(totalPages);
-			loadPage(totalPages);
+			searchresult.textContent = `${data.totalCount}`;
+			searchcriteria.textContent = `關鍵字:${searchData.searchword}`;
 		}
-		// //顯示分類按鈕
-		// (async function loadSubcat() {
-		// 	const urlC = 'https://localhost:7160/api/TSubCategories';
-		// 	const responseC = await fetch(urlC);
-		// 	const dataC = await responseC.json();
-		// 	const liCat = dataC.map(cats => {
-		// 		const { } = cats;
-		// 		return 
-		// 	});
-
-
-		//顯示分頁簡單版
-		const loadPage = (max) => {
-			let liPages = "";
-			for (let i = 1, max = data.totalPages; i <= max; i++) {
-				liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`
-			}
-			idpageul.innerHTML = liPages;
-		}
-
+		
 		loadPro();
-		loadPage();
+		function ifChange() {
+			searchData.searchword = inpSearch.value;
+			searchData.pagesSize = showhowmanypro.value;
+			const selectedsort = showsort.value.split('|');
+			searchData.sortBy = selectedsort[0];
+			searchData.sortType = selectedsort[1];
+			loadPro();
+		 }
+		//D.搜尋
+		// searchButton.addEventListener('click', ifChange);
+		// inpSearch.addEventListener('keydown', event => {
+		// 	if (event.keyCode === 13) {
+		// 		ifChange();
+		// 	}
+		// })
 
-		// //B.顯示分頁按鈕-下一頁
-		// const loadMore = (max, start) => {
-		// 	//顯示更多分頁按鈕 (start 至 start+7)
-		// 	let liPages = "";
-		// 	let whichpage = Math.ceil(max / 8);
-		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
-		// 	liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
-		// 	for (let i = start; i < end; i++) {
-		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
-		// 	}
-		// 	if (end <= max) {
-		// 		liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
-		// 	}
-		// 	ulPaging.innerHTML = liPages;
-		// }
-		// //B.顯示分頁按鈕-回上頁
-		// const goBack = (max, start) => {
-		// 	let liPages = "";
-		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
-		// 	if (start > 1) {
-		// 		liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
-		// 	}
-		// 	for (let i = start; i < end; i++) {
-		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
-		// 	}
-		// 	liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
-		// 	ulPaging.innerHTML = liPages;
-		// }
+		//A.顯示數量
+		showhowmanypro.addEventListener('change', ifChange);
+		showsort.addEventListener('change', ifChange);
 
-		//顯示分頁按鈕
-		// const loadPage = (max) => {
-		// 	let liPages = "";
-		// 	let whichpage = Math.ceil(max / 8);
-		// 	if (whichpage > 1) {
-		// 		for (let i = 1; i < 9; i++) {
-		// 			liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
-		// 		}
-		// 		liPages += `<li onclick="loadMore(${max},9)">></a></li>`;
-		// 	}
-		// 	else {
-		// 		for (let i = 1; i <= max; i++) {
-		// 			liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`;
-		// 		}
-		// 	}
-		// 	ulPaging.innerHTML = liPages;
-		// }
+		// 添加事件监听器来捕获表单的提交事件
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
+			ifChange();
+		});
+
    </script>
 }

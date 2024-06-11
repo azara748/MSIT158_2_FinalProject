@@ -69,15 +69,10 @@
 					<!-- /LOGO -->
 					<!-- SEARCH BAR -->
 					<div class="col-md-6">
-						<div class="header-search">
-							<form>
-								<select class="input-select">
-									<option value="0">全部</option>
-									<option value="1">Category 01</option>
-									<option value="1">Category 02</option>
-								</select>
-								<input class="input" placeholder="好物搜尋...">
-								<button class="search-btn">搜尋</button>
+						<div class="header-search" id="idform">
+							<form id="idform">
+								<input class="input" id="idinputsearch" placeholder="好物搜尋...">
+								<button class="search-btn" id="idsearchButton">搜尋</button>
 							</form>
 						</div>
 					</div>
@@ -105,7 +100,7 @@
 									<div class="cart-list">
 										<div class="product-widget">
 											<div class="product-img">
-												<img src="./img/product01.png" alt="">
+@* 												<img src="./img/product01.png" alt=""> *@
 											</div>
 											<div class="product-body">
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
@@ -116,7 +111,7 @@
 
 										<div class="product-widget">
 											<div class="product-img">
-												<img src="./img/product02.png" alt="">
+@* 												<img src="./img/product02.png" alt=""> *@
 											</div>
 											<div class="product-body">
 												<h3 class="product-name"><a href="#">product name goes here</a></h3>
@@ -281,7 +276,7 @@
 								<li><a href="#">View Cart</a></li>
 								<li><a href="#">Wishlist</a></li>
 								<li><a href="#">Track My Order</a></li>
-									<li><a asp-area="" asp-controller="Powerbi" asp-action="Index">進入後台</a></li>
+									<li><a asp-area="" asp-controller="Product" asp-action="List">進入後台</a></li>
 							</ul>
 						</div>
 					</div>
