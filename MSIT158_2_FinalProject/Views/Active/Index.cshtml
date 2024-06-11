@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<title>活動投票頁面</title>
+
+<h1>請選擇你喜愛的選項</h1>
+<div id="options" class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100">
+            <img src="#" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <label><input type="radio" name="vote" value="option1" /></label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="#" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a short card.</p>
+            </div>
+            <label><input type="radio" name="vote" value="option2" /></label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="#" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <label><input type="radio" name="vote" value="option3" /></label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="#" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <label><input type="radio" name="vote" value="option4" /></label>
+        </div>
+    </div>
+</div>
+
+<button onclick="vote()">投票</button>
+
+<h2>投票結果:</h2>
+<div id="result">
+    <p><span id="count1">0</span></p>
+    <p><span id="count2">0</span></p>
+    <p><span id="count3">0</span></p>
+    <p><span id="count4">0</span></p>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        function vote() { 
+            var selectedoption = document.querySelector('input[name="vote]:checked').value;
+            var countElement = document.getElementById("count" + selectedoption);
+            var count = parseInt(countElement.innerHTML);
+            countElement.innerHTML = count + 1;
+        }
+    </script>
+}
+@section Styles
+{
+    <style>
+
+    </style>
+}
