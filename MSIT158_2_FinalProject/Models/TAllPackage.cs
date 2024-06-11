@@ -13,6 +13,8 @@ public partial class TAllPackage
 
     public string? Picture { get; set; }
 
+    public byte[]? PictureData { get; set; }
+
     public int? PackageStyleId { get; set; }
 
     public int? TypeId { get; set; }

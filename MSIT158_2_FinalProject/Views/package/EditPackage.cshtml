@@ -8,60 +8,86 @@
 
 
 <h1>EditPackage</h1>
-<form>
-    <input type="hidden" id="packageId" value="@Model.PackageId" />
+<form id="updatePackageForm" enctype="multipart/form-data">
+    <input type="hidden" id="packageId" value="@Model.PackageId" name="PackageId" />
     <div class="form-group">
-        <label for="exampleFormControlInput1">包裝名稱</label>
-        <input type="text" class="form-control" id="packageName" value="@Model.PackName">
+        <label for="packageName">包裝名稱</label>
+        <input type="text" class="form-control" id="packageName" value="@Model.PackName" name="PackName">
     </div>
     <div class="form-group">
-        <label for="exampleFormControlFile1">照片上傳</label>
-        <input type="file" class="form-control-file" id="imageUpload" value="@Model.Picture">
+        <label for="imageUpload">照片上傳</label>
+        <input type="file" class="form-control-file" id="imageUpload" value="@Model.Picture" name="avatar">
+        <img src="~/assets/img/packageimages/@Model.Picture" class="figure-img img-fluid rounded" alt="@Model.Picture" id="imagePreview">
     </div>
     <div class="form-group">
-        <label for="exampleFormControlInput1">包裝單價</label>
-        <input type="text" class="form-control" id="packagePrice" value="@Model.Price">
+        <label for="packagePrice">包裝單價</label>
+        <input type="text" class="form-control" id="packagePrice" value="@Model.Price" name="Price">
     </div>
 
     <div class="form-group">
-        <label for="exampleFormControlSelect1">包裝形式</label>
-        <select class="form-control" id="packageStyle" >
+        <label for="packageStyle">包裝形式</label>
+        <select class="form-control" id="packageStyle" name="PackageStyleId">
         </select>
     </div>
     <div class="form-group">
-        <label for="exampleFormControlSelect1">包裝材質</label>
-        <select class="form-control" id="packageMaterial" value="@Model.MaterialId">
+        <label for="packageMaterial">包裝材質</label>
+        <select class="form-control" id="packageMaterial" value="@Model.MaterialId" name="MaterialId">
         </select>
     </div>
-    <div class="form-group">
+  @*   <div class="form-group">
         <label for="exampleFormControlSelect1">顏色</label>
         <select class="form-control" id="mColor" value="">
             <option>請先選取包裝材質</option>
         </select>
-    </div>
+    </div> *@
     <div class="form-group">
-        <label for="exampleFormControlTextarea1">包裝介紹</label>
-        <textarea class="form-control" id="description" rows="3" value="@Model.Description"></textarea>
+        <label for="description">包裝介紹</label>
+        <textarea class="form-control" id="description" rows="3" value="@Model.Description" name="Description"></textarea>
     </div>
-    <button class="btn btn-primary" type="submit">儲存</button>
+    <button class="btn btn-primary" type="button" id="editForm">儲存</button>
 </form>
  @section Scripts{
     <script>
-        const packageName = document.querySelector("#packageName").value;
+        const packageName = document.querySelector("#packageName");
         const imageUpload = document.querySelector("#imageUpload");
-        const packagePrice = document.querySelector("#packagePrice").value;
+        const imagePreview = document.querySelector("#imagePreview");
+        const packagePrice = document.querySelector("#packagePrice");
         const packageStyle = document.querySelector("#packageStyle");
         const packageMaterial = document.querySelector("#packageMaterial");
         const mColor = document.querySelector("#mColor");
-        const description = document.querySelector("#description").value;
-        const submit = document.querySelector("#submit");
+        const description = document.querySelector("#description");
+        const packageId = document.querySelector("#packageId").value;
+        const updatePackageForm = document.querySelector("#updatePackageForm");
+        console.log(packageId)
 
 
         const packageStyleId = @Model.PackageStyleId;
         const packageMaterialName = @Html.Raw(JsonConvert.SerializeObject(Model.MaterialName));
         console.log(packageMaterialName);
+        const p = @Html.Raw(JsonConvert.SerializeObject(Model.Picture));
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentImagePath = `@Url.Content("~/assets/img/packageimages/")${p}`;
+            if (p) {
+                imagePreview.src = currentImagePath;
+                imagePreview.style.display = "block";
+            }
+        });
+
+        imageUpload.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
         (async () => {
+
             const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
             if (!pCategoryRes.ok) {
                 console.log(`erroe message:${pCategoryRes.status}`)
@@ -72,7 +98,7 @@
             
             const seletorPackage = pCategoryDatas.map(s => { 
                  const isSelectedS = s.packageStyleId == packageStyleId ? 'disabled selected' : '';
-                return `<option id="${s.packageStyleId}" value="${s.styleName}" ${isSelectedS}>${s.styleName}</option>`
+                return `<option id="s${s.packageStyleId}" value="${s.packageStyleId}" ${isSelectedS}>${s.styleName}</option>`
                     })
             packageStyle.innerHTML = seletorPackage.join("");
 
@@ -86,46 +112,84 @@
             console.log("styles:", pMaterialDatas);
 
             const seletorPackageMaterial = pMaterialDatas.map(s => {
-                const isSelected = s == packageMaterialName ? 'disabled selected' : '';
-                return `<option id="ma${s}" value="${s}" ${isSelected}>${s}</option>`
+                console.log(s);
+                const isSelected = s.materialName == packageMaterialName ? 'disabled selected' : '';
+                return `<option id="ma${s}" value="${s.materialId}" ${isSelected}>${s.materialName}</option>`
             })
             packageMaterial.innerHTML = seletorPackageMaterial.join("");
 
 
-            const pMaColor = await fetch(`@Url.Content("~/package/MaterialColor?name=")${encodeURIComponent(packageMaterialName)}`);
-            if (!pMaColor.ok) {
-                console.log(`erroe message:${pMaColor.status}`)
-                return
-            }
-            const pMaColorDatas = await pMaColor.json()
-            const seletorPMaColor = pMaColorDatas.map(s => {
-                console.log(s);
-                return `<option id="co${s.materialColorId}" value="${s.colorlName}" >${s.colorName}</option>`
-            })
-            mColor.innerHTML = seletorPMaColor.join("");
+            // const pMaColor = await fetch(`@Url.Content("~/package/MaterialColor?name=")${encodeURIComponent(packageMaterialName)}`);
+            // if (!pMaColor.ok) {
+            //     console.log(`erroe message:${pMaColor.status}`)
+            //     return
+            // }
+            // const pMaColorDatas = await pMaColor.json()
+            // const seletorPMaColor = pMaColorDatas.map(s => {
+            //     console.log(s);
+            //     // const isSelectedC = s.materialColorId == 
+            //     return `<option id="co${s.materialColorId}" value="${s.colorlName}" >${s.colorName}${s.materialColorId}</option>`
+            // })
+            // mColor.innerHTML = seletorPMaColor.join("");
         })()
 
-        // const updatedPackage = {
-        //     packageId: parseInt(packageId),
-        //     packName: String(packName),
-        //     price: parseFloat(price),
-        //     description: String,
-        //     materialId: parseInt(materialId),
-        //     packageStyleId: parseInt(packageStyleId)
-        // };
-        // const response = await fetch(`/api/Packages/${packageId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(updatedPackage)
+        // document.getElementById('editForm').addEventListener('click', async(e) => {
+        //     e.preventDefault();
+
+
+            
+        //     const packName = packageName.value;
+        //     const price = packagePrice.value;
+        //     const updescription = description.value;
+        //     const materialId = packageMaterial.value;
+        //     const packageStyleId = packageStyle.value;
+        //     const picture = imageUpload.value;
+
+        //     console.log(packageId, packName, price, updescription, materialId, packageStyleId);
+
+        //     const updatedPackage = {
+        //         PackageId:parseInt(packageId),
+        //         PackName: packName,
+        //         Price: parseInt(price),
+        //         Description: updescription,
+        //         MaterialId: parseInt(materialId),
+        //         PackageStyleId: parseInt(packageStyleId),
+        //         Picture: picture
+        //     };
+        //     console.log(updatedPackage);
+        //     const response = await fetch(`@Url.Content("~/package/UpdatePackage?id=")${encodeURIComponent(packageId)}`, {
+        //         method: 'PUT',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(updatedPackage)
+        //     });
+
+        //     if (response.ok) {
+        //         alert('Package updated successfully!');
+        //     } else {
+        //         alert('Failed to update package.');
+        //     }
         // });
 
-        // if (response.ok) {
-        //     alert('Package updated successfully!');
-        // } else {
-        //     alert('Failed to update package.');
-        // }
+        document.getElementById('editForm').addEventListener('click', async function (event) {
+            event.preventDefault();
+            console.log("QQ");
+            const formData = new FormData(updatePackageForm);
 
+            const response = await fetch(`@Url.Content("~/package/MaterialColor?name=")${encodeURIComponent(packageMaterialName)}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            const data = await response.text();
+            console.log(data);
+
+            if (response.ok) {
+                console.log('Package updated successfully');
+            } else {
+                console.error('Failed to update package', response.statusText);
+            }
+        });
     </script> 
 }

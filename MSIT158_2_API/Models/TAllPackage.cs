@@ -13,6 +13,8 @@ public partial class TAllPackage
 
     public string? Picture { get; set; }
 
+    public byte[]? PictureData { get; set; }
+
     public int? PackageStyleId { get; set; }
 
     public int? TypeId { get; set; }
@@ -26,6 +28,8 @@ public partial class TAllPackage
     public virtual TPackageMaterial? Material { get; set; }
 
     public virtual TPackageStyle? PackageStyle { get; set; }
+
+    public virtual ICollection<TPackageCart> TPackageCarts { get; set; } = new List<TPackageCart>();
 
     public virtual ICollection<TPackageWayDetail> TPackageWayDetails { get; set; } = new List<TPackageWayDetail>();
 }

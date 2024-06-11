@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using MSIT158_2_FinalProject.Models;
 using MSIT158_2_FinalProject.Models.DTO;
 
@@ -9,9 +10,11 @@ namespace MSIT158_2_FinalProject.Controllers
     public class packageController : Controller
     {
         private readonly SelectShopContext _context;
-        public packageController(SelectShopContext context)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public packageController(SelectShopContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         public ActionResult AllPackages()
@@ -28,11 +31,22 @@ namespace MSIT158_2_FinalProject.Controllers
 
         public ActionResult Material()
         {
-            var packageMaterial = _context.TPackageMaterials
-             .Select(s => s.MaterialName ).Distinct().ToList();
-    
+            var allMaterials = _context.TPackageMaterials
+       .Select(s => new { s.MaterialId, s.MaterialName })
+       .ToList();  // 获取所有数据
 
-            return Json(packageMaterial);
+            var uniqueMaterials = allMaterials
+                .GroupBy(s => s.MaterialName)
+                .Select(g => g.First())
+                .ToList();
+
+            if (!uniqueMaterials.Any())
+            {
+                return NotFound();
+            }
+
+            return Json(uniqueMaterials);
+
         }
 
         //[Route("api/materials")]
@@ -155,8 +169,8 @@ namespace MSIT158_2_FinalProject.Controllers
             return View(package);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePackage(int id, [FromBody] TAllPackage updatedPackage)
+        //[HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePackage(int id, [FromBody] TAllPackage updatedPackage, IFormFile? avatar)
         {
             if (id != updatedPackage.PackageId)
             {
@@ -174,6 +188,37 @@ namespace MSIT158_2_FinalProject.Controllers
             package.Description = updatedPackage.Description;
             package.MaterialId = updatedPackage.MaterialId;
             package.PackageStyleId = updatedPackage.PackageStyleId;
+            package.Picture = updatedPackage.Picture;
+
+            if (avatar != null)
+            {
+                // 设置文件上传路径为 wwwroot/assets/img/packageImages
+                string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "assets", "img", "packageImages", avatar.FileName);
+
+                // 确保目录存在
+                var directory = Path.GetDirectoryName(uploadPath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await avatar.CopyToAsync(fileStream);
+                }
+
+                //檔案上傳轉成二進位
+                byte[]? imgByte = null;
+                using (var memoryStream = new MemoryStream())
+                {
+                    avatar.CopyTo(memoryStream);
+                    imgByte = memoryStream.ToArray();
+                }
+
+                // 直接将文件名称赋值给 updatedPackage.Picture
+                package.Picture = avatar.FileName;
+                package.PictureData = imgByte;
+            }
 
             try
             {
