@@ -38,7 +38,7 @@
         </a>
     </div>
     <div class="col-3 me-auto px-1">
-        <a class="btn btn-outline-light w-100" href="javascript:;">
+        @* <button class="btn btn-outline-light w-100" id="signInButton">
             <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g transform="translate(3.000000, 2.000000)" fill-rule="nonzero">
@@ -49,7 +49,8 @@
                     </g>
                 </g>
             </svg>
-        </a>
+        </button> *@
+        <button id="GButton">Google/ Sign In</button>
     </div>
     <div class="mt-2 position-relative text-center">
         <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3">
@@ -88,7 +89,69 @@
 
 
 @section Scripts{
-    <script>
+    <script type="module">
+        // 從所需的 SDK 中匯入你需要的函式/Google 登入
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // TODO: 添加你想使用的 Firebase 產品的 SDK
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+
+
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        
+        // 在這裡添加你自己的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+            authDomain: "fir-t1-a5947.firebaseapp.com",
+            projectId: "fir-t1-a5947",
+            storageBucket: "fir-t1-a5947.appspot.com",
+            messagingSenderId: "617649416210",
+            appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+        };
+
+        //================================================
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider()
+
+        const signInGoogleButton = document.getElementById("GButton");
+        //const signOutButton = document.getElementById("signOutButton");
+        //const message = document.getElementById("message");
+        //const userName = document.getElementById("userName");
+        //const userEmail = document.getElementById("userEmail");
+
+        //signOutButton.style.display = "none";
+        //message.style.display = "none";
+
+        const userSignInGoogle = async () => {
+            signInWithPopup(auth, provider)
+                .then((result) =>   {
+                    const user = result.user
+                    console.log('test1');
+                    console.log(user);
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message
+                })
+        }
+
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('test2');
+                // userName.innerHTML = user.displayName;
+                // userEmail.innerHTML = user.email
+                alert(user.displayName);
+                //alert(user.email);
+            } else {
+                console.log(user.email);
+            }
+        })
+
+        signInGoogleButton.addEventListener('click', userSignInGoogle);
+        //=====================Google==============Google==============================================
         const btnSubmit = document.querySelector('#buttonSubmit');
 
         btnSubmit.addEventListener('click', async (evt) => {
@@ -172,6 +235,14 @@
 
         });
 
+
+
+
+
+        
+
+        
     </script>
+    
     @* <script src="https://accounts.google.com/gsi/client" async defer></script> *@
 }
