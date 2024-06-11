@@ -129,9 +129,12 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             value.MemberId = mid;
             value.ShippingMethodId = 1;
             value.OrderDate = DateTime.Now;
+            value.Reviewed=false;
             SelectShopContext db = new SelectShopContext();
             db.TOrders.Add(value);
-            int lo = db.TOrders.OrderByDescending(x => x.OrderId).FirstOrDefault().OrderId+1;
+            db.SaveChanges();
+
+            int lo = db.TOrders.OrderByDescending(x => x.OrderId).FirstOrDefault().OrderId;
             var a = db.TCarts.Where(x => x.MemberId == value.MemberId);
             foreach (var x in a)
             {
@@ -152,6 +155,16 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 db.TPackageWayDetails.Add(p);
             }
             db.TPackageCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
+            db.SaveChanges();
+            return RedirectToAction("Productpage", "P");
+        }
+        [HttpPost]
+        public IActionResult Shippingpage2(int id)
+        {           
+            SelectShopContext db = new SelectShopContext();
+            TOrder o = db.TOrders.FirstOrDefault(x => x.OrderId==id);
+             o.StatusId = 2;
+             o.OrderDate = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Productpage", "P");
         }

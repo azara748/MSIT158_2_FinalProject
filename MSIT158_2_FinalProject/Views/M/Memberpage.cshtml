@@ -1,4 +1,4 @@
-﻿<form id="upimg" style="margin:10px">
+﻿<form id="upimg" style="margin-left:10px;margin-bottom:10px">
     <img src="~/img/cccccc.jpg" id="im1" style="width: 200px;height: 200px;object-fit: contain;" />
     <div class="mb-3">
         <input class="form-control" type="file" id="formFile" accept="image/*" onchange="ch1()" name="IMG" style="width:19.6rem;margin-top:10px;">
@@ -7,17 +7,53 @@
 
 
 <ul class="nav nav-tabs" style="font-size:20px">
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">全部訂單</a>
+  <li class="nav-item">
+        @{
+            if (ViewBag.id == 0)
+            {
+                <a class="nav-link active" aria-current="page" href="~/m/Memberpage/0">全部訂單</a>
+            }
+            else
+            {
+                <a class="nav-link" href="~/m/Memberpage/0" style="color:black">全部訂單</a>
+            }
+        }
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" style="color:black">未結帳訂單</a>
+        @{
+            if (ViewBag.id == 1)
+            {
+                <a class="nav-link active" aria-current="page"  href="~/m/Memberpage/1">未結帳訂單</a>
+            }
+            else
+            {
+                <a class="nav-link" href="~/m/Memberpage/1" style="color:black">未結帳訂單</a>
+            }
+        }
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" style="color:black">已完成訂單</a>
+        @{
+            if (ViewBag.id == 2)
+            {
+                <a class="nav-link active" aria-current="page" href="~/m/Memberpage/2">已完成訂單</a>
+            }
+            else
+            {
+                <a class="nav-link" href="~/m/Memberpage/2" style="color:black">已完成訂單</a>
+            }
+        }
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" style="color:black">已取消訂單</a>
+        @{
+            if (ViewBag.id == 3)
+            {
+                <a class="nav-link active" aria-current="page" href="~/m/Memberpage/3">已取消訂單</a>
+            }
+            else
+            {
+                <a class="nav-link" href="~/m/Memberpage/3" style="color:black">已取消訂單</a>
+            }
+        }
     </li>
 </ul>
 <table class="table table-hover" style="font-size:20px">
@@ -28,14 +64,16 @@
             <th scope="col">件數</th>
             <th scope="col">總價</th>
             <th scope="col">日期</th>
+            <th scope="col">訂單狀態</th>
             <th scope="col">詳細/評價</th>
         </tr>
     </thead>
-    <tbody style="font-size=32px">
+    <tbody>
         @foreach (var v in ViewBag.訂單預覽)
         {
             <tr>
                 <td>
+                    <a href="~/m/Purchasepage/@v.OrderId">
                     @if (v.圖片 != null)
                     {
                         <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.圖片) " style="width: 70px;height: 70px;object-fit: contain;" alt="">
@@ -44,13 +82,40 @@
                     {
                         <img src="~/assets/Img/packageImages/@v.圖片2" style="width: 70px;height: 70px;object-fit: contain;" alt="">
                     }
+                    </a>
                 </td>
-                <td style="vertical-align: middle;">@v.name</td>
+                
+                <td style="vertical-align: middle;"><a href="~/m/Purchasepage/@v.OrderId">@v.name</a></td> 
                 <td style="vertical-align: middle;">@v.總數.ToString("0")</td>
                 <td style="vertical-align: middle;">@v.總價.ToString("0")</td>
                 <td style="vertical-align: middle;">@v.OrderDate.ToString("yyyy/MM/dd HH:mm")</td>
-                <td style="vertical-align: middle;">
-                    <button type="button" class="btn btn-danger" style="vertical-align: middle;">詳細</button>
+                @{
+                    string s = "";
+                    if (v.StatusId == 1) s = "未結帳";
+                    else if (v.StatusId == 2) s = "已結帳";
+                    else if (v.StatusId == 3) s = "已取消";
+                }
+                <td style="vertical-align: middle;">@s</td>
+                <td style="vertical-align: middle;text-align:left">
+                    @{
+                        if (@v.Reviewed == null || @v.Reviewed)
+                        {
+                            <text>已評價&nbsp</text>
+                        }
+                        else if (@v.StatusId == 3)
+                        {
+                            <label style="margin-left:59.7px">&nbsp;</label>
+                        }
+                        else if (@v.StatusId == 1)
+                        {
+                            <a href="" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">結帳</a>
+                        }
+                        else
+                        {
+                            <a href="" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">評價</a>
+                        }
+                    }
+                    <a href="~/m/Purchasepage/@v.OrderId" style="Text-decoration:underline;color:#EA0000;">詳細</a>
                 </td>
             </tr>
 
@@ -64,6 +129,22 @@
         }
     </tbody>
 </table>
+
+<ul class="reviews-pagination" style="margin-top:10px">
+    @for (int i = 1; i < ViewBag.allpage+1; i++)
+    {
+        if (i == ViewBag.page)
+        {
+            <li class="active">@i</li>
+        }
+        else
+        {
+            <li><a href="~/m/Memberpage/@ViewBag.id/?page=@i">@i</a></li>
+        }
+    }
+    <li><a href="~/m/Memberpage/@ViewBag.id/?page=@(ViewBag.page+1)"> <i class="fa fa-angle-right"></i>
+        </a></li>
+</ul>
 <script>
     async function ch1() {
         var d;

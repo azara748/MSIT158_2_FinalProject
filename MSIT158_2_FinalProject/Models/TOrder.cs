@@ -39,6 +39,8 @@ public partial class TOrder
 
     public string? Memo { get; set; }
 
+    public bool? Reviewed { get; set; }
+
     public virtual TMember? Member { get; set; }
 
     public virtual TStatus? Status { get; set; }

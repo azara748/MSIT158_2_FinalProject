@@ -389,10 +389,11 @@
         }
         function go3() {
             var t2 = ""
-            var rcc = Number(rc.innerHTML)
+            var rcc = Number(rc.innerHTML.replace(" 件評價", ""))
             var allp = rcc / 7
             if (rcc <= 7) allp = 2
             else allp++
+            console.log(allp)
             for (let i3 = 1; i3 < allp; i3++) {
                 if (i3 == page)
                     t2 += `<li class="active"><a href="javascript:void(0)" onclick="gopage(${i3})">${i3}</a></li>`

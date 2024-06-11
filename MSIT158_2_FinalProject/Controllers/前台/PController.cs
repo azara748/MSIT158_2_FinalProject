@@ -65,27 +65,26 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 			new fM購物車().add購物車2(a);
             return Content("ok", "text/plain");
         }
-        public IActionResult addPackageCartAPI(int id,int qty=1)
+        public IActionResult addPackageCartAPI(int id,int pid,int qty=1)
         {
-            int mid = 0;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-            {
-                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
-                TMember m = JsonSerializer.Deserialize<TMember>(js);
-                mid = m.MemberId;
-            }
-            else return Content("沒登入", "text/plain");
+            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            //{
+            //    string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+            //    TMember m = JsonSerializer.Deserialize<TMember>(js);
+            //    mid = m.MemberId;
+            //}
+            //else return Content("沒登入", "text/plain");
             SelectShopContext db = new SelectShopContext();
             TPackageCart p = new TPackageCart();
-            p.MemberId = mid;
-            p.PackageId = id;
+            p.MemberId = id;
+            p.PackageId = pid;
             p.Qty = qty;
             new fM購物車().add包裝(p);
             return Content("ok", "text/plain");
         }
         /*
          * async function addPackageCart(id,qty) {
-            var a2 = await fetch(`@Url.Content("~/P/addPackageCartAPI")/${id}/?qty=${qty}`)
+            var a2 = await fetch(`https://localhost:7066/p/addPackageCartAPI/${mid}/?pid=11`)
             var b2 = await a2.text()
             if (b2 == "ok")alert("加入購物車成功")}
          */
