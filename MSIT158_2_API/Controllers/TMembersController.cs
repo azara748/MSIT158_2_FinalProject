@@ -28,7 +28,7 @@ namespace MSIT158_2_API.Controllers
         }
         //登入會員帳號
         [HttpPost("Memberlogin")]
-        public async Task<ActionResult<TMember>> POSTMemberLogin([FromBody] CLoginViewModel vm)
+        public async Task<ActionResult<TMember>> POSTMemberLogin([FromForm] CLoginViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
@@ -57,9 +57,9 @@ namespace MSIT158_2_API.Controllers
             }
             return Ok(new { message = "確認成功", json });
         }
-        //忘記密碼
+        //忘記密碼1(檢查帳戶)
         [HttpPost("MemberForgetPassword")]
-        public async Task<ActionResult<TMember>> POSTMemberForgetPassword([FromBody] CCheckViewModel vm)
+        public async Task<ActionResult<TMember>> POSTMemberForgetPassword([FromForm] CCheckViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
 
@@ -73,7 +73,7 @@ namespace MSIT158_2_API.Controllers
         }
         //忘記密碼2(修改密碼)
         [HttpPost("MemberEditPassword")]
-        public async Task<ActionResult<TMember>> POSTMemberEditPassword([FromBody] CLoginViewModel vm)
+        public async Task<ActionResult<TMember>> POSTMemberEditPassword([FromForm] CLoginViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
 
@@ -86,6 +86,34 @@ namespace MSIT158_2_API.Controllers
 
             }
             return Ok(new { message = "密碼修改成功", json });
+        }
+        //Google,Facebook 登入，新增資料
+        [HttpPost("OauthCreate")]
+        public async Task<ActionResult<TMember>> POSTMemberOauthCreate([FromBody] COauthLoginViewModel vm)
+        {
+            TMember m = new TMember();
+            m.MemberName = vm.txtOauthName;
+            m.EMail = vm.txtOauthEmail;
+            _context.TMembers.Add(m);
+            await _context.SaveChangesAsync();
+            
+            return Ok(new { message = "新增成功", m });
+        }
+        //Google,Facebook 登入，尋找資料
+        [HttpPost("OauthSearchMember")]
+        public async Task<ActionResult<TMember>> POSTMemberOauthSearchMember([FromBody] COauthLoginViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(
+                t => t.EMail.Equals(vm.txtOauthEmail) && t.MemberName.Equals(vm.txtOauthName));
+
+            string json = "";
+            if (user != null && user.EMail.Equals(vm.txtOauthEmail))
+            {
+                json = JsonSerializer.Serialize(user);
+                _pp = json;
+                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+            }
+            return Ok(new { message = "登入成功", user });
         }
 
 
@@ -183,67 +211,55 @@ namespace MSIT158_2_API.Controllers
         //    return Content(json, "text/plain", System.Text.Encoding.UTF8);
         //}
 
-        //登入加密&確認密碼
-        [HttpPost("CheckPassword")]
-        public async Task<ActionResult<TMember>> PostTMemberCheckPassword([FromBody] CMemberEditDTO p, string repassword)
+        //新增會員&確認密碼
+        [HttpPost("CreateCheckPassword")]
+        public async Task<ActionResult<TMember>> PostTMemberCreateCheckPassword([FromForm] CMemberEditDTO p, [FromForm] string repassword)
         {
-
-            var is_name = _context.TMembers.Any(x => x.MemberName == p.MemberName);
             var is_mail = _context.TMembers.Any(x => x.EMail == p.EMail);
             var is_password = _context.TMembers.Any(x => x.Password == p.Password);
-            string str = "密碼有誤";
-            string str1 = "帳號可使用";
-            string str2 = "信箱可使用";
-            string str3 = "密碼可使用";
-
-            if (is_name)
-                str1 = "帳號已存在";
+            // 檢查信箱是否已經存在(信箱不重複，才可以寫進資料庫)
             if (is_mail)
-                str2 = "信箱已存在";
+                return BadRequest(new { message = "信箱已存在" });
+            // 檢查密碼和重複輸入的密碼是否一致
+            if (p.Password != repassword)
+                return BadRequest(new { message = "密碼不一致" });
+            // 如果會員名稱為空，設置默認值            
             if (string.IsNullOrEmpty(p.MemberName))
                 p.MemberName = "guset";
-
             //檔案上傳轉成二進位
             byte[] imgByte = null;
-            //if (p.Password == repassword)
-            if (false)
+            IFormFile avatar = null;
+            //檔案上傳轉成二進位
+            if (avatar != null)
             {
-                str = "密碼可使用";
-                if (is_password)
-                    str3 = "密碼已存在";
-
-                //檔案上傳轉成二進位
-                //if (p.avatar != null)
-                //{
-                //    using (var memoryStream = new MemoryStream())
-                //    {
-                //        p.avatar.CopyTo(memoryStream);
-                //        imgByte = memoryStream.ToArray();
-                //    }
-                //}
-
-                // 產生一個隨機鹽
-                string salt = CreateSalt();
-                string Passwordsalted = p.Password + salt;
-                //密碼加密，使用 SHA256 演算法
-                p.Password = GetSha256Hash(Passwordsalted);
-
-                //信箱不重複，才可以寫進資料庫
-                if (!is_mail)
+                using (var memoryStream = new MemoryStream())
                 {
-                    //p.MemberPhoto = imgByte;
-                    p.Salt = salt;
-                    //_context.TMembers.Add(p);
-                    //_context.SaveChanges();
+                    avatar.CopyTo(memoryStream);
+                    imgByte = memoryStream.ToArray();
                 }
             }
 
+            // 產生一個隨機鹽
+            string salt = CreateSalt();
+            string Passwordsalted = p.Password + salt;
+            //密碼加密，使用 SHA256 演算法
+            p.Password = GetSha256Hash(Passwordsalted);
 
-            if (!string.IsNullOrEmpty(p.EMail) && !string.IsNullOrEmpty(p.Password))
-                str = str + "<hr />" + str1 + "<hr />" + str2 + "<hr />" + str3 + "<br />" + "上傳成功";
-            else
-                str = "信箱&密碼 都要輸入";
-            return Content(str.ToString(), "text/html", System.Text.Encoding.UTF8);
+            TMember m = new TMember();
+            //p.MemberPhoto = imgByte;
+            m.MemberName = p.MemberName;
+            m.Address = p.Address;
+            m.Cellphone = p.Cellphone;
+            m.Sex = p.Sex;
+            m.Password = p.Password;
+            m.Salt = salt;
+            m.Points = p.Points;
+            m.EMail = p.EMail;
+            m.MemberPhoto = p.MemberPhoto;
+            _context.TMembers.Add(m);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "新增成功", m });
         }
         //密碼，產生一個隨機鹽
         private string CreateSalt()
@@ -351,7 +367,7 @@ namespace MSIT158_2_API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[Route("Create")]
         [HttpPost("Create")]
-        public async Task<ActionResult<TMember>> PostTMember([FromBody] CMemberEditDTO p)
+        public async Task<ActionResult<TMember>> PostTMember([FromForm] CMemberEditDTO p)
         {
             TMember m = new TMember();
             m.MemberName = p.MemberName;

@@ -26,7 +26,7 @@ namespace MSIT158_2_API.Controllers
         }
         //登入員工帳號
         [HttpPost("Employeelogin")]
-        public async Task<ActionResult<TMember>> POSTEmployeelogin([FromBody] CLoginViewModel vm)
+        public async Task<ActionResult<TMember>> POSTEmployeelogin([FromForm] CLoginViewModel vm)
         {
             TEmployee user = _context.TEmployees.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
@@ -191,11 +191,15 @@ namespace MSIT158_2_API.Controllers
         {
             //檔案上傳轉成二進位
             byte[] imgByte = null;
-            using (var memoryStream = new MemoryStream())
+            if (avatar != null)
             {
-                avatar.CopyTo(memoryStream);
-                imgByte = memoryStream.ToArray();
+                using (var memoryStream = new MemoryStream())
+                {
+                    avatar.CopyTo(memoryStream);
+                    imgByte = memoryStream.ToArray();
+                }
             }
+
 
 
             TEmployee e = new TEmployee();

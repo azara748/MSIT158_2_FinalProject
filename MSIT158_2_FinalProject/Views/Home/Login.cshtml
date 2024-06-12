@@ -60,13 +60,13 @@
 @* 登入API按鈕end *@
 @* 登入輸入 *@
 <div class="card-body">
-    <form role="form" method="post" action="~/Home/Login" id="userFrom">
+    <form role="form" method="post" action="~/Home/Login" id="userForm">
         <div class="mb-3">
-            <input type="email" class="form-control" placeholder="Email" aria-label="Email" id="Inputemail" value="mi.lacinia.mattis@protonmail.com">
+            <input type="email" class="form-control" placeholder="Email" aria-label="Email" id="Inputemail" value="mi.lacinia.mattis@protonmail.com" name="txtEmail">
             @* @Html.TextBox("txtEmail", "mi.lacinia.mattis@protonmail.com", new { @class = "form-control", type = "email", placeholder = "Email", @aria_label = "Email" }) *@
         </div>
         <div class="mb-3">
-            <input type="password" class="form-control" placeholder="Password" aria-label="Password" id="InputPassword" value="Amy">
+            <input type="password" class="form-control" placeholder="Password" aria-label="Password" id="InputPassword" value="Amy" name="txtPassword">
             @* @Html.Password("txtPassword", "Amy", new { @class = "form-control", placeholder = "Password", @aria_label = "Password" }) *@
         </div>
         <div class="form-check form-check-info text-start">
@@ -150,8 +150,6 @@
             }
         }
 
-
-
         // const userSignInGoogle = async () => {
         //     signInWithPopup(auth, Gprovider)
         //         .then((result) =>   {
@@ -178,10 +176,52 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log('test2');
-                // userName.innerHTML = user.displayName;
-                // userEmail.innerHTML = user.email
-                //alert(user.displayName);
-                alert(user.displayName + "\n" + user.email);
+                const OauthName = user.displayName;
+                const OauthEmail = user.email
+                //alert(OauthName + "\n" + OauthEmail);
+                //將資料寫入DB
+                const OauthData = {
+                    "txtOauthName": OauthName,
+                    "txtOauthEmail": OauthEmail
+                };
+
+                const sendOauthData = async () => {
+                    const url3 = 'https://localhost:7160/api/TMembers/OauthCreate';
+                    const response3 = await fetch(url3, {
+                        method: 'POST',
+                        body: JSON.stringify(OauthData),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    const datas3 = await response3.text();
+                    const members3 = JSON.parse(datas3);
+                    const messages3 = members3.message;
+                    const Jnames3 = members3.m.memberName;
+                    const Jemails3 = members3.m.eMail;
+                    //alert(Jnames3 + '\n' + Jemails3 + "\n" + messages3);
+                    if (Jnames3 != null && Jemails3 != null) {
+                        const OauthDataB = {
+                            "txtOauthName": Jnames3,
+                            "txtOauthEmail": Jemails3
+                        };
+                        const urlB = 'https://localhost:7160/api/TMembers/OauthSearchMember';
+                        const responseB = await fetch(urlB, {
+                            method: 'POST',
+                            body: JSON.stringify(OauthDataB),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        const datasB = await responseB.text();
+                        const membersB = JSON.parse(datasB);
+                        console.log('membersB');
+                        const messagesB = membersB.message;
+                        const JnamesB = membersB.user.memberName;
+                        const JemailsB = membersB.user.eMail;
+                        if (confirm(`${JnamesB}\n${JemailsB}\n${messagesB}`)) {
+                            window.location.href = "/Home/Index";
+                        }
+                    }
+                };
+                sendOauthData();               
             } else {
                 console.log(user.email);
             }
@@ -195,20 +235,26 @@
 
             const femail = document.querySelector('#Inputemail').value;
             const fpassword = document.querySelector('#InputPassword').value;
-            if (femail && fpassword) {
+            if (femail != null && fpassword != null) {
                 const memberData = {
                     "txtEmail": femail,
                     "txtPassword": fpassword
                 };
 
+                //將資料放進FormData
+                const myForm = document.querySelector('#userForm');
+                const fromdata = new FormData(myForm);
+                //測試FormData中有無資料
+                for (const pair of fromdata.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
+
                 const url = 'https://localhost:7160/api/TMembers/Memberlogin';
-                console.log("test1");
-                console.log(memberData);
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: JSON.stringify(memberData),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: fromdata
                 });
+                console.log("test1");
                 console.log("test2");
                 console.log(response);
                 const data = await response.text();
@@ -261,12 +307,12 @@
                     console.log(Jname2);
                     console.log(Jemail2);
 
-                    if (message2) {
+                    if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);
                         window.location.href = "/Home/Index";
                     }
                 }
-                
+
             }
 
         });

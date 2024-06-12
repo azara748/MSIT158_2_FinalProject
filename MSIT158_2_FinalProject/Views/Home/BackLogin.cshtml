@@ -1,12 +1,11 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "BackLogin";
     Layout = "_Layout_EmployeeLogin";
 }
 
 @* <h1>管理員登入系統</h1> *@
 
-<form role="form" method="post" action="~/Home/BackLogin" id="userFrom">
+<form role="form" method="post" action="~/Home/BackLogin" id="userForm">
     <div class="mb-3">
         <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" value="ivy@gmail.com" name="txtEmail" id="Inputemail">
         @* @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" }) *@
@@ -26,7 +25,7 @@
     </div>
 </form>
 
-@section Scripts{
+@section Scripts {
     <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
 
@@ -40,14 +39,20 @@
                     "txtEmail": femail,
                     "txtPassword": fpassword
                 };
+                //將資料放進FormData
+                const myForm = document.querySelector('#userForm');
+                const fromdata = new FormData(myForm);
+                //測試FormData中有無資料
+                for (const pair of fromdata.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
 
                 const url = 'https://localhost:7160/api/TEmployees/Employeelogin';
                 console.log("test1");
                 console.log(memberData);
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: JSON.stringify(memberData),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: fromdata
                 });
                 console.log("test2");
                 console.log(response);
