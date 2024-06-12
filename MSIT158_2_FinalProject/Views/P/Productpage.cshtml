@@ -70,7 +70,7 @@
                         <a class="review-link" href="#tab3" id="rc">@ViewBag.評價數 件評價</a>
                     </div>
                     <div>
-                        <h3 class="product-price">$@Convert.ToInt32(ViewBag.Product.UnitPrice)<del class="product-old-price">$@Convert.ToInt32((double)ViewBag.Product.UnitPrice * 1.2)</del></h3>
+                        <h3 class="product-price">$@Convert.ToInt32(ViewBag.Product.UnitPrice)<del class="product-old-price">$@Convert.ToInt32((double)ViewBag.Product.UnitPrice * 1.25)</del></h3>
                         <span class="product-available" id="sp1">庫存:@ViewBag.Product.Stocks</span>
                     </div>
                     @* <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> *@
@@ -322,7 +322,7 @@
                         <div class="product-body">
                             <p class="product-category">Category</p>
                             <h3 class="product-name"><a href="#">@v.ProductName</a></h3>
-                            <h4 class="product-price">$@Convert.ToInt32(v.UnitPrice) <del class="product-old-price">$@Convert.ToInt32((double)v.UnitPrice * 1.2)</del></h4>
+                            <h4 class="product-price">$@Convert.ToInt32(v.UnitPrice) <del class="product-old-price">$@Convert.ToInt32((double)v.UnitPrice * 1.25)</del></h4>
                             <div class="product-rating">
                             </div>
                             <div class="product-btns">
@@ -374,7 +374,7 @@
                     img = `${b[i].memberPhoto}`
                 }
                 else img = `392531_account_friend_human_man_member_icon.jpg`
-                t += `<li><div class="review-heading"><img src="/img/${img}" style="width:32px;height:32px;;object-fit: contain;"/><label class="name">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
+                t += `<li><div class="review-heading"><img src='@Url.Content("~/img/")${img}' style="width:32px;height:32px;;object-fit: contain;"/><label class="name">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
                 for (let i2 = 0; i2 < 5; i2++) {
                     if (i2 < b[i].rankId)
                         t += `<i class="fa fa-star"></i>`
@@ -382,6 +382,7 @@
                 }
                 let l = b[i].comment;
                 if (l == null) l = ""
+                else l = l.replace("\r\n", "<br/>").replace("\n", "<br/>")
                 t += `</div></div><div class="review-body"><p>${l}</p></div></li>`
             }
             u1.innerHTML = t;
@@ -489,11 +490,13 @@
                                                                                 <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
                                                             </div>
                                                             <div class="product-body">
-                                                                        <h3 class="product-name"><a href="#">${b[f].productName}</a></h3>
+                                                                                <h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
                                                                                 <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
                                                             </div>
                                                                     <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].qty},${b[f].cartId})"><i class="fa fa-close"></i></button>
                                                                 </div></div>`
+                                                       //<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
+
             }
             for (let f in bp) {
                 count++

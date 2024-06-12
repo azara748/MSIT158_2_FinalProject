@@ -22,11 +22,15 @@
                                     <tr id='@("c"+f)'>
                                     <th scope="row">
                                         <div class="d-flex align-items-center">
+                                        <a href="~/P/Productpage/@v.ProductId">
                                         <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
+                                        </a>
                                         </div>
                                     </th>
                                     <td>
+                                    <a href="~/P/Productpage/@v.ProductId">
                                             <p class="mb-0 mt-4" style="padding-top:13px">@v.ProductName</p>
+                                            </a>
                                     </td>
                                     <td>
                                             <p class="mb-0 mt-4" style="padding-top:13px">@Convert.ToInt32(@v.UnitPrice)</p>

@@ -33,7 +33,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             else return RedirectToAction("Login", "HOME");
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId });
+            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.ProductId, y.Stocks, x.Qty, x.CartId });
             ViewBag.會員購物車 = 會員購物車;           
             ViewBag.運費 = 60;
             var 會員購物車2 =db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId ,y => y.PackageId, (x, y) =>
@@ -54,7 +54,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             }
             SelectShopContext db = new SelectShopContext();
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.Stocks, x.Qty, x.CartId});
+            new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.ProductId, y.Stocks, x.Qty, x.CartId});
             return Json(會員購物車);
         }
         public IActionResult miniCartsAPI2()
@@ -156,7 +156,8 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             }
             db.TPackageCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
             db.SaveChanges();
-            return RedirectToAction("Productpage", "P");
+            if(value.StatusId==2) return RedirectToAction("Memberpage", "M"); 
+             else   return RedirectToAction("Productpage", "P");
         }
         [HttpPost]
         public IActionResult Shippingpage2(int id)

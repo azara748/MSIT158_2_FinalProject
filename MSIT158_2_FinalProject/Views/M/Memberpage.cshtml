@@ -1,5 +1,10 @@
 ﻿<form id="upimg" style="margin-left:10px;margin-bottom:10px">
-    <img src="~/img/cccccc.jpg" id="im1" style="width: 200px;height: 200px;object-fit: contain;" />
+    @{
+        string p = "";
+        if (!string.IsNullOrEmpty(ViewBag.會員.MemberPhoto)) p = ViewBag.會員.MemberPhoto;
+        else p = "392531_account_friend_human_man_member_icon.jpg";
+    }
+    <img src="~/img/@p" id="im1" style="width: 200px;height: 200px;object-fit: contain;" />
     <div class="mb-3">
         <input class="form-control" type="file" id="formFile" accept="image/*" onchange="ch1()" name="IMG" style="width:19.6rem;margin-top:10px;">
     </div>
@@ -112,7 +117,7 @@
                         }
                         else
                         {
-                            <a href="" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">評價</a>
+                            <a href="~/M/Reviewepage/@v.OrderId" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">評價</a>
                         }
                     }
                     <a href="~/m/Purchasepage/@v.OrderId" style="Text-decoration:underline;color:#EA0000;">詳細</a>
@@ -145,7 +150,8 @@
     <li><a href="~/m/Memberpage/@ViewBag.id/?page=@(ViewBag.page+1)"> <i class="fa fa-angle-right"></i>
         </a></li>
 </ul>
-<script>
+@section Scripts {
+    <script>
     async function ch1() {
         var d;
         if (formFile.files[0].type.match("image.*")) {
@@ -164,7 +170,9 @@
     }
     async function UP() {
         var c = new FormData(upimg);
+        console.log(c)
         var a = await fetch(`@Url.Content("~/M/upMemberimgAPI")`, { method: "POST", body: c })
         var b = await a.text()
     }
 </script>
+}

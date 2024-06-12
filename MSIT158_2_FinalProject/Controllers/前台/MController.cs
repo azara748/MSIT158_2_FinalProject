@@ -20,8 +20,17 @@ namespace MSIT158_2_FinalProject.Controllers.前台
         public IActionResult Memberpage(int id = 0, int page = 1)
         {
             int mid = 2;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = System.Text.Json.JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+             else return RedirectToAction("Login", "HOME");
+
             SelectShopContext db = new SelectShopContext();
-            var v1 =
+            ViewBag.會員 = db.TMembers.FirstOrDefault(x=>x.MemberId==mid);
+           var v1 =
        from o in db.TOrders
        join p in db.TPurchases
        on o.OrderId equals p.OrderId
@@ -109,12 +118,22 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                 string name = Guid.NewGuid().ToString() + ".jpg";
                 IMG.CopyTo(new FileStream(_img.WebRootPath + "/img/" + name, FileMode.Create));
                 a.MemberPhoto = name;
+                db.SaveChanges();
                 return Content("ok", "text/plain");
             }
             else return Content("no", "text/plain");
         }
-        public IActionResult Purchasepage(int id = 5)
+        public IActionResult Purchasepage(int id)
         {
+            int mid = 2;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = System.Text.Json.JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            else return RedirectToAction("Login", "HOME");
+
             SelectShopContext db = new SelectShopContext();
             var a = db.TPurchases.Where(x => x.OrderId == id).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
             new { y.UnitPrice, y.ProductName, y.ProductPhoto, x.Qty, y.ProductId });
@@ -171,9 +190,50 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             ViewBag.o = v.FirstOrDefault();
             return View();
         }
-        public IActionResult Reviewepage()
+        public IActionResult Reviewepage(int id)
         {
+            int mid = 2;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = System.Text.Json.JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            else return RedirectToAction("Login", "HOME");
+            SelectShopContext db = new SelectShopContext();
+            var v =
+            from pu in db.TPurchases
+            join pro in db.TProducts
+            on pu.ProductId equals pro.ProductId
+            where pu.OrderId == id
+            select new
+            {
+                pu.OrderId,
+                pu.PurchaseId,
+                pro.ProductId,
+                pro.ProductName,
+                pro.ProductPhoto
+            };
+            ViewBag.v = v;
             return View();
+        }
+        public IActionResult upRevieweAPI([FromForm] TReview id,int oid)
+        {
+            int mid = 0;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                TMember m = System.Text.Json.JsonSerializer.Deserialize<TMember>(js);
+                mid = m.MemberId;
+            }
+            SelectShopContext db = new SelectShopContext();
+            id.ReviewDate=DateTime.Now.ToString("yyyy/MM/dd");
+            id.MemberId = mid;
+            db.TReviews.Add(id);
+            var o = db.TOrders.FirstOrDefault(x => x.OrderId == oid).Reviewed = true;
+            db.SaveChanges();
+            return Content("ok", "text/plain");
         }
     }
 }
+
