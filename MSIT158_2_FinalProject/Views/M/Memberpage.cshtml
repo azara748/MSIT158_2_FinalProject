@@ -1,4 +1,4 @@
-﻿<form id="upimg" style="margin-left:10px;margin-bottom:10px">
+﻿<form id="upimg" style="margin-left:10px;margin-bottom:10px;width:300px;float:left">
     @{
         string p = "";
         if (!string.IsNullOrEmpty(ViewBag.會員.MemberPhoto)) p = ViewBag.會員.MemberPhoto;
@@ -9,6 +9,12 @@
         <input class="form-control" type="file" id="formFile" accept="image/*" onchange="ch1()" name="IMG" style="width:19.6rem;margin-top:10px;">
     </div>
 </form>
+<div style="float:left;width:500px;margin-left:200px">
+    <br /><br /><br /><br />
+    <button type="button" class="btn btn-primary" style="font-size:30px">修改個人資料</button>
+    <label>&nbsp;&nbsp;&nbsp;</label>
+    <button type="button" class="btn btn-danger" style="font-size:30px">修改密碼</button>
+    </div>
 
 
 <ul class="nav nav-tabs" style="font-size:20px">

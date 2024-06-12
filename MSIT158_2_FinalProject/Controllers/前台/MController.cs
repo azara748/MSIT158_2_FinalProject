@@ -217,6 +217,20 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             ViewBag.v = v;
             return View();
         }
+        public IActionResult ReviewecheckAPI([FromForm] TReview id)
+        {         
+            SelectShopContext db = new SelectShopContext();
+            var a = db.TWordCensorships.Where(x=>x.WordSeverityId==1);
+            foreach(var v in a)
+            {
+                if(string.IsNullOrEmpty(id.Comment))break;
+                if (id.Comment.Contains(v.Word))
+                {
+                    return Content("no", "text/plain");
+                }
+            }
+            return Content("ok", "text/plain");
+        }
         public IActionResult upRevieweAPI([FromForm] TReview id,int oid)
         {
             int mid = 0;
