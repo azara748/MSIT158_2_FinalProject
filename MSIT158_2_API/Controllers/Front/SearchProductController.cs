@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
 using NuGet.Protocol;
@@ -109,6 +110,11 @@ namespace MSIT158_2_API.Controllers.Front
 				query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword)
 				||p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword)
 				||p.Description.Contains(searchProductDTO.searchword));
+			}
+			//金額條件
+			if(searchProductDTO.lowPrice!=null && searchProductDTO.highPrice!=null)
+			{
+				query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
 			}
 			//排序_
 
