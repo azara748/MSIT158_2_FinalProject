@@ -8,5 +8,8 @@
 		public int pagesSize { get; set; } = 9;
 		public string? sortBy { get; set; }
 		public string? sortType { get; set; }
+		public int? lowPrice { get; set; }
+		public int? highPrice { get; set; }
+		//public int score { get; set; } 
 	}
 }

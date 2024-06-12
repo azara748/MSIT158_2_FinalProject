@@ -136,12 +136,11 @@
 		updatePriceSlider($(this).parent() , this.value)
 	});
 
-	function updatePriceSlider(elem , value) {
+	function updatePriceSlider(elem, value) {
+		value = Math.round(value); // 這邊改過，確保傳入的值是整數
 		if ( elem.hasClass('price-min') ) {
-			console.log('min')
 			priceSlider.noUiSlider.set([value, null]);
 		} else if ( elem.hasClass('price-max')) {
-			console.log('max')
 			priceSlider.noUiSlider.set([null, value]);
 		}
 	}
@@ -150,18 +149,26 @@
 	var priceSlider = document.getElementById('price-slider');
 	if (priceSlider) {
 		noUiSlider.create(priceSlider, {
-			start: [1, 999],
+			start: [1, 20000],
 			connect: true,
 			step: 1,
 			range: {
 				'min': 1,
-				'max': 999
+				'max': 20000
+			},
+			format: { //這邊改過，確保沒有小數點
+				to: function (value) {
+					return value.toFixed(0);
+				},
+				from: function (value) {
+					return Number(value);
+				}
 			}
 		});
 
 		priceSlider.noUiSlider.on('update', function( values, handle ) {
 			var value = values[handle];
-			handle ? priceInputMax.value = value : priceInputMin.value = value
+			handle ? priceInputMax.value = Math.round(value) : priceInputMin.value = Math.round(value); //這邊改過
 		});
 	}
 

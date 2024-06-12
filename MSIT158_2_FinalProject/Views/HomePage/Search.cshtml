@@ -1,7 +1,22 @@
 ﻿@{
     Layout = "_Layout_Front";
 }
-
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="breadcrumb-tree" id="idultree">
+				</ul>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
@@ -126,30 +141,34 @@
 				<!-- /價錢區域 -->
 				<!-- aside Widget -->
 				<div class="aside">
-					<h3 class="aside-title">品牌</h3>
+					<h3 class="aside-title">依評分篩選:</h3>
 					<div class="checkbox-filter">
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-1">
 							<label for="brand-1">
 								<span></span>
-								品牌TBC
-								<small>(578)</small>
+								4星以上
 							</label>
 						</div>
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-2">
 							<label for="brand-2">
 								<span></span>
-								LG
-								<small>(125)</small>
+								3星以上
 							</label>
 						</div>
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-3">
 							<label for="brand-3">
 								<span></span>
-								SONY
-								<small>(755)</small>
+								尚有庫存
+							</label>
+						</div>
+						<div class="input-checkbox">
+							<input type="checkbox" id="brand-4">
+							<label for="brand-4">
+								<span></span>
+								活動優惠
 							</label>
 						</div>
 					</div>
@@ -157,32 +176,10 @@
 				<!-- /aside Widget -->
 				<!-- Top3 -->
 				<div class="aside">
-					<h3 class="aside-title">Top selling</h3>
-					<div class="product-widget">
+					<h3 class="aside-title">本周熱銷</h3>
+					<div class="product-widget" id="topsales">
 						<div class="product-img">
 @* 							<img src="./img/product01.png" alt=""> *@
-						</div>
-						<div class="product-body">
-							<p class="product-category">Category</p>
-							<h3 class="product-name"><a href="#">product name goes here</a></h3>
-							<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-						</div>
-					</div>
-
-					<div class="product-widget">
-						<div class="product-img">
-@* 							<img src="./img/product02.png" alt=""> *@
-						</div>
-						<div class="product-body">
-							<p class="product-category">Category</p>
-							<h3 class="product-name"><a href="#">product name goes here</a></h3>
-							<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-						</div>
-					</div>
-
-					<div class="product-widget">
-						<div class="product-img">
-@* 							<img src="./img/product03.png" alt=""> *@
 						</div>
 						<div class="product-body">
 							<p class="product-category">Category</p>
@@ -204,10 +201,13 @@
 								商品排序:
 								</strong>
 							<select class="input-select" id="idshowsort">
-								<option value="UnitPrice|asc">金額低到高</option>
-								<option value="UnitPrice|desc">金額高到低</option>
-								<option value="bestsale|asc">熱銷度低到高</option>
-								<option value="bestsale|desc">熱銷度高到低</option>
+								<option value="bestscore|desc">評價 高到低</option>
+								<option value="bestscore|asc">評價 低到高</option>
+								<option value="UnitPrice|desc">金額 高到低</option>
+								<option value="UnitPrice|asc">金額 低到高</option>
+								<option value="bestsale|desc">熱銷度 高到低</option>
+								<option value="bestsale|asc">熱銷度 低到高</option>
+
 							</select>
 						</label>
 						<label>
@@ -229,7 +229,7 @@
 							<strong>
 								搜尋條件:
 								</strong>
-							<span id="searchcriteria" style="color:darkred"></span>
+							<span id="searchcriteria" style="color:darkred;"></span>
 						</label>
 					</div>
 
@@ -240,25 +240,24 @@
 				</div>
 				<!-- /store products -->
 				<!-- 分頁按鈕 -->
-				<div class="store-filter clearfix">
+				<div class="store-filter clearfix" style="width:65%;margin:0 auto;text-align:center;">
 					<ul class="store-pagination" id="idpageul">
 @* 						<li class="active">1</li>
 						<li><a href="#">2</a></li>
 						<li><a href="#">3</a></li>
 						<li><a href="#">4</a></li>
-						<li><a href="#"><i class="fa fa-angle-right"></i></a></li> *@
+						<li><a href="#"><i class="fa fa-angle-right"></i></a></li>  *@
 					</ul>
 				</div>
 				<!-- /分頁按鈕 -->
-			</div>
-			<!-- /STORE -->
-		</div>
-		<!-- /row -->
-	</div>
-	<!-- /container -->
-</div>
-<!-- /SECTION -->
-
+							</div>
+							<!-- /STORE -->
+						</div>
+						<!-- /row -->
+					</div>
+					<!-- /container -->
+				</div>
+				<!-- /SECTION -->
 
 @section Styles
 {
@@ -284,16 +283,115 @@
 		//搜尋結果文字顯示
 		const searchresult = document.getElementById('searchresult');
 		const searchcriteria = document.getElementById('searchcriteria');
+		//顯示分類
+		const idultree = document.getElementById('idultree');
+		//最高最低金額
+		const Hbar = document.getElementById('price-max');
+		const Lbar = document.getElementById('price-min');
+		const Low = document.querySelector('.noUi-handle-lower');
+		const High = document.querySelector('.noUi-handle-upper');
+		function priceChange() { 
+			console.log('pricebar', Hbar.value);
+			console.log('pricebar', Lbar.value);			
+		}
+		Lbar.addEventListener('blur', priceChange)
+		Hbar.addEventListener('blur', priceChange)
+		//Low.addEventListener('mouseout', priceChange)
+		//High.addEventListener('mouseout', priceChange)
+		//被點分頁
+		//TODO
+		// const gored = idpageul.getElementsByTagName('li');
+		// const pageR = () => {
+		// 	for (let i = 0; i < gored.length; i++) {
+		// 		gored[i].addEventListener('click', (event) => {
+		// 			event.preventDefault();
+		// 			for (let j = 0; j < gored.length; j++) {
+		// 				//gored[j].classList.remove('active');
+		// 				gored[j].style.backgroundColor = 'white';
+		// 				console.log("out");
+		// 			}
+		// 			//event.currentTarget.classList.add('active');
+		// 			event.currentTarget.style.backgroundColor = 'red';
+		// 		})
+		// 	}
+		// }
 
-
+		//連到分類
+		const categoryHandler = cat => {
+			searchData.subcatId = cat;
+			console.log(searchData.subcatId);
+			console.log(searchData);
+			ifChange();
+		}
+		//連到頁數
+		const pagingHandler = page => {
+			searchData.page = page;
+			ifChange();
+		}
+		//B.顯示分頁按鈕-下一頁
+		const loadMore = (max, start) => {
+			//顯示更多分頁按鈕 (start 至 start+7)
+			let liPages = "";
+			let whichpage = Math.ceil(max / 8);
+			let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+			liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+			for (let i = start; i < end; i++) {
+				liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+			}
+			if (end <= max) {
+				liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+			}
+			idpageul.innerHTML = liPages;
+		}
+		//B.顯示分頁按鈕-回上頁
+		const goBack = (max, start) => {
+			let liPages = "";
+			let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+			if (start > 1) {
+				liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+			}
+			for (let i = start; i < end; i++) {
+				liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+			}
+			liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+			idpageul.innerHTML = liPages;
+		}
         const searchData = {
 			"subcatId": 0,
 			"searchword": "",
 			"page": 1,
 			"pagesSize": 9,
 			"sortBy": "",
-			"sortType": "asc"
+			"sortType": "asc",
+			"lowPrice":1,
+			"highPrice":20000
 		};
+
+		// 顯示分類按鈕
+		(async function loadCatli() {
+
+			const urlC = 'https://localhost:7160/api/SubcatDTO/';
+			const responseC = await fetch(urlC);
+			const dataC = await responseC.json();
+			const liCat = dataC.map(cats => {
+				const { subCategoryId, subCategoryCname } = cats;
+				return `<li onclick="categoryHandler(${subCategoryId})" value="${subCategoryId}"><a class="Acategory" id="idc${subCategoryId}">${subCategoryCname}</a></li>`;
+			});
+			idultree.innerHTML = `<li onclick="categoryHandler(0)" value="0" id="idc0"><a class="Acategory">全部</a></li>`;
+			idultree.innerHTML += liCat.join("");
+			// const category = document.querySelectorAll('.Acategory');
+			// for (var item of category) {
+			// 	item.addEventListener('click', (event) => {
+			// 		for (var i of category) {
+			// 			i.style.backgroundColor = 'white';
+			// 		}
+			// 		event.target.style.backgroundColor = 'mistyrose';
+			// 	})
+			// };
+		})();
+
+
+
 		//顯示商品
 		const loadPro = async () => {
 			const url = 'https://localhost:7160/api/SearchProduct';
@@ -306,45 +404,85 @@
 			});
 			const data = await response.json();
 			const pros = data.showProducts.map(pro => {
-				const { productName, discount, subCatName, unitPrice, productphoto, totalPages } = pro;
-				return (`<div class="col-md-4 col-xs-6">
-											<div class="product">
-												<div class="product-img">
-										${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-													<div class="product-label">
-																	<span class="sale">${discount * 10}折優惠</span>
-																			<span class="new">${LanchTime = null ? LanchTime : "新上市"}</span>
-													</div>
-												</div>
-													<div class="product-body">
-																				<p class="product-category">${subCatName}</p>
-														<h3 class="product-name"><a href="#">${productName}</a></h3>
-																				<h4 class="product-price">$${Math.round(unitPrice * 0.9)}<del class="product-old-price">$${unitPrice}</del></h4>
-														<div class="product-rating">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-														</div>
-														<div class="product-btns">
-															<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
-																			<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
-																					<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
-														</div>
-													</div>
-													<div class="add-to-cart">
-																<button class="add-to-cart-btn"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
-													</div>
-												</div>
-											</div>`)
+				const {productId, productName, discount, labelName, unitPrice, productphoto, score } = pro;
+				return (`<a href="https://localhost:7066/homepage/index/${productId}">
+				<div class="col-md-4 col-xs-6">
+						 <div class="product">
+								<div class="product-img">
+									${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+										<div class="product-label">
+											<span class="sale">${discount * 10}折優惠</span>
+												<span class="new">${LanchTime = null ? LanchTime : "新上市"}</span>
+							</div>
+							</div>
+							<div class="product-body">
+									<p class="product-category">${labelName}</p>
+							<h3 class="product-name"><a href="#">${productName}</a></h3>
+							<h4 class="product-price">$${Math.round(unitPrice * 0.9)}<del class="product-old-price">${unitPrice}</del></h4>
+									<div class="product-rating">
+						${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}
+											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
+							</div>
+							<div class="product-btns">
+								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
+								<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+								</div>
+								</div>
+								<div class="add-to-cart">
+								<button class="add-to-cart-btn"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
+								</div>
+							</div>
+						</div></a>`)
 
 			})
 			div1.innerHTML = pros.join("");
 			searchresult.textContent = `${data.totalCount}`;
+			if (data.totalCount == 0) {
+				alert("找沒有! 為您隨機推薦其他好物!♥");
+				inpSearch.value = "";
+				searchData.searchword = "";
+				searchData.sortBy = "coldpro";
+				searchData.sortType = "asc";
+				searchData.page = 1;
+				loadPro();
+				return;
+			}
 			searchcriteria.textContent = `關鍵字:${searchData.searchword}`;
+			const max = data.totalPages;
+			//B.顯示分頁按鈕
+			const loadPage = (max) => {
+				let liPages = "";
+				let whichpage = Math.ceil(max / 8);
+				if (whichpage > 1) {
+					for (let i = 1; i < 9; i++) {
+						liPages += `<li onclick="pagingHandler(${i})" id="li${i}">${i}</li>`;
+					}
+					liPages += `<li onclick="loadMore(${max},9)">></li>`;
+				}
+				else {
+					for (let i = 1; i <= max; i++) {
+						liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`;
+					}
+				}
+				idpageul.innerHTML = liPages;
+			}
+			if (0 < searchData.page && searchData.page < 9) {
+				loadPage(max);
+			}
+			else if (8 < searchData.page && searchData.page < 17) {
+				loadMore(max, 9);
+			}
+			else if (16 < searchData.page && searchData.page < 24) {
+				loadMore(max, 17);
+			}
+			else if (24 < searchData.page && searchData.page < 32) {
+				loadMore(max, 25);
+			}
+			else { console.log("走錯了ㄅ?"); }
+			window.scrollTo(0, 0);
 		}
-		
+
 		loadPro();
 		function ifChange() {
 			searchData.searchword = inpSearch.value;
@@ -362,11 +500,15 @@
 		// 	}
 		// })
 
+
+
+
+
+
 		//A.顯示數量
 		showhowmanypro.addEventListener('change', ifChange);
 		showsort.addEventListener('change', ifChange);
-
-		// 添加事件监听器来捕获表单的提交事件
+		//移除提交功能
 		form.addEventListener('submit', function (event) {
 			event.preventDefault();
 			ifChange();

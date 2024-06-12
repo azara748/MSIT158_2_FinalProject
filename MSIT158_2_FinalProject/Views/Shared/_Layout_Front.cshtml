@@ -43,10 +43,9 @@
 		<div id="top-header">
 			<div class="container">
 				<ul class="header-links pull-left">
-					<li><a href="#"><i class="fa fa-map-marker"></i>企業專區</a></li>
+					<li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li>
 				</ul>
 				<ul class="header-links pull-right">
-					<li><a href="#"><i class="fa fa-dollar"></i>台幣</a></li>
 					<li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
 				</ul>
 			</div>
@@ -172,45 +171,7 @@
 		<!-- /container -->
 	</nav>
 	<!-- /NAVIGATION -->
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<ul class="breadcrumb-tree">
-						<li><a href="#">全部</a></li>
-						<li><a href="#">文具和辦公室用品</a></li>
-						<li class="active">文具用品(共20筆結果)</li>
-					</ul>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /BREADCRUMB -->
-	<!-- SECTION -->
-	<div class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<!-- ASIDE -->
-				<div id="aside" class="col-md-3">
-					<!-- aside Widget -->
-					<div class="aside">
-					</div>
-				<!-- STORE -->
-				@RenderBody()
-				<!-- /STORE -->
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /SECTION -->
+	@RenderBody()
 	<!-- NEWSLETTER -->
 	<div id="newsletter" class="section">
 		<!-- container -->
@@ -219,25 +180,12 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="newsletter">
-						<p>Sign Up for the <strong>NEWSLETTER</strong></p>
+						<p><strong>訂閱電子報</strong></p>
+							<span>即可獲得最新的折扣資訊、限時優惠、免費運送及特價商品通知。不要錯過網路購物平台的超值好康！</span>
 						<form>
-							<input class="input" type="email" placeholder="Enter Your Email">
-							<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+								<input class="input" type="email" placeholder="輸入 Email 完成訂閱">
+							<button class="newsletter-btn"><i class="fa fa-envelope"></i>訂閱</button>
 						</form>
-						<ul class="newsletter-follow">
-							<li>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-instagram"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
-							</li>
-						</ul>
 					</div>
 				</div>
 			</div>
@@ -254,7 +202,7 @@
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-						<div class="col-md-6 col-xs-12">
+						<div class="col-md-3 col-xs-6">
 						<div class="footer">
 							<h3 class="footer-title">關於我們</h3>
 								<p>我們是一家專注禮品的網路商店，提供精美禮物及包裝搭配，為您解決送禮難題，讓每份心意更加完美。</p>
@@ -265,18 +213,24 @@
 							</ul>
 						</div>
 					</div>
-
+						<div class="clearfix visible-xs"></div>
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">付款方式</h3>
+							</div>
+						</div>
+						<div class="clearfix visible-xs"></div>
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">物流合作</h3>
+							</div>
+						</div>
 					<div class="clearfix visible-xs"></div>
-
-						<div class="col-md-6 col-xs-12">
+						<div class="col-md-3 col-xs-6">
 						<div class="footer">
-							<h3 class="footer-title">Service</h3>
+							<h3 class="footer-title">其他服務</h3>
 							<ul class="footer-links">
-								<li><a href="#">My Account</a></li>
-								<li><a href="#">View Cart</a></li>
-								<li><a href="#">Wishlist</a></li>
-								<li><a href="#">Track My Order</a></li>
-									<li><a asp-area="" asp-controller="Product" asp-action="List">進入後台</a></li>
+									<li><a asp-area="" asp-controller="Product" asp-action="List">企業專區</a></li>
 							</ul>
 						</div>
 					</div>
@@ -293,12 +247,6 @@
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<ul class="footer-payments">
-							<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-							<li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
 						</ul>
 						<span class="copyright">
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

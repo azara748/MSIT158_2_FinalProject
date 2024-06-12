@@ -6,28 +6,29 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
+using MSIT158_2_API.Models.DTO;
 
 namespace MSIT158_2_API.Controllers.Front
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TSubCategoriesController : ControllerBase
+    public class SubcatDTOController : ControllerBase
     {
         private readonly SelectShopContext _context;
 
-        public TSubCategoriesController(SelectShopContext context)
+        public SubcatDTOController(SelectShopContext context)
         {
             _context = context;
         }
 
-        // GET: api/TSubCategories
+        // GET: api/SubcatDTO
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TSubCategory>>> GetTSubCategories()
         {
             return await _context.TSubCategories.ToListAsync();
         }
 
-        // GET: api/TSubCategories/5
+        // GET: api/SubcatDTO/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TSubCategory>> GetTSubCategory(int id)
         {
@@ -41,7 +42,7 @@ namespace MSIT158_2_API.Controllers.Front
             return tSubCategory;
         }
 
-        // PUT: api/TSubCategories/5
+        // PUT: api/SubcatDTO/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTSubCategory(int id, TSubCategory tSubCategory)
@@ -72,18 +73,24 @@ namespace MSIT158_2_API.Controllers.Front
             return NoContent();
         }
 
-        // POST: api/TSubCategories
+        // POST: api/SubcatDTO
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TSubCategory>> PostTSubCategory(TSubCategory tSubCategory)
+        public async Task<ActionResult<TSubCategory>> PostTSubCategory(SubcatDTO subcatDTO)
         {
-            _context.TSubCategories.Add(tSubCategory);
-            await _context.SaveChangesAsync();
+            TSubCategory subcat = new TSubCategory();
+			//TSubCategory t = new TSubCategory();
+			_context.TSubCategories.Add(subcat);
+			await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTSubCategory", new { id = tSubCategory.SubCategoryId }, tSubCategory);
-        }
+            subcatDTO.SubCategoryId = subcat.SubCategoryId;
+            subcatDTO.SubCategoryCname = subcat.SubCategoryCname;
 
-        // DELETE: api/TSubCategories/5
+			return CreatedAtAction("GetCategory", new { id = subcatDTO.SubCategoryId }, subcatDTO);
+
+		}	
+
+        // DELETE: api/SubcatDTO/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTSubCategory(int id)
         {

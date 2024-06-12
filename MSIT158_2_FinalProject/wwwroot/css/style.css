@@ -958,6 +958,10 @@ textarea.input {
   color: #ef233c;
 }
 
+    .product .product-body .product-rating > i.fa-star-half {
+        color: #ef233c;
+    }
+
 .product .product-body .product-rating:after {
   content: "";
   position: absolute;
@@ -1243,7 +1247,12 @@ textarea.input {
   margin-bottom: 15px;
 }
 
-.noUi-target {
+.
+
+
+
+
+-target {
   background-color: #FFF;
   -webkit-box-shadow: none;
   box-shadow: none;

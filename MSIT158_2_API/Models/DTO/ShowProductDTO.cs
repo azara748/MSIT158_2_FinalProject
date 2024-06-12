@@ -11,7 +11,7 @@
 		public decimal? Discount { get; set; }
 		public string? LabelName { get; set; }
 		public string? LanchTime { get; set; }
-		public int? TotalQty { get; set; }
 		public int? ProductId { get; set; }
+		public double? Score { get; set; }
 	}
 }
