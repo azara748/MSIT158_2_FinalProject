@@ -374,7 +374,7 @@
                     img = `${b[i].memberPhoto}`
                 }
                 else img = `392531_account_friend_human_man_member_icon.jpg`
-                t += `<li><div class="review-heading"><img src='@Url.Content("~/img/")${img}' style="width:32px;height:32px;;object-fit: contain;"/><label class="name">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
+                t += `<li><div class="review-heading"><img src='@Url.Content("~/img/")${img}' style="width:32px;height:32px;;object-fit: contain;"/><label class="name" style="font-size:20px">${name}</label><p class="date">${b[i].reviewDate}</p><div class="review-rating">`;
                 for (let i2 = 0; i2 < 5; i2++) {
                     if (i2 < b[i].rankId)
                         t += `<i class="fa fa-star"></i>`
@@ -383,7 +383,7 @@
                 let l = b[i].comment;
                 if (l == null) l = ""
                 else l = l.replace("\r\n", "<br/>").replace("\n", "<br/>")
-                t += `</div></div><div class="review-body"><p>${l}</p></div></li>`
+                t += `</div></div><div class="review-body"><p style="font-size:25px">${l}</p></div></li>`
             }
             u1.innerHTML = t;
             go3()
