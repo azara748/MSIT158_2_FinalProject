@@ -16,6 +16,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 		}
 		public string 改成HTML換行符號(string a)
 		{
+			if(!string.IsNullOrEmpty(a))
 			a = a.Replace("\r\n", "<br/>").Replace("\n", "<br/>");
 			return a;
 		}

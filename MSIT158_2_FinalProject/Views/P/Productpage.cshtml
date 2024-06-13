@@ -71,7 +71,9 @@
                     </div>
                     <div>
                         <h3 class="product-price">$@Convert.ToInt32(ViewBag.Product.UnitPrice)<del class="product-old-price">$@Convert.ToInt32((double)ViewBag.Product.UnitPrice * 1.25)</del></h3>
-                        <span class="product-available" id="sp1">庫存:@ViewBag.Product.Stocks</span>
+                        <span class="product-available">有庫存</span>
+                        <span class="product-available" id="sp1" style="display:none">庫存:@ViewBag.Product.Stocks</span>
+
                     </div>
                     @* <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> *@
 
@@ -174,13 +176,19 @@
                                 <div class="col-md-3">
                                     <div id="rating">
                                         <div class="rating-avg">
-                                            <span>@(ViewBag.平均星 + 1)</span>
-                                            <div class="rating-stars">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star-o"></i>
+                                            <span>@(ViewBag.平均星)</span>
+                                            <div class="rating-stars">                                                
+                                                @for (int i = 0; i < 5; i++)
+                                                {
+                                                    if (i < ViewBag.平均星)
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-star-o empty"></i>
+                                                    }
+                                                }
                                             </div>
                                         </div>
                                         <ul class="rating">

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using MSIT158_2_FinalProject.Controllers.前台
+@{
     Layout = "_Layout_Backstage";
 }
 
@@ -42,11 +43,24 @@
         <option value="Comment" value="3">時間近到遠</option>
         <option value="Comment" value="4">時間遠到近</option>
     </select>
+    <div class="form-check" style="float:left;padding-left:5px" >
+        @if (ViewBag.boo == 1)
+        {
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" style="margin-top:7px;margin-left:0px;width:25px;height:25px" name="boo" checked>
+        }
+        else
+        {
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" style="margin-top:7px;margin-left:0px;width:25px;height:25px" name="boo">
+        }
+        <label class="form-check-label" for="flexCheckDefault" style="margin-top:5px;font-size:18px">
+            只含有評論
+        </label>
+    </div>
     <input type="hidden" value="@ViewBag.ode" id='in2' />
     <label style="float:right">&nbsp&nbsp&nbsp</label>
 
     <div class="col-auto" style="float:right">
-        <button class="btn btn-primary mb-3" onclick="dele()">刪除搜尋結果</button>
+        <button class="btn btn-danger" onclick="dele()">刪除搜尋結果</button>
     </div>
     <input type="hidden" value="" id='delect' name="delect" />
     <input type="hidden" value="@ViewBag.page" id='page' name="page" />
@@ -69,16 +83,17 @@
             {
                 c++;
                     <tr id="@("tr"+c)">
-                        <td style="vertical-align: middle;">@v.ProductName</td>
+                    <td style="vertical-align: middle;"><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
                         <td style="vertical-align: middle;">@v.ReviewDate</td>
-                        @{
+                    @{
                         string s = "";
                         for (int i = 0; i < v.RankId; i++)
-                            s += "★";
-                        }
+                            s += "★";                    
+                    }
+                       
                         <td style="vertical-align: middle;">@s</td>
-                        <td style="vertical-align: middle;">@v.Comment</td>
-                        <td style="vertical-align: middle;">
+                    <td style="vertical-align: middle;">@Html.Raw(new fM通用().改成HTML換行符號(v.Comment))</td>
+                    <td style="vertical-align: middle;">
                             <button type="button" class="btn btn-danger" style="margin:5px" onclick='xx("@("tr"+c)",@v.ReviewId)'>刪除</button>
                         </td>
                     </tr>

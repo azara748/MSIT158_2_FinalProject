@@ -8,7 +8,7 @@ namespace MSIT158_2_FinalProject.Controllers.後台
 {
     public class WController : Controller
     {
-        public IActionResult WordCensorship(int page = 1, string keyword = "", string x = "", int ode = 0, string delect = "")
+        public IActionResult WordCensorship(int page = 1, string keyword = "", string x = "", int ode = 0, string delect = "",int boo=0)
         {
             SelectShopContext db = new SelectShopContext();
             if (delect == "delect")
@@ -21,12 +21,13 @@ namespace MSIT158_2_FinalProject.Controllers.後台
 
                     db.TReviews.Where(x => x.ProductId == xx.ProductId).ExecuteDelete();
                 }
+                db.SaveChanges();
             }
-            db.SaveChanges();
+            
 
 
             var v = db.TReviews.Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, x.ReviewDate, x.RankId, x.Comment, x.ReviewId });
+            new { y.ProductPhoto, y.ProductName, x.ReviewDate, x.RankId, x.Comment, x.ReviewId,x.ProductId });
 
             ViewBag.x = "";
 
@@ -45,11 +46,15 @@ namespace MSIT158_2_FinalProject.Controllers.後台
                 }
             }
             ViewBag.keyword = keyword;
+            ViewBag.boo = 0;
+            if (boo == 1)
+            {
+                v = v.Where(x => !string.IsNullOrEmpty(x.Comment));
+                ViewBag.boo = 1;
+            }
 
-
-
-
-            if (ode == 1) v = v.OrderByDescending(x => x.RankId);
+            if (ode == 0) v = v.OrderByDescending(x => x.ReviewId);
+            else if (ode == 1) v = v.OrderByDescending(x => x.RankId);
             else if (ode == 2) v = v.OrderBy(x => x.RankId);
             else if (ode == 3) v = v.OrderByDescending(x => x.ReviewDate);
             else if (ode == 4) v = v.OrderBy(x => x.ReviewDate);
@@ -78,7 +83,7 @@ namespace MSIT158_2_FinalProject.Controllers.後台
         public IActionResult WordCensorship2(string keyword = "")
         {
             SelectShopContext db = new SelectShopContext();
-            IEnumerable<TWordCensorship> a = db.TWordCensorships;
+            IEnumerable<TWordCensorship> a = db.TWordCensorships.OrderByDescending(x=>x.WordCensorshipId);
             if (!string.IsNullOrEmpty(keyword))
                 a =a.Where(x => x.Word.Contains(keyword));
             return View(a);
