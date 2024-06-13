@@ -292,7 +292,9 @@
 		const Lbar = document.getElementById('price-min');
 		const Low = document.querySelector('.noUi-handle-lower');
 		const High = document.querySelector('.noUi-handle-upper');
-		function priceChange() { 
+		function priceChange() {
+			searchData.lowPrice = Lbar.value;
+			searchData.highPrice = Hbar.value;
 			console.log('pricebar', Hbar.value);
 			console.log('pricebar', Lbar.value);			
 		}
@@ -365,8 +367,8 @@
 			"pagesSize": 9,
 			"sortBy": "",
 			"sortType": "asc",
-			"lowPrice":1,
-			"highPrice":20000
+			"lowPrice":null,
+			"highPrice": null
 		};
 
 		// 顯示分類按鈕
