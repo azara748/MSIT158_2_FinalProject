@@ -458,7 +458,7 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Cost).HasColumnType("money");
             entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.LabelId).HasColumnName("LabelID");
-            entity.Property(e => e.LaunchTime).HasMaxLength(50);
+            entity.Property(e => e.LaunchTime).HasColumnType("datetime");
             entity.Property(e => e.ProductName).HasMaxLength(200);
             entity.Property(e => e.SubCategoryId).HasColumnName("SubCategoryID");
             entity.Property(e => e.UnitPrice).HasColumnType("money");

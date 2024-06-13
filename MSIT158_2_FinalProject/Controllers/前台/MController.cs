@@ -84,21 +84,20 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                圖片2 = g.FirstOrDefault().Photo2,
            }).OrderByDescending(x => x.OrderDate).ToList();
 
+            int 顯示數 = 15;
 
-
-
-            if (id != 0) v = v.Where(x => x.StatusId == id).ToList();
-            ViewBag.訂單預覽 = v.Skip((page - 1) * 10).Take(page * 10);
 
             int allpage = 0;
-            if (v.Count() < 11) allpage = 1;
-            else if (v.Count() % 10 == 0) allpage = v.Count() / 10;
-            else allpage = v.Count() / 10 + 1;
+            if (v.Count() < 顯示數+1) allpage = 1;
+            else if (v.Count() % 顯示數 == 0) allpage = v.Count() / 顯示數;
+            else allpage = v.Count() / 顯示數 + 1;
             if (page > allpage) page = allpage;
             ViewBag.allpage = allpage;
             ViewBag.page = page;
             ViewBag.id = id;
 
+            if (id != 0) v = v.Where(x => x.StatusId == id).ToList();
+            ViewBag.訂單預覽 = v.Skip((page - 1) * 顯示數).Take(顯示數);
 
             return View();
         }
