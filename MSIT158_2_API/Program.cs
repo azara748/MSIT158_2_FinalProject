@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //////////////////////////////////////////////////////////////////////////////////
+//builder.Services.AddSession();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -31,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 //////////////////////////////////////////////////////////////////////////////////
 app.UseCors("AllowAll");
+//app.UseSession();
 //////////////////////////////////////////////////////////////////////////////////
 
 app.UseHttpsRedirection();

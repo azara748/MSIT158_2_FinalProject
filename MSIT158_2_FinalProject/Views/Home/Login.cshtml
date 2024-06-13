@@ -116,13 +116,25 @@
 
         const signInGoogleButton = document.querySelector('#GButton');
         const signInFacebookButton = document.querySelector('#FButton');
-        //const signOutButton = document.getElementById("signOutButton");
+        //const signOutButton = document.querySelector('#idsignOutButton1');
         //const message = document.getElementById("message");
         //const userName = document.getElementById("userName");
         //const userEmail = document.getElementById("userEmail");
 
         //signOutButton.style.display = "none";
         //message.style.display = "none";
+        // const clearBrowserData = () => {
+        //     // Clear local storage
+        //     localStorage.clear();
+
+        //     // Clear session storage
+        //     sessionStorage.clear();
+
+        //     // Clear cookies
+        //     document.cookie.split(";").forEach(function (c) {
+        //         document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+        //     });
+        // };
 
         const userSignInGoogle = async () => {
             try {
@@ -150,6 +162,7 @@
             }
         }
 
+        
         // const userSignInGoogle = async () => {
         //     signInWithPopup(auth, Gprovider)
         //         .then((result) =>   {
@@ -204,19 +217,27 @@
                             "txtOauthName": Jnames3,
                             "txtOauthEmail": Jemails3
                         };
-                        const urlB = 'https://localhost:7160/api/TMembers/OauthSearchMember';
+                        const urlB = '@Url.Content("~/ApiMember/OauthLogin")';
+                        //const urlB = 'https://localhost:7160/api/TMembers/OauthSearchMember';
                         const responseB = await fetch(urlB, {
                             method: 'POST',
                             body: JSON.stringify(OauthDataB),
                             headers: { 'Content-Type': 'application/json' }
                         });
                         const datasB = await responseB.text();
+                        console.log("test1");
+                        console.log(datasB);
                         const membersB = JSON.parse(datasB);
-                        console.log('membersB');
-                        const messagesB = membersB.message;
-                        const JnamesB = membersB.user.memberName;
-                        const JemailsB = membersB.user.eMail;
-                        if (confirm(`${JnamesB}\n${JemailsB}\n${messagesB}`)) {
+                        console.log("test2");
+                        console.log(membersB);
+                        // const messagesB = membersB.message;
+                        // const JnamesB = membersB.user.memberName;
+                        // const JemailsB = membersB.user.eMail;
+                        const JnamesB = membersB.MemberName;
+                        const JemailsB = membersB.EMail;
+                        console.log("test3");
+                        console.log(JnamesB);
+                        if (confirm(`${JnamesB}\n${JemailsB}\n確定要登入嗎!`)) {
                             window.location.href = "/Home/Index";
                         }
                     }
@@ -249,7 +270,8 @@
                     console.log(pair[0], pair[1]);
                 }
 
-                const url = 'https://localhost:7160/api/TMembers/Memberlogin';
+                const url = '@Url.Content("~/ApiMember/Login")';
+                //const url = 'https://localhost:7160/api/TMembers/Memberlogin';
                 const response = await fetch(url, {
                     method: 'POST',
                     body: fromdata
@@ -263,15 +285,17 @@
                 const jsonmember = JSON.parse(data);
                 console.log("test4");
                 console.log(jsonmember);
-                const message = jsonmember.message;
-                console.log("test5");
-                console.log(message);
-                const name = jsonmember.json;
-                const jsonp = JSON.parse(name);
-                const Jname = jsonp.MemberName;
-                const Jemail = jsonp.EMail;
+                // const message = jsonmember.message;
+                // console.log("test5");
+                // console.log(message);
+                // const name = jsonmember.json;
+                // const jsonp = JSON.parse(name);
+                // const Jname = jsonp.MemberName;
+                // const Jemail = jsonp.EMail;
+                // 將路徑改在MVC的API，要存Session資料
+                const Jname = jsonmember.MemberName;
+                const Jemail = jsonmember.EMail;
                 console.log("test6");
-                console.log(name);
                 console.log(Jname);
                 console.log(Jemail);
                 if (Jemail) {
@@ -319,7 +343,7 @@
 
 
         signInGoogleButton.addEventListener('click', userSignInGoogle);
-        signInFacebookButton.addEventListener('click', userSignInFacebook);        
+        signInFacebookButton.addEventListener('click', userSignInFacebook);
     </script>
     
     @* <script src="https://accounts.google.com/gsi/client" async defer></script> *@

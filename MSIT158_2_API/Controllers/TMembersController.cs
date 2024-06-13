@@ -37,7 +37,7 @@ namespace MSIT158_2_API.Controllers
             if (user != null && user.Password.Equals(vm.txtPassword))
             {
                 json = JsonSerializer.Serialize(user);
-                _pp = json;
+                //_pp = json;
                 //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
             }
             return Ok(new { message = "登入成功", json });
@@ -91,9 +91,16 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("OauthCreate")]
         public async Task<ActionResult<TMember>> POSTMemberOauthCreate([FromBody] COauthLoginViewModel vm)
         {
+            TMember is_email = _context.TMembers.FirstOrDefault(x => x.EMail == vm.txtOauthEmail);
+            if (is_email != null)
+                return Ok(new { message = "該會員已存在", m = is_email });
+
+
             TMember m = new TMember();
             m.MemberName = vm.txtOauthName;
             m.EMail = vm.txtOauthEmail;
+
+
             _context.TMembers.Add(m);
             await _context.SaveChangesAsync();
             
@@ -168,48 +175,48 @@ namespace MSIT158_2_API.Controllers
         }
         //檢查帳號是否存在
         [HttpPost("CheckAccount")]
-        //public async Task<ActionResult<TMember>> CheckAccount([FromBody] string email, [FromBody] string password)
-        //{
-        //    // 從資料庫中獲取用戶的鹽和雜湊後的密碼
-        //    TMember used = _context.TMembers.FirstOrDefault(x => x.EMail == email);
-        //    string salt = used.Salt;
-        //    string Passwordsalted = password + salt;
-        //    //密碼加密，使用 SHA256 演算法
-        //    password = GetSha256Hash(Passwordsalted);
-        //    var is_mail = _context.TMembers.Any(m => m.EMail == email);
-        //    var is_password = _context.TMembers.Any(m => m.Password == password);
-        //    var Memail = _context.TMembers.Where(x => x.EMail == email);
-        //    var Mpassword = _context.TMembers.Where(x => x.Password == password);
-        //    var str = "帳號可使用";
-        //    var str2 = "信箱可使用";
-        //    string json = "";
-            
-
-        //    //str2 = "信箱已存在";
-        //    //var str3 = str + "<br />" + str2;
-
-        //    if (is_password)
-        //        Mpassword.ToString();
-        //    //str = "密碼已存在";
-
-        //    var strA = "<br />" + Mpassword.ToString();
-        //    var str3 = str2 + "<br />" + str;
-        //    //======================================================
-        //    TMember user = _context.TMembers.FirstOrDefault(
-        //        t => t.EMail.Equals(email) && t.Password.Equals(password));
-
-        //    if (user != null && user.Password.Equals(password))
-        //    {
-        //        json = JsonSerializer.Serialize(user);
-        //        //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
-
-        //        pp = json;
-        //    }
-        //    //=====================================================
+        public async Task<ActionResult<TMember>> CheckAccount([FromForm] string email, [FromForm] string password)
+        {
+            // 從資料庫中獲取用戶的鹽和雜湊後的密碼
+            TMember used = _context.TMembers.FirstOrDefault(x => x.EMail == email);
+            string salt = used.Salt;
+            string Passwordsalted = password + salt;
+            //密碼加密，使用 SHA256 演算法
+            password = GetSha256Hash(Passwordsalted);
+            var is_mail = _context.TMembers.Any(m => m.EMail == email);
+            var is_password = _context.TMembers.Any(m => m.Password == password);
+            var Memail = _context.TMembers.Where(x => x.EMail == email);
+            var Mpassword = _context.TMembers.Where(x => x.Password == password);
+            var str = "帳號可使用";
+            var str2 = "信箱可使用";
+            string json = "";
 
 
-        //    return Content(json, "text/plain", System.Text.Encoding.UTF8);
-        //}
+            //str2 = "信箱已存在";
+            //var str3 = str + "<br />" + str2;
+
+            if (is_password)
+                Mpassword.ToString();
+            //str = "密碼已存在";
+
+            var strA = "<br />" + Mpassword.ToString();
+            var str3 = str2 + "<br />" + str;
+            //======================================================
+            TMember user = _context.TMembers.FirstOrDefault(
+                t => t.EMail.Equals(email) && t.Password.Equals(password));
+
+            if (user != null && user.Password.Equals(password))
+            {
+                json = JsonSerializer.Serialize(user);
+                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+
+                _pp = json;
+            }
+            //=====================================================
+
+
+            return Content(json, "text/plain", System.Text.Encoding.UTF8);
+        }
 
         //新增會員&確認密碼
         [HttpPost("CreateCheckPassword")]
@@ -218,8 +225,8 @@ namespace MSIT158_2_API.Controllers
             var is_mail = _context.TMembers.Any(x => x.EMail == p.EMail);
             var is_password = _context.TMembers.Any(x => x.Password == p.Password);
             // 檢查信箱是否已經存在(信箱不重複，才可以寫進資料庫)
-            if (is_mail)
-                return BadRequest(new { message = "信箱已存在" });
+            //if (is_mail)
+            //    return BadRequest(new { message = "信箱已存在" });
             // 檢查密碼和重複輸入的密碼是否一致
             if (p.Password != repassword)
                 return BadRequest(new { message = "密碼不一致" });

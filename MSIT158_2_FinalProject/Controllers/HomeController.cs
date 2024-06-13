@@ -19,12 +19,20 @@ namespace MSIT158_2_FinalProject.Controllers
 
         public IActionResult Index()
         {
-            //var a = _context.TOrders.FirstOrDefault();
-            //return Json(a);
-            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-            //    return View();
-            //return RedirectToAction("Login");
-            return View();
+            // 檢查 Session 中是否存在登錄會員的資料
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            {
+                // 取得 Session 資料
+                var loginMemberData = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+                // 將 JSON 字串反序列化為購物車列表
+                TMember User = JsonSerializer.Deserialize<TMember>(loginMemberData);
+                // 使用 ViewBag 將 Session 資料傳遞到視圖
+                ViewBag.LoginMember = loginMemberData;
+                // 如果存在，則顯示首頁視圖
+                return View(User);
+            }
+            // 如果不存在，則導向登錄頁面
+            return RedirectToAction("Login");
         }
         public IActionResult Login()
         {

@@ -36,7 +36,7 @@ namespace MSIT158_2_API.Controllers
             {
                 json = JsonSerializer.Serialize(user);
                 _pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
             }
             return Ok(new { message = "登入成功", json });
         }
@@ -51,7 +51,7 @@ namespace MSIT158_2_API.Controllers
             {
                 json = JsonSerializer.Serialize(user);
                 _pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
+                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
             }
             return Ok(new { message = "確認成功", json });
         }
@@ -60,7 +60,7 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("EmployeeSearch")]
         public async Task<ActionResult<CEmployePagingDTO>> GetEmployee([FromBody] CESearchDTO searchDTO)
         {
-            //根據分類編號搜尋員工資料
+            //根據分類編號搜尋員工資料           
             var employees = searchDTO.employeeId == 0 ? _context.TEmployees : _context.TEmployees.Where(s => s.EmployeeId == searchDTO.employeeId);
             //根據關鍵字搜尋員工資料(title、desc)
             if (!string.IsNullOrEmpty(searchDTO.keyword))
