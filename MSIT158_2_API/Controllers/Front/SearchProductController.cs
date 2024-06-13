@@ -163,12 +163,12 @@ namespace MSIT158_2_API.Controllers.Front
 				SubCategoryId = pro.SubCategoryId,
 				SubCatName = pro.SubCategory.SubCategoryCname,
 				Stocks = pro.Stocks,
-				LanchTime = pro.LaunchTime,
 				UnitPrice = pro.UnitPrice,
 				Discount = pro.Active.Discount,
 				LabelName = pro.Label.LabelName,
 				Productphoto = pro.ProductPhoto,
 				Score = pro.TReviews.Average(p => p.RankId),
+				isnew = pro.LaunchTime.HasValue && (DateTime.Now - pro.LaunchTime.Value).TotalDays < 30
 			}).ToList();
 
 			var toClientProduct = new ToClientProductDTO

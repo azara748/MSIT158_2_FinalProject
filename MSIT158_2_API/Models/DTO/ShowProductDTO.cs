@@ -13,5 +13,6 @@
 		public string? LanchTime { get; set; }
 		public int? ProductId { get; set; }
 		public double? Score { get; set; }
+		public bool? isnew { get; set; }
 	}
 }
