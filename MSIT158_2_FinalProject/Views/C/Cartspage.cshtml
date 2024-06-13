@@ -19,7 +19,7 @@
                         foreach (var v in ViewBag.會員購物車)
                         {
                             f++;
-                                    <tr id='@("c"+f)'>
+                                    <tr id='@("C"+f)'>
                                     <th scope="row">
                                         <div class="d-flex align-items-center">
                                         <a href="~/P/Productpage/@v.ProductId">
@@ -42,7 +42,7 @@
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                                <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("q"+f)'>
+                                                <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("Q"+f)'>
                                             <div class="input-group-btn" style="padding-left:5px;">
                                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp(@f,'p',@v.CartId,@v.UnitPrice)">
                                                     <i class="fa fa-plus"></i>
@@ -51,7 +51,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <p class="mb-0 mt-4" style="padding-top:13px" id='@("p"+f)'>@Convert.ToInt32(@v.Qty * @v.UnitPrice)</p>
+                                            <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+f)'>@Convert.ToInt32(@v.Qty * @v.UnitPrice)</p>
                                     </td>
                                     <td>
                                         <div style="padding-top:6px">
@@ -65,7 +65,7 @@
                         foreach (var v in ViewBag.會員購物車2)
                         {
                             f++;
-                            <tr id='@("c"+f)'>
+                            <tr id='@("C"+f)'>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
                                         <img src="~/assets/Img/packageImages/@v.Picture" style="width: 80px; height: 80pxobject-fit: contain;" alt="">
@@ -84,7 +84,7 @@
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("q"+f)'>
+                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("Q"+f)'>
                                         <div class="input-group-btn" style="padding-left:5px;">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp2(@f,'p',@v.PackageCartId,@v.Price)">
                                                 <i class="fa fa-plus"></i>
@@ -93,7 +93,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <p class="mb-0 mt-4" style="padding-top:13px" id='@("p"+f)'>@Convert.ToInt32(@v.Qty * @v.Price)</p>
+                                    <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+f)'>@Convert.ToInt32(@v.Qty * @v.Price)</p>
                                 </td>
                                 <td>
                                     <div style="padding-top:6px">
@@ -211,37 +211,37 @@
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
-            document.getElementById("c"+d).innerHTML = "";
+            document.getElementById("C"+d).innerHTML = "";
             總價 -= Number(p)
             all.innerHTML = '$' + 總價
             allw.innerHTML = '$' + (總價 + 運費)
         }
         async function mp(d,q,id,u) {
-            if (q == "m" && document.getElementById("q" + d).value < 2) return;
+            if (q == "m" && document.getElementById("Q" + d).value < 2) return;
             var a2 = await fetch(`@Url.Content("~/C/qtyCartAPI")/${id}/?q=${q}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
             if (q == "p") {
-                document.getElementById("q"+d).value++;
-                var p = document.getElementById("p"+d).innerHTML.replace("$", "");
+                document.getElementById("Q"+d).value++;
+                var p = document.getElementById("P"+d).innerHTML.replace("$", "");
                 var p1 = Number(p)
                 var u1 = Number(u)
                 console.log(p1)
                 console.log(u1)
                 console.log(總價)
                 p1 += u1
-                document.getElementById("p"+d).innerHTML = "$"+p1
+                document.getElementById("P"+d).innerHTML = "$"+p1
                 總價 += u1
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
             }
             else {
-                document.getElementById("q" + d).value--;
-                var p = document.getElementById("p" + d).innerHTML.replace("$", "");
+                document.getElementById("Q" + d).value--;
+                var p = document.getElementById("P" + d).innerHTML.replace("$", "");
                 var p1 = Number(p)
                 var u1 = Number(u)
                 p1 -= u1
-                document.getElementById("p" + d).innerHTML = "$" + p1
+                document.getElementById("P" + d).innerHTML = "$" + p1
                 總價 -= u1
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
@@ -252,34 +252,34 @@
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
-            document.getElementById("c" + d).innerHTML = "";
+            document.getElementById("C" + d).innerHTML = "";
             總價 -= Number(p)
             all.innerHTML = '$' + 總價
             allw.innerHTML = '$' + (總價 + 運費)
         }
         async function mp2(d, q, id, u) {
-            if (q == "m" && document.getElementById("q" + d).value < 2) return;
+            if (q == "m" && document.getElementById("Q" + d).value < 2) return;
             var a2 = await fetch(`@Url.Content("~/C/qtyCartAPI2")/${id}/?q=${q}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
             if (q == "p") {
-                document.getElementById("q" + d).value++;
-                var p = document.getElementById("p" + d).innerHTML.replace("$", "");
+                document.getElementById("Q" + d).value++;
+                var p = document.getElementById("P" + d).innerHTML.replace("$", "");
                 var p1 = Number(p)
                 var u1 = Number(u)               
                 p1 += u1
-                document.getElementById("p" + d).innerHTML = "$" + p1
+                document.getElementById("P" + d).innerHTML = "$" + p1
                 總價 += u1
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
             }
             else {
-                document.getElementById("q" + d).value--;
-                var p = document.getElementById("p" + d).innerHTML.replace("$", "");
+                document.getElementById("Q" + d).value--;
+                var p = document.getElementById("P" + d).innerHTML.replace("$", "");
                 var p1 = Number(p)
                 var u1 = Number(u)
                 p1 -= u1
-                document.getElementById("p" + d).innerHTML = "$" + p1
+                document.getElementById("P" + d).innerHTML = "$" + p1
                 總價 -= u1
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
