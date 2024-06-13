@@ -495,14 +495,13 @@
 				div1.innerHTML = pros.join("");
 				searchresult.textContent = `${data.totalCount}`;
 				if (data.totalCount == 0) {
-				searchcriteria.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看其他商品`;
+				searchcriteria.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看以下推薦商品。`;
 				inpSearch.value = "";
 				searchData.searchword = "";
 				searchData.sortBy = "coldpro";
 				searchData.sortType = "asc";
 				searchData.page = 1;
 				loadPro();
-				return;
 			}
 
 			const max = data.totalPages;
@@ -511,7 +510,8 @@
 				let liPages = "";
 				let whichpage = Math.ceil(max / 8);
 				if (whichpage > 1) {
-					for (let i = 1; i < 9; i++) {
+					liPages += `<li onclick="pagingHandler(1)" id="li1" class="active">1</li>`;
+					for (let i = 2; i < 9; i++) {
 						liPages += `<li onclick="pagingHandler(${i})" id="li${i}" class="aaa">${i}</li>`;
 					}
 					liPages += `<li onclick="loadMore(${max},9)">></li>`;
@@ -626,7 +626,7 @@
 			searchcriteria.textContent = `分類: ${searchData.subcatId} 的所有產品`;
 			loadPro();
 		}
-		//測試共用
+		//條件共用
 		function Change(){
 			searchData.searchword = inpSearch.value;
 			if (searchData.searchword.trim() !== "") {
