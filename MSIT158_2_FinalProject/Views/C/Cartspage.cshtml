@@ -55,7 +55,7 @@
                                     </td>
                                     <td>
                                         <div style="padding-top:6px">
-                                                <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="dedet(@f,@Convert.ToInt32(@v.Qty * @v.UnitPrice),@v.CartId)">
+                                                <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="Dedet(@f,@Convert.ToInt32(@v.Qty * @v.UnitPrice),@v.CartId)">
                                                 <i class="fa fa-times text-danger"></i>
                                             </button>
                                         </div>
@@ -97,7 +97,7 @@
                                 </td>
                                 <td>
                                     <div style="padding-top:6px">
-                                        <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="dedet2(@f,@Convert.ToInt32(@v.Qty * @v.Price),@v.PackageCartId)">
+                                        <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="Dedet2(@f,@Convert.ToInt32(@v.Qty * @v.Price),@v.PackageCartId)">
                                             <i class="fa fa-times text-danger"></i>
                                         </button>
                                     </div>
@@ -206,7 +206,8 @@
         //     w.innerHTML = '$' + 運費
         //     allw.innerHTML = '$' + (總價 + 運費)
         // }
-        async function dedet(d, p, id) {
+        async function Dedet(d, p, id) {
+            console.log(id)
             if (!confirm("確定要刪除嗎?")) return
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
             var b2 = await a2.text()
@@ -215,6 +216,7 @@
             總價 -= Number(p)
             all.innerHTML = '$' + 總價
             allw.innerHTML = '$' + (總價 + 運費)
+            cart1()
         }
         async function mp(d,q,id,u) {
             if (q == "m" && document.getElementById("Q" + d).value < 2) return;
@@ -246,8 +248,9 @@
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
             }
+            cart1()
         }
-        async function dedet2(d, p, id) {
+        async function Dedet2(d, p, id) {
             if (!confirm("確定要刪除嗎?")) return
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
             var b2 = await a2.text()
@@ -256,6 +259,7 @@
             總價 -= Number(p)
             all.innerHTML = '$' + 總價
             allw.innerHTML = '$' + (總價 + 運費)
+            cart1()
         }
         async function mp2(d, q, id, u) {
             if (q == "m" && document.getElementById("Q" + d).value < 2) return;
@@ -284,6 +288,7 @@
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
             }
+            cart1()
         }
         function 運送() {
             if (總價 == 0) {
