@@ -256,9 +256,31 @@ namespace MSIT158_2_FinalProject.Controllers
         }
 
         // GET: packageController/Delete/5
-        public ActionResult Delete(int id)
+        //[HttpDelete("DeletePackage")]
+        public async Task<IActionResult> DeletePackage(int id)
         {
-            return View();
+            try
+            {
+                var package = await _context.TAllPackages.FindAsync(id);
+                if (package == null)
+                {
+                    return NotFound();
+                }
+            
+           
+                _context.TAllPackages.Remove(package);
+                await _context.SaveChangesAsync();
+
+                return NoContent();} 
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         // POST: packageController/Delete/5

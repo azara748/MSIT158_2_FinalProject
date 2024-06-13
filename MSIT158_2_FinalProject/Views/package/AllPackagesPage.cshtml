@@ -26,7 +26,18 @@
         const table = document.querySelector("#table");
         const selector = document.querySelector("#selector");
 
+function eiditb() {
+            BEdit = document.getElementsByName('BEdit');
 
+            BEdit.forEach(button => {
+                button.addEventListener('click', e => {
+                    const button = e.target.id;
+                    const id = button.slice(5);
+                    window.location.href = `@Url.Content("~/package/EditPackage")?id=${id}`;
+
+                });
+            });
+        }
         (async () => {
             const response = await fetch('@Url.Content("~/package/AllPackages")')
             if (!response.ok) {
@@ -43,22 +54,34 @@
                         <td>${p.price}</td>
                         <td>
                                                 <button type="button" class="btn btn-secondary" name="BEdit" id="BEdit${p.packageId}" >修改</button>
-                                        <button type="button" class="btn btn-danger" id="BDel${p.packageId}">刪除</button></td>
+                                                        <button type="button" class="btn btn-danger" name="BDel" id="BDel${p.packageId}">刪除</button></td>
                     </tr>
                 `
             });
             table.innerHTML = package.join("");
 
-            BEdit = document.getElementsByName('BEdit');
+            eiditb();
 
-            BEdit.forEach(button => {
-                button.addEventListener('click', e => {
-                    const button=e.target.id;
-                    const id = button.slice(5);
-                    window.location.href = `@Url.Content("~/package/EditPackage")?id=${id}`;
-                    
-                });
-            });
+            // BDel = document.getElementsByName('BDel');
+
+            // BDel.forEach(button => {
+            //     button.addEventListener('click', async e => {
+            //         const button = e.target.id;
+            //         const id = button.slice(4);
+
+            //         console.log(id);
+            //         const delID = await fetch(`@Url.Content("~/package/DeletePackage")?id=${id}`, {
+            //             method: 'DELETE'
+            //         });
+
+            //         if (!delID.ok) {
+            //             console.log(`erroe message:${delID.status}`)
+            //             return
+            //         }
+
+            //     });
+            // });
+
             
 
             const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
@@ -72,6 +95,8 @@
             selector.innerHTML = seletorPackage.join("");
 
         })()
+
+        
 
         selector.addEventListener("change", async (e) => {
             table.innerHTML = "";
@@ -104,12 +129,13 @@
                                 <td><img src="${'@Url.Content("~/assets/img/packageimages/")' + p.picture}" alt="${p.packName}" width="100" height="100" /></td>
                                 <td>${p.price}</td>
                                          <td>
-                                <button type="button" class="btn btn-secondary">修改</button>
-                                        <button type="button" class="btn btn-danger">刪除</button></td>
+                                        <button type="button" class="btn btn-secondary"  name="BEdit" id="BEdit${p.packageId}">修改</button>
+                                                 <button type="button" class="btn btn-danger">刪除</button></td>
                             </tr>
                         `
             });
             table.innerHTML = package.join("");
+            eiditb();
         })
         
 
