@@ -175,15 +175,38 @@
         document.getElementById('editForm').addEventListener('click', async function (event) {
             event.preventDefault();
             console.log("QQ");
-            const formData = new FormData(updatePackageForm);
+            const packName = packageName.value;
+            const price = packagePrice.value;
+            const updescription = description.value;
+            const materialId = packageMaterial.value;
+            const packageStyleId = packageStyle.value;
+            const pictureFile = imageUpload.files[0];
 
-            const response = await fetch(`@Url.Content("~/package/MaterialColor?name=")${encodeURIComponent(packageMaterialName)}`, {
+            console.log(packageId, packName, price, updescription, materialId, packageStyleId);
+
+            const updatedPackage = {
+               PackageId:parseInt(packageId),
+               PackName: packName,
+               Price: parseInt(price),
+               Description: updescription,
+               MaterialId: parseInt(materialId),
+               PackageStyleId: parseInt(packageStyleId),
+               Picture: pictureFile ? pictureFile.name : ''
+            };
+            console.log(updatedPackage);
+
+
+            const formData = new FormData();
+            formData.append('updatedPackage', JSON.stringify(updatedPackage));
+            if (pictureFile) {
+                formData.append('avatar', pictureFile);
+            }
+
+            const response = await fetch(`@Url.Content("~/package/UpdatePackage?id=")${encodeURIComponent(packageId)}`, {
                 method: 'PUT',
                 body: formData
             });
 
-            const data = await response.text();
-            console.log(data);
 
             if (response.ok) {
                 console.log('Package updated successfully');
@@ -191,5 +214,8 @@
                 console.error('Failed to update package', response.statusText);
             }
         });
+
+
+       
     </script> 
 }

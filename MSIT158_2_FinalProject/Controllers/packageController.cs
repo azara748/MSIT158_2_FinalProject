@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using MSIT158_2_FinalProject.Models;
 using MSIT158_2_FinalProject.Models.DTO;
+using Newtonsoft.Json;
 
 namespace MSIT158_2_FinalProject.Controllers
 {
@@ -170,9 +171,10 @@ namespace MSIT158_2_FinalProject.Controllers
         }
 
         //[HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePackage(int id, [FromBody] TAllPackage updatedPackage, IFormFile? avatar)
+        public async Task<IActionResult> UpdatePackage(int id, [FromForm] string updatedPackage, [FromForm] IFormFile? avatar)
         {
-            if (id != updatedPackage.PackageId)
+            var updatedPackageData = JsonConvert.DeserializeObject<TAllPackage>(updatedPackage);
+            if (id != updatedPackageData.PackageId)
             {
                 return BadRequest();
             }
@@ -183,12 +185,6 @@ namespace MSIT158_2_FinalProject.Controllers
                 return NotFound();
             }
 
-            package.PackName = updatedPackage.PackName;
-            package.Price = updatedPackage.Price;
-            package.Description = updatedPackage.Description;
-            package.MaterialId = updatedPackage.MaterialId;
-            package.PackageStyleId = updatedPackage.PackageStyleId;
-            package.Picture = updatedPackage.Picture;
 
             if (avatar != null)
             {
@@ -196,11 +192,11 @@ namespace MSIT158_2_FinalProject.Controllers
                 string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "assets", "img", "packageImages", avatar.FileName);
 
                 // 确保目录存在
-                var directory = Path.GetDirectoryName(uploadPath);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                //var directory = Path.GetDirectoryName(uploadPath);
+                //if (!Directory.Exists(directory))
+                //{
+                //    Directory.CreateDirectory(directory);
+                //}
 
                 using (var fileStream = new FileStream(uploadPath, FileMode.Create))
                 {
@@ -211,14 +207,19 @@ namespace MSIT158_2_FinalProject.Controllers
                 byte[]? imgByte = null;
                 using (var memoryStream = new MemoryStream())
                 {
-                    avatar.CopyTo(memoryStream);
+                    await avatar.CopyToAsync(memoryStream);
                     imgByte = memoryStream.ToArray();
                 }
 
-                // 直接将文件名称赋值给 updatedPackage.Picture
-                package.Picture = avatar.FileName;
-                package.PictureData = imgByte;
+                package.Picture = avatar.FileName; // 更新现有记录的图片文件名
+                package.PictureData = imgByte; // 更新现有记录的图片数据
             }
+
+            package.PackName = updatedPackageData.PackName;
+            package.Price = updatedPackageData.Price;
+            package.Description = updatedPackageData.Description;
+            package.MaterialId = updatedPackageData.MaterialId;
+            package.PackageStyleId = updatedPackageData.PackageStyleId;
 
             try
             {
