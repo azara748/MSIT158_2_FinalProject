@@ -116,8 +116,32 @@ namespace MSIT158_2_API.Controllers.Front
 			{
 				query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
 			}
-			//排序_
+			if (searchProductDTO.stock)
+			{
+				query = query.Where(p => p.Stocks > 0);
+			}
+			if (searchProductDTO.newlan)
+			{
 
+				var currentDate = DateTime.Now;
+				query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime.Value, currentDate) < 30);
+
+			}
+			if (searchProductDTO.rankfour)
+			{
+
+				query = query.Where(p => p.TReviews.Average(x => x.RankId)>=4);
+
+
+			}
+			if (searchProductDTO.rankthree)
+			{
+				query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
+
+			}
+
+
+			//排序_
 			switch (searchProductDTO.sortBy)
 			{
 				case "UnitPrice":
@@ -146,9 +170,10 @@ namespace MSIT158_2_API.Controllers.Front
 				//	query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
 				//	break;
 			}
-			//計算評分
 			
-
+			
+			
+			//計算評分	
 			int totalCount = query.Count();
 			int pageSize = searchProductDTO.pagesSize;
 			int page = searchProductDTO.page;

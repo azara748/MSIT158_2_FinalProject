@@ -10,6 +10,10 @@
 		public string? sortType { get; set; }
 		public int? lowPrice { get; set; }
 		public int? highPrice { get; set; }
+		public bool stock { get; set; } = false;
+		public bool newlan { get; set; } = false;
+		public bool rankfour { get; set; } = false;
+		public bool rankthree { get; set; } = false;
 		//public int score { get; set; } 
 	}
 }
