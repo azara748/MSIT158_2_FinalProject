@@ -26,7 +26,7 @@
 			<!-- ASIDE -->
 			<div id="aside" class="col-md-3">
 				<!-- aside Widget -->
-				<div class="aside">
+@* 				<div class="aside">
 					<h3 class="aside-title">商品分類(單選)</h3>
 					<div class="checkbox-filter">
 						<div class="input-checkbox">
@@ -118,7 +118,7 @@
 							</label>
 						</div>
 					</div>
-				</div>
+				</div> *@
 				<!-- /aside Widget -->
 				<!-- 價錢區域 -->
 				<div class="aside">
@@ -141,7 +141,7 @@
 				<!-- /價錢區域 -->
 				<!-- aside Widget -->
 				<div class="aside">
-					<h3 class="aside-title">依評分篩選:</h3>
+					<h3 class="aside-title">依條件篩選:</h3>
 					<div class="checkbox-filter">
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-1">
@@ -157,6 +157,7 @@
 								3星以上
 							</label>
 						</div>
+						<div>-------------------------</div>
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-3">
 							<label for="brand-3">
@@ -164,6 +165,7 @@
 								尚有庫存
 							</label>
 						</div>
+						<div>-------------------------</div>
 						<div class="input-checkbox">
 							<input type="checkbox" id="brand-4">
 							<label for="brand-4">
@@ -411,14 +413,14 @@
 								<div class="product-img">
 									${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
 										<div class="product-label">
-											<span class="sale">${discount * 10}折優惠</span>
+											<span class="sale">全館8折優惠</span>
 												<span class="new">${LanchTime = null ? LanchTime : "新上市"}</span>
 							</div>
 							</div>
 							<div class="product-body">
 									<p class="product-category">${labelName}</p>
 							<h3 class="product-name"><a href="#">${productName}</a></h3>
-							<h4 class="product-price">$${Math.round(unitPrice * 0.9)}<del class="product-old-price">${unitPrice}</del></h4>
+							<h4 class="product-price">$${unitPrice}<del class="product-old-price">${Math.round(unitPrice*1.25)}</del></h4>
 									<div class="product-rating">
 						${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}
 											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
