@@ -16,4 +16,6 @@ public partial class TMemberLike
     public int? Status { get; set; }
 
     public virtual TMember Memeber { get; set; }
+
+    public virtual TProduct Product { get; set; }
 }

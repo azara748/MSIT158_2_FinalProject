@@ -102,6 +102,7 @@ namespace MSIT158_2_API.Controllers.Front
 						.Include(p => p.TPurchases)
 						.Include(p => p.TReviews)
 						.AsQueryable();
+	
 			//搜尋_次分類
 			query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
 			//搜尋_關鍵字

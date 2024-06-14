@@ -310,12 +310,16 @@
 		//商品展示區
 		const div1 = document.getElementById('idshowpro');
 		const idultree = document.getElementById('idultree');
+		//like
+		const likelist = document.getElementById('idlikelist');
+		const btnlikelist = document.getElementById('btnlikelist');
 		//存分類名稱
 		const catname = {};
 		function getcatname(subCategoryId, subCategoryCname) {
 			catname[subCategoryId] = subCategoryCname;
 		}
-		
+		//addtolike
+
 		//Low.addEventListener('mouseout', priceChange)
 		//High.addEventListener('mouseout', priceChange)
 		//被點分頁
@@ -386,8 +390,11 @@
 			"highPrice": null,
 			"stock": false,
 			"newlan": false,
-			"rankfour": false,
+			"rankfour": false, 
 			"rankthree": false
+		};
+		const likeData = {
+			"mMemberId": 4
 		};
 
 		//顯示分類按鈕
@@ -427,7 +434,7 @@
 			const response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify({
-					"subcatId": subnum[ran],
+					"subcatId": 0,
 					"keyword": "",
 					"page": 1,
 					"pagesSize": 9,
@@ -491,7 +498,7 @@
 											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
 							</div>
 							<div class="product-btns">
-								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+												<button class="add-to-wishlist" id="likebtn" value="${productId}"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
 								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
 								<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
 								</div>
@@ -504,15 +511,19 @@
 				})
 				div1.innerHTML = pros.join("");
 				searchresult.textContent = `${data.totalCount}`;
+				let btnlike = document.getElementById("likebtn");
+				console.log(btnlike.value);
+				btnlike.addEventListener('click',addlike(3,btnlike.value));
 				if (data.totalCount == 0) {
-				searchcriteria.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看以下推薦商品。`;
-				inpSearch.value = "";
-				searchData.searchword = "";
-				searchData.sortBy = "coldpro";
-				searchData.sortType = "asc";
-				searchData.page = 1;
+					searchcriteria.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看以下推薦商品。`;
+					inpSearch.value = "";
+					searchData.searchword = "";
+					searchData.sortBy = "coldpro";
+					searchData.sortType = "asc";
+					searchData.page = 1;
 				loadPro();
-			}
+					return;
+				}
 
 			const max = data.totalPages;
 			//B.顯示分頁按鈕
@@ -551,10 +562,32 @@
 			// 	});
 			// });
 		}
-		//一開始就執行
-		//foru();
+		//showlikelist
 
+		//一開始就執行
 		loadPro();
+		//loadLike();
+		//加到心儀
+		function addlike(mMemberId, mProductId) {
+			//加入心儀API
+			const addliketolist = async () => {
+				const url = 'https://localhost:7160/api/TMemberLikes/addlike';
+				const response = await fetch(url, {
+					method: 'POST',
+					body: JSON.stringify({
+						"mMemberId": mMemberId,
+						"mProductId": mProductId
+					}),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+				console.log("執行放到心儀", mMemberId);
+				console.log("執行放到心儀", mProductId);
+			}
+			addliketolist();
+			loadLike();
+		}
 		 //輸入文字後
 		function onlyTxt() {
 			if (advstarfour.checked) {
@@ -699,7 +732,7 @@
 				searchData.sortType = selectedSort[1];
 				searchData.lowPrice = Lbar.value;
 				searchData.highPrice = Hbar.value;
-				searchcriteria.textContent = ` 分類: ${searchData.subcatId} 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
+				searchcriteria.textContent = ` 分類: [${catname[searchData.subcatId]}] 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
 				loadPro();
 			}
 		}
@@ -774,7 +807,7 @@
 				searchData.sortType = selectedSort[1];
 				searchData.lowPrice = Lbar.value;
 				searchData.highPrice = Hbar.value;
-				searchcriteria.textContent = ` 分類: ${searchData.subcatId} 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
+				searchcriteria.textContent = ` 分類: [${catname[searchData.subcatId]}] 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
 				loadPro();
 			}
 		}
@@ -793,6 +826,9 @@
 		3.金額
 		9.產出 產品 & 分頁!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		*/
+		//addtolike
+		likelist.addEventListener('click', loadLike);
+		btnlikelist.addEventListener('click', loadLike);
 		advstock.addEventListener('change', Change);
 		advnewlan.addEventListener('change', Change);
 		advstarfour.addEventListener('change', onlyfour);
@@ -808,5 +844,6 @@
 			event.preventDefault();
 			onlyTxt();
 		});
+
    </script>
 }
