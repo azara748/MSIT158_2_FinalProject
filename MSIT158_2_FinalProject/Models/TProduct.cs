@@ -39,6 +39,8 @@ public partial class TProduct
 
     public virtual ICollection<TKeyword> TKeywords { get; set; } = new List<TKeyword>();
 
+    public virtual ICollection<TMemberLike> TMemberLikes { get; set; } = new List<TMemberLike>();
+
     public virtual ICollection<TPurchase> TPurchases { get; set; } = new List<TPurchase>();
 
     public virtual ICollection<TReview> TReviews { get; set; } = new List<TReview>();
