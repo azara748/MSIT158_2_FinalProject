@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace MSIT158_2_FinalProject.Models;
 
 public partial class TProduct
 {
     public int ProductId { get; set; }
-	[Display(Name = "產品名稱")]
-	public string? ProductName { get; set; }
+
+    public string? ProductName { get; set; }
 
     public int? Stocks { get; set; }
 

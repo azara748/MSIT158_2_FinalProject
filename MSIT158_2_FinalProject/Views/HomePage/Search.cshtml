@@ -449,9 +449,9 @@
 			const data = await response.json();
 			const foru = data.showProducts.map(f => {
 				const { productphoto, productName, productId, unitPrice, labelName } = f;
-				return (`							
-				<div class="product-widget">
-						<a href="https://localhost:7066/homepage/index/${productId}">
+				return (`
+						<div class="product-widget"  >
+								<a href='@Url.Content("~/p/Productpage")/${productId}'>
 						<div class="product-img">
 				${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
 						</div>
@@ -479,8 +479,8 @@
 				const data = await response.json();
 				const pros = data.showProducts.map(pro => {
 					const { productId, productName, discount, labelName, unitPrice, productphoto, score, isnew } = pro;
-					return (`<a href="https://localhost:7066/homepage/index/${productId}">
-				<div class="col-md-4 col-xs-6">
+				return (`<a href='@Url.Content("~/p/Productpage")/${productId}'>
+						<div class="col-md-4 col-xs-6">
 						 <div class="product">
 								<div class="product-img">
 									${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
@@ -500,11 +500,11 @@
 							<div class="product-btns">
 												<button class="add-to-wishlist" id="likebtn" value="${productId}"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
 								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
-								<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+										<button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
 								</div>
 								</div>
 								<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
+														<button class="add-to-cart-btn" onclick="addcart3(${productId})"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
 								</div>
 							</div>
 						</div></a>`)
@@ -844,6 +844,54 @@
 			event.preventDefault();
 			onlyTxt();
 		});
-
+		/////////////////////////////////////////////////////////
+		function addcart2(pid2) {
+			if (mid.value == 0) {
+				location.href = `@Url.Content("~/HOME/Login")`
+				return
+			}
+			add()
+			async function add() {
+				var Data2 = {
+					"memberId": mid.value,
+					"ProductId": pid2,
+					"qty": 1
+				}
+				var a2 = await fetch(`@Url.Content("~/P/addCartAPI")`, {
+					method: 'POST',
+					body: JSON.stringify(Data2),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				})
+				var b2 = await a2.text()
+				if (b2 == "ok") window.alert("加入購物車成功")
+				cart1()
+			}
+		}
+		function addcart3(pid2) {
+			if (mid.value == 0) {
+				location.href = `@Url.Content("~/HOME/Login")`
+				return
+			}
+			add()
+			async function add() {
+				var Data2 = {
+					"memberId": mid.value,
+					"ProductId": pid2,
+					"qty": 1
+				}
+				var a2 = await fetch(`@Url.Content("~/P/addCartAPI")`, {
+					method: 'POST',
+					body: JSON.stringify(Data2),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				})
+				var b2 = await a2.text()
+				if (b2 == "ok") location.href = `@Url.Content("~/C/Cartspage")`
+				cart1()
+			}
+		}
    </script>
 }

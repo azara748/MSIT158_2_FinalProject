@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,21 +13,21 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
 	<!-- Bootstrap -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/bootstrap.min.css" />
 
 	<!-- Slick -->
-	<link type="text/css" rel="stylesheet" href="css/slick.css" />
-	<link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/slick-theme.css" />
 
 	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css" />
 
 	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/style.css" />
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,8 +53,12 @@
 					<li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
 				</ul>
 				<ul class="header-links pull-right">
-					<li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
-					<li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li>
+					@* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
+					<li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li> *@
+					<!-- ///////////////////////////////////////////////////////////  -->
+					<li><a id="idshowmember1" class="fa fa-user-o" href="~/Home/Login">未登入</a></li>
+					<li><button id="idsignOutButton1" class="fa fa-user-o">登出</button></li>					
+					<!-- /////////////////////////////////////////////////////////// -->
 				</ul>
 			</div>
 		</div>
@@ -113,44 +118,28 @@
 								</div>
 							</div>
 							<!-- /like -->
-							<!-- Cart -->
 							<div class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 									<i class="fa fa-shopping-cart"></i>
-									<span>我的購物車</span>
-									<div class="qty">3</div>
+									<span>購物車</span>
+									<!-- ////////////////////////////////////////////////////-->
+									<div class="qty" id="cartqty">3</div>
+									<!-- ////////////////////////////////////////////////////-->
 								</a>
 								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-@* 												<img src="./img/product01.png" alt=""> *@
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-
-										<div class="product-widget">
-											<div class="product-img">
-@* 												<img src="./img/product02.png" alt=""> *@
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
+									<!-- ////////////////////////////////////////////////////-->
+									<div class="cart-list" id="cart">
+										<!-- ////////////////////////////////////////////////////-->
 									</div>
 									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
+										<!-- ////////////////////////////////////////////////////-->
+										<small id="Items">3 Item(s) selected</small>
+										<h5 id="SUBTOTAL">SUBTOTAL: $2940.00</h5>
+										<!-- ////////////////////////////////////////////////////-->
 									</div>
 									<div class="cart-btns">
-										<a href="#">View Cart</a>
-										<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+										<a href="~/C/Cartspage">查看購物車</a>
+										<a href="~/C/Shippingpage">去結帳<i class="fa fa-arrow-circle-right"></i></a>
 									</div>
 								</div>
 							</div>
@@ -284,6 +273,7 @@
 	</footer>
 	<!-- /FOOTER -->
 	<!-- jQuery Plugins -->
+	<input  type="hidden" id="mid" value="0"/>
 	<script>
 		const layoutlikeData = {
 			"mMemberId": 3
@@ -318,12 +308,150 @@
 			likelist.innerHTML = likes.join("");
 		}
 	</script>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/slick.min.js"></script>
-	<script src="js/nouislider.min.js"></script>
-	<script src="js/jquery.zoom.min.js"></script>
-	<script src="js/main.js"></script>
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<script type="module">
+		// 從所需的 SDK 中匯入你需要的函式/Google 登入
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+		import { getAuth, signOut } from "https:www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+		// 在這裡添加你自己的 Firebase 設定
+		const firebaseConfig = {
+			apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+			authDomain: "fir-t1-a5947.firebaseapp.com",
+			projectId: "fir-t1-a5947",
+			storageBucket: "fir-t1-a5947.appspot.com",
+			messagingSenderId: "617649416210",
+			appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+		};
+		//================================================
+		// 初始化 Firebase
+		const app = initializeApp(firebaseConfig);
+		const auth = getAuth(app);
+
+		// 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
+		(async () => {
+			const urlss = '@Url.Content("~/ApiMember/AddSession")';
+			const responsess = await fetch(urlss);
+			const datass = await responsess.text();
+			const jsonss = JSON.parse(datass);
+			const memberName = jsonss.MemberName;
+			const Smember = document.querySelector('#idshowmember1');
+			console.log('test1');
+			console.log(Smember);
+			Smember.textContent = '登入者 :' + memberName;
+			Smember.href = '@Url.Content("~/M/Memberpage")'
+			mid.value = jsonss.MemberId
+			signOutbtn.style.display = "";
+		})();
+		const signOutbtn = document.querySelector('#idsignOutButton1');
+		console.log('test2');
+		console.log(signOutbtn);
+		signOutbtn.style.display = 'none';
+
+
+		signOutbtn.addEventListener('click', async () => {
+			const url = '@Url.Content("~/ApiMember/ClearSession")';
+			const response = await fetch(url);
+			if (confirm("確定登出嗎！")) {
+				signOut(auth).then(() => {
+					alert("你已成功登出！");
+				}).catch((error) => {
+					console.error('登出時出錯:', error);
+				});
+				window.location.href = '@Url.Content("~/HomePage/Search")';
+			}
+		});
+
+	</script>
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<script>
+		var 總價 = 0;
+		var 運費 = 60;
+		var b = ""
+		var bp = ""
+		var count = 0
+		async function cart1() {
+			var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
+			var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
+			b = await a.json()
+			bp = await ap.json()
+			cart2()
+		}
+		function cart2() {
+			var t = ``
+			count = 0
+			總價 = 0;
+			for (let f in b) {
+				count++
+				總價 += b[f].unitPrice * b[f].qty;
+				t += `<div  id="c${f}"><div class="product-widget">
+																					<div class="product-img">
+																										<img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
+																					</div>
+																					<div class="product-body">
+																										<h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
+																										<h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
+																					</div>
+																									<button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].cartId},${b[f].qty})"><i class="fa fa-close"></i></button>
+																						</div></div>`
+				//<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
+
+			}
+			for (let f in bp) {
+				count++
+				總價 += bp[f].price * bp[f].qty;
+				t += `<div  id="p${f}"><div class="product-widget">
+																							<div class="product-img">
+																							   <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
+																							</div>
+																							<div class="product-body">
+																												<h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
+																														<h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
+																							</div>
+																													<button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].packageCartId},${bp[f].qty})"><i class="fa fa-close"></i></button>
+																								</div></div>`
+			}
+			cart.innerHTML = t
+			cart3()
+		}
+		function cart3() {
+			SUBTOTAL.innerHTML = '$' + 總價
+			cartqty.innerHTML = count
+			Items.innerHTML = count + "樣商品"
+		}
+		async function dedet(d, p, id, q) {
+			if (!confirm("確定要刪除嗎?")) return
+			var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
+			var b2 = await a2.text()
+			if (b2 != "ok") return
+			document.getElementById("c" + d).innerHTML = "";
+			總價 -= Number(p * q)
+			count--
+			SUBTOTAL.innerHTML = '$' + 總價
+			cart3()
+		}
+		async function dedet2(d, p, id, q) {
+			if (!confirm("確定要刪除嗎?")) return
+			var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
+			var b2 = await a2.text()
+			if (b2 != "ok") return
+			document.getElementById("p" + d).innerHTML = "";
+			總價 -= Number(p * q)
+			count--
+			SUBTOTAL.innerHTML = '$' + 總價
+			cart3()
+		}
+		cart1()
+	</script>
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+
+	<script src="~/js/jquery.min.js"></script>
+	<script src="~/js/bootstrap.min.js"></script>
+	<script src="~/js/slick.min.js"></script>
+	<script src="~/js/nouislider.min.js"></script>
+	<script src="~/js/jquery.zoom.min.js"></script>
+	<script src="~/js/main.js"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
