@@ -5,7 +5,7 @@
 		public int subcatId { get; set; } = 0;
 		public string? searchword { get; set; }
 		public int page { get; set; } = 1;
-		public int pagesSize { get; set; } = 9;
+		public int pagesSize { get; set; } = 12;
 		public string? sortBy { get; set; }
 		public string? sortType { get; set; }
 		public int? lowPrice { get; set; }

@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace MSIT158_2_API.Models;
 
-public partial class TCollect
+public partial class TMemberLike
 {
-    public int CollectId { get; set; }
+    public int LikeId { get; set; }
 
-    public int? MemberId { get; set; }
+    public int? MemeberId { get; set; }
 
     public int? ProductId { get; set; }
 
-    public virtual TMember Member { get; set; }
+    public int? Status { get; set; }
 
-    public virtual TProduct Product { get; set; }
+    public virtual TMember Memeber { get; set; }
 }

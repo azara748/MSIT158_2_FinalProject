@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 namespace MSIT158_2_API.Models;
 
-public partial class TCollect
+public partial class TPackageCart
 {
-    public int CollectId { get; set; }
+    public int PackageCartId { get; set; }
 
     public int? MemberId { get; set; }
 
-    public int? ProductId { get; set; }
+    public int? PackageId { get; set; }
+
+    public int? Qty { get; set; }
 
     public virtual TMember Member { get; set; }
 
-    public virtual TProduct Product { get; set; }
+    public virtual TAllPackage Package { get; set; }
 }

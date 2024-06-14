@@ -217,7 +217,7 @@
 							顯示商品數:
 							</strong>
 							<select class="input-select" id="idshowhowmanypro">
-								<option value="9" selected>每頁9項商品</option>
+								<option value="12" selected>每頁12項商品</option>
 								<option value="18">每頁18項商品</option>
 								<option value="27">每頁27項商品</option>
 							</select>
@@ -238,7 +238,7 @@
 				</div>
 				<!-- /store products -->
 				<!-- 分頁按鈕 -->
-				<div class="store-filter clearfix" style="width:65%;margin:0 auto;text-align:center;">
+				<div class="store-filter clearfix" style="width:85%;margin:0 auto;text-align:center;">
 					<ul class="store-pagination" id="idpageul">
 @* 						<li class="active">1</li>
 						<li><a href="#">2</a></li>
@@ -310,6 +310,11 @@
 		//商品展示區
 		const div1 = document.getElementById('idshowpro');
 		const idultree = document.getElementById('idultree');
+		//存分類名稱
+		const catname = {};
+		function getcatname(subCategoryId, subCategoryCname) {
+			catname[subCategoryId] = subCategoryCname;
+		}
 		
 		//Low.addEventListener('mouseout', priceChange)
 		//High.addEventListener('mouseout', priceChange)
@@ -339,41 +344,42 @@
 		//連到頁數
 		const pagingHandler = page => {
 			searchData.page = page;
-			Change();
+			console.log(searchData);
+			pageChange();
 		}
-		//B.顯示分頁按鈕-下一頁
-		const loadMore = (max, start) => {
-			//顯示更多分頁按鈕 (start 至 start+7)
-			let liPages = "";
-			let whichpage = Math.ceil(max / 8);
-			let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
-			liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
-			for (let i = start; i < end; i++) {
-				liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
-			}
-			if (end <= max) {
-				liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
-			}
-			idpageul.innerHTML = liPages;
-		}
-		//B.顯示分頁按鈕-回上頁
-		const goBack = (max, start) => {
-			let liPages = "";
-			let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
-			if (start > 1) {
-				liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
-			}
-			for (let i = start; i < end; i++) {
-				liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
-			}
-			liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
-			idpageul.innerHTML = liPages;
-		}
+		// //B.顯示分頁按鈕-下一頁
+		// const loadMore = (max, start) => {
+		// 	//顯示更多分頁按鈕 (start 至 start+7)
+		// 	let liPages = "";
+		// 	let whichpage = Math.ceil(max / 8);
+		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+		// 	liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+		// 	for (let i = start; i < end; i++) {
+		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+		// 	}
+		// 	if (end <= max) {
+		// 		liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+		// 	}
+		// 	idpageul.innerHTML = liPages;
+		// }
+		// //B.顯示分頁按鈕-回上頁
+		// const goBack = (max, start) => {
+		// 	let liPages = "";
+		// 	let end = Math.min(start + 8, max + 1);//選取比較小的值作為最尾端頁數
+		// 	if (start > 1) {
+		// 		liPages += `<li onclick="goBack(${max}, ${start - 8})"><</a></li>`;
+		// 	}
+		// 	for (let i = start; i < end; i++) {
+		// 		liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+		// 	}
+		// 	liPages += `<li onclick="loadMore(${max}, ${start + 8})">></a></li>`;
+		// 	idpageul.innerHTML = liPages;
+		// }
         const searchData = {
 			"subcatId": 0,
 			"searchword": "",
 			"page": 1,
-			"pagesSize": 9,
+			"pagesSize": 12,
 			"sortBy": "",
 			"sortType": "asc",
 			"lowPrice":null,
@@ -391,10 +397,13 @@
 			const dataC = await responseC.json();
 			const liCat = dataC.map(cats => {
 				const { subCategoryId, subCategoryCname } = cats;
-				return `<li onclick="categoryHandler(${subCategoryId})" value="${subCategoryId}"><a class="Acategory" id="idc${subCategoryId}">${subCategoryCname}</a></li>`;
+				getcatname(subCategoryId, subCategoryCname);
+				getcatname(0, "全部");
+				return `<li onclick="categoryHandler(${subCategoryId})" value="${subCategoryCname}"><a class="Acategory" id="idc${subCategoryId}">${subCategoryCname}</a></li>`;
 			});
 			idultree.innerHTML = `<li onclick="categoryHandler(0)" value="0" id="idc0"><a class="Acategory">全部</a></li>`;
 			idultree.innerHTML += liCat.join("");
+
 			//被點分類換色
 			const category = document.querySelectorAll('.Acategory');
 			for (var item of category) {
@@ -411,14 +420,14 @@
 		})();
 		//左邊隨機推薦
 		const foru = async () => {
-			let sortBy = ["", "UnitPrice", "bestsale", "bestscore", "coldpro", ""];
+			let sortBy = ["", "UnitPrice", "bestsale", "", "coldpro", ""];
 			let sortType = ["", "desc", "asc", "desc", "asc", "desc"];
 			let ran = Math.ceil(Math.random() * 5);
 			const url = 'https://localhost:7160/api/SearchProduct';
 			const response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify({
-					"categoryId": ran,
+					"subcatId": subnum[ran],
 					"keyword": "",
 					"page": 1,
 					"pagesSize": 9,
@@ -429,6 +438,7 @@
 					'Content-Type': 'application/json'
 				}
 			});
+
 			const data = await response.json();
 			const foru = data.showProducts.map(f => {
 				const { productphoto, productName, productId, unitPrice, labelName } = f;
@@ -508,34 +518,26 @@
 			//B.顯示分頁按鈕
 			const loadPage = (max) => {
 				let liPages = "";
-				let whichpage = Math.ceil(max / 8);
-				if (whichpage > 1) {
-					liPages += `<li onclick="pagingHandler(1)" id="li1" class="active">1</li>`;
-					for (let i = 2; i < 9; i++) {
-						liPages += `<li onclick="pagingHandler(${i})" id="li${i}" class="aaa">${i}</li>`;
-					}
-					liPages += `<li onclick="loadMore(${max},9)">></li>`;
-				}
-				else {
+				//let whichpage = Math.ceil(max / 8);
 					for (let i = 1; i <= max; i++) {
-						liPages += `<li onclick="pagingHandler(${i})"><a>${i}</a></li>`;
+					liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
 					}
-				}
 				idpageul.innerHTML = liPages;
 			}
-			if (0 < searchData.page && searchData.page < 9) {
-				loadPage(max);
-			}
-			else if (8 < searchData.page && searchData.page < 17) {
-				loadMore(max, 9);
-			}
-			else if (16 < searchData.page && searchData.page < 24) {
-				loadMore(max, 17);
-			}
-			else if (24 < searchData.page && searchData.page < 32) {
-				loadMore(max, 25);
-			}
-			else { loadMore(max, 33) }
+			loadPage(max);
+			// if (0 < searchData.page && searchData.page < 9) {
+			// 	loadPage(max);
+			// }
+			// else if (8 < searchData.page && searchData.page < 17) {
+			// 	loadMore(max, 9);
+			// }
+			// else if (16 < searchData.page && searchData.page < 24) {
+			// 	loadMore(max, 17);
+			// }
+			// else if (24 < searchData.page && searchData.page < 32) {
+			// 	loadMore(max, 25);
+			// }
+			// else { loadMore(max, 33) }
 			foru();
 			window.scrollTo(0, 0);
 			//分頁顏色測試
@@ -550,7 +552,8 @@
 			// });
 		}
 		//一開始就執行
-		foru();
+		//foru();
+
 		loadPro();
 		 //輸入文字後
 		function onlyTxt() {
@@ -623,10 +626,83 @@
 			searchData.sortType = selectedSort[1];
 			searchData.lowPrice = 1;
 			searchData.highPrice = 20000;
-			searchcriteria.textContent = `分類: ${searchData.subcatId} 的所有產品`;
+			searchcriteria.textContent = `分類: [${catname[searchData.subcatId] }] 的相關產品`;
 			loadPro();
 		}
 		//條件共用
+		function pageChange() {
+			searchData.searchword = inpSearch.value;
+			if (searchData.searchword.trim() !== "") {
+				if (advstarfour.checked) {
+					searchData.rankfour = true;
+				}
+				else {
+					searchData.rankfour = false;
+				}
+				if (advstarthree.checked) {
+					searchData.rankthree = true;
+				}
+				else {
+					searchData.rankthree = false;
+				}
+				if (advstock.checked) {
+					searchData.stock = true;
+				}
+				else { searchData.stock = false; }
+
+				if (advnewlan.checked) {
+					searchData.newlan = true;
+				}
+				else {
+					searchData.newlan = false;
+				}
+
+				searchData.subcatId = 0;
+				searchData.pagesSize = showhowmanypro.value;
+				let selectedSort = showsort.value.split('|');
+				searchData.sortBy = selectedSort[0];
+				searchData.sortType = selectedSort[1];
+				console.log(searchData);
+				searchData.lowPrice = Lbar.value;
+				searchData.highPrice = Hbar.value;
+				searchcriteria.textContent = `關鍵字:[${searchData.searchword}]的相關產品/ 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
+				loadPro();
+			}
+			else {
+				if (advstarfour.checked) {
+					searchData.rankfour = true;
+				}
+				else {
+					searchData.rankfour = false;
+				}
+				if (advstarthree.checked) {
+					searchData.rankthree = true;
+				}
+				else {
+					searchData.rankthree = false;
+				}
+				if (advstock.checked) {
+					searchData.stock = true;
+				}
+				else { searchData.stock = false; }
+
+				if (advnewlan.checked) {
+					searchData.newlan = true;
+				}
+				else {
+					searchData.newlan = false;
+				}
+				inpSearch.value = "";
+				searchData.pagesSize = showhowmanypro.value;
+				let selectedSort = showsort.value.split('|');
+				searchData.sortBy = selectedSort[0];
+				searchData.sortType = selectedSort[1];
+				searchData.lowPrice = Lbar.value;
+				searchData.highPrice = Hbar.value;
+				searchcriteria.textContent = ` 分類: ${searchData.subcatId} 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
+				loadPro();
+			}
+		}
 		function Change(){
 			searchData.searchword = inpSearch.value;
 			if (searchData.searchword.trim() !== "") {
@@ -663,7 +739,7 @@
 				console.log(searchData);
 				searchData.lowPrice = Lbar.value;
 				searchData.highPrice = Hbar.value;
-				searchcriteria.textContent = `關鍵字:${ searchData.searchword } 的所有產品/ 進階條件: 金額條件${searchData.lowPrice}元至${searchData.highPrice}元`;
+				searchcriteria.textContent = `關鍵字:[${searchData.searchword}]的相關產品/ 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
 				loadPro();
 			}
 			else {
@@ -698,7 +774,7 @@
 				searchData.sortType = selectedSort[1];
 				searchData.lowPrice = Lbar.value;
 				searchData.highPrice = Hbar.value;
-				searchcriteria.textContent = ` 分類: ${searchData.subcatId} 的所有產品 / 進階條件: 金額條件${ searchData.lowPrice }元至${ searchData.highPrice } 元`;
+				searchcriteria.textContent = ` 分類: ${searchData.subcatId} 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
 				loadPro();
 			}
 		}
