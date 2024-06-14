@@ -265,6 +265,13 @@ namespace MSIT158_2_API.Controllers
             m.MemberPhoto = p.MemberPhoto;
             _context.TMembers.Add(m);
             await _context.SaveChangesAsync();
+            //註冊會員時，發送Email
+            string receive = p.EMail;
+            string subject = "*** 用戶註冊驗證";
+            string messages = $"<h1>{p.MemberName}歡迎註冊***</h1>";
+            messages += "<p>請點擊以下連結驗證您的帳號:</p>";
+            messages += "<a>點擊這裡</a>進行驗證";
+            new CEmailSender().getEmail(receive, subject, messages);
 
             return Ok(new { message = "新增成功", m });
         }

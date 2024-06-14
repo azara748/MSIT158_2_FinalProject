@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 
-namespace MSIT158_2_API.Models
+namespace MSIT158_2_FinalProject.Models
 {
     public class CEmailSender
     {

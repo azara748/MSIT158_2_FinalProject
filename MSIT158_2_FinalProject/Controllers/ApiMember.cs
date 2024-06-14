@@ -49,5 +49,17 @@ namespace MSIT158_2_FinalProject.Controllers
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_MEMBER);
             return Ok("Session 已清除。");
         }
+
+        public IActionResult SenderEmail()
+        {
+            string receive = "k955339962@gmail.com";
+            string subject = "*** 用戶註冊驗證";
+            string messages = "<h1>歡迎註冊***</h1>";
+            messages += "<p>請點擊以下連結驗證您的帳號:</p>";
+            messages += "<a>點擊這裡</a>進行驗證";
+            new CEmailSender().getEmail(receive,subject,messages);
+
+            return Ok("郵件已成功發送");
+        }
     }
 }
