@@ -41,7 +41,11 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TMember> TMembers { get; set; }
 
+    public virtual DbSet<TMemberLike> TMemberLikes { get; set; }
+
     public virtual DbSet<TOrder> TOrders { get; set; }
+
+    public virtual DbSet<TPackageCart> TPackageCarts { get; set; }
 
     public virtual DbSet<TPackageMaterial> TPackageMaterials { get; set; }
 
@@ -62,6 +66,12 @@ public partial class SelectShopContext : DbContext
     public virtual DbSet<TStatus> TStatuses { get; set; }
 
     public virtual DbSet<TSubCategory> TSubCategories { get; set; }
+
+    public virtual DbSet<TVip> TVips { get; set; }
+
+    public virtual DbSet<TWordCensorship> TWordCensorships { get; set; }
+
+    public virtual DbSet<TWordSeverity> TWordSeverities { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -126,7 +136,6 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.CartId).HasColumnName("CartID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Member).WithMany(p => p.TCarts)
                 .HasForeignKey(d => d.MemberId)
@@ -293,10 +302,30 @@ public partial class SelectShopContext : DbContext
                 .HasColumnName("E-mail");
             entity.Property(e => e.MemberName).HasMaxLength(50);
             entity.Property(e => e.MemberPhoto).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(200);
+            entity.Property(e => e.Salt).HasMaxLength(50);
             entity.Property(e => e.Sex).HasMaxLength(50);
-            entity.Property(e => e.Vip).HasColumnName("VIP");
+            entity.Property(e => e.Vipid).HasColumnName("VIPID");
             entity.Property(e => e.Wallet).HasColumnType("money");
+
+            entity.HasOne(d => d.Vip).WithMany(p => p.TMembers)
+                .HasForeignKey(d => d.Vipid)
+                .HasConstraintName("FK_tMember_tVip");
+        });
+
+        modelBuilder.Entity<TMemberLike>(entity =>
+        {
+            entity.HasKey(e => e.LikeId);
+
+            entity.ToTable("tMemberLike");
+
+            entity.Property(e => e.LikeId).HasColumnName("likeID");
+            entity.Property(e => e.MemeberId).HasColumnName("MemeberID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+            entity.HasOne(d => d.Memeber).WithMany(p => p.TMemberLikes)
+                .HasForeignKey(d => d.MemeberId)
+                .HasConstraintName("FK_tMemberLike_tMember");
         });
 
         modelBuilder.Entity<TOrder>(entity =>
@@ -314,8 +343,12 @@ public partial class SelectShopContext : DbContext
                 .HasMaxLength(10)
                 .HasColumnName("GUI");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.Memo).HasMaxLength(50);
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RecMemberId).HasColumnName("RecMemberID");
+            entity.Property(e => e.RecipientEamil).HasMaxLength(50);
+            entity.Property(e => e.RecipientName).HasMaxLength(50);
+            entity.Property(e => e.RecipientPhone).HasMaxLength(50);
             entity.Property(e => e.ShippingMethodId).HasColumnName("Shipping_MethodID");
             entity.Property(e => e.StatusId).HasColumnName("StatusID");
             entity.Property(e => e.StoreName).HasMaxLength(50);
@@ -327,6 +360,25 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Status).WithMany(p => p.TOrders)
                 .HasForeignKey(d => d.StatusId)
                 .HasConstraintName("FK_tOrder_tStatus");
+        });
+
+        modelBuilder.Entity<TPackageCart>(entity =>
+        {
+            entity.HasKey(e => e.PackageCartId).HasName("PK_PackageCart");
+
+            entity.ToTable("tPackageCart");
+
+            entity.Property(e => e.PackageCartId).HasColumnName("PackageCartID");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.PackageId).HasColumnName("PackageID");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.TPackageCarts)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_PackageCart_tMember");
+
+            entity.HasOne(d => d.Package).WithMany(p => p.TPackageCarts)
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("FK_PackageCart_tAllPackage");
         });
 
         modelBuilder.Entity<TPackageMaterial>(entity =>
@@ -423,7 +475,7 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Cost).HasColumnType("money");
             entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.LabelId).HasColumnName("LabelID");
-            entity.Property(e => e.LaunchTime).HasMaxLength(50);
+            entity.Property(e => e.LaunchTime).HasColumnType("datetime");
             entity.Property(e => e.ProductName).HasMaxLength(200);
             entity.Property(e => e.SubCategoryId).HasColumnName("SubCategoryID");
             entity.Property(e => e.UnitPrice).HasColumnType("money");
@@ -516,6 +568,46 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.TSubCategories)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK_tSubCategory_tCategory");
+        });
+
+        modelBuilder.Entity<TVip>(entity =>
+        {
+            entity.HasKey(e => e.Vipid);
+
+            entity.ToTable("tVip");
+
+            entity.Property(e => e.Vipid).HasColumnName("VIPID");
+            entity.Property(e => e.Vipname)
+                .HasMaxLength(50)
+                .HasColumnName("VIPName");
+            entity.Property(e => e.Vipphoto)
+                .HasMaxLength(50)
+                .HasColumnName("VIPPhoto");
+        });
+
+        modelBuilder.Entity<TWordCensorship>(entity =>
+        {
+            entity.HasKey(e => e.WordCensorshipId).HasName("PK_TCensorship");
+
+            entity.ToTable("tWordCensorship");
+
+            entity.Property(e => e.WordCensorshipId).HasColumnName("WordCensorshipID");
+            entity.Property(e => e.Word).HasMaxLength(50);
+            entity.Property(e => e.WordSeverityId).HasColumnName("WordSeverityID");
+
+            entity.HasOne(d => d.WordSeverity).WithMany(p => p.TWordCensorships)
+                .HasForeignKey(d => d.WordSeverityId)
+                .HasConstraintName("FK_tWordCensorship_tWordSeverity");
+        });
+
+        modelBuilder.Entity<TWordSeverity>(entity =>
+        {
+            entity.HasKey(e => e.WordSeverityId).HasName("PK_tSeverity");
+
+            entity.ToTable("tWordSeverity");
+
+            entity.Property(e => e.WordSeverityId).HasColumnName("WordSeverityID");
+            entity.Property(e => e.Severitylevel).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
