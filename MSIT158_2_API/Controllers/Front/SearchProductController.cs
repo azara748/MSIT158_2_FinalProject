@@ -136,7 +136,7 @@ namespace MSIT158_2_API.Controllers.Front
 							ProductName = p.ProductName,
 							SubCatName = c.SubCategoryCname,
 							Stocks = p.Stocks,
-							LanchTime = p.LaunchTime,
+							LanchTime = p.LaunchTime.ToString(),
 							UnitPrice = p.UnitPrice,
 							Discount = a.Discount,
 							LabelName = l.LabelName,
