@@ -90,7 +90,6 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 
             int 顯示數 = 15;
 
-
             int allpage = 0;
             if (v.Count() < 顯示數+1) allpage = 1;
             else if (v.Count() % 顯示數 == 0) allpage = v.Count() / 顯示數;
