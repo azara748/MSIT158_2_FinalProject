@@ -3,52 +3,62 @@
     foreach (var v in ViewBag.v)
     {
         c++;
-                            <form class="review-form" id="@("f"+c)">
-                                <table class="table table-hover" style="font-size:20px">
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="4" width="15%">
-                                                                                <a href="~/P/Productpage/@v.ProductId">
-                                                <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 250px; height: 250px;object-fit: contain;" />
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>                                                                                             
-                                    <td><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td valign="center">
-                                                <div class="input-rating">
-                                                    <span>您的評價: </span>
-                                                    <div class="stars">
-                                                        <input  value="5" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star5")')" id="@(c+"star5")" onmousemove="mm('@(c+"star5")')"></i>
-                                                        <input  value="4" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star4")')" id="@(c+"star4")" onmousemove="mm('@(c+"star4")')"></i>
-                                                        <input  value="3" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star3")')" id="@(c+"star3")" onmousemove="mm('@(c+"star3")')"></i>
-                                                        <input  value="2" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star2")')" id="@(c+"star2")" onmousemove="mm('@(c+"star2")')"></i>
-                                                        <input  value="1" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star1")')" id="@(c+"star1")" onmousemove="mm('@(c+"star1")')"></i>
-                                                <input type="hidden" value="5" id="@("r"+c)" name="RankId" />
+                                <form class="review-form" id="@("f"+c)">
+                                    <table class="table table-hover" style="font-size:20px">
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="4" width="15%">
+                                                                                    <a href="~/P/Productpage/@v.ProductId">
+                                                    <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 250px; height: 250px;object-fit: contain;" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>                                                                                             
+                                        <td><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="center">
+                                                    <div class="input-rating">
+                                                        <span>您的評價: </span>
+                                                              <div class="stars">
+                                                            <input  value="5" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star5")')" id="@(c+"star5")" onmousemove="mm('@(c+"star5")')" onmouseover=""></i>
+                                                            <input  value="4" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star4")')" id="@(c+"star4")" onmousemove="mm('@(c+"star4")')"></i>
+                                                            <input  value="3" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star3")')" id="@(c+"star3")" onmousemove="mm('@(c+"star3")')"></i>
+                                                            <input  value="2" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star2")')" id="@(c+"star2")" onmousemove="mm('@(c+"star2")')"></i>
+                                                            <input  value="1" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star1")')" id="@(c+"star1")" onmousemove="mm('@(c+"star1")')"></i>
+                                                    <input type="hidden" value="5" id="@("r"+c)" name="RankId" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <textarea class="input" placeholder="評論內容" style="height:120px" name="Comment"></textarea>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <input type="hidden" name="PurchaseId" value="@v.PurchaseId" />
-                                <input type="hidden" name="ProductId" value="@v.ProductId" />
-                        <input type="hidden" name="oid" value="@v.OrderId" />
-                            </form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea class="input" placeholder="評論內容" style="height:120px" name="Comment"></textarea>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" name="PurchaseId" value="@v.PurchaseId" />
+                                    <input type="hidden" name="ProductId" value="@v.ProductId" />
+                            <input type="hidden" name="oid" value="@v.OrderId" />
+                                </form>
     }
-                <input type="hidden" id="conut" value="@c" />
+                    <input type="hidden" id="conut" value="@c" />
 }
 <div style="text-align:right">
     <input type="button" class="primary-btn" style="width:10%;font-size:20px" value="送出" onclick="送出()"></inputt>
 </div>
 <script>
+    // function md(a) {
+    //     document.getElementById(a + "5").className = "fa fa-star"
+    //     document.getElementById(a + "4").className = "fa fa-star-o"
+    //     document.getElementById(a + "3").className = "fa fa-star-o"
+    //     document.getElementById(a + "2").className = "fa fa-star-o"
+    //     document.getElementById(a  +"1").className = "fa fa-star-o"
+    // }
+
+
+
     function ck(a) {
         let star = Number(a[a.length - 1])
         let index = Number(a.substring(0, a.length - 1).replace("star", ""))
@@ -70,6 +80,7 @@
                 document.getElementById(id).className = "fa fa-star-o"
             //if (i > star)
             document.getElementById(id).onmousemove = null;
+            //document.getElementById((a.substring(0, a.length - 1))).onmouseout = null;
         }
     }
     function mm(a) {
