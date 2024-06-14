@@ -124,13 +124,13 @@
                     <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
                         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
                             <div class="card z-index-0">
-                                @* 登入名稱 *@
+                                        @RenderBody()
+                                @* 
                                 <div class="card-header text-center pt-4">
                                     <h5>登入系統</h5>
                                     <h4>請輸入帳號與密碼</h4>
                                 </div>
-                                @* 登入名稱end *@
-                                @* 登入API按鈕 *@
+                                
                                 <div class="row px-xl-5 px-sm-4 px-3">
                                     <div class="col-3 ms-auto px-1">
                                         <a class="btn btn-outline-light w-100" href="javascript:;">
@@ -175,11 +175,9 @@
                                         </p>
                                     </div>
                                 </div>
-                                @* 登入API按鈕end *@
-                                @* 登入輸入 *@
+                                
                                 <div class="card-body">
-                                        @RenderBody()
-                                    @* <form role="form" method="post" action="~/Home/Login" id="userFrom">
+                                    <form role="form" method="post" action="~/Home/Login" id="userFrom">
                                         <div class="mb-3">
                                             <input type="text" class="form-control" placeholder="Name" aria-label="Name">
                                         </div>
@@ -200,9 +198,9 @@
                                         </div>                            
                                         <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p>
                                         <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">忘記密碼</a></p>
-                                    </form> *@
+                                    </form>
                                 </div>
-                                @* 登入輸入end *@
+                                 *@
                             </div>
                         </div>
                     </div>

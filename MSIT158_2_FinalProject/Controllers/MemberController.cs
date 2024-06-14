@@ -61,24 +61,24 @@ namespace MSIT158_2_FinalProject.Controllers
                 return RedirectToAction("List");
             return View(r);
         }
-        [HttpPost]
-        public IActionResult Edit(TMember memberIn)
-        {
-            TMember memberDb = _context.TMembers.FirstOrDefault(x => x.MemberId == memberIn.MemberId);
-            if (memberDb != null)
-            {
-                memberDb.MemberName = memberIn.MemberName;
-                memberDb.Address = memberIn.Address;
-                memberDb.Cellphone = memberIn.Cellphone;
-                memberDb.Birthday = memberIn.Birthday;
-                memberDb.Sex = memberIn.Sex;
-                memberDb.Password = memberIn.Password;
-                memberDb.Points = memberIn.Points;
-                memberDb.Vipid = memberIn.Vipid;
-                memberDb.Wallet = memberIn.Wallet;
-                _context.SaveChanges();
-            }
-            return RedirectToAction("List");
-        }
+        //[HttpPost]
+        //public IActionResult Edit(TMember memberIn)
+        //{
+        //    TMember memberDb = _context.TMembers.FirstOrDefault(x => x.MemberId == memberIn.MemberId);
+        //    if (memberDb != null)
+        //    {
+        //        memberDb.MemberName = memberIn.MemberName;
+        //        memberDb.Address = memberIn.Address;
+        //        memberDb.Cellphone = memberIn.Cellphone;
+        //        memberDb.Birthday = memberIn.Birthday;
+        //        memberDb.Sex = memberIn.Sex;
+        //        memberDb.Password = memberIn.Password;
+        //        memberDb.Points = memberIn.Points;
+        //        memberDb.Vipid = memberIn.Vipid;
+        //        memberDb.Wallet = memberIn.Wallet;
+        //        _context.SaveChanges();
+        //    }
+        //    return RedirectToAction("List");
+        //}
     }
 }

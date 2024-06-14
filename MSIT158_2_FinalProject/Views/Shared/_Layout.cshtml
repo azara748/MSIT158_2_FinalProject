@@ -41,6 +41,8 @@
 					<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
 				</ul>
 				<ul class="header-links pull-right">
+					<li><a id="idshowmember1" class="fa fa-user-o">未登入</a></li>
+					<li><button id="idsignOutButton1" class="fa fa-user-o">登出</button></li>
 					<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
 					<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
 				</ul>
@@ -278,7 +280,9 @@
 						<div class="footer">
 							<h3 class="footer-title">Service</h3>
 							<ul class="footer-links">
-								<li><a href="#">My Account</a></li>
+								<li><a asp-area="" asp-controller="Member" asp-action="List">進入會員管理</a></li>
+								<li><a asp-area="" asp-controller="Employee" asp-action="List">進入員工管理</a></li>
+								<li><a asp-area="" asp-controller="Home" asp-action="BackLogin">後臺登入</a></li>
 								<li><a href="#">View Cart</a></li>
 								<li><a href="#">Wishlist</a></li>
 								<li><a href="#">Track My Order</a></li>

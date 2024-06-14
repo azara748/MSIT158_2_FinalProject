@@ -6,20 +6,345 @@
 
 @* <h1>登入系統</h1> *@
 
-<form role="form" method="post" action="~/Home/Login" id="userFrom">
+@* 登入名稱 *@
+<div class="card-header text-center pt-4">
+    <h5>登入系統</h5>
+    <h4>請輸入帳號與密碼</h4>
+</div>
+@* 登入名稱end *@
+@* 登入API按鈕 *@
+<div class="row px-xl-5 px-sm-4 px-3">
+    <div class="col-3 ms-auto px-1">
+        <button class="btn btn-outline-light w-100" id="FButton">
+            <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(3.000000, 3.000000)" fill-rule="nonzero">
+                        <circle fill="#3C5A9A" cx="29.5091719" cy="29.4927506" r="29.4882047"></circle>
+                        <path d="M39.0974944,9.05587273 L32.5651312,9.05587273 C28.6886088,9.05587273 24.3768224,10.6862851 24.3768224,16.3054653 C24.395747,18.2634019 24.3768224,20.1385313 24.3768224,22.2488655 L19.8922122,22.2488655 L19.8922122,29.3852113 L24.5156022,29.3852113 L24.5156022,49.9295284 L33.0113092,49.9295284 L33.0113092,29.2496356 L38.6187742,29.2496356 L39.1261316,22.2288395 L32.8649196,22.2288395 C32.8649196,22.2288395 32.8789377,19.1056932 32.8649196,18.1987181 C32.8649196,15.9781412 35.1755132,16.1053059 35.3144932,16.1053059 C36.4140178,16.1053059 38.5518876,16.1085101 39.1006986,16.1053059 L39.1006986,9.05587273 L39.0974944,9.05587273 L39.0974944,9.05587273 Z" fill="#FFFFFF"></path>
+                    </g>
+                </g>
+            </svg>
+        </button>
+    </div>
+    <div class="col-3 px-1">
+        <a class="btn btn-outline-light w-100" href="javascript:;">
+            <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(7.000000, 0.564551)" fill="#000000" fill-rule="nonzero">
+                        <path d="M40.9233048,32.8428307 C41.0078713,42.0741676 48.9124247,45.146088 49,45.1851909 C48.9331634,45.4017274 47.7369821,49.5628653 44.835501,53.8610269 C42.3271952,57.5771105 39.7241148,61.2793611 35.6233362,61.356042 C31.5939073,61.431307 30.2982233,58.9340578 25.6914424,58.9340578 C21.0860585,58.9340578 19.6464932,61.27947 15.8321878,61.4314159 C11.8738936,61.5833617 8.85958554,57.4131833 6.33064852,53.7107148 C1.16284874,46.1373849 -2.78641926,32.3103122 2.51645059,22.9768066 C5.15080028,18.3417501 9.85858819,15.4066355 14.9684701,15.3313705 C18.8554146,15.2562145 22.5241194,17.9820905 24.9003639,17.9820905 C27.275104,17.9820905 31.733383,14.7039812 36.4203248,15.1854154 C38.3824403,15.2681959 43.8902255,15.9888223 47.4267616,21.2362369 C47.1417927,21.4153043 40.8549638,25.1251794 40.9233048,32.8428307 M33.3504628,10.1750144 C35.4519466,7.59650964 36.8663676,4.00699306 36.4804992,0.435448578 C33.4513624,0.558856931 29.7884601,2.48154382 27.6157341,5.05863265 C25.6685547,7.34076135 23.9632549,10.9934525 24.4233742,14.4943068 C27.7996959,14.7590956 31.2488715,12.7551531 33.3504628,10.1750144"></path>
+                    </g>
+                </g>
+            </svg>
+        </a>
+    </div>
+    <div class="col-3 me-auto px-1">
+        <button class="btn btn-outline-light w-100" id="GButton">
+            <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(3.000000, 2.000000)" fill-rule="nonzero">
+                        <path d="M57.8123233,30.1515267 C57.8123233,27.7263183 57.6155321,25.9565533 57.1896408,24.1212666 L29.4960833,24.1212666 L29.4960833,35.0674653 L45.7515771,35.0674653 C45.4239683,37.7877475 43.6542033,41.8844383 39.7213169,44.6372555 L39.6661883,45.0037254 L48.4223791,51.7870338 L49.0290201,51.8475849 C54.6004021,46.7020943 57.8123233,39.1313952 57.8123233,30.1515267" fill="#4285F4"></path>
+                        <path d="M29.4960833,58.9921667 C37.4599129,58.9921667 44.1456164,56.3701671 49.0290201,51.8475849 L39.7213169,44.6372555 C37.2305867,46.3742596 33.887622,47.5868638 29.4960833,47.5868638 C21.6960582,47.5868638 15.0758763,42.4415991 12.7159637,35.3297782 L12.3700541,35.3591501 L3.26524241,42.4054492 L3.14617358,42.736447 C7.9965904,52.3717589 17.959737,58.9921667 29.4960833,58.9921667" fill="#34A853"></path>
+                        <path d="M12.7159637,35.3297782 C12.0932812,33.4944915 11.7329116,31.5279353 11.7329116,29.4960833 C11.7329116,27.4640054 12.0932812,25.4976752 12.6832029,23.6623884 L12.6667095,23.2715173 L3.44779955,16.1120237 L3.14617358,16.2554937 C1.14708246,20.2539019 0,24.7439491 0,29.4960833 C0,34.2482175 1.14708246,38.7380388 3.14617358,42.736447 L12.7159637,35.3297782" fill="#FBBC05"></path>
+                        <path d="M29.4960833,11.4050769 C35.0347044,11.4050769 38.7707997,13.7975244 40.9011602,15.7968415 L49.2255853,7.66898166 C44.1130815,2.91684746 37.4599129,0 29.4960833,0 C17.959737,0 7.9965904,6.62018183 3.14617358,16.2554937 L12.6832029,23.6623884 C15.0758763,16.5505675 21.6960582,11.4050769 29.4960833,11.4050769" fill="#EB4335"></path>
+                    </g>
+                </g>
+            </svg>
+        </button>
+    </div>
+    <div class="mt-2 position-relative text-center">
+        <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3">
+            or
+        </p>
+    </div>
+</div>
+@* 登入API按鈕end *@
+@* 登入輸入 *@
+<div class="card-body">
+    <form role="form" method="post" action="~/Home/Login" id="userForm">
+        <div class="mb-3">
+            <input type="email" class="form-control" placeholder="Email" aria-label="Email" id="Inputemail" value="mi.lacinia.mattis@protonmail.com" name="txtEmail">
+            @* @Html.TextBox("txtEmail", "mi.lacinia.mattis@protonmail.com", new { @class = "form-control", type = "email", placeholder = "Email", @aria_label = "Email" }) *@
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Password" aria-label="Password" id="InputPassword" value="Amy" name="txtPassword">
+            @* @Html.Password("txtPassword", "Amy", new { @class = "form-control", placeholder = "Password", @aria_label = "Password" }) *@
+        </div>
+        <div class="form-check form-check-info text-start">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+            <label class="form-check-label" for="flexCheckDefault">
+                I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+            </label>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" id="buttonSubmit">登入</button>
+        </div>
+        <p class="text-sm mt-3 mb-0">沒有帳號? <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></button></p>
+        <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></button>
+        @* <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p> *@
+        @* <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></p> *@
+    </form>
+</div>
+@* 登入輸入end *@
 
-<div class="mb-3">
-        @Html.TextBox("txtEmail", "mi.lacinia.mattis@protonmail.com", new { @class = "form-control", type = "email", placeholder = "Email", @aria_label = "Email" })
-</div>
-<div class="mb-3">
-        @Html.Password("txtPassword", "Amy", new { @class = "form-control", placeholder = "Password", @aria_label = "Password" })
-</div>
 
-<!--登入按鈕-->
-<div class="text-center">
-<button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">登入</button>
-</div>
-<!--登入按鈕end-->
-<p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p>
-<p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">忘記密碼</a></p>
-</form>
+@section Scripts{
+    <script type="module">
+        // 從所需的 SDK 中匯入你需要的函式/Google 登入
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // TODO: 添加你想使用的 Firebase 產品的 SDK
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+        // 在這裡添加你自己的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+            authDomain: "fir-t1-a5947.firebaseapp.com",
+            projectId: "fir-t1-a5947",
+            storageBucket: "fir-t1-a5947.appspot.com",
+            messagingSenderId: "617649416210",
+            appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+        };
+
+        //================================================
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const Gprovider = new GoogleAuthProvider();
+        const Fprovider = new FacebookAuthProvider();
+
+        const signInGoogleButton = document.querySelector('#GButton');
+        const signInFacebookButton = document.querySelector('#FButton');
+        //const signOutButton = document.querySelector('#idsignOutButton1');
+        //const message = document.getElementById("message");
+        //const userName = document.getElementById("userName");
+        //const userEmail = document.getElementById("userEmail");
+
+        //signOutButton.style.display = "none";
+        //message.style.display = "none";
+        // const clearBrowserData = () => {
+        //     // Clear local storage
+        //     localStorage.clear();
+
+        //     // Clear session storage
+        //     sessionStorage.clear();
+
+        //     // Clear cookies
+        //     document.cookie.split(";").forEach(function (c) {
+        //         document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+        //     });
+        // };
+
+        const userSignInGoogle = async () => {
+            try {
+                const result = await signInWithPopup(auth, Gprovider);
+                const user = result.user;
+                console.log('testGoogle');
+                console.log(user);
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error(`Google 登入時發生錯誤：${errorCode} - ${errorMessage}`);
+            }
+        }
+
+        const userSignInFacebook = async () => {
+            try {
+                const result = await signInWithPopup(auth, Fprovider);
+                const user = result.user;
+                console.log('testFB');
+                console.log(user);
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error(`Facebook 登入時發生錯誤：${errorCode} - ${errorMessage}`);
+            }
+        }
+
+        
+        // const userSignInGoogle = async () => {
+        //     signInWithPopup(auth, Gprovider)
+        //         .then((result) =>   {
+        //             const user = result.user
+        //             console.log('testGoogle');
+        //             console.log(user);
+        //         }).catch((error) => {
+        //             const errorCode = error.code;
+        //             const errorMessage = error.message
+        //         })
+        // }
+        // const userSignInFacebook = async () => {
+        //     signInWithPopup(auth, Fprovider)
+        //         .then((result) => {
+        //             const user = result.user
+        //             console.log('testFB');
+        //             console.log(user);
+        //         }).catch((error) => {
+        //             const errorCode = error.code;
+        //             const errorMessage = error.message
+        //         })
+        // }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('test2');
+                const OauthName = user.displayName;
+                const OauthEmail = user.email
+                //alert(OauthName + "\n" + OauthEmail);
+                //將資料寫入DB
+                const OauthData = {
+                    "txtOauthName": OauthName,
+                    "txtOauthEmail": OauthEmail
+                };
+
+                const sendOauthData = async () => {
+                    const url3 = 'https://localhost:7160/api/TMembers/OauthCreate';
+                    const response3 = await fetch(url3, {
+                        method: 'POST',
+                        body: JSON.stringify(OauthData),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    const datas3 = await response3.text();
+                    const members3 = JSON.parse(datas3);
+                    const messages3 = members3.message;
+                    const Jnames3 = members3.m.memberName;
+                    const Jemails3 = members3.m.eMail;
+                    //alert(Jnames3 + '\n' + Jemails3 + "\n" + messages3);
+                    if (Jnames3 != null && Jemails3 != null) {
+                        const OauthDataB = {
+                            "txtOauthName": Jnames3,
+                            "txtOauthEmail": Jemails3
+                        };
+                        const urlB = '@Url.Content("~/ApiMember/OauthLogin")';
+                        //const urlB = 'https://localhost:7160/api/TMembers/OauthSearchMember';
+                        const responseB = await fetch(urlB, {
+                            method: 'POST',
+                            body: JSON.stringify(OauthDataB),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        const datasB = await responseB.text();
+                        console.log("test1");
+                        console.log(datasB);
+                        const membersB = JSON.parse(datasB);
+                        console.log("test2");
+                        console.log(membersB);
+                        // const messagesB = membersB.message;
+                        // const JnamesB = membersB.user.memberName;
+                        // const JemailsB = membersB.user.eMail;
+                        const JnamesB = membersB.MemberName;
+                        const JemailsB = membersB.EMail;
+                        console.log("test3");
+                        console.log(JnamesB);
+                        if (confirm(`${JnamesB}\n${JemailsB}\n確定要登入嗎!`)) {
+                            window.location.href = "/Home/Index";
+                        }
+                    }
+                };
+                sendOauthData();               
+            } else {
+                console.log(user.email);
+            }
+        })
+
+        //=====================Google==============Facebook==============================================
+        const btnSubmit = document.querySelector('#buttonSubmit');
+
+        btnSubmit.addEventListener('click', async (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+
+            const femail = document.querySelector('#Inputemail').value;
+            const fpassword = document.querySelector('#InputPassword').value;
+            if (femail != null && fpassword != null) {
+                const memberData = {
+                    "txtEmail": femail,
+                    "txtPassword": fpassword
+                };
+
+                //將資料放進FormData
+                const myForm = document.querySelector('#userForm');
+                const fromdata = new FormData(myForm);
+                //測試FormData中有無資料
+                for (const pair of fromdata.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
+
+                const url = '@Url.Content("~/ApiMember/Login")';
+                //const url = 'https://localhost:7160/api/TMembers/Memberlogin';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: fromdata
+                });
+                console.log("test1");
+                console.log("test2");
+                console.log(response);
+                const data = await response.text();
+                console.log("test3");
+                console.log(data);
+                const jsonmember = JSON.parse(data);
+                console.log("test4");
+                console.log(jsonmember);
+                // const message = jsonmember.message;
+                // console.log("test5");
+                // console.log(message);
+                // const name = jsonmember.json;
+                // const jsonp = JSON.parse(name);
+                // const Jname = jsonp.MemberName;
+                // const Jemail = jsonp.EMail;
+                // 將路徑改在MVC的API，要存Session資料
+                const Jname = jsonmember.MemberName;
+                const Jemail = jsonmember.EMail;
+                console.log("test6");
+                console.log(Jname);
+                console.log(Jemail);
+                if (Jemail) {
+                    const memberData2 = {
+                        "txtEmail": Jemail
+                    };
+
+                    const url2 = 'https://localhost:7160/api/TMembers/MemberCheck';
+                    console.log("test7");
+                    console.log(memberData2);
+                    const response2 = await fetch(url2, {
+                        method: 'POST',
+                        body: JSON.stringify(memberData2),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    console.log("test8");
+                    console.log(response2);
+                    const datas = await response2.text();
+                    console.log("test3");
+                    console.log(datas);
+                    const jsonmember2 = JSON.parse(datas);
+                    console.log("test4");
+                    console.log(jsonmember2);
+                    const message2 = jsonmember2.message;
+                    console.log("test5");
+                    console.log(message2);
+                    const name2 = jsonmember2.json;
+                    const jsonp2 = JSON.parse(name2);
+                    const Jname2 = jsonp2.MemberName;
+                    const Jemail2 = jsonp2.EMail;
+                    console.log("test6");
+                    console.log(name2);
+                    console.log(Jname2);
+                    console.log(Jemail2);
+
+                    if (Jname2 != null) {
+                        alert(`${Jname2}：${message2}`);
+                        window.location.href = "/Home/Index";
+                    }
+                }
+
+            }
+
+        });
+
+
+        signInGoogleButton.addEventListener('click', userSignInGoogle);
+        signInFacebookButton.addEventListener('click', userSignInFacebook);
+    </script>
+    
+    @* <script src="https://accounts.google.com/gsi/client" async defer></script> *@
+}

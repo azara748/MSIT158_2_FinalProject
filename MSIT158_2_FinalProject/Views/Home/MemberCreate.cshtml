@@ -4,13 +4,13 @@
     ViewData["Title"] = "MemberCreate";
 }
 
-<h1>MemberCreate</h1>
+<h1>網路選物平台/建立會員資料</h1>
 
 <h4>填寫會員資訊</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="MemberCreate">
+        <form asp-action="MemberCreate" id="userForm" enctype="multipart/form-data">
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
             
 
@@ -24,7 +24,7 @@
                 <input asp-for="Cellphone" class="form-control" id="Inputphone" name="Cellphone" />
                 <span asp-validation-for="Cellphone" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" id="InputAddress" name="Address" />
                 <span asp-validation-for="Address" class="text-danger"></span>
@@ -33,7 +33,7 @@
                 <label asp-for="Sex" class="control-label"></label>
                 <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" />
                 <span asp-validation-for="Sex" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" id="InputPassword" name="Password" />
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label for="Inputrepassword" class="form-label">密碼確認</label>
-                <input type="password" class="form-control" id="Inputrepassword" name="repassword">
+                <input type="text" class="form-control" id="Inputrepassword" name="repassword">
             </div>
             @* <div class="form-group">
             <label asp-for="Salt" class="control-label"></label>
@@ -63,11 +63,11 @@
             <input asp-for="Vipid" class="form-control" />
             <span asp-validation-for="Vipid" class="text-danger"></span>
             </div> *@
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="MemberPhoto" class="control-label"></label>
-                <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="MemberPhoto" />
+                <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="avatar" type="file" />
                 <span asp-validation-for="MemberPhoto" class="text-danger"></span>
-            </div>
+            </div> *@
             @* <div class="form-group">
             <label asp-for="Wallet" class="control-label"></label>
             <input asp-for="Wallet" class="form-control" />
@@ -82,7 +82,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">返回登入</a>
+    <button type="button" class="btn btn-light"><a asp-action="Login">返回登入</a></button>    
 </div>
 
 @section Scripts {
@@ -94,47 +94,57 @@
             evt.preventDefault(); //防止預設行為的發生
             const memberName = document.querySelector('#InputName').value;
             const memberphone = document.querySelector('#Inputphone').value;
-            const memberAddress = document.querySelector('#InputAddress').value;
-            const memberSex = document.querySelector('#InputSex').value;
+            const memberEmail = document.querySelector('#InputEmail').value;
             const memberPassword = document.querySelector('#InputPassword').value;
             const rememberPassword = document.querySelector('#Inputrepassword').value;
-            const memberEmail = document.querySelector('#InputEmail').value;
-            const memberPhoto = document.querySelector('#InputPhoto').value;
+            // const memberAddress = document.querySelector('#InputAddress').value;
+            // const memberSex = document.querySelector('#InputSex').value;
+            // const memberPhoto = document.querySelector('#InputPhoto').value;
             if (memberEmail && memberPassword) {
                 if (memberPassword === rememberPassword) {
-                    const memberData = {
-                        "MemberName": memberName,
-                        "Cellphone": memberphone,
-                        "Address": memberAddress,
-                        "Sex": memberSex,
-                        "Password": memberPassword,
-                        "EMail": memberEmail,
-                        "MemberPhoto": memberPhoto
-                    };
-                    const url = 'https://localhost:7160/api/TMembers/Create';
-                    console.log("test1");
+                    // const memberData = {
+                    //     "MemberName": memberName,
+                    //     "Cellphone": memberphone,
+                    //     "Address": memberAddress,
+                    //     "Sex": memberSex,
+                    //     "Password": memberPassword,
+                    //     "EMail": memberEmail,
+                    //     "MemberPhoto": memberPhoto
+                    // };
+                    //將資料放進FormData
+                    const myForm = document.querySelector('#userForm');
+                    const fromdata = new FormData(myForm);
+                    //測試FormData中有無資料
+                    for (const pair of fromdata.entries()) {
+                        console.log(pair[0], pair[1]);
+                    }
 
+                    //const url = 'https://localhost:7160/api/TMembers/Create';
+                    const url = 'https://localhost:7160/api/TMembers/CreateCheckPassword';
                     const response = await fetch(url, {
                         method: 'POST',
-                        body: JSON.stringify(memberData),
-                        headers: { 'Content-Type': 'application/json' }
+                        body: fromdata
                     });
 
+                    console.log("test1");
                     console.log("test2");
                     console.log(response);
                     const data = await response.text();
-                    console.log("test2");
-                    const json = JSON.parse(data);
                     console.log("test3");
-                    const message = json.message;
+                    const json = JSON.parse(data);
                     console.log("test4");
+                    const message = json.message;
+                    console.log("test5");
                     const Jname = json.m.memberName;
                     console.log(Jname);
-                    divResult.innerHTML = `<p>${Jname}：${message}</p>`;
+                    divResult.innerHTML = `<p>會員姓名：${Jname}：${message}</p>`;
                     // 等待5秒後自動轉跳到 /Home/Index
-                    setTimeout(() => {
-                        window.location.href = "/Home/Index";
-                    }, 5000); // 5000 毫秒 = 5 秒
+                    if (Jname != null) {
+                        setTimeout(() => {
+                            window.location.href = "/Home/Index";
+                        }, 3000); // 3000 毫秒 = 3 秒
+                    }
+                    
                 }
             }
         });

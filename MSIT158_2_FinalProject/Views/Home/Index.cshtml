@@ -1,8 +1,61 @@
-﻿@{
+﻿@using System.Text.Json
+@model MSIT158_2_FinalProject.Models.TMember
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">歡迎選禮商店</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>登錄為: @ViewBag.LoginMember</p>
+    <p>登錄為: @Model.MemberName</p>
 </div>
+
+@section Scripts {
+    <script type="module">
+        // 從所需的 SDK 中匯入你需要的函式/Google 登入
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import { getAuth, signOut } from "https:www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // 在這裡添加你自己的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+            authDomain: "fir-t1-a5947.firebaseapp.com",
+            projectId: "fir-t1-a5947",
+            storageBucket: "fir-t1-a5947.appspot.com",
+            messagingSenderId: "617649416210",
+            appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+        };
+        //================================================
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
+        const memberName = @Html.Raw(JsonSerializer.Serialize(Model.MemberName));
+        //const memberName = '@Model.MemberName';
+        const Smember = document.querySelector('#idshowmember1');
+        console.log('test2');
+        console.log(Smember);
+        Smember.textContent = '登入者 :' + memberName;
+        const signOutbtn = document.querySelector('#idsignOutButton1');
+        console.log('test1');
+        console.log(signOutbtn);
+
+
+        signOutbtn.addEventListener('click', async () => {
+            const url = '@Url.Content("~/ApiMember/ClearSession")';
+            const response = await fetch(url);
+            if (confirm("確定登出嗎！")) {
+                signOut(auth).then(() => {
+                    alert("你已成功登出！");
+                }).catch((error) => {
+                    console.error('登出時出錯:', error);
+                });
+                window.location.href = "/Home/Index";
+            }
+        });
+
+    </script>
+}

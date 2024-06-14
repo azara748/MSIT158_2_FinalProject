@@ -309,6 +309,21 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Wallet).HasColumnType("money");
         });
 
+        modelBuilder.Entity<TMemberLike>(entity =>
+        {
+            entity.HasKey(e => e.LikeId);
+
+            entity.ToTable("tMemberLike");
+
+            entity.Property(e => e.LikeId).HasColumnName("likeID");
+            entity.Property(e => e.MemeberId).HasColumnName("MemeberID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+            entity.HasOne(d => d.Memeber).WithMany(p => p.TMemberLikes)
+                .HasForeignKey(d => d.MemeberId)
+                .HasConstraintName("FK_tMemberLike_tMember");
+        });
+
         modelBuilder.Entity<TOrder>(entity =>
         {
             entity.HasKey(e => e.OrderId);

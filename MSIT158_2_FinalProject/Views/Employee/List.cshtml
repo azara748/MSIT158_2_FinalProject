@@ -1,0 +1,312 @@
+﻿@model IEnumerable<MSIT158_2_FinalProject.Models.TEmployee>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>員工資料一覽表</h1>
+
+<div class="row mb-3">
+    <div class="col-2">
+        <select class="form-select" aria-label="Default select example" id="idst1">
+        </select>
+    </div>
+    <div class="col-6">
+        <nav>
+            <ul class="pagination" id="ul1">
+            </ul>
+        </nav>
+    </div>
+    <div class="col-2">
+        <select class="form-select" aria-label="Default select example" id="idst2">
+            <option value="asc" selected>員工編號升冪</option>
+            <option value="desc">員工編號降冪</option>
+        </select>
+    </div>
+    <div class="col-2">
+        <input type="search" placeholder="搜尋員工資料" class="form-control" id="inputSearch" />
+    </div>
+</div>
+
+<div class="row mb-3" id="div2">
+</div>
+<p>
+    <button type="button" class="btn btn-light"><a asp-action="Create">新增員工</a></button>    
+</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
+    <table class="table table-primary table-hover">
+        <thead>
+            <tr id="idtr1">
+            </tr>
+        </thead>
+        <tbody id="idtbody1">
+        </tbody>
+    </table>
+</div>
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cellphone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeePhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OnBoardDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cellphone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeePhoto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnBoardDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@
+
+@section Scripts{
+    <script>
+        const divSpots = document.querySelector('#div1');
+        const divtbody = document.querySelector('#idtbody1');
+        const ulPaging = document.querySelector('#ul1');
+        // const ulPagename = document.querySelector('#ul2');
+        const inpSearch = document.querySelector('#inputSearch');
+        const sltop = document.querySelector('#idst1');
+        const sltop2 = document.querySelector('#idst2');
+        const divf = document.querySelector('#div2');
+        const thss = document.querySelector('#idtr1');
+        const switchnames = [
+            '序號',
+            '姓名',
+            '手機',
+            '地址',
+            '生日',
+            '密碼',
+            '電子信箱',
+            '員工照片',
+            '到職日',
+            '部門序號',
+            '功能按鈕'
+        ];
+        //顯示隱藏按鈕
+        const switchs = switchnames.map((name, index) => {
+            return (
+                `
+        <div class="form-check form-switch col-1">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_${index + 1}" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked_${index + 1}">${name}</label>
+        </div>
+                `
+            )
+        });
+        divf.innerHTML = switchs.join("");
+        //顯示標題
+        const ths = switchnames.map((name, index) => {
+            return (`<th scope="col" id="idth${index + 1}">${name}</th>`)
+        });
+        thss.innerHTML = ths.join("");
+
+        const searchData = {
+            "employeeId": 0,
+            "keyword": "",
+            "page": 1,
+            "pageSize": 10,
+            "sortType": "desc",
+            "sortBy": "SpotId"
+        };
+
+        const loadEmployeeList = async () => {
+            const url = 'https://localhost:7160/api/TEmployees/EmployeeSearch';
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(searchData),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            console.log('data');
+            console.log(data);
+
+            //顯示員工資料
+            const MLists = data.employeesResult.map(mlist => {
+                const { employeeId, employeeName, cellphone, address, birthday, password, eMail, onBoardDate, employeePhoto, depId } = mlist;
+                const count = 0;
+                return (
+                    `
+                    <tr>
+                            <th scope="row" id="idtd1">${employeeId}</th>
+                            <td id="idtd2">${employeeName}</td>
+                            <td id="idtd3">${cellphone}</td>
+                            <td id="idtd4">${address}</td>
+                            <td id="idtd5">${birthday}</td>
+                            <td id="idtd6">${password}</td>
+                            <td id="idtd7">${eMail}</td>
+                            <td id="idtd8">${employeePhoto ? `<img style="width: 100px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片"/>` : '沒有可用的圖片'}</td>
+                            <td id="idtd9">${onBoardDate}</td>
+                            <td id="idtd10">${depId}</td>
+                        <td id="idtd11">
+                            <button type="button" class="btn btn-success"><a href="/Employee/Edit/${employeeId}">修改</a></button> |
+                            <!-- <a href="/Employee/Details/${employeeId}">Details</a> | -->
+                            <button type="button" class="btn btn-warning" value="${employeeId}" id="iddelete_${employeeId}" onclick="deleteEmployee(${employeeId})">刪除</button>
+                        </td>
+                    </tr>
+                    `
+                )
+            })
+            // 將生成的表格行字符串加入到 `tbody` 中
+            divtbody.innerHTML = MLists.join("");
+
+
+
+            //顯示分頁按鈕
+            let liPages = "";
+            for (let i = 1, max = data.totalPages; i <= max; i++) {
+                liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
+            }
+            ulPaging.innerHTML = liPages;
+            //隱藏功能開關
+            displaybtn();
+
+        };
+        loadEmployeeList();
+
+        //刪除員工
+        console.log('test1');
+        async function deleteEmployee(employeeId) {
+            if (confirm('確定要刪除嗎?')) {
+                const url2 = `https://localhost:7160/api/TEmployees/${employeeId}`;
+                const response = await fetch(url2, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                loadEmployeeList();
+            }
+        };
+
+        //顯示選擇頁數按鈕
+        let sltPages = "";
+        for (let i = 10, max = 20; i <= max; i += 5) {
+            sltPages += `<option value="${i}">每頁${i}筆資料</option>`
+        }
+        sltop.innerHTML = sltPages;
+        //搜尋欄
+        inpSearch.addEventListener('keydown', event => {
+            if (event.keyCode === 13) {
+                console.log(event);
+                searchData.keyword = event.target.value;
+                searchData.employeeId = 0;
+                searchData.page = 1;
+                loadEmployeeList();
+            }
+        })
+        //分頁按鈕
+        const pagingHandler = page => {
+            searchData.page = page;
+            loadEmployeeList();
+        }
+        //選擇頁數按鈕
+        sltop.addEventListener('change', event => {
+            searchData.pageSize = event.target.value;
+            loadEmployeeList();
+        })
+        //選擇排序
+        sltop2.addEventListener('change', event => {
+            searchData.sortType = event.target.value;
+            searchData.page = 1;
+            loadEmployeeList();
+        })
+
+
+        //隱藏功能按鈕
+        const displaybtn = () => {
+            const checks = {};
+            const ths = {};
+            const tds = {};
+
+            for (let i = 1; i <= 12; i++) {
+                checks[i] = document.querySelector(`#flexSwitchCheckChecked_${i}`);
+                ths[i] = document.querySelector(`#idth${i}`);
+                tds[i] = document.querySelectorAll(`#idtd${i}`);
+                checks[i].checked = true;
+                ths[i].style.display = '';
+
+                // 使用闭包来保持对 i 的正确引用
+                (function (index) {
+                    checks[index].addEventListener('change', function () {
+                        if (!this.checked) {
+                            ths[index].style.display = 'none';
+                            for (let j = 0; j < tds[index].length; j++) {
+                                tds[index][j].style.display = 'none';
+                            }
+                        } else {
+                            ths[index].style.display = '';
+                            for (let j = 0; j < tds[index].length; j++) {
+                                tds[index][j].style.display = '';
+                            }
+                        }
+                    });
+                })(i);
+            }
+        };
+
+    </script>    
+}
