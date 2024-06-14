@@ -326,6 +326,10 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Memeber).WithMany(p => p.TMemberLikes)
                 .HasForeignKey(d => d.MemeberId)
                 .HasConstraintName("FK_tMemberLike_tMember");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.TMemberLikes)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_tMemberLike_tProduct");
         });
 
         modelBuilder.Entity<TOrder>(entity =>
