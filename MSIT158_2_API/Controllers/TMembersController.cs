@@ -129,6 +129,12 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("MemberSearch")]
         public async Task<ActionResult<CMembersPagingDTO>> GetMembers([FromBody] CSearchDTO searchDTO)
         {
+            var membersjoin = _context.TMembers.Include(m => m.Vip)
+                .ToListAsync();
+
+
+
+
             //根據分類編號搜尋會員資料
             var members = searchDTO.memberId == 0 ? _context.TMembers : _context.TMembers.Where(s => s.MemberId == searchDTO.memberId);
             //根據關鍵字搜尋會員資料(title、desc)
