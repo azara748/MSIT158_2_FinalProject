@@ -425,7 +425,7 @@
         }
         function addcart() {
             if (mid.value == 0) {
-                location.href = "/HOME/Login"
+                location.href = `@Url.Content("~/HOME/Login")`
                 return
             }
             add()
@@ -451,7 +451,7 @@
         ////////////////////////////////////////////
         function addcart2(pid2) {
             if (mid.value == 0) {
-                location.href = "/HOME/Login"
+                location.href = `@Url.Content("~/HOME/Login")`
                 return
             }
             add()
