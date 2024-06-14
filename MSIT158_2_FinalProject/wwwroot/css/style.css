@@ -116,11 +116,11 @@ ul, ol {
 /*-- Text input --*/
 
 .input {
-  height: 40px;
-  padding: 0px 15px;
-  border: 1px solid #E4E7ED;
-  background-color: #FFF;
-  width: 100%;
+    height: 40px;
+    padding: 0px 15px;
+    border: 1px solid #E4E7ED;
+    background-color: #FFF;
+    width: 100%;
 }
 
 textarea.input {
@@ -477,7 +477,8 @@ textarea.input {
 .header-search form .input {
   width: calc(100% - 260px);
   margin-right: -4px;
-}
+  border-radius: 40px 0px 0px 40px;
+ }
 
 .header-search form .search-btn {
   height: 40px;
@@ -957,6 +958,10 @@ textarea.input {
   color: #ef233c;
 }
 
+    .product .product-body .product-rating > i.fa-star-half {
+        color: #ef233c;
+    }
+
 .product .product-body .product-rating:after {
   content: "";
   position: absolute;
@@ -1242,7 +1247,12 @@ textarea.input {
   margin-bottom: 15px;
 }
 
-.noUi-target {
+.
+
+
+
+
+-target {
   background-color: #FFF;
   -webkit-box-shadow: none;
   box-shadow: none;

@@ -8,5 +8,12 @@ namespace MSIT158_2_FinalProject.Controllers.Front
 		{
 			return View();
 		}
+		public IActionResult index(int? id)
+		{
+			if (id == null||id<=0) { return RedirectToAction("Search"); }
+			ViewBag.Id = id;
+			return View();
+		}
+
 	}
 }
