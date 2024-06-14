@@ -108,23 +108,26 @@ namespace MSIT158_2_FinalProject.Controllers
         //綠界測試
         public IActionResult CashFlow()
         {
+            int cash = 1000;
+            string productname = "史先生-測試商品中";
+
             var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
             //需填入你的網址
-            var website = $"https://localhost:44325/";
+            var website = $"https://localhost:7066/";
             var order = new Dictionary<string, string>
     {
         //綠界需要的參數
         { "MerchantTradeNo",  orderId},
         { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
-        { "TotalAmount",  "1000"},
+        { "TotalAmount",  $"{cash}"},
         { "TradeDesc",  "無"},
-        { "ItemName",  "測試商品"},
+        { "ItemName",  productname},
         { "ExpireDate",  "3"},
         { "CustomField1",  ""},
         { "CustomField2",  ""},
         { "CustomField3",  ""},
         { "CustomField4",  ""},
-        { "ReturnURL",  $"{website}/api/Ecpay/AddPayInfo"},
+        { "ReturnURL",  $"{website}/Home/CashFlow"},
         { "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
         { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
         { "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
