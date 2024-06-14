@@ -69,6 +69,7 @@ public class fM購物車
 	{
 		SelectShopContext db = new SelectShopContext();
 		var a = db.TCarts.FirstOrDefault(x => x.CartId == id);
+        if (a == null) return;
 		db.Remove(a);
 		db.SaveChanges();
 	}
@@ -76,6 +77,7 @@ public class fM購物車
     {
         SelectShopContext db = new SelectShopContext();
         var a = db.TPackageCarts.FirstOrDefault(x => x.PackageCartId == id);
+        if (a == null) return;
         db.Remove(a);
         db.SaveChanges();
     }

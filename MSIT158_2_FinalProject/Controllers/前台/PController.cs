@@ -84,7 +84,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
         }
         /*
          * async function addPackageCart(id,qty) {
-            var a2 = await fetch(`https://localhost:7066/p/addPackageCartAPI/${mid}/?pid=11`)
+            var a2 = await fetch(`https://localhost:7066/p/addPackageCartAPI/2/?pid=11`)
             var b2 = await a2.text()
             if (b2 == "ok")alert("加入購物車成功")}
          */

@@ -474,83 +474,83 @@
             }
         }
         ////////////////////////////////////////////////////////////////
-        var 總價 = 0;
-        var 運費 = 60;
-        var b = ""
-        var bp = ""
-        var count = 0
-        async function cart1() {
-            var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
-            var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
-             b = await a.json()
-             bp = await ap.json()
-            cart2()
-        }
-        function cart2() {
-            var t = ``
-            count = 0
-            總價 = 0;
-            for (let f in b) {
-                count++
-                總價 += b[f].unitPrice * b[f].qty;
-                t += `<div  id="c${f}"><div class="product-widget">
-                                                            <div class="product-img">
-                                                                                <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
-                                                            </div>
-                                                            <div class="product-body">
-                                                                                <h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
-                                                                                <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
-                                                            </div>
-                                                                    <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].qty},${b[f].cartId})"><i class="fa fa-close"></i></button>
-                                                                </div></div>`
-                                                       //<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
+        // var 總價 = 0;
+        // var 運費 = 60;
+        // var b = ""
+        // var bp = ""
+        // var count = 0
+        // async function cart1() {
+        //     var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
+        //     var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
+        //      b = await a.json()
+        //      bp = await ap.json()
+        //     cart2()
+        // }
+        // function cart2() {
+        //     var t = ``
+        //     count = 0
+        //     總價 = 0;
+        //     for (let f in b) {
+        //         count++
+        //         總價 += b[f].unitPrice * b[f].qty;
+        //         t += `<div  id="c${f}"><div class="product-widget">
+        //                                                     <div class="product-img">
+        //                                                                         <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
+        //                                                     </div>
+        //                                                     <div class="product-body">
+        //                                                                         <h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
+        //                                                                         <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
+        //                                                     </div>
+        //                                                             <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].qty},${b[f].cartId})"><i class="fa fa-close"></i></button>
+        //                                                         </div></div>`
+        //                                                //<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
 
-            }
-            for (let f in bp) {
-                count++
-                總價 += bp[f].price * bp[f].qty;
-                t += `<div  id="p${f}"><div class="product-widget">
-                                                                    <div class="product-img">
-                                                                       <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
-                                                                    </div>
-                                                                    <div class="product-body">
-                                                                                        <h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
-                                                                                                <h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
-                                                                    </div>
-                                                                                            <button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].qty},${bp[f].packageCartId})"><i class="fa fa-close"></i></button>
-                                                                        </div></div>`
-            }
-            cart.innerHTML = t
-            cart3()
-        }
-        function cart3() {
-            SUBTOTAL.innerHTML = '$' + 總價
-            cartqty.innerHTML = count
-            Items.innerHTML = count + "樣商品"
-        }
-        async function dedet(d, p, q, id) {
-            if (!confirm("確定要刪除嗎?")) return
-            var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
-            var b2 = await a2.text()
-            if (b2 != "ok") return
-            document.getElementById("c" + d).innerHTML = "";
-            總價 -= Number(p * q)
-            count --
-            SUBTOTAL.innerHTML = '$' + 總價
-            cart3()
-        }
-        async function dedet2(d, p, q, id) {
-            if (!confirm("確定要刪除嗎?")) return
-            var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
-            var b2 = await a2.text()
-            if (b2 != "ok") return
-            document.getElementById("p" + d).innerHTML = "";
-            總價 -= Number(p * q)
-            count -- 
-            SUBTOTAL.innerHTML = '$' + 總價
-            cart3()
-        }
-        cart1()
+        //     }
+        //     for (let f in bp) {
+        //         count++
+        //         總價 += bp[f].price * bp[f].qty;
+        //         t += `<div  id="p${f}"><div class="product-widget">
+        //                                                             <div class="product-img">
+        //                                                                <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
+        //                                                             </div>
+        //                                                             <div class="product-body">
+        //                                                                                 <h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
+        //                                                                                         <h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
+        //                                                             </div>
+        //                                                                                     <button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].qty},${bp[f].packageCartId})"><i class="fa fa-close"></i></button>
+        //                                                                 </div></div>`
+        //     }
+        //     cart.innerHTML = t
+        //     cart3()
+        // }
+        // function cart3() {
+        //     SUBTOTAL.innerHTML = '$' + 總價
+        //     cartqty.innerHTML = count
+        //     Items.innerHTML = count + "樣商品"
+        // }
+        // async function dedet(d, p, q, id) {
+        //     if (!confirm("確定要刪除嗎?")) return
+        //     var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
+        //     var b2 = await a2.text()
+        //     if (b2 != "ok") return
+        //     document.getElementById("c" + d).innerHTML = "";
+        //     總價 -= Number(p * q)
+        //     count --
+        //     SUBTOTAL.innerHTML = '$' + 總價
+        //     cart3()
+        // }
+        // async function dedet2(d, p, q, id) {
+        //     if (!confirm("確定要刪除嗎?")) return
+        //     var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
+        //     var b2 = await a2.text()
+        //     if (b2 != "ok") return
+        //     document.getElementById("p" + d).innerHTML = "";
+        //     總價 -= Number(p * q)
+        //     count -- 
+        //     SUBTOTAL.innerHTML = '$' + 總價
+        //     cart3()
+        // }
+        // cart1()
     </script>
 }
 <input type="hidden" value="@ViewBag.mid" id="mid" />
