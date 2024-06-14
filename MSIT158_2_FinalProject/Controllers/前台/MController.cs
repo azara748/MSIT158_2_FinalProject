@@ -84,8 +84,12 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                圖片2 = g.FirstOrDefault().Photo2,
            }).OrderByDescending(x => x.OrderDate).ToList();
 
-            int 顯示數 = 15;
 
+            if (id == 1) v=v.Where(x => x.StatusId == 1).ToList();
+            else if(id==2)v = v.Where(x => x.StatusId == 2).ToList();
+            else if (id == 3) v = v.Where(x => x.StatusId == 3).ToList();
+
+            int 顯示數 = 15;
 
             int allpage = 0;
             if (v.Count() < 顯示數+1) allpage = 1;
