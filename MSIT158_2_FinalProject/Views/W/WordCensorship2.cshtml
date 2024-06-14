@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MSIT158_2_FinalProject.Models.TWordCensorship>
+
+@{
+    Layout = "_Layout_Backstage";
+}
+
+<h1>禁詞管理</h1>
+<ul class="nav nav-tabs" style="font-size:20px">
+    <li class="nav-item">
+        <a class="nav-link" href="~/w/WordCensorship" aria-current="page">評論管理</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="~/w/WordCensorship2">禁詞管理</a>
+    </li>
+</ul>
+<br />
+<form class="row g-3" style="margin-left:20px" id="f1">
+    <label style="float:left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+
+    <div class="col-auto" style="width:150px;float:left">
+        <label for="inputPassword2" class="visually-hidden"></label>
+        <input class="form-control" id="inputPassword2" name="keyword" value="">
+    </div>
+    <div class="col-auto" style="float:left">
+        <button type="submit" class="btn btn-primary mb-3">搜尋</button>
+    </div>
+</form>
+<label style="float:left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+
+<form class="row g-3" style="" id="f2" action="~/W/addWordCensorship2">
+    <div class="col-auto" style="width:150px;float:left">
+        <label for="inputPassword2" class="visually-hidden"></label>
+        <input class="form-control" id="inputPassword2" name="word" value="">
+    </div>
+    <div class="col-auto" style="float:left">
+        <button type="submit" class="btn btn-primary mb-3" >新增</button>
+    </div>
+</form>
+
+
+<table class="table table-hover" style="font-size:20px">
+    <thead>
+        <tr>
+            <th scope="col" style="text-align:center">單詞</th>
+            <th scope="col" style="text-align:center">刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int c = 0;
+            @foreach (var item in Model)
+            {
+                c++;
+                <tr id="@("tr"+c)">
+                    <td style="vertical-align: middle;text-align:center">@item.Word</td>
+                    <td style="text-align:center">
+                        <button type="button" class="btn btn-danger" style="margin:5px" onclick='xx("@("tr"+c)",@item.WordCensorshipId)'>刪除</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function xx(x1, x2) {
+            if (!confirm("確定要刪除嗎?")) return
+            async function cart1() {
+                var a = await fetch(`@Url.Content("~/W/delectWordCensorshipAPI")/${x2}`)
+                b = await a.text()
+                console.log(b)
+                document.getElementById(x1).innerHTML = "";
+            }
+            cart1()
+        }
+        // function 新增() {
+        //     f1.action = `@Url.Content("~/W/addWordCensorship2")`;
+        //     f1.submit()
+        // }
+    </script>
+}
+
+
+

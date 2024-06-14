@@ -1,0 +1,273 @@
+﻿<form id="myForm" method="POST">
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class="col-md-7">
+                    <!-- Billing Details -->
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">運送地址</h3>
+                        </div>
+                        <p style="text-align:right"><a href="javascript:void(0)" style="font-size:20px;Text-decoration:underline;color:red" onclick="meb()">同會員資訊</a></p>
+                        <div class="form-group">
+                            <input class="input" type="text" name="RecipientName" placeholder="姓名" id="sele5" oninput="確認5()">
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="email" name="RecipientEamil " placeholder="Email" id="sele6" oninput="確認6()">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-select form-select-lg mb-3" aria-label="Large select example" style="font-size:16px;width:30%;float:left" id="sele1" onchange="sec1()" name="City">
+                            </select>
+                            <select class="form-select form-select-lg mb-3" aria-label="Large select example" style="font-size:16px;width:30%;float:left" id="sele2" name="District">
+                                @* @{
+                                foreach (var v in c.data.FirstOrDefault(x => x.name == 縣市).districts)
+                                {
+                                <option>@v.name</option>
+                                }
+                                } *@
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="Address" placeholder="地址" id="sele3" oninput="確認3()">
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="tel" name="RecipientPhone" placeholder="連絡電話" id="sele4" oninput="確認4()">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-checkbox">
+                                <input type="checkbox" id="create-account">
+                                <div class="caption">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                                    <input class="input" type="password" name="password" placeholder="Enter Your Password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Billing Details -->
+                    <!-- Shiping Details -->
+                    @* <div class="shiping-details">
+                    <div class="section-title">
+                    <h3 class="title">收件人地址</h3>
+                    </div>
+                    <div class="input-checkbox">
+                    <input type="checkbox" id="shiping-address">
+                    <label for="shiping-address">
+                    <span></span>
+                    送禮給別人?
+                    </label>
+                    <div class="caption">
+                    <div class="form-group">
+                    <input class="input" type="text" name="first-name" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                    <input class="input" type="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                    <select class="form-select form-select-lg mb-3" aria-label="Large select example" style="font-size:16px;width:30%;float:left" @bind="縣市">
+                    @{
+                    foreach (var v in c.data)
+                    {
+                    <option>@v.name</option>
+                    }
+                    }
+                    </select>
+                    <select class="form-select form-select-lg mb-3" aria-label="Large select example" style="font-size:16px;width:30%;float:left" @bind="區域">
+                    @{
+                    foreach (var v in c.data.FirstOrDefault(x => x.name == 縣市).districts)
+                    {
+                    <option>@v.name</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    <div class="form-group">
+                    <input class="input" type="text" name="address" placeholder="Address" value="">
+                    </div>
+                    <div class="form-group">
+                    <input class="input" type="tel" name="tel" placeholder="電話">
+                    </div>
+                    </div>
+                    </div>
+                    </div> *@
+                    <!-- /Shiping Details -->
+                    <!-- Order notes -->
+                    <div class="order-notes">
+                        <textarea class="input" placeholder="備註"></textarea>
+                    </div>
+                    <!-- /Order notes -->
+                </div>
+
+                <!-- Order Details -->
+                <div class="col-md-5 order-details">
+                    <div class="section-title text-center">
+                        <h3 class="title">您的商品</h3>
+                    </div>
+                    <div class="order-summary">
+                        <div class="order-col">
+                            <div><strong>商品</strong></div>
+                            <div><strong>金額</strong></div>
+                        </div>
+                        @{
+                            foreach (var item in ViewBag.會員購物車)
+                            {
+                                    <div class="order-products">
+                                        <div class="order-col">
+                                            <div>@item.Qty x @item.ProductName</div>
+                                            <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
+                                        </div>
+                                    </div>
+                            }
+                            foreach (var item in ViewBag.會員購物車2)
+                            {
+                                <div class="order-products">
+                                    <div class="order-col">
+                                        <div>@item.Qty x @item.PackName</div>
+                                        <div>@Convert.ToInt32(item.Price * item.Qty)</div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="order-col">
+                            <div>運費</div>
+                            <div><strong>@ViewBag.運費</strong></div>
+                        </div>
+                        <div class="order-col">
+                            <div><strong>總計</strong></div>
+                            <div><strong class="order-total">$@(ViewBag.總價 + ViewBag.運費)</strong></div>
+                        </div>
+                    </div>
+                    <a class="primary-btn order-submit" onclick="結帳()" type="submit" id="bu1">其他支付方式</a>
+                    <a class="primary-btn order-submit" onclick="結帳2()" type="submit" id="bu2">貨到付款</a>
+                    <div>
+                        <br />
+                    <div class="d-flex justify-content-center">                      
+                        <div class="spinner-border text-danger" role="status" id="lode" style="display:none;text-align:center;width: 8rem; height: 8rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    </div>
+                    <input type="hidden" value="1" name="StatusId" id="Status" />
+                    <input type="hidden" value="@ViewBag.會員資料.MemberName" name="StatusId" id="MemberName" />
+                    <input type="hidden" value="@ViewBag.EMail" />
+                    <input type="hidden" value="@ViewBag.Address" />
+                    @section scripts
+                    {
+                        <script src="~/taiwan_districts.js"></script>
+                        <script>
+                            var emailRule = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                            function 結帳() {
+                                if (!emailRule.test(sele6.value) || sele5.value.length < 4 || sele4.value.length < 10 || sele3.value.length < 6) {
+                                    window.alert("請輸入正確格式")
+                                    確認5()
+                                    確認4()
+                                    確認3()
+                                    確認6()
+                                    return
+                                }
+                                document.getElementById("myForm").submit();
+                                bu1.style.display = 'none'
+                                bu2.style.display = 'none'
+                                lode.style.display = 'block'
+                            }
+                            function 結帳2() {
+                                if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
+                                    window.alert("請輸入正確格式")
+                                    確認5()
+                                    確認4()
+                                    確認3()
+                                    確認6()
+                                    return
+                                }                               
+                                Status.value = 2;                         
+                                document.getElementById("myForm").submit();
+                                bu1.style.display = 'none'
+                                bu2.style.display = 'none'
+                                lode.style.display = 'block'
+                            }
+                            function meb() {
+                                sele5.value = MemberName.value
+                                sele4.value = `0987876316`
+                                sele6.value = `wanks894@gmail.com`
+                                sele3.value = `復興南路一段390號2樓`
+                                sele2.selectedIndex = 4
+                            }
+                            function 確認5() {
+                                if (sele5.value.length < 2)
+                                    sele5.style.borderColor = "red";
+                                    else
+                                    sele5.style.borderColor = "";
+                            }
+                            function 確認4() {
+                                if (sele4.value.length < 10)
+                                sele4.style.borderColor = "red";
+                                                                else
+                                sele4.style.borderColor = "";
+                            }
+                            function 確認3() {
+                                if(sele3.value.length<6)
+                                sele3.style.borderColor = "red";
+                                                                else
+                                sele3.style.borderColor = "";
+                            }
+                            function 確認6() {
+                                if (!emailRule.test(sele6.value))
+                                    sele6.style.borderColor = "red";
+                                else
+                                    sele6.style.borderColor = "";
+                            }
+                            // async function 結帳() {
+                            //     var d = new Date()
+                            //     d.setHours(d.getHours() + 8)
+                            //     var Data = {
+                            //         "orderDate": d,
+                            //         "statusId": 1,
+                            //         "city": document.getElementById("s" + sele1.selectedIndex).innerHTML,
+                            //         "district": document.getElementById("i" + sele2.selectedIndex).innerHTML,
+                            //         "address": sele3.value,
+                            //         "recipienteamil": sele6.value,
+                            //         "recipientname": sele5.value,
+                            //         "recipientphone": sele4.value,
+                            //         "shippingmethodId": 1,
+                            //         "memberid": mid.value
+                            //     }
+                            //     console.log(Data)
+                            //     var a = await fetch(`@Url.Content("~/FC/Index6")`,
+                            //         {
+                            //             method: 'POST',
+                            //             body: JSON.stringify(Data),
+                            //             headers: {
+                            //                 'Content-Type': 'application/json'
+                            //             },
+                            //         })
+                            //     window.alert("ok")
+                            // }
+
+                            for (var v1 in data) {
+                                sele1.innerHTML += `<option value = "${data[v1].name}" id="s${v1}">${data[v1].name}</option >`
+                            }
+                            function sec1() {
+                                sele2.innerHTML = "";
+                                // var aa = sele1.value
+                                // var bb = parseInt(aa.replace("t", ""))
+                                for (var v3 = 0; v3 < data[sele1.selectedIndex].districts.length; v3++) {
+                                    sele2.innerHTML += `<option id="i${v3}">${data[sele1.selectedIndex].districts[v3].name}</option >`
+                                }
+                                // console.log(document.getElementById("s" + sele1.selectedIndex).innerHTML)
+                                // console.log(document.getElementById("i" + sele2.selectedIndex).innerHTML)
+                            }
+                            sec1()
+                        </script>
+                    }
+                </div>
+                <!-- /Order Details -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+</form>

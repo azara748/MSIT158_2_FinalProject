@@ -1,0 +1,87 @@
+﻿<table class="table table-hover" style="font-size:32px">
+    <tbody style="font-size=32px">
+        <tr>
+            <td style="vertical-align: middle;">日期</td>
+            <td style="vertical-align: middle;">@ViewBag.o.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
+            @{
+                string s = "";
+                if (ViewBag.o.StatusId == 1) s = "未結帳";
+                else if (ViewBag.o.StatusId == 2) s = "已完成";
+                else if (ViewBag.o.StatusId == 3) s = "已取消";
+            }
+            <td style="vertical-align: middle;">訂單狀態</td>
+            <td style="vertical-align: middle;">@s</td>
+        </tr>
+        <tr>
+            <td style="vertical-align: middle;">總價</td>
+            <td style="vertical-align: middle;">@ViewBag.o.總價.ToString("0")</td>
+            <td style="vertical-align: middle;">件數</td>
+            <td style="vertical-align: middle;">@ViewBag.o.總數</td>
+        </tr>
+        @{
+            if (@ViewBag.o.Reviewed == null || @ViewBag.o.Reviewed)
+            {
+                <tr>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;">
+                        已評價
+                    </td>
+                </tr>
+            }
+            else if (@ViewBag.o.StatusId != 2) ;
+            else
+            {
+                <tr>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;"></td>
+                    <td style="vertical-align: middle;">
+                        <a href="~/M/Reviewepage/@ViewBag.o.OrderId" style="Text-decoration:underline;color:#EA0000;">評價</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<table class="table table-hover" style="font-size:20px">
+    <thead>
+        <tr>
+            <th scope="col">照片</th>
+            <th scope="col">商品</th>
+            <th scope="col">價格</th>
+            <th scope="col">數量</th>
+            <th scope="col">小計</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in ViewBag.a)
+        {
+            <tr>
+                <td>
+                <a href="~/P/Productpage/@v.ProductId">
+                    <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
+                    </a>
+                </td>
+                <td style="vertical-align: middle;"><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
+                <td style="vertical-align: middle;">@Convert.ToInt32(v.UnitPrice)</td>
+                <td style="vertical-align: middle;">@v.Qty</td>
+                <td style="vertical-align: middle;">@Convert.ToInt32(v.Qty * v.UnitPrice)</td>
+            </tr>
+        }
+        @foreach (var v in ViewBag.b)
+        {
+            <tr>
+                <td>
+                    <img src="~/assets/Img/packageImages/@v.Picture" style="width: 80px; height: 80pxobject-fit: contain;" alt="">
+                </td>
+                <td style="vertical-align: middle;">@v.PackName</td>
+                <td style="vertical-align: middle;">@Convert.ToInt32(v.Price)</td>
+                <td style="vertical-align: middle;">@v.PackQty</td>
+                <td style="vertical-align: middle;">@Convert.ToInt32(v.PackQty * v.Price)</td>
+            </tr>
+        }
+    </tbody>
+</table>

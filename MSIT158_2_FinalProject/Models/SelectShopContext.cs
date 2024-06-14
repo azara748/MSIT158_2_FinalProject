@@ -307,25 +307,6 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Sex).HasMaxLength(50);
             entity.Property(e => e.Vipid).HasColumnName("VIPID");
             entity.Property(e => e.Wallet).HasColumnType("money");
-
-            entity.HasOne(d => d.Vip).WithMany(p => p.TMembers)
-                .HasForeignKey(d => d.Vipid)
-                .HasConstraintName("FK_tMember_tVip");
-        });
-
-        modelBuilder.Entity<TMemberLike>(entity =>
-        {
-            entity.HasKey(e => e.LikeId);
-
-            entity.ToTable("tMemberLike");
-
-            entity.Property(e => e.LikeId).HasColumnName("likeID");
-            entity.Property(e => e.MemeberId).HasColumnName("MemeberID");
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-            entity.HasOne(d => d.Memeber).WithMany(p => p.TMemberLikes)
-                .HasForeignKey(d => d.MemeberId)
-                .HasConstraintName("FK_tMemberLike_tMember");
         });
 
         modelBuilder.Entity<TOrder>(entity =>

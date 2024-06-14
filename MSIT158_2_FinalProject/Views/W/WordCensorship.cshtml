@@ -1,0 +1,161 @@
+﻿@using MSIT158_2_FinalProject.Controllers.前台
+@{
+    Layout = "_Layout_Backstage";
+}
+
+<h1>評論管理</h1>
+<ul class="nav nav-tabs" style="font-size:20px">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="~/w/WordCensorship">評論管理</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="~/w/WordCensorship2">禁詞管理</a>
+    </li>
+</ul>
+<br />
+<form class="row g-3" style="margin-left:20px" id="f1">
+    <select class="form-select" aria-label="Default select example" style="float:left;width:150px" name="x">
+        @if (string.IsNullOrEmpty(ViewBag.x))
+        {
+            <option value="ProductName" selected="selected">商品名</option>
+            <option value="Comment">頻論內容</option>
+        }
+        else
+        {
+            <option value="ProductName">商品名</option>
+            <option value="Comment" selected="selected">頻論內容</option>
+        }
+    </select>
+    <div class="col-auto" style="width:150px;float:left">
+        <label for="inputPassword2" class="visually-hidden"></label>
+        <input class="form-control" id="inputPassword2" name="keyword" value="@ViewBag.keyword">
+    </div>
+    <div class="col-auto" style="float:left">
+        <button type="submit" class="btn btn-primary mb-3">搜尋</button>
+    </div>
+
+
+
+    <select class="form-select" aria-label="Default select example" style="float:left;width:150px" name="ode" id="select2" onchange="ch2()">
+        <option value="ProductName" value="0">預設排序</option>
+        <option value="Comment" value="1">星數高到低</option>
+        <option value="ProductName" value="2">星數低到高</option>
+        <option value="Comment" value="3">時間近到遠</option>
+        <option value="Comment" value="4">時間遠到近</option>
+    </select>
+    <div class="form-check" style="float:left;padding-left:5px" >
+        @if (ViewBag.boo == 1)
+        {
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" style="margin-top:7px;margin-left:0px;width:25px;height:25px" name="boo" checked>
+        }
+        else
+        {
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" style="margin-top:7px;margin-left:0px;width:25px;height:25px" name="boo">
+        }
+        <label class="form-check-label" for="flexCheckDefault" style="margin-top:5px;font-size:18px">
+            只含有評論
+        </label>
+    </div>
+    <input type="hidden" value="@ViewBag.ode" id='in2' />
+    <label style="float:right">&nbsp&nbsp&nbsp</label>
+
+    <div class="col-auto" style="float:right">
+        <button class="btn btn-danger" onclick="dele()">刪除搜尋結果</button>
+    </div>
+    <input type="hidden" value="" id='delect' name="delect" />
+    <input type="hidden" value="@ViewBag.page" id='page' name="page" />
+</form>
+
+<table class="table table-hover" style="font-size:20px">
+    <thead>
+        <tr>
+            <th scope="col">商品名</th>
+            <th scope="col">時間</th>
+            <th scope="col">評價等級</th>
+            <th scope="col">評論</th>
+            <th scope="col">刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int c = 0; 
+            foreach (var v in ViewBag.評論)
+            {
+                c++;
+                    <tr id="@("tr"+c)">
+                    <td style="vertical-align: middle;"><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
+                        <td style="vertical-align: middle;">@v.ReviewDate</td>
+                    @{
+                        string s = "";
+                        for (int i = 0; i < v.RankId; i++)
+                            s += "★";                    
+                    }
+                       
+                        <td style="vertical-align: middle;">@s</td>
+                    <td style="vertical-align: middle;">@Html.Raw(new fM通用().改成HTML換行符號(v.Comment))</td>
+                    <td style="vertical-align: middle;">
+                            <button type="button" class="btn btn-danger" style="margin:5px" onclick='xx("@("tr"+c)",@v.ReviewId)'>刪除</button>
+                        </td>
+                    </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        select2.selectedIndex = Number(in2.value)
+        function ch2() {
+            f1.submit()
+        }
+        function dele() {
+            if (!confirm("確定要刪除全部嗎?")) return
+            delect.value = "delect"
+            f1.submit()
+        }
+        function xx(x1, x2) {
+            if (!confirm("確定要刪除嗎?")) return
+            async function cart1() {
+                var a = await fetch(`@Url.Content("~/W/delectReviewAPI")/${x2}`)
+                b = await a.text()
+                console.log(b)
+                document.getElementById(x1).innerHTML = "";
+            }
+            cart1()
+        }
+        function gopege(p) {
+            page.value = Number(p)
+            console.log(p)
+            f1.submit()
+        }
+    </script>
+}
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="~/w/WordCensorship/?page=@(ViewBag.page-1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (int i = 1; i < ViewBag.allpage + 1; i++)
+        {
+            if (i == ViewBag.page)
+            {
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" onclick="gopege(@i)" href="javascript:void(0)">@i</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" onclick="gopege(@i)" href="javascript:void(0)">@i</a></li>
+            }
+        }
+        <li class="page-item">
+            <a class="page-link" onclick="gopege(@(ViewBag.page+1))" aria-label="Next" href="javascript:void(0)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

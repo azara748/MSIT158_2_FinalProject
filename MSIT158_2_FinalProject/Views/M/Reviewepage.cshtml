@@ -1,0 +1,115 @@
+﻿@{
+    int c = 0;
+    foreach (var v in ViewBag.v)
+    {
+        c++;
+                            <form class="review-form" id="@("f"+c)">
+                                <table class="table table-hover" style="font-size:20px">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="4" width="15%">
+                                                                                <a href="~/P/Productpage/@v.ProductId">
+                                                <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 250px; height: 250px;object-fit: contain;" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>                                                                                             
+                                    <td><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="center">
+                                                <div class="input-rating">
+                                                    <span>您的評價: </span>
+                                                    <div class="stars">
+                                                        <input  value="5" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star5")')" id="@(c+"star5")" onmousemove="mm('@(c+"star5")')"></i>
+                                                        <input  value="4" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star4")')" id="@(c+"star4")" onmousemove="mm('@(c+"star4")')"></i>
+                                                        <input  value="3" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star3")')" id="@(c+"star3")" onmousemove="mm('@(c+"star3")')"></i>
+                                                        <input  value="2" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star2")')" id="@(c+"star2")" onmousemove="mm('@(c+"star2")')"></i>
+                                                        <input  value="1" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star1")')" id="@(c+"star1")" onmousemove="mm('@(c+"star1")')"></i>
+                                                <input type="hidden" value="5" id="@("r"+c)" name="RankId" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <textarea class="input" placeholder="評論內容" style="height:120px" name="Comment"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input type="hidden" name="PurchaseId" value="@v.PurchaseId" />
+                                <input type="hidden" name="ProductId" value="@v.ProductId" />
+                        <input type="hidden" name="oid" value="@v.OrderId" />
+                            </form>
+    }
+                <input type="hidden" id="conut" value="@c" />
+}
+<div style="text-align:right">
+    <input type="button" class="primary-btn" style="width:10%;font-size:20px" value="送出" onclick="送出()"></inputt>
+</div>
+<script>
+    function ck(a) {
+        let star = Number(a[a.length - 1])
+        let index = Number(a.substring(0, a.length - 1).replace("star", ""))
+
+        if (star==1)document.getElementById("r" + index).value = 5
+        else if(star == 2) document.getElementById("r" + index).value = 4
+        else if(star == 3) document.getElementById("r" + index).value = 3
+        else if(star == 4) document.getElementById("r" + index).value = 2
+            else document.getElementById("r" + index).value = 1
+
+
+
+        for (i = 5; i > 0; i--) {
+            let id = (a.substring(0, a.length - 1)) + i
+            if (i > star - 1) {
+                document.getElementById(id).className = "fa fa-star"
+            }
+            else
+                document.getElementById(id).className = "fa fa-star-o"
+            //if (i > star)
+            document.getElementById(id).onmousemove = null;
+        }
+    }
+    function mm(a) {
+        let star = Number(a[a.length - 1])
+        for (i = 5; i > 0; i--) {
+            let id = (a.substring(0, a.length - 1)) + i
+            if (i > star - 1)
+                document.getElementById(id).className = "fa fa-star"
+            else
+                document.getElementById(id).className = "fa fa-star-o"
+        }
+    }
+   
+
+        async function 送出() {
+        if (!confirm("評論送出將無法更改")) return
+        //var f = document.getElementsByTagName("form")
+
+        for (var v = 1; v < Number(conut.value) + 1; v++) {
+            var fid = "f" + v + ""
+            var x = document.getElementById(fid)
+            var c = new FormData(x);
+            var a = await fetch(`@Url.Content("~/M/ReviewecheckAPI")`, { method: "POST", body: c })
+            var b = await a.text()
+            console.log(b)
+            if (b != "ok") 
+            {
+             window.alert("評論含有不當字詞")
+                return;
+            }
+        }
+
+        for (var v = 1; v < Number(conut.value)+1; v++) {
+             var fid = "f"+v+""
+                var x = document.getElementById(fid)
+                var c = new FormData(x);        
+                var a = await fetch(`@Url.Content("~/M/upRevieweAPI")`, { method: "POST", body: c})
+                var b = await a.text()
+              }
+        location.href = "/M/Memberpage"
+ }
+  
+</script>
