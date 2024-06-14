@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MSIT158_2_API.Models;
 
 public partial class TEmployee
-{    
+{
     public int EmployeeId { get; set; }
 
     public string? EmployeeName { get; set; }

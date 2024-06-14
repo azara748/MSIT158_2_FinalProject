@@ -35,7 +35,11 @@ public partial class TMember
 
     public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
 
+    public virtual ICollection<TMemberLike> TMemberLikes { get; set; } = new List<TMemberLike>();
+
     public virtual ICollection<TOrder> TOrders { get; set; } = new List<TOrder>();
+
+    public virtual ICollection<TPackageCart> TPackageCarts { get; set; } = new List<TPackageCart>();
 
     public virtual ICollection<TReview> TReviews { get; set; } = new List<TReview>();
 

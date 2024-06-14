@@ -19,6 +19,8 @@ public partial class TReview
 
     public int? PurchaseId { get; set; }
 
+    public bool? Reviewed { get; set; }
+
     public virtual TMember? Member { get; set; }
 
     public virtual TProduct? Product { get; set; }
