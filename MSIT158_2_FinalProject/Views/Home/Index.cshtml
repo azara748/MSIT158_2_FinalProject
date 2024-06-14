@@ -33,14 +33,19 @@
         const auth = getAuth(app);
 
         // 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
-        const memberName = @Html.Raw(JsonSerializer.Serialize(Model.MemberName));
-        //const memberName = '@Model.MemberName';
-        const Smember = document.querySelector('#idshowmember1');
-        console.log('test2');
-        console.log(Smember);
-        Smember.textContent = '登入者 :' + memberName;
+        (async () => {
+            const urlss = '@Url.Content("~/ApiMember/AddSession")';
+            const responsess = await fetch(urlss);
+            const datass = await responsess.text();
+            const jsonss = JSON.parse(datass);
+            const memberName = jsonss.MemberName;
+            const Smember = document.querySelector('#idshowmember1');
+            console.log('test1');
+            console.log(Smember);
+            Smember.textContent = '登入者 :' + memberName;
+        })();
         const signOutbtn = document.querySelector('#idsignOutButton1');
-        console.log('test1');
+        console.log('test2');
         console.log(signOutbtn);
 
 

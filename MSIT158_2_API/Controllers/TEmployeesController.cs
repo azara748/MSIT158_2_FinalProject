@@ -36,7 +36,7 @@ namespace MSIT158_2_API.Controllers
             {
                 json = JsonSerializer.Serialize(user);
                 _pp = json;
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
+                
             }
             return Ok(new { message = "登入成功", json });
         }
@@ -51,7 +51,7 @@ namespace MSIT158_2_API.Controllers
             {
                 json = JsonSerializer.Serialize(user);
                 _pp = json;
-                HttpContext.Session.SetString(CDictionary.SK_LOGIN_EMPLOYEE, json);
+                
             }
             return Ok(new { message = "確認成功", json });
         }

@@ -43,7 +43,15 @@ namespace MSIT158_2_FinalProject.Controllers
             }
             return Content(json, "text/plain", System.Text.Encoding.UTF8);
         }
+        public IActionResult AddSession()
+        {
+            // 取得 Session 資料
+            var loginMemberData = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+            // 將 JSON 字串反序列化為購物車列表
+            TMember User = JsonSerializer.Deserialize<TMember>(loginMemberData);
 
+            return Content(loginMemberData, "text/plain", System.Text.Encoding.UTF8);
+        }
         public IActionResult ClearSession()
         {
             HttpContext.Session.Remove(CDictionary.SK_LOGIN_MEMBER);
