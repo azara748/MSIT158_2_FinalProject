@@ -58,7 +58,7 @@ namespace MSIT158_2_FinalProject.Controllers
             return Ok("Session 已清除。");
         }
 
-        public IActionResult SenderEmail()
+        public IActionResult SenderRegisterEmail()
         {
             string receive = "k955339962@gmail.com";
             string subject = "*** 用戶註冊驗證";
@@ -66,6 +66,18 @@ namespace MSIT158_2_FinalProject.Controllers
             messages += "<p>請點擊以下連結驗證您的帳號:</p>";
             messages += "<a>點擊這裡</a>進行驗證";
             new CEmailSender().getEmail(receive,subject,messages);
+
+            return Ok("郵件已成功發送");
+        }
+        public IActionResult SenderForgetPasswordEmail()
+        {
+            //如果沒有密碼，將無法寄信修改密碼
+            string receive = "fetch的信箱";
+            string subject = "*** 用戶重新設定密碼";
+            string messages = "<h1>修改***的密碼</h1>";
+            messages += "<p>請點擊以下連結修改您的密碼:</p>";
+            messages += "<a>點擊這裡</a>進行驗證";
+            new CEmailSender().getEmail(receive, subject, messages);
 
             return Ok("郵件已成功發送");
         }

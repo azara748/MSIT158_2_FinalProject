@@ -90,7 +90,7 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
-        //忘記密碼
+        //忘記密碼，確認信箱後寄送email，在email修改密碼後送回API改密碼，API寄送email成功通知
         public IActionResult MemberForgetPassword()
         {
             return View();

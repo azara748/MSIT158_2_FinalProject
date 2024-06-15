@@ -87,6 +87,29 @@ namespace MSIT158_2_API.Controllers
             }
             return Ok(new { message = "密碼修改成功", json });
         }
+        //忘記密碼A(修改密碼)
+        [HttpPost("SenderForgetPasswordEmail")]
+        public async Task<ActionResult<TMember>> POSTSenderForgetPasswordEmail([FromForm] CCheckViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+
+            //如果沒有密碼，將無法寄信修改密碼
+            if (string.IsNullOrEmpty(user.Password))
+                return BadRequest(new { message = "沒有密碼，將無法寄信修改密碼" });
+
+            string receive = user.EMail;
+            string subject = "*** 用戶重新設定密碼";
+            string messages = "<h1>修改***的密碼</h1>";
+            messages += "填寫form表單，submit送出到指定網址";
+            messages += "<form method=\"post\" action=\"~/api/register\" id=\"userForm\">";
+            messages += "<form method=\"post\" action=\"~/api/register\" id=\"userForm\">";
+            messages += "</form>";
+            messages += "<p>請點擊以下連結回到登入頁面:</p>";
+            messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            new CEmailSender().getEmail(receive, subject, messages);
+
+            return Ok(new { message = "郵件已成功發送" });
+        }
         //Google,Facebook 登入，新增資料
         [HttpPost("OauthCreate")]
         public async Task<ActionResult<TMember>> POSTMemberOauthCreate([FromBody] COauthLoginViewModel vm)
