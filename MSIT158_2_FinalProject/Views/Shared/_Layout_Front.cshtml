@@ -274,40 +274,7 @@
 	<!-- /FOOTER -->
 	<!-- jQuery Plugins -->
 	<input  type="hidden" id="mid" value="0"/>
-	<script>
-		const layoutlikeData = {
-			"mMemberId": 3
-		};
-		const loadLike = async () => {
-			const url = 'https://localhost:7160/api/TMemberLikes';
-			const response = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(layoutlikeData),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			const data = await response.json();
-			const likes = data.map(like => {
-				const { productName, unitPrice, productphoto, productId, status } = like;
-				if (status === 0) {
-					return '';
-				}
-				return (`<a href="https://localhost:7066/homepage/index/${productId}">
-				<div class="product-widget">
-				<div class="product-img">
-										${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-				</div>
-				<div class="product-body">
-								<h3 class="product-name"><a href="#">${productName}</a></h3>
-						<h4 class="product-price"></span>$${unitPrice}</h4>
-																	</div>
-																	<button class="delete"><i class="fa fa-close"></i></button>
-																</div>`)
-			})
-			likelist.innerHTML = likes.join("");
-		}
-	</script>
+
 	<!--//////////////////////////////////////////////////////////////////////////////////-->
 	<script type="module">
 		// 從所需的 SDK 中匯入你需要的函式/Google 登入
@@ -445,6 +412,40 @@
 		cart1()
 	</script>
 	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<script>
+		const layoutlikeData = {
+			"mMemberId": 3
+		};
+		const loadLike = async () => {
+			const url = 'https://localhost:7160/api/TMemberLikes';
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(layoutlikeData),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const data = await response.json();
+			const likes = data.map(like => {
+				const { productName, unitPrice, productphoto, productId, status } = like;
+				if (status === 0) {
+					return '';
+				}
+				return (`<a href="https://localhost:7066/homepage/index/${productId}">
+						<div class="product-widget">
+						<div class="product-img">
+												${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+						</div>
+						<div class="product-body">
+										<h3 class="product-name"><a href="#">${productName}</a></h3>
+								<h4 class="product-price"></span>$${unitPrice}</h4>
+																			</div>
+																			<button class="delete"><i class="fa fa-close"></i></button>
+																		</div>`)
+			})
+			likelist.innerHTML = likes.join("");
+		}
+	</script>
 
 	<script src="~/js/jquery.min.js"></script>
 	<script src="~/js/bootstrap.min.js"></script>

@@ -498,7 +498,7 @@
 											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
 							</div>
 							<div class="product-btns">
-												<button class="add-to-wishlist" id="likebtn" value="${productId}"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+														<button class="add-to-wishlist" id="likebtn"  onclick="addlike(${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
 								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
 										<button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
 								</div>
@@ -511,9 +511,9 @@
 				})
 				div1.innerHTML = pros.join("");
 				searchresult.textContent = `${data.totalCount}`;
-				let btnlike = document.getElementById("likebtn");
-				console.log(btnlike.value);
-				btnlike.addEventListener('click',addlike(3,btnlike.value));
+				// let btnlike = document.getElementById("likebtn");
+				// console.log(btnlike.value);
+				// btnlike.addEventListener('click',addlike(3,btnlike.value));
 				if (data.totalCount == 0) {
 					searchcriteria.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看以下推薦商品。`;
 					inpSearch.value = "";
@@ -844,6 +844,7 @@
 			event.preventDefault();
 			onlyTxt();
 		});
+
 		/////////////////////////////////////////////////////////
 		function addcart2(pid2) {
 			if (mid.value == 0) {
