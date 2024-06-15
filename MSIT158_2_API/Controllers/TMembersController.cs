@@ -98,17 +98,46 @@ namespace MSIT158_2_API.Controllers
                 return BadRequest(new { message = "沒有密碼，將無法寄信修改密碼" });
 
             string receive = user.EMail;
-            string subject = "*** 用戶重新設定密碼";
-            string messages = "<h1>修改***的密碼</h1>";
+            string subject = $"{user.MemberName}用戶重新設定密碼";
+            string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
             messages += "填寫form表單，submit送出到指定網址";
-            messages += "<form method=\"post\" action=\"~/api/register\" id=\"userForm\">";
-            messages += "<form method=\"post\" action=\"~/api/register\" id=\"userForm\">";
+            messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\">";
+            messages += "<div class=\"mb-3\">";
+            messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
+            messages += $"<input type=\"email\" class=\"form-control\" id=\"InputEmail\" name=\"txtEmail\" value=\"{user.EMail}\">";
+            messages += "</div>";
+            messages += "<div class=\"mb-3\">";
+            messages += "<label for=\"InputPassword\" class=\"form-label\">新密碼：</label>";
+            messages += "<input type=\"text\" class=\"form-control\" id=\"InputPassword\" name=\"txtPassword\">";
+            messages += "</div>";
+            messages += "<button type=\"submit\" class=\"btn btn-primary\" id=\"buttonSubmit\">修改新密碼並送出</button>";
             messages += "</form>";
             messages += "<p>請點擊以下連結回到登入頁面:</p>";
             messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            //messages += "<script>console.log(\"test1\");</script>";
             new CEmailSender().getEmail(receive, subject, messages);
 
             return Ok(new { message = "郵件已成功發送" });
+        }
+        //忘記密碼B(修改新密碼)
+        [HttpPost("SenderEditPassword")]
+        public async Task<ActionResult<TMember>> SenderEditPassword([FromForm] CLoginViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+            // 從資料庫中獲取用戶的鹽和雜湊後的密碼
+            string salt = user.Salt;
+            string Passwordsalted = vm.txtPassword + salt;
+            //密碼加密，使用 SHA256 演算法
+            vm.txtPassword = GetSha256Hash(Passwordsalted);
+            string json = "";
+            if (user != null)
+            {
+                user.Password = vm.txtPassword;
+                await _context.SaveChangesAsync();
+                json = JsonSerializer.Serialize(user);
+
+            }
+            return Ok(new { message = "密碼修改成功", user });
         }
         //Google,Facebook 登入，新增資料
         [HttpPost("OauthCreate")]
