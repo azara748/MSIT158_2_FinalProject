@@ -23,6 +23,8 @@ public partial class TAllPackage
 
     public string? Size { get; set; }
 
+    public byte[]? PictureData { get; set; }
+
     public virtual TPackageMaterial? Material { get; set; }
 
     public virtual TPackageStyle? PackageStyle { get; set; }
