@@ -238,8 +238,13 @@
                         console.log("test3");
                         console.log(JnamesB);
                         if (confirm(`${JnamesB}\n${JemailsB}\n確定要登入嗎!`)) {
-                            window.location.href = "/";
+                          // window.location.href = '@Url.Content("~/")';
+                           //window.location.href = '/Home/Index';
+                            //window.history.back();
+                            let x = sessionStorage.getItem('redirectAfterLogin');
+                            window.location.href = x;
                         }
+                        //登入後去哪裡0616
                     }
                 };
                 sendOauthData();               
@@ -326,6 +331,8 @@
                     const jsonp2 = JSON.parse(name2);
                     const Jname2 = jsonp2.MemberName;
                     const Jemail2 = jsonp2.EMail;
+                    const apimid = jsonp2.MemberId;
+                    sessionStorage.setItem("mID", apimid);
                     console.log("test6");
                     console.log(name2);
                     console.log(Jname2);
@@ -333,8 +340,12 @@
 
                     if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);
-                        window.location.href = "/";
+                        let x = sessionStorage.getItem('redirectAfterLogin');
+                        window.location.href = x;
+                       // window.history.back();
                     }
+                    //登入0616
+
                 }
 
             }

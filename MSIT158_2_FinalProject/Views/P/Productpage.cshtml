@@ -354,6 +354,8 @@
 <!-- /Section -->
 @section Scripts {
     <script>
+        //0616 把現在位置存住用於登入後跳回去
+        sessionStorage.setItem('redirectAfterLogin', window.location.href);
         var page = 1
         var b = ""
         async function go() {

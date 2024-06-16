@@ -73,7 +73,7 @@
 					<div class="col-md-2">
 						<div class="header-ctn">
 							<div>
-								<a href="#">
+								<a href="https://localhost:7066"/>
 									<i class="fa fa-gift"></i>
 									<span>選物平台</span>
 								</a>
@@ -105,15 +105,14 @@
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="btnlikelist">
 									<i class="fa fa-heart-o"></i>
 									<span>願望清單</span>
-									<div class="qty">3</div>
+									<div class="qty" id="likeqty">♥</div>
 								</a>
 								<div class="cart-dropdown" >
 									<div class="cart-list" id="idlikelist">
-
 									</div>
 									<div class="cart-btns">
-										<a href="#">TBC</a>
-										<a href="#">YBC  <i class="fa fa-arrow-circle-right"></i></a>
+										<a onclick="deleteAllLLiked(event)">刪除全部</a>
+										<a href="#">TBC <i class="fa fa-arrow-circle-right"></i></a>
 									</div>
 								</div>
 							</div>
@@ -280,7 +279,7 @@
 	<!-- /FOOTER -->
 	<!-- jQuery Plugins -->
 	<input  type="hidden" id="mid" value="0"/>
-	sessionStorage.setItem("mID", 0);
+
 	<!--//////////////////////////////////////////////////////////////////////////////////-->
 	<script type="module">
 		// 從所需的 SDK 中匯入你需要的函式/Google 登入
@@ -313,9 +312,8 @@
 			Smember.textContent = '登入者 :' + memberName;
 			Smember.href = '@Url.Content("~/M/Memberpage")'
 			mid.value = jsonss.MemberId;
-			sessionStorage.setItem("mID", jsonss.MemberId);
-			console.log("有登入mID",mID);
 			signOutbtn.style.display = "";
+
 		})();
 		const signOutbtn = document.querySelector('#idsignOutButton1');
 		signOutbtn.style.display = 'none';
@@ -328,10 +326,11 @@
 			if (confirm("確定登出嗎！")) {
 				signOut(auth).then(() => {
 					alert("你已成功登出！");
+					sessionStorage.removeItem("mID");
 				}).catch((error) => {
 					console.error('登出時出錯:', error);
 				});
-				window.location.href = '@Url.Content("~/HomePage/Search")';
+				window.location.href = '@Url.Content("~/")';
 			}
 		});
 
@@ -420,11 +419,11 @@
 	<!--登入後載入願望清單-->
 	<script>
 		const btnlikelist = document.getElementById('btnlikelist');
-		var mID = Number(sessionStorage.getItem("mID"));
-		console.log("剛進來應該會是預設?",mID);
+		const sessMemberId = Number(sessionStorage.getItem("mID"));
+		const showhowmanylike = document.getElementById('likeqty');
 		const loadLike = async (id) => {
-			if (mID == 0) {
-					  alert("您好 請先登入會員!!");
+			if (id == 0) {
+					  alert("欲查看願望清單 請先登入會員!!");
 				location.href = `@Url.Content("~/Home/Login")`
 				  }
 				const url = `https://localhost:7160/api/TMemberLikes?id=${id}`;
@@ -436,12 +435,8 @@
 					}
 				});
 				const data = await response.json();
-				const likes = data.map(like => {
+				const likes = data.showMemberLikeDTOs.map(like => {
 					const { productName, unitPrice, productphoto, productId, status } = like;
-
-					if (status === 0) {
-						return '';
-					}
 					return (`<a href="https://localhost:7066/homepage/index/${productId}">
 								<div class="product-widget">
 								<div class="product-img">
@@ -451,16 +446,34 @@
 												<h3 class="product-name"><a href="#">${productName}</a></h3>
 										<h4 class="product-price"></span>$${unitPrice}</h4>
 																					</div>
-																					<button class="delete"><i class="fa fa-close"></i></button>
+																									<button class="delete" onclick="addlike(${sessionmID},${productId})"><i class="fa fa-close"></i></button>
 																				</div>`)
 				})
 				likelist.innerHTML = likes.join("");
+				const howmanylike = data.count;
+			console.log(howmanylike);
+			showhowmanylike.innerHTML = howmanylike;
+
 			}
 
 		btnlikelist.addEventListener('click', () => {
-			let memberid = Number(sessionStorage.getItem("mID"));
-			loadLike(memberid);
+			console.log("點愛心之後抓id?", sessMemberId);
+			loadLike(sessMemberId);
 		});
+		async function deleteAllLLiked(event) {
+			event.preventDefault();
+			const url = `https://localhost:7160/api/TMemberLikes/dislikeall?mid=` + `${sessMemberId}`;
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const message = await response.text();
+			loadLike(sessMemberId);
+			alert(message);
+		}
 
 	</script>
 	<!--/登入後載入願望清單-->

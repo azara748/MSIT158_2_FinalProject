@@ -101,26 +101,33 @@ namespace MSIT158_2_API.Controllers.Front
                                 MemeberId = m.MemeberId,
                                 LikeId = m.LikeId,
                                 ProductId = m.ProductId,
-                                Status = m.Status,
                                 ProductName = m.Product.ProductName,
                                 Productphoto = m.Product.ProductPhoto,
                                 UnitPrice = m.Product.UnitPrice
-                                // MemberName = m.Memeber.MemberName
                             }).ToList();
 
-			return Ok(query);
+            var ans = new MemberLikeListDTO
+            {
+                count = query.Count,
+                showMemberLikeDTOs = query
+            };
+
+			return Ok(ans);
 
 		}
         [HttpPost("addlike")]
         public async Task<ActionResult<ShowMemberLikeDTO>> AddMemberLike(int mid, int pid)
         {
 			//回傳的東西: 會員id 商品id
-			var query = _context.TMemberLikes.FirstOrDefault(m => m.MemeberId == mid
-														&& m.ProductId== pid);
-
-			if (query!=null)
+			var likeID = _context.TMemberLikes.Where(m => m.MemeberId == mid && m.ProductId== pid)
+                         .Select(m => m.LikeId).FirstOrDefault();
+            
+			if (likeID != 0)
             {
-                query.Status = query.Status == 1 ? 0 : 1;
+				var likeToDelete = _context.TMemberLikes.FirstOrDefault(m => m.LikeId == likeID);
+				_context.TMemberLikes.Remove(likeToDelete);
+				await _context.SaveChangesAsync();
+				return Ok(new MemberLikeDTO { IsAdded = false, Message = "已將商品移除願望清單" });
 			}
 			else
             {
@@ -128,17 +135,40 @@ namespace MSIT158_2_API.Controllers.Front
 				{
 					MemeberId = mid,
 					ProductId = pid,
-					Status = 1
 				};
 				_context.TMemberLikes.Add(newMemberLike);
+				await _context.SaveChangesAsync();
+                return Ok(new MemberLikeDTO { IsAdded = true, Message = "成功加入願望清單" });
+                
 
+            }
+
+            return BadRequest("失敗");
+		}
+		[HttpPost("dislikeall")]
+		public async Task<ActionResult<ShowMemberLikeDTO>> DisMemberLike(int mid)
+		{
+			//回傳的東西: 會員id 商品id
+			var dislikeall = _context.TMemberLikes.Where(m => m.MemeberId == mid)
+						    .ToList();
+
+			if (dislikeall.Any())
+			{
+				// 删除所有查询到的记录
+				_context.TMemberLikes.RemoveRange(dislikeall);
+				await _context.SaveChangesAsync();
+				return Ok("已成功刪除所有願望清單!");
 			}
-			await _context.SaveChangesAsync();
-			return Ok("操作成功");
+			else
+			{
+				return Ok("沒有願望商品!快去逛逛其他商品吧!!");
+			}
+
+			return BadRequest("失敗");
 		}
 
-			// DELETE: api/TMemberLikes/5
-			[HttpDelete("{id}")]
+		// DELETE: api/TMemberLikes/5
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTMemberLike(int id)
         {
             var tMemberLike = await _context.TMemberLikes.FindAsync(id);

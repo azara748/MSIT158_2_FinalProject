@@ -59,18 +59,18 @@
         signOutButton.style.display = "none";
         message.style.display = "none";
 
-        const clearBrowserData = () => {
-            // Clear local storage
-            localStorage.clear();
+        // const clearBrowserData = () => {
+        //     // Clear local storage
+        //     localStorage.clear();
 
-            // Clear session storage
-            sessionStorage.clear();
+        //     // Clear session storage
+        //     sessionStorage.clear();
 
-            // Clear cookies
-            document.cookie.split(";").forEach(function (c) {
-                document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
-            });
-        };
+        //     // Clear cookies
+        //     document.cookie.split(";").forEach(function (c) {
+        //         document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+        //     });
+        // };
 
         const userSignIn = async () => {
             signInWithPopup(auth, provider)
