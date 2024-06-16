@@ -1,30 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MSIT158_2_FinalProject.Models;
 
 public partial class TProduct
 {
+    [Display(Name = "ID")]
     public int ProductId { get; set; }
 
+    [Display(Name = "名稱")]
     public string? ProductName { get; set; }
 
+    [Display(Name = "庫存")]
     public int? Stocks { get; set; }
 
+    [Display(Name = "品牌")]
     public int? LabelId { get; set; }
 
+    [Display(Name = "分類")]
     public int? SubCategoryId { get; set; }
 
+    [Display(Name = "照片")]
     public byte[]? ProductPhoto { get; set; }
 
+    [Display(Name = "售價")]
     public decimal? UnitPrice { get; set; }
 
+    [Display(Name = "說明")]
     public string? Description { get; set; }
 
+    [Display(Name = "活動")]
     public int? ActiveId { get; set; }
 
+    [Display(Name = "日期")]
     public DateTime? LaunchTime { get; set; }
 
+    [Display(Name = "成本價")]
     public decimal? Cost { get; set; }
 
     public virtual TActive? Active { get; set; }
