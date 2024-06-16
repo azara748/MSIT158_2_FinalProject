@@ -108,64 +108,69 @@ namespace MSIT158_2_FinalProject.Controllers
         //綠界測試
         public IActionResult CashFlow()
         {
-            int cash = 1000;
-            string productname = "史先生-測試商品中";
+    //        int cash = 1000;
+    //        string productname = "史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C";
 
-            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
-            //需填入你的網址
-            var website = $"https://localhost:7066/";
-            var order = new Dictionary<string, string>
-    {
-        //綠界需要的參數
-        { "MerchantTradeNo",  orderId},
-        { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
-        { "TotalAmount",  $"{cash}"},
-        { "TradeDesc",  "無"},
-        { "ItemName",  productname},
-        { "ExpireDate",  "3"},
-        { "CustomField1",  ""},
-        { "CustomField2",  ""},
-        { "CustomField3",  ""},
-        { "CustomField4",  ""},
-        { "ReturnURL",  $"{website}/Home/CashFlow"},
-        { "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
-        { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
-        { "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
-        { "MerchantID",  "2000132"},
-        { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
-        { "PaymentType",  "aio"},
-        { "ChoosePayment",  "ALL"},
-        { "EncryptType",  "1"},
-    };
-            //檢查碼
-            order["CheckMacValue"] = GetCheckMacValue(order);
-            return View(order);
+    //        var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+    //        //需填入你的網址
+    //        var website = $"https://localhost:7066/";
+    //        var order = new Dictionary<string, string>
+    //{
+    //    //綠界需要的參數
+    //    { "MerchantTradeNo",  orderId},
+    //    { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
+    //    { "TotalAmount",  $"{cash}"},
+    //    { "TradeDesc",  "無"},
+    //    { "ItemName",  productname },
+    //    //{ "ExpireDate",  "3"},
+    //    //{ "CustomField1",  "商品AA"},
+    //    //{ "CustomField2",  "商品BB"},
+    //    //{ "CustomField3",  ""},
+    //    //{ "CustomField4",  ""},
+    //    { "ReturnURL",  $"{website}/Home/CashFlow"},
+    //    //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
+    //    { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
+    //    //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
+    //    { "MerchantID",  "3002607"},
+    //    { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
+    //    { "PaymentType",  "aio"},
+    //    { "ChoosePayment",  "ALL"},
+    //    { "EncryptType",  "1"},
+    //};
+    //        //檢查碼
+    //        order["CheckMacValue"] = new CCheckMacValue().GetCheckMacValue(order);
+    //        //return Ok(order);
+            return View();
         }
-        private string GetCheckMacValue(Dictionary<string, string> order)
+        public IActionResult CashFlowB()
         {
-            var param = order.Keys.OrderBy(x => x).Select(key => key + "=" + order[key]).ToList();
-            var checkValue = string.Join("&", param);
-            //測試用的 HashKey
-            var hashKey = "5294y06JbISpM5x9";
-            //測試用的 HashIV
-            var HashIV = "v77hoKGq4kWxNNIS";
-            checkValue = $"HashKey={hashKey}" + "&" + checkValue + $"&HashIV={HashIV}";
-            checkValue = HttpUtility.UrlEncode(checkValue).ToLower();
-            checkValue = GetSHA256(checkValue);
-            return checkValue.ToUpper();
+            return View();
         }
-        private string GetSHA256(string value)
-        {
-            var result = new StringBuilder();
-            var sha256 = SHA256.Create();
-            var bts = Encoding.UTF8.GetBytes(value);
-            var hash = sha256.ComputeHash(bts);
-            for (int i = 0; i < hash.Length; i++)
-            {
-                result.Append(hash[i].ToString("X2"));
-            }
-            return result.ToString();
-        }
+        //private string GetCheckMacValue(Dictionary<string, string> order)
+        //{
+        //    var param = order.Keys.OrderBy(x => x).Select(key => key + "=" + order[key]).ToList();
+        //    var checkValue = string.Join("&", param);
+        //    //測試用的 HashKey
+        //    var hashKey = "pwFHCqoQZGmho4w6";
+        //    //測試用的 HashIV
+        //    var HashIV = "EkRm7iFT261dpevs";
+        //    checkValue = $"HashKey={hashKey}" + "&" + checkValue + $"&HashIV={HashIV}";
+        //    checkValue = HttpUtility.UrlEncode(checkValue).ToLower();
+        //    checkValue = GetSHA256(checkValue);
+        //    return checkValue.ToUpper();
+        //}
+        //private string GetSHA256(string value)
+        //{
+        //    var result = new StringBuilder();
+        //    var sha256 = SHA256.Create();
+        //    var bts = Encoding.UTF8.GetBytes(value);
+        //    var hash = sha256.ComputeHash(bts);
+        //    for (int i = 0; i < hash.Length; i++)
+        //    {
+        //        result.Append(hash[i].ToString("X2"));
+        //    }
+        //    return result.ToString();
+        //}
 
 
 

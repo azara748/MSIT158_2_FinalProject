@@ -101,7 +101,7 @@ namespace MSIT158_2_API.Controllers
             string subject = $"{user.MemberName}用戶重新設定密碼";
             string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
             messages += "填寫form表單，submit送出到指定網址";
-            messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\">";
+            messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\" enctype=\"multipart/form-data\">";
             messages += "<div class=\"mb-3\">";
             messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
             messages += $"<input type=\"email\" class=\"form-control\" id=\"InputEmail\" name=\"txtEmail\" value=\"{user.EMail}\">";
