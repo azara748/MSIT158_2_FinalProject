@@ -16,7 +16,7 @@
     <button type="submit" id="checkoutBtn">送出並交易</button>
 </form> *@
 
-<form id="userForm" name="form" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+<form id="userForm" name="form" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" enctype="multipart/form-data">
     <!-- Step 2: 收到後端的值印出來 -->
     <input type="text" name="MerchantTradeNo" id="merchantTradeNo" value="" /><br />
     <input type="text" name="MerchantTradeDate" id="merchantTradeDate" value="" /><br />
@@ -115,10 +115,11 @@
                 console.log(pair[0], pair[1]);
             }
             console.log('測試1');
-            //myFormA.action = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
+            //myFormA.action = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"            
             //console.log(myFormA.action);
+            if (fcheckMacValue.value != null)
+                evt.target.submit();
             urlA = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5";
-            document.querySelector("#buttonSubmit").click();
             const responseA = await fetch(urlA, {
                 method: 'POST',
                 body: fromdataA
