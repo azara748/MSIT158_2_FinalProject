@@ -90,43 +90,33 @@ namespace MSIT158_2_API.Controllers.Front
 		//回傳
 
 		[HttpPost]
-        public async Task<ActionResult<ShowMemberLikeDTO>> GetMemberLike(MemberLikeDTO memberlikedDTO)
+        public async Task<ActionResult<ShowMemberLikeDTO>> GetMemberLike(int id)
         {
+                var query = _context.TMemberLikes
+                            .Include(x => x.Memeber)
+                            .Include(x => x.Product)
+                            .Where(m => m.MemeberId == id)
+                            .Select(m => new ShowMemberLikeDTO
+                            {
+                                MemeberId = m.MemeberId,
+                                LikeId = m.LikeId,
+                                ProductId = m.ProductId,
+                                Status = m.Status,
+                                ProductName = m.Product.ProductName,
+                                Productphoto = m.Product.ProductPhoto,
+                                UnitPrice = m.Product.UnitPrice
+                                // MemberName = m.Memeber.MemberName
+                            }).ToList();
 
-			var query = _context.TMemberLikes
-                        .Include(x=>x.Memeber)
-                        .Include(x=>x.Product)
-						.Where(m => m.MemeberId == memberlikedDTO.mMemberId)
-						.Select(m => new ShowMemberLikeDTO
-								{
-									MemeberId = m.MemeberId,
-									LikeId = m.LikeId,
-									ProductId =m.ProductId,
-									Status = m.Status,
-                                    ProductName = m.Product.ProductName,
-									Productphoto = m.Product.ProductPhoto,
-							UnitPrice=m.Product.UnitPrice
-							// MemberName = m.Memeber.MemberName
-						}).ToList();
 			return Ok(query);
-			// 执行查询并转换为列表
-			//			var query = _context.TMemberLikes
-			//                        .Include(t => t.Memeber)
-			//                        .AsQueryable();
-			//			//查出Member喜歡的所有productID
-			//			query = query.Where(m => m.MemeberId == memberlikedDTO.mMemberId);
-
-			//; 
-
-			//			return Ok(query);
 
 		}
         [HttpPost("addlike")]
-        public async Task<ActionResult<ShowMemberLikeDTO>> AddMemberLike(MemberLikeDTO memberlikedDTO)
+        public async Task<ActionResult<ShowMemberLikeDTO>> AddMemberLike(int mid, int pid)
         {
 			//回傳的東西: 會員id 商品id
-			var query = _context.TMemberLikes.FirstOrDefault(m => m.MemeberId == memberlikedDTO.mMemberId 
-                                                        && m.ProductId== memberlikedDTO.mProductId);
+			var query = _context.TMemberLikes.FirstOrDefault(m => m.MemeberId == mid
+														&& m.ProductId== pid);
 
 			if (query!=null)
             {
@@ -136,8 +126,8 @@ namespace MSIT158_2_API.Controllers.Front
             {
 				var newMemberLike = new TMemberLike
 				{
-					MemeberId = memberlikedDTO.mMemberId,
-					ProductId = memberlikedDTO.mProductId,
+					MemeberId = mid,
+					ProductId = pid,
 					Status = 1
 				};
 				_context.TMemberLikes.Add(newMemberLike);

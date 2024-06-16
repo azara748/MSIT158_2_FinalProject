@@ -312,7 +312,7 @@
 		const idultree = document.getElementById('idultree');
 		//like
 		const likelist = document.getElementById('idlikelist');
-		const btnlikelist = document.getElementById('btnlikelist');
+
 		//存分類名稱
 		const catname = {};
 		function getcatname(subCategoryId, subCategoryCname) {
@@ -393,9 +393,6 @@
 			"rankfour": false, 
 			"rankthree": false
 		};
-		const likeData = {
-			"mMemberId": 4
-		};
 
 		//顯示分類按鈕
 		(async function loadCatli() {
@@ -468,6 +465,9 @@
 
 		//顯示商品
 			const loadPro = async () => {
+			console.log("mid.value",mid.value);
+			let memberid = Number(sessionStorage.getItem("mID"));
+			console.log("mid", memberid);
 				const url = 'https://localhost:7160/api/SearchProduct';
 				const response = await fetch(url, {
 					method: 'POST',
@@ -498,7 +498,7 @@
 											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
 							</div>
 							<div class="product-btns">
-														<button class="add-to-wishlist" id="likebtn"  onclick="addlike(${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+																						<button class="add-to-wishlist" id="likebtn${productId}"  onclick="addlike(${memberid},${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
 								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
 										<button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
 								</div>
@@ -511,6 +511,12 @@
 				})
 				div1.innerHTML = pros.join("");
 				searchresult.textContent = `${data.totalCount}`;
+			data.showProducts.forEach(pro => {
+				const likebtn = document.getElementById(`likebtn${pro.productId}`);
+				if (likebtn) {
+					likebtn.addEventListener('click', showlikelist);
+				}
+			});
 				// let btnlike = document.getElementById("likebtn");
 				// console.log(btnlike.value);
 				// btnlike.addEventListener('click',addlike(3,btnlike.value));
@@ -568,27 +574,31 @@
 		loadPro();
 		//loadLike();
 		//加到心儀
+		function showlikelist() {
+			btnlikelist.click(); 
+			console.log("有嬤有嬤");
+		}
 		function addlike(mMemberId, mProductId) {
 			//加入心儀API
-			const addliketolist = async () => {
-				const url = 'https://localhost:7160/api/TMemberLikes/addlike';
+			const addliketolist = async (mMemberId, mProductId) => {
+				if (mid.value == 0) {
+					alert("您好 請先登入會員!!");
+					location.href = `@Url.Content("~/HOME/Login")`
+				}
+				const url = `https://localhost:7160/api/TMemberLikes/addlike?mid=` + `${mMemberId}&pid=${mProductId}`;
 				const response = await fetch(url, {
 					method: 'POST',
-					body: JSON.stringify({
-						"mMemberId": mMemberId,
-						"mProductId": mProductId
-					}),
+					body: JSON.stringify(),
 					headers: {
 						'Content-Type': 'application/json'
 					}
 				});
-				console.log("執行放到心儀", mMemberId);
-				console.log("執行放到心儀", mProductId);
+				alert("成功加入願望清單!!");
 			}
-			addliketolist();
-			loadLike();
+			addliketolist(mMemberId, mProductId);
+			//if (mMemberId > 0) {}
 		}
-		 //輸入文字後
+				//輸入文字後
 		function onlyTxt() {
 			if (advstarfour.checked) {
 				searchData.rankfour = true;
@@ -827,8 +837,7 @@
 		9.產出 產品 & 分頁!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		*/
 		//addtolike
-		likelist.addEventListener('click', loadLike);
-		btnlikelist.addEventListener('click', loadLike);
+
 		advstock.addEventListener('change', Change);
 		advnewlan.addEventListener('change', Change);
 		advstarfour.addEventListener('change', onlyfour);
