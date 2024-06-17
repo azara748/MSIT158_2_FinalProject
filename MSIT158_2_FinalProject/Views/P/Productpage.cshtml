@@ -416,8 +416,8 @@
             u2.innerHTML = t2;
         }
         function gopage(gogo = 0) {
-            if (gogo == 0 && page < Number(rc.innerHTML) / 7) page++
-            else if (page == Number(rc.innerHTML) / 7) return
+            if (gogo == 0 && page < Number(rc.innerHTML.replace(" 件評價", "")) / 7) page++
+            //else if (page == Number(rc.innerHTML) / 7) return
             else page = gogo
             go()
         }
