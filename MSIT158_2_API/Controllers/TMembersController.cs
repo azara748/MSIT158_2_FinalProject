@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
+using MSIT158_2_API.Models.DTO.Member;
 using MSIT158_2_API.ViewModel;
 
 namespace MSIT158_2_API.Controllers
@@ -181,14 +182,35 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("MemberSearch")]
         public async Task<ActionResult<CMembersPagingDTO>> GetMembers([FromBody] CSearchDTO searchDTO)
         {
-            var membersjoin = _context.TMembers.Include(m => m.Vip)
+            var membersjoin = await _context.TMembers
+                .Include(m => m.Vip)
                 .ToListAsync();
 
-
+            List<CmemberDetailDTO> cmemberDetailDTOs = new List<CmemberDetailDTO>();
+            foreach (var member in membersjoin)
+            {
+                CmemberDetailDTO cmemberDetailDTO = new CmemberDetailDTO()
+                {
+                    Id = member.MemberId,
+                    MemberName = member.MemberName,
+                    Cellphone = member.Cellphone,
+                    Address = member.Address,
+                    Birthday = member.Birthday,
+                    Sex = member.Sex,
+                    Password = member.Password,
+                    Salt = member.Salt,
+                    EMail = member.EMail,
+                    Points = member.Points,
+                    Vip = member.Vip?.Vipname,
+                    MemberPhoto = member.MemberPhoto,
+                    Wallet = member.Wallet
+                };
+                cmemberDetailDTOs.Add(cmemberDetailDTO);
+            }
 
 
             //根據分類編號搜尋會員資料
-            var members = searchDTO.memberId == 0 ? _context.TMembers : _context.TMembers.Where(s => s.MemberId == searchDTO.memberId);
+            var members = searchDTO.memberId == 0 ? cmemberDetailDTOs : cmemberDetailDTOs.Where(s => s.Id == searchDTO.memberId);
             //根據關鍵字搜尋會員資料(title、desc)
             if (!string.IsNullOrEmpty(searchDTO.keyword))
                 members = members.Where(s => s.MemberName.Contains(searchDTO.keyword) ||
@@ -205,7 +227,7 @@ namespace MSIT158_2_API.Controllers
                     members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.EMail) : members.OrderByDescending(s => s.EMail);
                     break;
                 default:
-                    members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.MemberId) : members.OrderByDescending(s => s.MemberId);
+                    members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.Id) : members.OrderByDescending(s => s.Id);
                     break;
             }
 
@@ -227,7 +249,7 @@ namespace MSIT158_2_API.Controllers
             CMembersPagingDTO membersPaging = new CMembersPagingDTO();
             membersPaging.TotalCount = totalCount;
             membersPaging.TotalPages = totalPages;
-            membersPaging.MembersResult = await members.ToListAsync();
+            membersPaging.MembersResult = members.ToList();
 
             return membersPaging;
         }
