@@ -42,9 +42,12 @@
     <!-- 自己的 -->
     <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
+        var is_flag = true;
         console.log(btnSubmit);
         btnSubmit.addEventListener('click', async (evt) => {
-            evt.preventDefault(); //防止預設行為的發生
+            if (is_flag)
+                evt.preventDefault(); //防止預設行為的發生
+            is_flag = !is_flag;
             const fmerchantTradeNo = document.querySelector('#merchantTradeNo');
             const fmerchantTradeDate = document.querySelector('#merchantTradeDate');
             const ftotalamount = document.querySelector('#totalamount');
@@ -117,13 +120,11 @@
             console.log('測試1');
             //myFormA.action = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"            
             //console.log(myFormA.action);
-            if (fcheckMacValue.value != null)
-                evt.target.submit();
-            urlA = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5";
-            const responseA = await fetch(urlA, {
-                method: 'POST',
-                body: fromdataA
-            });
+            // urlA = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5";
+            // const responseA = await fetch(urlA, {
+            //     method: 'POST',
+            //     body: fromdataA
+            // });
             console.log('測試2');
             
             //window.location.href = "/Home/Index";

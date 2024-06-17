@@ -59,7 +59,7 @@ namespace MSIT158_2_API.Controllers
             CMembersPagingDTO membersPaging = new CMembersPagingDTO();
             membersPaging.TotalCount = totalCount;
             membersPaging.TotalPages = totalPages;
-            membersPaging.MembersResult = await members.ToListAsync();
+            //membersPaging.MembersResult = await members.ToListAsync();
 
             return membersPaging;
         }
