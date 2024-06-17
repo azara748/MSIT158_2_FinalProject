@@ -241,66 +241,66 @@
             "sortBy": "SpotId"
         };
 
-            const loadMemberList = async () => {
-                const url = 'https://localhost:7160/api/TMembers/MemberSearch';
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(searchData),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const data = await response.json();
-                console.log(data);
+        const loadMemberList = async () => {
+            const url = 'https://localhost:7160/api/TMembers/MemberSearch';
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(searchData),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log('test1');
+            const data = await response.json();
+            console.log(data);
 
-                //顯示會員資料
-                const MLists = data.membersResult.map(mlist => {
-                    const { memberId, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vipid, memberPhoto, wallet } = mlist;
-                    const count = 0;
-                    return(
-                        `
-                <tr>
-                    <th scope="row" id="idtd1">${memberId}</th>
-                    <td id="idtd2">${memberName}</td>
-                    <td id="idtd3">${eMail}</td>
-                    <td id="idtd4">${password}</td>
-                    <td id="idtd5">${salt}</td>
-                    <td id="idtd6">${memberPhoto}</td>
-                    <td id="idtd7">${address}</td>
-                    <td id="idtd8">${cellphone}</td>
-                    <td id="idtd9">${birthday}</td>
-                    <td id="idtd10">${sex}</td>
-                    <td id="idtd11">${points}</td>
-                    <td id="idtd12">${vipid}</td>
-                    <td id="idtd13">
-                    <button type="button" class="btn btn-success"><a href="/Member/Edit/${memberId}">修改</a></button> |
-                    <!-- <a href="/Member/Details/${memberId}">Details</a> | -->
-                    <button type="button" class="btn btn-warning" value="${memberId}" id="iddelete_${memberId}" onclick="deleteMember(${memberId})"><a href="/Member/Delete/${memberId}" onclick="return confirm('確定要刪除嗎?')"></a>刪除</button>
-                    </td>
-                </tr>    
-                        `
-                    )
-                })
-                // 將生成的表格行字符串加入到 `tbody` 中
-                divtbody.innerHTML = MLists.join("");
+            //顯示會員資料
+            const MLists = data.membersResult.map(mlist => {
+                const { id, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vip, memberPhoto, wallet } = mlist;
+                const count = 0;
+                return (
+                    `
+                        <tr>
+                            <th scope="row" id="idtd1">${id}</th>
+                            <td id="idtd2">${memberName}</td>
+                            <td id="idtd3">${eMail}</td>
+                            <td id="idtd4">${password}</td>
+                            <td id="idtd5">${salt}</td>
+                            <td id="idtd6">${memberPhoto}</td>
+                            <td id="idtd7">${address}</td>
+                            <td id="idtd8">${cellphone}</td>
+                            <td id="idtd9">${birthday}</td>
+                            <td id="idtd10">${sex}</td>
+                            <td id="idtd11">${points}</td>
+                            <td id="idtd12">${vip}</td>
+                            <td id="idtd13">
+                            <button type="button" class="btn btn-success"><a href="/Member/Edit/${id}">修改</a></button> |
+                            <!-- <a href="/Member/Details/${id}">Details</a> | -->
+                            <button type="button" class="btn btn-warning" value="${id}" id="iddelete_${id}" onclick="deleteMember(${id})"><a href="/Member/Delete/${id}" onclick="return confirm('確定要刪除嗎?')"></a>刪除</button>
+                            </td>
+                        </tr>
+                                `
+                )
+            })
+            // 將生成的表格行字符串加入到 `tbody` 中
+            divtbody.innerHTML = MLists.join("");
 
-            
 
-                //顯示分頁按鈕
-                let liPages = "";
-                for (let i = 1, max = data.totalPages; i <= max; i++) {
-                    liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
-                }
-                ulPaging.innerHTML = liPages;
-                //隱藏功能開關
-                displaybtn();
-            
-            };
-            loadMemberList();
 
-        //刪除會員
-        console.log('test1');
+            //顯示分頁按鈕
+            let liPages = "";
+            for (let i = 1, max = data.totalPages; i <= max; i++) {
+                liPages += `<li class="page-item" onclick="pagingHandler(${i})"><a class="page-link">${i}</a></li>`
+            }
+            ulPaging.innerHTML = liPages;
+            //隱藏功能開關
+            displaybtn();
+
+        };
+        loadMemberList();
+
+        //刪除會員        
         async function deleteMember(memberId) {
             if (confirm('確定要刪除嗎?')) {
-                const url2 = `https://localhost:7160/api/TMembers/${memberId}`;
+                const url2 = `https://localhost:7160/api/TMembers/${id}`;
                 const response = await fetch(url2, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' }

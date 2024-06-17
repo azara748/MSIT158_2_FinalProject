@@ -42,12 +42,11 @@
     <!-- 自己的 -->
     <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
-        var is_flag = true;
+        var is_flag = false;
         console.log(btnSubmit);
         btnSubmit.addEventListener('click', async (evt) => {
-            if (is_flag)
+            if (!is_flag)
                 evt.preventDefault(); //防止預設行為的發生
-            is_flag = !is_flag;
             const fmerchantTradeNo = document.querySelector('#merchantTradeNo');
             const fmerchantTradeDate = document.querySelector('#merchantTradeDate');
             const ftotalamount = document.querySelector('#totalamount');
@@ -73,7 +72,8 @@
                 console.log(pair[0], pair[1]);
             }
 
-            const url = '@Url.Content("~/ApiMember/CashFlow")';
+            //if (is_flag)
+                const url = '@Url.Content("~/ApiMember/CashFlow")';
             const response = await fetch(url, {
                 method: 'POST',
                 body: fromdata
@@ -126,7 +126,7 @@
             //     body: fromdataA
             // });
             console.log('測試2');
-            
+            is_flag = true;            
             //window.location.href = "/Home/Index";
         });
     </script>

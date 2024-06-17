@@ -38,8 +38,6 @@ namespace MSIT158_2_API.Controllers
             if (user != null && user.Password.Equals(vm.txtPassword))
             {
                 json = JsonSerializer.Serialize(user);
-                //_pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
             }
             return Ok(new { message = "登入成功", json });
         }
@@ -48,29 +46,18 @@ namespace MSIT158_2_API.Controllers
         public async Task<ActionResult<TMember>> POSTMemberCheck([FromBody] CCheckViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
-
-            string json = "";
-            if (user != null)
-            {
-                json = JsonSerializer.Serialize(user);
-                _pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
-            }
-            return Ok(new { message = "確認成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將無法寄信修改密碼" });
+            return Ok(new { message = "確認成功", user });
         }
         //忘記密碼1(檢查帳戶)
         [HttpPost("MemberForgetPassword")]
         public async Task<ActionResult<TMember>> POSTMemberForgetPassword([FromForm] CCheckViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
-
-            string json = "";
-            if (user != null)
-            {
-                json = JsonSerializer.Serialize(user);
-
-            }
-            return Ok(new { message = "確認成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將無法寄信修改密碼" });
+            return Ok(new { message = "確認成功", user });
         }
         //忘記密碼2(修改密碼)
         [HttpPost("MemberEditPassword")]
