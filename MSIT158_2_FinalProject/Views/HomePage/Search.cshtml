@@ -209,7 +209,6 @@
 								<option value="UnitPrice|asc">金額 低到高</option>
 								<option value="bestsale|desc">熱銷度 高到低</option>
 								<option value="bestsale|asc">熱銷度 低到高</option>
-
 							</select>
 						</label>
 						<label>
@@ -583,16 +582,8 @@
 			const addlike = async (mMemberId, mProductId) => {
 				if (mMemberId == 0)
 				{
-					let answer = confirm('登入才能使用願望清單!');
-					if (answer) {
-						alert('我要登入');
-						location.href = `@Url.Content("~/HOME/Login")`;
-					}
-					else {
-						alert('慢慢逛~');
-						return;
-					}
-				}
+					location.href = `@Url.Content("~/HOME/Login")`;
+				}		
 				else { 
 				const url = `https://localhost:7160/api/TMemberLikes/addlike?mid=` + `${mMemberId}&pid=${mProductId}`;
 				const response = await fetch(url, {

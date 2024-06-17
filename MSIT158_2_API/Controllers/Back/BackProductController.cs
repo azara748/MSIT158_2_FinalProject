@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
+using MSIT158_2_API.Models.DTO;
 
 namespace MSIT158_2_API.Controllers.Back
 {
@@ -91,15 +92,136 @@ namespace MSIT158_2_API.Controllers.Back
         //刪除 找出id 刪掉 打勾都刪掉
 
 
-
-        [HttpPost]
-        public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
+        [HttpPost("SearchBackProduct")]
+        public async Task<ActionResult<ShowProductDTO>> PostTProduct(SearchProductDTO searchProductDTO)
         {
-            _context.TProducts.Add(tProduct);
-            await _context.SaveChangesAsync();
+                var query = _context.TProducts
+                            .Include(p => p.SubCategory)
+                            .Include(p => p.Active)
+                            .Include(p => p.Label)
+                            .Include(p => p.TPurchases)
+                            .Include(p => p.TReviews)
+                            .AsQueryable();
+                //搜尋_次分類
+                query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
+                //搜尋_關鍵字
+                if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+                {
+                    query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword)
+                    || p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword)
+                    || p.Description.Contains(searchProductDTO.searchword));
+                }
+                //金額條件
+                //if (searchProductDTO.lowPrice != null && searchProductDTO.highPrice != null)
+                //{
+                //    query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
+                //}
+                if (searchProductDTO.stock)
+                {
+                    query = query.Where(p => p.Stocks > 0);
+                }
+                if (searchProductDTO.newlan)
+                {
 
-            return CreatedAtAction("GetTProduct", new { id = tProduct.ProductId }, tProduct);
-        }
+                    var currentDate = DateTime.Now;
+                    query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime.Value, currentDate) < 30);
+
+                }
+                //if (searchProductDTO.rankfour)
+                //{
+
+                //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 4);
+
+
+                //}
+                //if (searchProductDTO.rankthree)
+                //{
+                //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
+
+                //}
+
+
+                //排序_
+                switch (searchProductDTO.sortBy)
+                {
+                case "ProductID":
+                    query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
+                    break;
+                case "UnitPrice":
+                        query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.UnitPrice) : query.OrderByDescending(s => s.UnitPrice);
+                        break;
+
+                    case "bestsale":
+                        query = searchProductDTO.sortType == "asc" ?
+                                        query.OrderBy(s => s.TPurchases.Sum(p => p.Qty)) :
+                                        query.OrderByDescending(s => s.TPurchases.Sum(p => p.Qty));
+                        break;
+                    case "bestscore":
+                        query = searchProductDTO.sortType == "asc" ?
+                                        query.OrderBy(s => s.TReviews.Average(p => p.RankId)) :
+                                        query.OrderByDescending(s => s.TReviews.Average(p => p.RankId));
+                        break;
+                    case "coldpro":
+                        query = searchProductDTO.sortType == "asc" ?
+                                        query.OrderByDescending(s => s.Stocks) : query.OrderBy(s => s.Stocks);
+                        break;
+                    default:
+                        query = searchProductDTO.sortType == "asc" ?
+                    query.OrderByDescending(s => s.TReviews.Average(p => p.RankId)) : query.OrderBy(s => s.TReviews.Average(p => p.RankId));
+                        break;
+                        //default:
+                        //	query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
+                        //	break;
+                }
+
+
+
+                //計算評分	
+                int totalCount = query.Count();
+                int pageSize = searchProductDTO.pagesSize;
+                int page = searchProductDTO.page;
+                int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+                query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+                var showProductDTOs = query.Select(pro => new ShowProductDTO
+                {
+                    ProductId = pro.ProductId,
+                    ProductName = pro.ProductName,
+                    SubCategoryId = pro.SubCategoryId,
+                    SubCatName = pro.SubCategory.SubCategoryCname,
+                    Stocks = pro.Stocks,
+                    UnitPrice = pro.UnitPrice,
+                    Discount = pro.Active.Discount,
+                    LabelName = pro.Label.LabelName,
+                    Productphoto = pro.ProductPhoto,
+                    Score = pro.TReviews.Average(p => p.RankId),
+                    isnew = pro.LaunchTime.HasValue && (DateTime.Now - pro.LaunchTime.Value).TotalDays < 30,
+                    cost = pro.Cost,
+                    Description = pro.Description,
+                    LanchTime = pro.LaunchTime.HasValue ? pro.LaunchTime.Value.ToString("yyyy-MM-dd") : null
+                }).ToList();
+
+                var toClientProduct = new ToClientProductDTO
+                {
+                    TotalCount = totalCount,
+                    TotalPages = totalPages,
+                    showProducts = showProductDTOs
+                };
+
+                return Ok(toClientProduct);
+
+            }
+        
+
+        //[HttpPost]
+        //public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
+        //{
+        //    _context.TProducts.Add(tProduct);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetTProduct", new { id = tProduct.ProductId }, tProduct);
+        //}
 
         // DELETE: api/BackProduct/5
         [HttpDelete("{id}")]
