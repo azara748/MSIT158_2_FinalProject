@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using MSIT158_2_FinalProject.DTO;
 using MSIT158_2_FinalProject.Models;
 using MSIT158_2_FinalProject.Models.DTO;
 using Newtonsoft.Json;
@@ -129,6 +130,48 @@ namespace MSIT158_2_FinalProject.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewPackage([FromForm] PackageDto packageDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var package = new TAllPackage
+            {
+                PackName = packageDto.PackName,
+                Price = packageDto.Price,
+                PackageStyleId = packageDto.PackageStyleId,
+                MaterialId = packageDto.MaterialId,
+                Description = packageDto.Description
+            };
+
+            if (packageDto.Picture != null)
+            {
+                string uploadPath = Path.Combine(_hostEnvironment.WebRootPath, "assets", "img", "packageImages", packageDto.Picture.FileName);
+
+                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await packageDto.Picture.CopyToAsync(fileStream);
+                }
+
+                byte[]? imgByte = null;
+                using (var memoryStream = new MemoryStream())
+                {
+                    packageDto.Picture.CopyTo(memoryStream);
+                    imgByte = memoryStream.ToArray();
+                }
+
+                package.Picture = packageDto.Picture.FileName;
+                package.PictureData = imgByte;
+            }
+            _context.TAllPackages.Add(package);
+            await _context.SaveChangesAsync();
+
+            return Ok(package);
         }
 
         // GET: packageController/Edit/5
