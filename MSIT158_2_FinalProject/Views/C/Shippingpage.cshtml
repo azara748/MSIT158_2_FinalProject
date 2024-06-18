@@ -99,7 +99,7 @@
                     <!-- /Shiping Details -->
                     <!-- Order notes -->
                     <div class="order-notes">
-                        <textarea class="input" placeholder="備註"></textarea>
+                        <textarea class="input" placeholder="備註" name="Memo"></textarea>
                     </div>
                     <!-- /Order notes -->
                 </div>
@@ -157,6 +157,7 @@
                     <input type="hidden" value="@ViewBag.會員資料.MemberName" name="StatusId" id="MemberName" />
                     <input type="hidden" value="@ViewBag.EMail" />
                     <input type="hidden" value="@ViewBag.Address" />
+                    <input type="hidden" value="@(ViewBag.總價 + ViewBag.運費)" name="CheckoutAmount" />
                     @section scripts
                     {
                         <script src="~/taiwan_districts.js"></script>

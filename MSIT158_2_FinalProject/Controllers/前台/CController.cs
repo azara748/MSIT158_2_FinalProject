@@ -159,16 +159,16 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             if(value.StatusId==2) return RedirectToAction("Memberpage", "M"); 
             else   return RedirectToAction("Productpage", "P");
         }
-        [HttpPost]
-        public IActionResult Shippingpage2(int id)
-        {           
-            SelectShopContext db = new SelectShopContext();
-            TOrder o = db.TOrders.FirstOrDefault(x => x.OrderId==id);
-             o.StatusId = 2;
-             o.OrderDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Productpage", "P");
-        }
+        //[HttpPost]
+        //public IActionResult Shippingpage2(int id)
+        //{           
+        //    SelectShopContext db = new SelectShopContext();
+        //    TOrder o = db.TOrders.FirstOrDefault(x => x.OrderId==id);
+        //     o.StatusId = 2;
+        //     o.OrderDate = DateTime.Now;
+        //    db.SaveChanges();
+        //    return RedirectToAction("Productpage", "P");
+        //}
         //public IActionResult Index6([FromBody]TOrder value)
         //{
         //    SelectShopContext db = new SelectShopContext();
