@@ -111,28 +111,28 @@ namespace MSIT158_2_API.Controllers.Back
                 || p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword)
                 || p.Description.Contains(searchProductDTO.searchword));
             }
-            //金額條件
-            //if (searchProductDTO.lowPrice != null && searchProductDTO.highPrice != null)
-            //{
-            //    query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
-            //}
+
+            if (searchProductDTO.lowPrice != null && searchProductDTO.highPrice != null)
+            {
+                query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
+            }
             if (searchProductDTO.stock)
             {
                 query = query.Where(p => p.Stocks > 0);
             }
 
-            //if (searchProductDTO.rankfour)
-            //{
+            if (searchProductDTO.rankfour)
+            {
 
-            //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 4);
+                query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 4);
 
 
-            //}
-            //if (searchProductDTO.rankthree)
-            //{
-            //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
+            }
+            if (searchProductDTO.rankthree)
+            {
+                query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
 
-            //}
+            }
 
 
             //排序_
@@ -192,7 +192,7 @@ namespace MSIT158_2_API.Controllers.Back
                     Score = pro.TReviews.Average(p => p.RankId),
                     cost = pro.Cost,
                     Description = pro.Description,
-                    LanchTime = pro.LaunchTime.HasValue ? pro.LaunchTime.Value.ToString("yyyy-MM-dd") : null
+                    LanchTime = pro.LaunchTime.HasValue ? pro.LaunchTime.Value : null
                 }).ToList();
 
                 var toClientProduct = new ToClientProductDTO
@@ -231,13 +231,11 @@ namespace MSIT158_2_API.Controllers.Back
         [HttpPost("AddBackProduct")]
         public async Task<ActionResult<ShowProductDTO>> AddTProduct(AddProductDTO addProductDTO)
         {
-            // 將 Base64 字串轉換為二進位數據
-            byte[] imageBytes = Convert.FromBase64String(addProductDTO.Productphoto);
+            try
+            {
 
-            ////addProductDTO.LanchTime指回傳Dateonly 加上現在時間之後 傳回TProduct裡面Lanchtime(類別為DateTime)
-            //TimeSpan currentTime = DateTime.Now.TimeOfDay;
-            //   DateOnly dateOnly = addProductDTO.LanchTime.Value;
-            //    DateTime dateTimeWithCurrentTime = dateOnly.ToDateTime(currentTime);
+                // 將 Base64 字串轉換為二進位數據
+                byte[] imageBytes = Convert.FromBase64String(addProductDTO.Productphoto);
 
             TProduct newtp = new TProduct
             {
@@ -258,6 +256,12 @@ namespace MSIT158_2_API.Controllers.Back
             _context.TProducts.Add(newtp);
             await _context.SaveChangesAsync();
             return Ok("addProduct");
+            }
+            catch (FormatException ex)
+            {
+                // 捕获 Base64 转换中的格式错误
+                return BadRequest("Invalid Base64 string: " + ex.Message);
+            }
         }
 
 

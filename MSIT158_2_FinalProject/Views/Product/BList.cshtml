@@ -195,20 +195,20 @@
     <script>
        let newprophoto;
         const btnNewPro = document.getElementById('btnNewPro');
-            const idcardzone = document.getElementById('idcardzone');
+        const idcardzone = document.getElementById('idcardzone');
         const idup = document.getElementById('idup');
         const searchBata = {
-                    "subcatId": 18,
+                    "subcatId": 1,
                     "searchword": "",
                     "page": 1,
                     "pagesSize": 5,
                     "sortBy": "ProductID",
                     "sortType": "asc"
         }
-      const table = document.getElementById('idtablep');
+       const table = document.getElementById('idtablep');
 	(async function loadBPro() {
-                    const url = 'https://localhost:7160/api/BackProduct/SearchBackProduct';
-                    const response = await fetch(url, {
+                    const urlp = 'https://localhost:7160/api/BackProduct/SearchBackProduct';
+                    const responsep = await fetch(urlp, {
                         method: 'POST',
                         body: JSON.stringify(searchBata),
                         headers: {
@@ -216,30 +216,30 @@
                         }
                     });
                     console.log(searchBata);
-                    const data = await response.json();
-        console.log(data);
-        const pros = data.showProducts.map(pro => {
+                    const datap = await responsep.json();
+        console.log(datap);
+        const pros = datap.showProducts.map(pro => {
                 const { productId, productName, productphoto, unitPrice, cost, stocks, description, subCatName, labelName,
                     lanchTime } = pro;
             return (` <tr>
-                                                                     <th><input type="checkbox"></th>
-                                             <th><button onclick="clickUpdate(${productId})">修改</button></th>
-                          <th>${productId}</th>
-                           <th>${productName}</th>
-                        <th>${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""  style="width: 30px; height: 30px;"/>` : 'No Image Available'}</th>
+                      <th><input type="checkbox"></th>
+                      <th><button onclick="clickUpdate(${productId})">修改</button></th>
+                      <th>${productId}</th>
+                      <th>${productName}</th>
+                      <th>${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""  style="width: 30px; height: 30px;"/>` : 'No Image Available'}</th>
                      <th>${stocks}</th>
-                <th>${labelName}</th>
-                 <th>${subCatName}</th>
-                 <th>${unitPrice}</th>
-               <th>${cost}</th>
-                  <th>${description.length > 30 ? `${description.substring(0, 30)}...` : description}</th>
+                      <th>${labelName}</th>
+                    <th>${subCatName}</th>
+                    <th>${unitPrice}</th>
+                   <th>${cost}</th>
+                     <th>${description ? (description.length > 30 ? `${description.substring(0, 30)}...` : description) : ''}</th>
                          <th>${lanchTime}</th>
                                     </tr>`)
         })
         table.innerHTML = pros.join('');
 				})();
             //按下新增之後下面產出商品卡
-        btnNewPro.addEventListener('click', clickNew)
+            btnNewPro.addEventListener('click', clickNew, addPhoto)
         function clickNew() {
             //先產出表
                 const NewCard = `<div class="container-fluid py-4">
@@ -249,7 +249,7 @@
                                     <div class="card-header pb-0">
                                         <div class="d-flex align-items-center">
                                             <p class="mb-0">商品資訊</p>
-                                                        <button class="btn btn-primary btn-sm ms-auto" onclick="addNew()">上架</button>
+              <button class="btn btn-primary btn-sm ms-auto" onclick="addNew()">上架</button>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -264,7 +264,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="example-text-input" class="form-control-label">庫存數量	</label>
-                                                                <input class="form-control" type="email" id="newStocks">
+                                                     <input class="form-control" type="text" id="newStocks">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -282,13 +282,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="example-text-input" class="form-control-label">販售價格	</label>
-                                                    <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" id="newUnit">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="example-text-input" class="form-control-label">成本價格</label>
-                                                    <input class="form-control" type="text">
+                                                                            <input class="form-control" type="text" id="newCost">
                                                 </div>
                                             </div>
                                         </div>
@@ -297,13 +297,13 @@
                                                  <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label for="example-text-input" class="form-control-label">商品說明</label>
-                                                    <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" id="newDes">
                                                 </div>
                                             </div>
                                                 <div class="col-md-4">
                                                      <div class="form-group">
                                                     <label for="example-text-input" class="form-control-label">上架日期</label>
-                                                                                        <input class="form-control" type="datetime" id="newLantime">
+                                                   <input class="form-control" type="date" id="newLantime" value="2024-06-28">
                                                         </div>
                                                 </div>
                                               </div>
@@ -319,7 +319,7 @@
                                     </div>
                                     <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
                                         <div class="d-flex justify-content-between">
-                                            <input class="form-control" type="file" id="uploadFile">
+                                                        <input class="form-control" type="file" id="uploadFile" accept=".jpg,.jpeg,.png" maxlength="1048576">
                                             <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
                                             <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block" >取消上傳</a>
                                             <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
@@ -331,10 +331,10 @@
                     </div>
                     `;
                 idcardzone.innerHTML = NewCard;
-                const loadCatname = async () => {
+            const loadCatname = async () => {
                 //加入下拉式選單 品牌名稱
-                    const selectLabel = document.getElementById('selectLabel');
-                    let urll = 'https://localhost:7160/api/TLabels/getLabelName?labid=0';
+                const selectLabel = document.getElementById('selectLabel');
+                let urll = 'https://localhost:7160/api/TLabels/getLabelName?labid=0';
                 let responsel = await fetch(urll, {
                     method: 'POST',
                     body: JSON.stringify(),
@@ -343,68 +343,73 @@
                     }
                 });
                 const datal = await responsel.json();
-                    // selectLabel.innerHTML = '';
-                    const addlabop = datal.map(lab => {
-                        const { labelId, labelName } = lab;
-                        return (`<option value="${labelId}">${labelId}.${labelName}</option>`);
-                    });
-                    selectLabel.innerHTML = addlabop.join('');
-                    //加入下拉式選單 分類名稱
-                    const selectSub = document.getElementById('selectSub');
-                    let url = 'https://localhost:7160/api/TSubCategories/getSubName?subid=0';
-                    let response = await fetch(url, {
-                        method: 'POST',
-                        body: JSON.stringify(),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    const data = await response.json();
-                    // selectSub.innerHTML = '';
-                    const addsubop = data.map(sn => {
-                        const { subCategoryId, subCategoryCname } = sn;
-                        return (`<option value="${subCategoryId}">${subCategoryId}.${subCategoryCname}</option>`);
-                    });
-                    selectSub.innerHTML = addsubop.join('');
-                //加入讀取照片功能
-                document.getElementById('uploadFile').addEventListener('change', function (event) {
-                    console.log("測試");
-                    const fileInput = event.target;
-                    const files = fileInput.files;
-                    const preview = document.getElementById('preview');
-                    if (files.length > 0) {
-                        const file = files[0];
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            preview.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-
-                        const byteReader = new FileReader();
-                        byteReader.onload = function (e) {
-                            const arrayBuffer = e.target.result;
-                            const byteArray = new Uint8Array(arrayBuffer);
-                            const base64String = btoa(String.fromCharCode.apply(null, byteArray));
-                            newprophoto = base64String;
-                            console.log('Image in base64:', base64String);
-                        };
-                        byteReader.readAsArrayBuffer(file);
+                const addlabop = datal.map(lab => {
+                    const { labelId, labelName } = lab;
+                    return (`<option value="${labelId}">${labelId}.${labelName}</option>`);
+                });
+                selectLabel.innerHTML = addlabop.join('');
+                //加入下拉式選單 分類名稱
+                const selectSub = document.getElementById('selectSub');
+                let url = 'https://localhost:7160/api/TSubCategories/getSubName?subid=0';
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(),
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
                 });
-            }
-            loadCatname();
-        }
+                const data = await response.json();
+                const addsubop = data.map(sn => {
+                    const { subCategoryId, subCategoryCname } = sn;
+                    return (`<option value="${subCategoryId}">${subCategoryId}.${subCategoryCname}</option>`);
+                });
+                selectSub.innerHTML = addsubop.join('');
+                    //加入讀取照片功能
 
+                    document.getElementById('uploadFile').addEventListener('change', function (event) {
+
+                        const fileInput = event.target;
+                        const files = fileInput.files;
+
+                        const preview = document.getElementById('preview');
+                        if (files.length > 0) {
+                            const file = files[0];
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                preview.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+
+                            const byteReader = new FileReader();
+                            byteReader.onload = function (e) {
+                                const arrayBuffer = e.target.result;
+                                const byteArray = new Uint8Array(arrayBuffer);
+                                const base64String = btoa(String.fromCharCode.apply(null, byteArray));
+                                newprophoto = base64String;
+                                console.log('Image in base64:', newprophoto);
+                            };
+                            byteReader.readAsArrayBuffer(file);
+                        }
+                    })
+
+
+            }
+            //loadCatname();
+            };
             //填寫完成後按下上傳按鈕
         const addNew = async () => {
                 const addNewData = {
                     "ProductName": document.getElementById('newName').value,
+                    "Stocks": document.getElementById('newStocks').value,
+                    "LabelId": document.getElementById('selectLabel').value,
+                    "SubCategoryId": document.getElementById('selectSub').value,
+                    "UnitPrice": document.getElementById('newUnit').value,
+                    "Cost": document.getElementById('newCost').value,
+                        "Description": document.getElementById('newDes').value,
                     "LaunchTime": document.getElementById('newLantime').value,
                     "ProductPhoto": newprophoto
                 };
-                console.log("上架按鈕!!!");
-                console.log("日期",document.getElementById('newLantime').value);
-                console.log("日期++", addNewData.LaunchTime);
+                console.log("上架按鈕!!!",addNewData);
                 let url = 'https://localhost:7160/api/BackProduct/AddBackProduct';
                 let response = await fetch(url, {
                     method: 'POST',
@@ -416,7 +421,6 @@
                 let data = await response.text();
                 alert("成功新增商品!!");
             }
-
         //動作
         function clickDelete(id) {
             const deletePro = confirm("您確定要下架嗎?");
@@ -430,12 +434,8 @@
         } 
         function clickUpdate(id) {
             console.log("更新", id);
-            idup.innerHTML = `<span>HI</span>`;
-
-        } 
+        }
 
     </script>
-
-
 }
 
