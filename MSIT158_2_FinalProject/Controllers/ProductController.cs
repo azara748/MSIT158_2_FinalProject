@@ -20,6 +20,11 @@ namespace MSIT158_2_FinalProject.Controllers
             return View(datas);
 
         }
+        public IActionResult BList()
+        {
+            return View();
+
+        }
         public ActionResult Create()
         {
             return View();

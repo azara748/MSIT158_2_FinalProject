@@ -14,6 +14,6 @@
 		public bool newlan { get; set; } = false;
 		public bool rankfour { get; set; } = false;
 		public bool rankthree { get; set; } = false;
-		//public int score { get; set; } 
+
 	}
 }
