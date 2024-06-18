@@ -124,7 +124,7 @@
                         }
                         else if (@v.StatusId == 1)
                         {
-                            <a href="" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">結帳</a>
+                            <a href="~/HOME/CashFlow/?totalAmount=@v.總價.ToString("0")&&oid=@v.OrderId" style="Text-decoration:underline;color:#EA0000;margin-right:16px;margin-left:8.5px">結帳</a>
                         }
                         else
                         {
