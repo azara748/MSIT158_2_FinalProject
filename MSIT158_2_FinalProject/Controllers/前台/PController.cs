@@ -35,14 +35,14 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 			ViewBag.d2 = 此商品全部評價.Where(x => x.RankId == 2).Count();
 			ViewBag.d1 = 此商品全部評價.Where(x => x.RankId == 1).Count();
             ViewBag.品牌= db.TLabels.FirstOrDefault(x => x.LabelId == Product.LabelId);
-            int mid = 0;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-            {
-                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
-                TMember m = JsonSerializer.Deserialize<TMember>(js);
-                mid = m.MemberId;
-            }
-            ViewBag.mid = mid;
+            //int mid = 0;
+            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            //{
+            //    string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+            //    TMember m = JsonSerializer.Deserialize<TMember>(js);
+            //    mid = m.MemberId;
+            //}
+            //ViewBag.mid = mid;
             return View();
 		}
         public IActionResult ReviewsAPI([FromBody] DTO商品頁評價 a)
