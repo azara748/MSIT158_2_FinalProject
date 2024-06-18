@@ -157,7 +157,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             db.TPackageCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
             db.SaveChanges();
             if(value.StatusId==2) return RedirectToAction("Memberpage", "M"); 
-            else   return RedirectToAction("Productpage", "P");
+            else   return RedirectToAction("CashFlow", "HOME", new { totalAmount =value.CheckoutAmount,oid=lo });
         }
         //[HttpPost]
         //public IActionResult Shippingpage2(int id)

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MSIT158_2_FinalProject.Models;
+using MSIT158_2_FinalProject.Models.前台;
 using MSIT158_2_FinalProject.ViewModel;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -106,8 +107,10 @@ namespace MSIT158_2_FinalProject.Controllers
             return View();
         }
         //綠界測試
-        public IActionResult CashFlow()
+        public IActionResult CashFlow(int totalAmount,int oid)
         {
+            List<string> fields = new List<string>();
+            fields = new fM結帳().明細(oid);
     //        int cash = 1000;
     //        string productname = "史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C";
 
