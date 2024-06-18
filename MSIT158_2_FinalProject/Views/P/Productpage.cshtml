@@ -72,28 +72,13 @@
                         </div>
                         <a class="review-link" href="#tab3" id="rc">@ViewBag.評價數 件評價</a>
                     </div>
+                    @if(1==2){
                     <div>
                         <h3 class="product-price">$@Convert.ToInt32(ViewBag.Product.UnitPrice)<del class="product-old-price">$@Convert.ToInt32((double)ViewBag.Product.UnitPrice * 1.25)</del></h3>
                         <span class="product-available">有庫存</span>
                         <span class="product-available" id="sp1" style="display:none">庫存:@ViewBag.Product.Stocks</span>
-
                     </div>
-                    @* <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> *@
-
-                    @* <div class="product-options">
-                    <label>
-                    Size
-                    <select class="input-select">
-                    <option value="0">X</option>
-                    </select>
-                    </label>
-                    <label>
-                    Color
-                    <select class="input-select">
-                    <option value="0">Red</option>
-                    </select>
-                    </label>
-                    </div> *@
+                                      
                     <div class="add-to-cart">
                         <div class="qty-label">
                             <div class="input-number">
@@ -106,10 +91,9 @@
                     </div>
 
                     <ul class="product-btns">
-                        <li><a href="#"><i class="fa fa-heart-o"></i> 加入收藏</a></li>
-                        @* <li><a href="#"><i class="fa fa-exchange"></i> add to compare</a></li> *@
+                        <li><a href="#"><i class="fa fa-heart-o"></i> 加入收藏</a></li>                    
                     </ul>
-
+                    }
                     <ul class="product-links">
                         <li>分類:</li>
                         <li><a href="#">@ViewBag.商品類別.CategoryCname</a></li>
@@ -128,15 +112,17 @@
                             </a>
                         </li>
                     </ul>
-
-                    <ul class="product-links">
-                        <li>分享:</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                    </ul>
-
+                    @if (1 == 2)
+                    {
+                        <ul class="product-links">
+                            <li>分享:</li>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+                        </ul>
+                    }
+                    else {<h1>已下架</h1>}
                 </div>
             </div>
             <!-- /Product details -->
