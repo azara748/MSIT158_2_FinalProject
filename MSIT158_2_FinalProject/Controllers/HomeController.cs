@@ -111,39 +111,49 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             List<string> fields = new List<string>();
             fields = new fM結帳().明細(oid);
-    //        int cash = 1000;
-    //        string productname = "史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C";
 
-    //        var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
-    //        //需填入你的網址
-    //        var website = $"https://localhost:7066";
-    //        var order = new Dictionary<string, string>
-    //{
-    //    //綠界需要的參數
-    //    { "MerchantTradeNo",  orderId},
-    //    { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
-    //    { "TotalAmount",  $"{cash}"},
-    //    { "TradeDesc",  "無"},
-    //    { "ItemName",  productname },
-    //    //{ "ExpireDate",  "3"},
-    //    //{ "CustomField1",  "商品AA"},
-    //    //{ "CustomField2",  "商品BB"},
-    //    //{ "CustomField3",  ""},
-    //    //{ "CustomField4",  ""},
-    //    { "ReturnURL",  $"{website}/Home/CashFlow"},
-    //    //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
-    //    { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
-    //    //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
-    //    { "ClientBackURL",  $"{website}/Home/CashFlowB"},
-    //    { "MerchantID",  "3002607"},
-    //    { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
-    //    { "PaymentType",  "aio"},
-    //    { "ChoosePayment",  "ALL"},
-    //    { "EncryptType",  "1"},
-    //};
-    //        //檢查碼
-    //        order["CheckMacValue"] = new CCheckMacValue().GetCheckMacValue(order);
-            return View();
+            string productname = null;
+            foreach (var field in fields)
+            {
+                productname += field.ToString();
+                productname += " #";
+            }
+
+
+            int cash = 1000;
+
+            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+            //需填入你的網址
+            var website = $"https://localhost:7066";
+            var Apiweb = "https://localhost:7160";
+            var ngrok = "https://1eeb-1-160-7-136.ngrok-free.app";
+            var order = new Dictionary<string, string>
+    {
+        //綠界需要的參數
+        { "MerchantTradeNo",  orderId},
+        { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
+        { "TotalAmount",  $"{totalAmount}"},
+        { "TradeDesc",  "無"},
+        { "ItemName",  productname },
+        //{ "ExpireDate",  "3"},
+        //{ "CustomField1",  "商品AA"},
+        //{ "CustomField2",  "商品BB"},
+        //{ "CustomField3",  ""},
+        //{ "CustomField4",  ""},
+        { "ReturnURL",  $"{ngrok}/api/TMembers/ReceiveCashFlow"},
+        //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
+        { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
+        //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
+        { "ClientBackURL",  $"{website}/Home/CashFlowB"},
+        { "MerchantID",  "3002607"},
+        { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
+        { "PaymentType",  "aio"},
+        { "ChoosePayment",  "ALL"},
+        { "EncryptType",  "1"},
+    };
+            //檢查碼
+            order["CheckMacValue"] = new CCheckMacValue().GetCheckMacValue(order);
+            return View(order);
         }
         public IActionResult CashFlowB()
         {

@@ -481,6 +481,15 @@ namespace MSIT158_2_API.Controllers
             return NoContent();
         }
 
+        [HttpPost("ReceiveCashFlow")]
+        public async Task<ActionResult<TMember>> ReceiveCashFlow([FromForm] Dictionary<string,string> ecPayData)
+        {           
+            var element = ecPayData.ElementAt(10); // 取出第10個元素 (索引從0開始)
+            string value10 = element.Value;
+
+            return Ok(new { message = "確認成功", value10 });
+        }
+
         private bool TMemberExists(int id)
         {
             return _context.TMembers.Any(e => e.MemberId == id);

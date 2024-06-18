@@ -137,13 +137,13 @@
         const thss = document.querySelector('#idtr1');
         const switchnames = [
             '序號',
+            '員工照片',
             '姓名',
             '手機',
+            '電子信箱',
+            '密碼',
             '地址',
             '生日',
-            '密碼',
-            '電子信箱',
-            '員工照片',
             '到職日',
             '部門序號',
             '功能按鈕'
@@ -194,13 +194,13 @@
                     `
                     <tr>
                             <th scope="row" id="idtd1">${employeeId}</th>
-                            <td id="idtd2">${employeeName}</td>
-                            <td id="idtd3">${cellphone}</td>
-                            <td id="idtd4">${address}</td>
-                            <td id="idtd5">${birthday}</td>
+                            <td id="idtd2">${employeePhoto ? `<img style="width: 100px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片"/>` : '沒有可用的圖片'}</td>
+                            <td id="idtd3">${employeeName}</td>
+                            <td id="idtd4">${cellphone}</td>
+                            <td id="idtd5">${eMail}</td>
                             <td id="idtd6">${password}</td>
-                            <td id="idtd7">${eMail}</td>
-                            <td id="idtd8">${employeePhoto ? `<img style="width: 100px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片"/>` : '沒有可用的圖片'}</td>
+                            <td id="idtd7">${address}</td>
+                            <td id="idtd8">${birthday}</td>
                             <td id="idtd9">${onBoardDate}</td>
                             <td id="idtd10">${depName}</td>
                         <td id="idtd11">

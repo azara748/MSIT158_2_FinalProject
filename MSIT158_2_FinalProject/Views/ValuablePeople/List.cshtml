@@ -1,0 +1,47 @@
+﻿@model IEnumerable<MSIT158_2_FinalProject.Models.TVip>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>會員等級資料一覽表</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipphoto)
+            </th>
+                        
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vipid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vipname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vipphoto)
+                </td>                
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

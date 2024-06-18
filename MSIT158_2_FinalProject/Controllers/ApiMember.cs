@@ -20,6 +20,12 @@ namespace MSIT158_2_FinalProject.Controllers
 
         public IActionResult Login(CLoginViewModel vm)
         {
+            TMember tuser = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+            // 從資料庫中獲取用戶的鹽和雜湊後的密碼
+            string salt = tuser.Salt;
+            string Passwordsalted = vm.txtPassword + salt;
+            //密碼加密，使用 SHA256 演算法
+            vm.txtPassword = new Cencryption().GetSha256Hash(Passwordsalted);
             TMember user = _context.TMembers.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
             string json = null;
