@@ -9,7 +9,7 @@ public partial class TVip
 
     public string? Vipname { get; set; }
 
-    public byte[]? Vipphoto { get; set; }
+    public string? Vipphoto { get; set; }
 
     public virtual ICollection<TMember> TMembers { get; set; } = new List<TMember>();
 }

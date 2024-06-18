@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="~/pages/tables.html" id="">
+                    <a class="nav-link" href="~/Product/List" id="Product">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
                         </div>
@@ -550,7 +550,7 @@
         }
         /////////////////////////////////
         let currentLocation = window.location;
-        if (currentLocation.pathname == '/w/WordCensorship' || currentLocation.pathname == '/w/WordCensorship2') {
+        if (currentLocation.pathname == '/W/WordCensorship'||currentLocation.pathname == '/W/WordCensorship2') {
             WordCensorship.className = "nav-link active"
         }
         else if (currentLocation.pathname == '/Member/List') {
@@ -561,6 +561,9 @@
         }
         else if (currentLocation.pathname == '/Powerbi/Index') {
             Powerbi.className = "nav-link active"
+        }
+        else if(currentLocation.pathname == '/Product/List') {
+            Product.className = "nav-link active"
         }
     </script>
     <!-- Github buttons -->
