@@ -584,9 +584,7 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Vipname)
                 .HasMaxLength(50)
                 .HasColumnName("VIPName");
-            entity.Property(e => e.Vipphoto)
-                .HasMaxLength(50)
-                .HasColumnName("VIPPhoto");
+            entity.Property(e => e.Vipphoto).HasColumnName("VIPPhoto");
         });
 
         modelBuilder.Entity<TWordCensorship>(entity =>
