@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using MSIT158_2_FinalProject.Models;
 using MSIT158_2_FinalProject.ViewModel;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
+using System.Web;
 
 namespace MSIT158_2_FinalProject.Controllers
 {
@@ -87,7 +90,7 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
-        //忘記密碼
+        //忘記密碼，確認信箱後寄送email，在email修改密碼後送回API改密碼，API寄送email成功通知
         public IActionResult MemberForgetPassword()
         {
             return View();
@@ -102,6 +105,48 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
+        //綠界測試
+        public IActionResult CashFlow()
+        {
+    //        int cash = 1000;
+    //        string productname = "史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C";
+
+    //        var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+    //        //需填入你的網址
+    //        var website = $"https://localhost:7066";
+    //        var order = new Dictionary<string, string>
+    //{
+    //    //綠界需要的參數
+    //    { "MerchantTradeNo",  orderId},
+    //    { "MerchantTradeDate",  DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")},
+    //    { "TotalAmount",  $"{cash}"},
+    //    { "TradeDesc",  "無"},
+    //    { "ItemName",  productname },
+    //    //{ "ExpireDate",  "3"},
+    //    //{ "CustomField1",  "商品AA"},
+    //    //{ "CustomField2",  "商品BB"},
+    //    //{ "CustomField3",  ""},
+    //    //{ "CustomField4",  ""},
+    //    { "ReturnURL",  $"{website}/Home/CashFlow"},
+    //    //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
+    //    { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
+    //    //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
+    //    { "ClientBackURL",  $"{website}/Home/CashFlowB"},
+    //    { "MerchantID",  "3002607"},
+    //    { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
+    //    { "PaymentType",  "aio"},
+    //    { "ChoosePayment",  "ALL"},
+    //    { "EncryptType",  "1"},
+    //};
+    //        //檢查碼
+    //        order["CheckMacValue"] = new CCheckMacValue().GetCheckMacValue(order);
+            return View();
+        }
+        public IActionResult CashFlowB()
+        {
+            return View();
+        }
+        
 
 
 

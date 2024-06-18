@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MSIT158_2_FinalProject/Views/Home/CashFlow.cshtml
