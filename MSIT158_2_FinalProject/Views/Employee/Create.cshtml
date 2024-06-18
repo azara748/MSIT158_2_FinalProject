@@ -55,9 +55,17 @@
                 <span asp-validation-for="OnBoardDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DepId" class="control-label"></label>
+                @* <label asp-for="DepId" class="control-label"></label>
                 <input asp-for="DepId" class="form-control" id="InputDepId" name="DepId" />
-                <span asp-validation-for="DepId" class="text-danger"></span>
+                <span asp-validation-for="DepId" class="text-danger"></span> *@
+
+                <select class="form-select" aria-label="Default select example" id="InputDepId">
+                    <option value="1" selected>業務部</option>
+                    <option value="2">財務部</option>
+                    <option value="3">人資部</option>
+                    <option value="4">行銷部</option>
+                    <option value="5">客服部</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="送出並新增" class="btn btn-primary" id="buttonSubmit" />
@@ -87,7 +95,7 @@
             const employeePhoto = document.querySelector('#InputEmployeePhoto').value;
             const employeeDate = document.querySelector('#InputOnBoardDate').value;
             const employeeDepId = document.querySelector('#InputDepId').value;
-
+            console.log(employeeDepId);
             // const employeeData = {
             //     "EmployeeName": employeeName,
             //     "Cellphone": employeephone,

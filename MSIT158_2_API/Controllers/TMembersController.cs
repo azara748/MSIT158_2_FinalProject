@@ -198,11 +198,11 @@ namespace MSIT158_2_API.Controllers
 
             //根據分類編號搜尋會員資料
             var members = searchDTO.memberId == 0 ? cmemberDetailDTOs : cmemberDetailDTOs.Where(s => s.Id == searchDTO.memberId);
-            //根據關鍵字搜尋會員資料(title、desc)
+            //根據關鍵字搜尋會員資料(title)
             if (!string.IsNullOrEmpty(searchDTO.keyword))
-                members = members.Where(s => s.MemberName.Contains(searchDTO.keyword) ||
-                s.Address.Contains(searchDTO.keyword) ||
-                s.EMail.Contains(searchDTO.keyword));
+                members = members.Where(s => s.MemberName != null && s.MemberName.Contains(searchDTO.keyword) ||
+                    s.Address != null && s.Address.Contains(searchDTO.keyword) ||
+                    s.EMail != null && s.EMail.Contains(searchDTO.keyword));
 
             //排序
             switch (searchDTO.sortBy)

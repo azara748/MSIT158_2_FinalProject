@@ -87,9 +87,26 @@ namespace MSIT158_2_FinalProject.Controllers
             //int cash = 1000;
             //string productnames = "史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C";
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //==================================================
             var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
             //需填入你的網址
-            var website = $"https://localhost:7066/";
+            var website = $"https://localhost:7066";
             var order = new Dictionary<string, string>
     {
         //綠界需要的參數
@@ -102,6 +119,7 @@ namespace MSIT158_2_FinalProject.Controllers
         //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
         { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
         //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
+        { "ClientBackURL",  $"{website}/Home/CashFlowB"},
         { "MerchantID",  "3002607"},
         { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
         { "PaymentType",  "aio"},

@@ -4,52 +4,13 @@
 
 <h1>測試-綠界金流</h1>
 
-<form id="userForm" name="form" method="POST" action="">
-    <!-- Step 2: 收到後端的值印出來 -->
-    <input type="text" name="MerchantTradeNo" value="YOUR_GENERATED_MERCHANT_TRADE_NO" /><br />
-    <input type="text" name="MerchantTradeDate" value="YOUR_GENERATED_MERCHANT_TRADE_DATE" /><br />
-    <input type="text" name="totalAmount" value="1000" /><br />
-    <input type="text" name="TradeDesc" value="無" /><br />
-    <input type="text" name="itemName" value="史先生-測試商品中A #史先生-測試商品中B #史先生-測試商品中C" /><br />
-    <input type="text" name="ExpireDate" value="3" /><br />
-    <input type="text" name="ReturnURL" value="https://localhost:44325/api/Ecpay/AddPayInfo" /><br />
-    <input type="text" name="OrderResultURL" value="https://localhost:44325/Home/PayInfo/YOUR_GENERATED_MERCHANT_TRADE_NO" /><br />
-    <input type="text" name="PaymentInfoURL" value="https://localhost:44325/api/Ecpay/AddAccountInfo" /><br />
-    <input type="text" name="ClientRedirectURL" value="https://localhost:44325/Home/AccountInfo/YOUR_GENERATED_MERCHANT_TRADE_NO" /><br />
-    <input type="text" name="MerchantID" value="3002607" /><br />
-    <input type="text" name="IgnorePayment" value="GooglePay#WebATM#CVS#BARCODE" /><br />
-    <input type="text" name="PaymentType" value="aio" /><br />
-    <input type="text" name="ChoosePayment" value="ALL" /><br />
-    <input type="text" name="EncryptType" value="1" /><br />
-    <input type="text" name="CheckMacValue" value="YOUR_GENERATED_CHECK_MAC_VALUE" /><br />
-    <button type="submit" id="buttonSubmit">送出並交易</button>
-</form>
+<div class="text-center">
+    <h2 class="display-4">綠界金流(接收端)</h2>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
 
 @section Scripts {
     <script>
-        console.log('測試1');
-        const btnSubmit = document.querySelector('#buttonSubmit');
-        console.log('測試2');
-        btnSubmit.addEventListener('click', async (evt) => {
-            evt.preventDefault(); //防止預設行為的發生
-
-            //將資料放進FormData
-            const myForm = document.querySelector('#userForm');
-            const fromdata = new FormData(myForm);
-            //測試FormData中有無資料
-            for (const pair of fromdata.entries()) {
-                console.log(pair[0], pair[1]);
-            }
-
-            const url = '@Url.Content("~/ApiMember/CashFlow")';
-            const response = await fetch(url, {
-                method: 'POST',
-                body: fromdata
-            });
-        });
+        
     </script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
 }
