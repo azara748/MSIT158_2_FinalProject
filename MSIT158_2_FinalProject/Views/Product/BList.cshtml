@@ -45,8 +45,8 @@
                     <thead>
                         <tr>
                     <button type="button" class="btn btn-danger">下架所有被勾選</button>
-                            <th>下架</th>
-                            <th>修改</th>
+                        <th>下架</th>
+                        <th>修改</th>
                         <th>商品ID</th>
                         <th>商品名稱</th>
                         <th>商品照片</th>
@@ -64,7 +64,7 @@
                      </table>
   </div>
 </div>
-
+@* <!--商品卡-->
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-md-8">
@@ -86,19 +86,19 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">商品品牌	</label>
+                                <label for="example-text-input" class="form-control-label">庫存數量	</label>
                                 <input class="form-control" type="email" value="jesse@example.com">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">商品分類	</label>
+                                <label for="example-text-input" class="form-control-label">品牌	</label>
                                 <input class="form-control" type="text" value="Jesse">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">上架日期</label>
+                                <label for="example-text-input" class="form-control-label">分類</label>
                                 <input class="form-control" type="text" value="Lucky">
                             </div>
                         </div>
@@ -116,26 +116,28 @@
                         </div>
                     </div>
                     <hr class="horizontal dark">
-                    <p class="text-uppercase text-sm">Contact Information</p>
-                    <div class="row">
-                        <div class="col-md-12">
+                          <div class="row">
+                             <div class="col-md-8">
                             <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">商品說明</label>
                                 <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
                             </div>
                         </div>
+                            <div class="col-md-4">
+                                 <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">上架日期</label>
+                                <input class="form-control" type="text" value="Lucky">
+                                    </div>
+                            </div>
+                          </div>
                     </div>
-                    <hr class="horizontal dark">
                 </div>
             </div>
-        </div>
         <div class="col-md-4">
             <div class="card card-profile">
                 <img src="../assets/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
                 <div class="row justify-content-center">
                     <div class="col-4 col-lg-4 order-lg-2">
-@*                         <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                        </div> *@
                     </div>
                 </div>
                 <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
@@ -149,6 +151,11 @@
             </div>
         </div>
     </div>
+</div>
+<!--商品卡--> *@
+
+<!--加入商品卡-->
+<div class="container-fluid py-4" id="idcardzone">
     <footer class="footer pt-3  ">
         <div class="container-fluid">
             <div class="row align-items-center justify-content-lg-between">
@@ -181,15 +188,17 @@
             </div>
         </div>
     </footer>
-</div>
+
 
 @section Scripts
 {
     <script>
+       let newprophoto;
         const btnNewPro = document.getElementById('btnNewPro');
+            const idcardzone = document.getElementById('idcardzone');
         const idup = document.getElementById('idup');
         const searchBata = {
-                    "subcatId": 0,
+                    "subcatId": 18,
                     "searchword": "",
                     "page": 1,
                     "pagesSize": 5,
@@ -206,6 +215,7 @@
                             'Content-Type': 'application/json'
                         }
                     });
+                    console.log(searchBata);
                     const data = await response.json();
         console.log(data);
         const pros = data.showProducts.map(pro => {
@@ -228,10 +238,186 @@
         })
         table.innerHTML = pros.join('');
 				})();
+            //按下新增之後下面產出商品卡
         btnNewPro.addEventListener('click', clickNew)
         function clickNew() {
-            console.log("新增");
-        } 
+            //先產出表
+                const NewCard = `<div class="container-fluid py-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header pb-0">
+                                        <div class="d-flex align-items-center">
+                                            <p class="mb-0">商品資訊</p>
+                                                        <button class="btn btn-primary btn-sm ms-auto" onclick="addNew()">上架</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="text-uppercase text-sm">新增商品</p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">商品名稱</label>
+                                                    <input class="form-control" type="text" id="newName">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">庫存數量	</label>
+                                                                <input class="form-control" type="email" id="newStocks">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                         <label for="selectLabel" class="form-control-label">品牌</label>
+                                <select id="selectLabel"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                                <label for="selectSub" class="form-control-label">分類</label>
+                                            <select id="selectSub"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">販售價格	</label>
+                                                    <input class="form-control" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">成本價格</label>
+                                                    <input class="form-control" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="horizontal dark">
+                                              <div class="row">
+                                                 <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">商品說明</label>
+                                                    <input class="form-control" type="text">
+                                                </div>
+                                            </div>
+                                                <div class="col-md-4">
+                                                     <div class="form-group">
+                                                    <label for="example-text-input" class="form-control-label">上架日期</label>
+                                                                                        <input class="form-control" type="datetime" id="newLantime">
+                                                        </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-md-4">
+                                <div class="card card-profile">
+                                    <img id="preview" src="/img/nopic.jpg" alt="請上傳照片謝謝~" class="card-img-top">
+                                    <div class="row justify-content-center">
+                                        <div class="col-4 col-lg-4 order-lg-2">
+                                        </div>
+                                    </div>
+                                    <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+                                        <div class="d-flex justify-content-between">
+                                            <input class="form-control" type="file" id="uploadFile">
+                                            <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+                                            <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block" >取消上傳</a>
+                                            <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                idcardzone.innerHTML = NewCard;
+                const loadCatname = async () => {
+                //加入下拉式選單 品牌名稱
+                    const selectLabel = document.getElementById('selectLabel');
+                    let urll = 'https://localhost:7160/api/TLabels/getLabelName?labid=0';
+                let responsel = await fetch(urll, {
+                    method: 'POST',
+                    body: JSON.stringify(),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const datal = await responsel.json();
+                    // selectLabel.innerHTML = '';
+                    const addlabop = datal.map(lab => {
+                        const { labelId, labelName } = lab;
+                        return (`<option value="${labelId}">${labelId}.${labelName}</option>`);
+                    });
+                    selectLabel.innerHTML = addlabop.join('');
+                    //加入下拉式選單 分類名稱
+                    const selectSub = document.getElementById('selectSub');
+                    let url = 'https://localhost:7160/api/TSubCategories/getSubName?subid=0';
+                    let response = await fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify(),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    // selectSub.innerHTML = '';
+                    const addsubop = data.map(sn => {
+                        const { subCategoryId, subCategoryCname } = sn;
+                        return (`<option value="${subCategoryId}">${subCategoryId}.${subCategoryCname}</option>`);
+                    });
+                    selectSub.innerHTML = addsubop.join('');
+                //加入讀取照片功能
+                document.getElementById('uploadFile').addEventListener('change', function (event) {
+                    console.log("測試");
+                    const fileInput = event.target;
+                    const files = fileInput.files;
+                    const preview = document.getElementById('preview');
+                    if (files.length > 0) {
+                        const file = files[0];
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+
+                        const byteReader = new FileReader();
+                        byteReader.onload = function (e) {
+                            const arrayBuffer = e.target.result;
+                            const byteArray = new Uint8Array(arrayBuffer);
+                            const base64String = btoa(String.fromCharCode.apply(null, byteArray));
+                            newprophoto = base64String;
+                            console.log('Image in base64:', base64String);
+                        };
+                        byteReader.readAsArrayBuffer(file);
+                    }
+                });
+            }
+            loadCatname();
+        }
+
+            //填寫完成後按下上傳按鈕
+        const addNew = async () => {
+                const addNewData = {
+                    "ProductName": document.getElementById('newName').value,
+                    "LaunchTime": document.getElementById('newLantime').value,
+                    "ProductPhoto": newprophoto
+                };
+                console.log("上架按鈕!!!");
+                console.log("日期",document.getElementById('newLantime').value);
+                console.log("日期++", addNewData.LaunchTime);
+                let url = 'https://localhost:7160/api/BackProduct/AddBackProduct';
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(addNewData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                let data = await response.text();
+                alert("成功新增商品!!");
+            }
+
+        //動作
         function clickDelete(id) {
             const deletePro = confirm("您確定要下架嗎?");
             if (deletePro) {
@@ -247,12 +433,6 @@
             idup.innerHTML = `<span>HI</span>`;
 
         } 
-
-
-
-
-
-
 
     </script>
 

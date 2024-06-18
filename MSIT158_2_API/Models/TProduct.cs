@@ -25,7 +25,7 @@ public partial class TProduct
 
     public int? ActiveId { get; set; }
 
-    public DateTime? LaunchTime { get; set; }
+    public DateOnly? LaunchTime { get; set; }
 
     public decimal? Cost { get; set; }
 

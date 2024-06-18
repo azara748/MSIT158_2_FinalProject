@@ -487,7 +487,6 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Cost).HasColumnType("money");
             entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.LabelId).HasColumnName("LabelID");
-            entity.Property(e => e.LaunchTime).HasColumnType("datetime");
             entity.Property(e => e.ProductName).HasMaxLength(200);
             entity.Property(e => e.SubCategoryId).HasColumnName("SubCategoryID");
             entity.Property(e => e.UnitPrice).HasColumnType("money");
@@ -592,9 +591,7 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Vipname)
                 .HasMaxLength(50)
                 .HasColumnName("VIPName");
-            entity.Property(e => e.Vipphoto)
-                .HasMaxLength(50)
-                .HasColumnName("VIPPhoto");
+            entity.Property(e => e.Vipphoto).HasColumnName("VIPPhoto");
         });
 
         modelBuilder.Entity<TWordCensorship>(entity =>

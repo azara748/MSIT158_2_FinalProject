@@ -95,54 +95,48 @@ namespace MSIT158_2_API.Controllers.Back
         [HttpPost("SearchBackProduct")]
         public async Task<ActionResult<ShowProductDTO>> PostTProduct(SearchProductDTO searchProductDTO)
         {
-                var query = _context.TProducts
-                            .Include(p => p.SubCategory)
-                            .Include(p => p.Active)
-                            .Include(p => p.Label)
-                            .Include(p => p.TPurchases)
-                            .Include(p => p.TReviews)
-                            .AsQueryable();
-                //搜尋_次分類
-                query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
-                //搜尋_關鍵字
-                if (!string.IsNullOrEmpty(searchProductDTO.searchword))
-                {
-                    query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword)
-                    || p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword)
-                    || p.Description.Contains(searchProductDTO.searchword));
-                }
-                //金額條件
-                //if (searchProductDTO.lowPrice != null && searchProductDTO.highPrice != null)
-                //{
-                //    query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
-                //}
-                if (searchProductDTO.stock)
-                {
-                    query = query.Where(p => p.Stocks > 0);
-                }
-                if (searchProductDTO.newlan)
-                {
+            var query = _context.TProducts
+                        .Include(p => p.SubCategory)
+                        .Include(p => p.Active)
+                        .Include(p => p.Label)
+                        .Include(p => p.TPurchases)
+                        .Include(p => p.TReviews)
+                        .AsQueryable();
+            //搜尋_次分類
+            query = searchProductDTO.subcatId == 0 ? query : query.Where(s => s.SubCategoryId == searchProductDTO.subcatId);
+            //搜尋_關鍵字
+            if (!string.IsNullOrEmpty(searchProductDTO.searchword))
+            {
+                query = query.Where(p => p.ProductName.Contains(searchProductDTO.searchword)
+                || p.SubCategory.SubCategoryCname.Contains(searchProductDTO.searchword)
+                || p.Description.Contains(searchProductDTO.searchword));
+            }
+            //金額條件
+            //if (searchProductDTO.lowPrice != null && searchProductDTO.highPrice != null)
+            //{
+            //    query = query.Where(p => p.UnitPrice > searchProductDTO.lowPrice && p.UnitPrice < searchProductDTO.highPrice);
+            //}
+            if (searchProductDTO.stock)
+            {
+                query = query.Where(p => p.Stocks > 0);
+            }
 
-                    var currentDate = DateTime.Now;
-                    query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime.Value, currentDate) < 30);
+            //if (searchProductDTO.rankfour)
+            //{
 
-                }
-                //if (searchProductDTO.rankfour)
-                //{
-
-                //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 4);
+            //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 4);
 
 
-                //}
-                //if (searchProductDTO.rankthree)
-                //{
-                //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
+            //}
+            //if (searchProductDTO.rankthree)
+            //{
+            //    query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
 
-                //}
+            //}
 
 
-                //排序_
-                switch (searchProductDTO.sortBy)
+            //排序_
+            switch (searchProductDTO.sortBy)
                 {
                 case "ProductID":
                     query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
@@ -196,7 +190,6 @@ namespace MSIT158_2_API.Controllers.Back
                     LabelName = pro.Label.LabelName,
                     Productphoto = pro.ProductPhoto,
                     Score = pro.TReviews.Average(p => p.RankId),
-                    isnew = pro.LaunchTime.HasValue && (DateTime.Now - pro.LaunchTime.Value).TotalDays < 30,
                     cost = pro.Cost,
                     Description = pro.Description,
                     LanchTime = pro.LaunchTime.HasValue ? pro.LaunchTime.Value.ToString("yyyy-MM-dd") : null
@@ -212,7 +205,61 @@ namespace MSIT158_2_API.Controllers.Back
                 return Ok(toClientProduct);
 
             }
-        
+
+        //[HttpPost("getName")]
+        //public async Task<ActionResult<getNameDTO>> getIDName(int labelid, int subid)
+        //{
+        //       var query = _context.TProducts
+        //                    .Include(s=>s.SubCategory)
+        //                    .Include(s=>s.Label)
+        //                    .AsQueryable();
+        //    if(labelid > 0 && subid > 0)
+        //    {
+        //        var subName = query.Where(x => x.SubCategoryId == subid);
+        //        var labelName = query.Where(x => x.LabelId == labelid);
+
+        //    }
+
+        //    var getNameDTO = new getNameDTO
+        //    {
+        //        subName = query.SubCategory.SubCategoryCname,
+        //        labelName = query.Label.LabelName,
+        //    };
+        //    return getNameDTO;
+        //}
+
+        [HttpPost("AddBackProduct")]
+        public async Task<ActionResult<ShowProductDTO>> AddTProduct(AddProductDTO addProductDTO)
+        {
+            // 將 Base64 字串轉換為二進位數據
+            byte[] imageBytes = Convert.FromBase64String(addProductDTO.Productphoto);
+
+            ////addProductDTO.LanchTime指回傳Dateonly 加上現在時間之後 傳回TProduct裡面Lanchtime(類別為DateTime)
+            //TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            //   DateOnly dateOnly = addProductDTO.LanchTime.Value;
+            //    DateTime dateTimeWithCurrentTime = dateOnly.ToDateTime(currentTime);
+
+            TProduct newtp = new TProduct
+            {
+                ProductPhoto = imageBytes,
+                ProductName = addProductDTO.ProductName,
+                //SubCatName = AddProductDTO.SubCategory.SubCategoryCname,
+                Stocks = addProductDTO.Stocks,
+                LabelId = addProductDTO.LabelId,
+                SubCategoryId = addProductDTO.SubCategoryId,
+                UnitPrice = addProductDTO.UnitPrice,
+                Cost = addProductDTO.cost,
+                Description = addProductDTO.Description,
+                LaunchTime = addProductDTO.LanchTime
+            };
+
+            
+
+            _context.TProducts.Add(newtp);
+            await _context.SaveChangesAsync();
+            return Ok("addProduct");
+        }
+
 
         //[HttpPost]
         //public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
