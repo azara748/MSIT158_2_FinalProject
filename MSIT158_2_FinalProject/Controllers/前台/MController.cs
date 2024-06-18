@@ -145,28 +145,29 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             ViewBag.b = b;
 
             var v1 =
-        from o in db.TOrders
-        join p in db.TPurchases
-        on o.OrderId equals p.OrderId
-        join pro in db.TProducts
-        on p.ProductId equals pro.ProductId
-        where o.OrderId == id
-        select new
-        {
-            OrderId = o.OrderId,
-            OrderDate = o.OrderDate,
-            StatusId = o.StatusId,
-            Reviewed = o.Reviewed,
-            Qty = p.Qty,
-            UnitPrice = pro.UnitPrice,
-        };
+      from o in db.TOrders
+      join p in db.TPurchases
+      on o.OrderId equals p.OrderId
+      join pro in db.TProducts
+      on p.ProductId equals pro.ProductId
+      where o.OrderId == id
+      select new
+      {
+          OrderId = o.OrderId,
+          OrderDate = o.OrderDate,
+          StatusId = o.StatusId,
+          Reviewed = o.Reviewed,
+          Qty = p.Qty,
+          UnitPrice = pro.UnitPrice,
+          Name = pro.ProductName,
+      };
             var v2 =
           from o in db.TOrders
           join pkw in db.TPackageWayDetails
         on o.OrderId equals pkw.OrderId
           join apk in db.TAllPackages
         on pkw.PackageId equals apk.PackageId
-          where o.OrderId == id
+          where o.OrderId==id
           select new
           {
               OrderId = o.OrderId,
@@ -175,6 +176,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
               Reviewed = o.Reviewed,
               Qty = pkw.PackQty,
               UnitPrice = apk.Price,
+              Name = apk.PackName,
           };
 
             var v = v1.Union(v2)
@@ -187,7 +189,8 @@ namespace MSIT158_2_FinalProject.Controllers.前台
                g.Key.Reviewed,
                總數 = g.Sum(x => x.Qty),
                總價 = g.Sum(x => x.Qty * x.UnitPrice),
-           }).ToList();
+               name = g.FirstOrDefault().Name,
+           });
 
             ViewBag.o = v.FirstOrDefault();
             return View();
