@@ -32,7 +32,7 @@ public class fM購物車
     public void add包裝(TPackageCart a)
     {
         SelectShopContext db = new SelectShopContext();
-        var b = db.TPackageCarts.FirstOrDefault(x => x.PackageId == a.PackageId && x.MemberId == a.PackageId);
+        var b = db.TPackageCarts.FirstOrDefault(x => x.PackageId == a.PackageId && x.MemberId == a.MemberId);
         if (b == null) db.Add(a);
         else b.Qty += a.Qty;
         db.SaveChanges();

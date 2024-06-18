@@ -115,23 +115,27 @@
                             <div><strong>金額</strong></div>
                         </div>
                         @{
+                            int p = 0;
+                            int pk = 0;
                             foreach (var item in ViewBag.會員購物車)
                             {
-                                    <div class="order-products">
+                                    <div class="order-products" id='@("sp"+p)'>
                                         <div class="order-col">
                                             <div>@item.Qty x @item.ProductName</div>
                                             <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
                                         </div>
-                                    </div>
+                                </div>
+                                p++;
                             }
                             foreach (var item in ViewBag.會員購物車2)
                             {
-                                <div class="order-products">
+                                <div class="order-products" id='@("spk"+pk)'>
                                     <div class="order-col">
                                         <div>@item.Qty x @item.PackName</div>
                                         <div>@Convert.ToInt32(item.Price * item.Qty)</div>
                                     </div>
                                 </div>
+                                pk++;
                             }
                         }
                         <div class="order-col">
@@ -140,7 +144,7 @@
                         </div>
                         <div class="order-col">
                             <div><strong>總計</strong></div>
-                            <div><strong class="order-total">$@(ViewBag.總價 + ViewBag.運費)</strong></div>
+                            <div><strong class="order-total" id="money">$@(ViewBag.總價 + ViewBag.運費)</strong></div>
                         </div>
                     </div>
                     <a class="primary-btn order-submit" onclick="結帳()" type="submit" id="bu1">其他支付方式</a>
@@ -155,8 +159,9 @@
                     </div>
                     <input type="hidden" value="1" name="StatusId" id="Status" />
                     <input type="hidden" value="@ViewBag.會員資料.MemberName" name="StatusId" id="MemberName" />
-                    <input type="hidden" value="@ViewBag.EMail" />
-                    <input type="hidden" value="@ViewBag.Address" />
+                    <input type="hidden" value="@ViewBag.會員資料.EMail" id="EMail" />
+                    <input type="hidden" value="@ViewBag.會員資料.Address" id="Address" />
+                    <input type="hidden" value="@ViewBag.會員資料.MemberPhoto" id="MemberPhoto" />
                     <input type="hidden" value="@(ViewBag.總價 + ViewBag.運費)" name="CheckoutAmount" />
                     @section scripts
                     {
@@ -164,7 +169,7 @@
                         <script>
                             var emailRule = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                             function 結帳() {
-                                if (!emailRule.test(sele6.value) || sele5.value.length < 4 || sele4.value.length < 10 || sele3.value.length < 6) {
+                                if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
                                     window.alert("請輸入正確格式")
                                     確認5()
                                     確認4()
@@ -194,9 +199,15 @@
                             }
                             function meb() {
                                 sele5.value = MemberName.value
+                                if (MemberPhoto.value == "")
                                 sele4.value = `0987876316`
+                                else sele4.value = MemberPhoto.value
+                                if (EMail.value=="")
                                 sele6.value = `wanks894@gmail.com`
+                                else sele6.value = EMail.value
+                                if (Address.value == "")
                                 sele3.value = `復興南路一段390號2樓`
+                                else sele3.value = Address.value
                                 sele2.selectedIndex = 4
                             }
                             function 確認5() {
@@ -264,6 +275,40 @@
                                 // console.log(document.getElementById("i" + sele2.selectedIndex).innerHTML)
                             }
                             sec1()
+                            async function dedet(d, p, id, q) {
+                                if (!confirm("確定要刪除嗎?")) return
+                                var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
+                                var b2 = await a2.text()
+                                if (b2 != "ok") return
+                                document.getElementById("c" + d).innerHTML = "";
+                                document.getElementById("sp" + d).innerHTML = "";
+                                總價 -= Number(p * q)
+                                count--
+                                SUBTOTAL.innerHTML = '$' + 總價
+                                var 總價0 = Number(money.innerHTML.replace("$", "")) - Number(p * q)
+                                money.innerHTML = '$' + 總價0
+                                cartqty.innerHTML = Number(cartqty.innerHTML) - 1
+                                Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
+                                all.innerHTML = '$' + 總價
+                                allw.innerHTML = '$' + (總價 + 運費)
+                            }
+                            async function dedet2(d, p, id, q) {
+                                if (!confirm("確定要刪除嗎?")) return
+                                var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
+                                var b2 = await a2.text()
+                                if (b2 != "ok") return
+                                document.getElementById("p" + d).innerHTML = "";
+                                document.getElementById("spk" + d).innerHTML = "";
+                                總價 -= Number(p * q)
+                                count--
+                                SUBTOTAL.innerHTML = '$' + 總價
+                                var 總價0 = Number(money.innerHTML.replace("$", "")) - Number(p * q)
+                                money.innerHTML = '$' + 總價0
+                                cartqty.innerHTML = Number(cartqty.innerHTML) - 1
+                                Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
+                                all.innerHTML = '$' + 總價
+                                allw.innerHTML = '$' + (總價 + 運費)
+                            }
                         </script>
                     }
                 </div>
