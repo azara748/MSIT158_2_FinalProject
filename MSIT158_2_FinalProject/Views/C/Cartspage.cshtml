@@ -309,9 +309,9 @@
         function 運送() {
             if (總價 == 0) {
                 window.alert("購物車沒東西喔，請先選購")
-                location.href = "/P/Productpage"
+                location.href = '@Url.Content("~/HomePage/Search")'
             }
-            else location.href = "/C/Shippingpage"
+            else location.href = '@Url.Content("/C/Shippingpage")'
         }
     </script>
 }

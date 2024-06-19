@@ -119,22 +119,22 @@
                             int pk = 0;
                             foreach (var item in ViewBag.會員購物車)
                             {
-                                    <div class="order-products" id='@("sp"+p)'>
-                                        <div class="order-col">
-                                            <div>@item.Qty x @item.ProductName</div>
-                                            <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
+                                            <div class="order-products" id='@("sp"+p)'>
+                                                <div class="order-col">
+                                                    <div>@item.Qty x @item.ProductName</div>
+                                                    <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
+                                                </div>
                                         </div>
-                                </div>
                                 p++;
                             }
                             foreach (var item in ViewBag.會員購物車2)
                             {
-                                <div class="order-products" id='@("spk"+pk)'>
-                                    <div class="order-col">
-                                        <div>@item.Qty x @item.PackName</div>
-                                        <div>@Convert.ToInt32(item.Price * item.Qty)</div>
-                                    </div>
-                                </div>
+                                        <div class="order-products" id='@("spk"+pk)'>
+                                            <div class="order-col">
+                                                <div>@item.Qty x @item.PackName</div>
+                                                <div>@Convert.ToInt32(item.Price * item.Qty)</div>
+                                            </div>
+                                        </div>
                                 pk++;
                             }
                         }
@@ -169,6 +169,10 @@
                         <script>
                             var emailRule = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                             function 結帳() {
+                                if (Number(money.innerHTML.replace("$", "")) == 0) {
+                                    window.alert("購物車沒有任何商品")
+                                    return
+                                }
                                 if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
                                     window.alert("請輸入正確格式")
                                     確認5()
@@ -183,6 +187,10 @@
                                 lode.style.display = 'block'
                             }
                             function 結帳2() {
+                                if (Number(money.innerHTML.replace("$", "")) == 0) { 
+                                    window.alert("購物車沒有任何商品")
+                                    return
+                                }
                                 if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
                                     window.alert("請輸入正確格式")
                                     確認5()
