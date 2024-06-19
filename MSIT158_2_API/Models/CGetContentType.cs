@@ -11,6 +11,9 @@
                 ".jpeg" => "image/jpeg",
                 ".png" => "image/png",
                 ".gif" => "image/gif",
+                ".bmp" => "image/bmp",
+                ".tiff" => "image/tiff",
+                ".ico" => "image/x-icon",
                 _ => "application/octet-stream",
             };
         }
