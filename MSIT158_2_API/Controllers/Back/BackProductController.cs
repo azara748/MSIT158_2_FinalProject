@@ -134,7 +134,11 @@ namespace MSIT158_2_API.Controllers.Back
             {
                    query = query.Where(p => p.Status == 1);
             }
-                int totalCount = query.Count();
+            if (ProductsearchDTO.status == 2)
+            {
+                query = query.Where(p => p.Status == 2);
+            }
+            int totalCount = query.Count();
                 int pageSize = ProductsearchDTO.pagesSize;
                 int page = ProductsearchDTO.page;
                 int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);

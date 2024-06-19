@@ -45,7 +45,7 @@ namespace MSIT158_2_FinalProject.Controllers
                 TProduct r = db.TProducts.FirstOrDefault(x => x.ProductId == id);
                 if (r != null)
                 {
-                    db.TProducts.Remove(r);
+                    //db.TProducts.Remove(r);
                     db.SaveChanges();
                 }
             }

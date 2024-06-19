@@ -3,46 +3,62 @@
 }
 <div class="card-header pb-0">
     <h3>商品資訊</h3>
+</div>
             <div class="row">
              <div class="col-md-2">
                    <button class="btn btn-primary btn-sm ms-auto" id="btnNewPro">上架新商品</button>
         </div>
-        <div class="col-md-2">
+            <div class="col-md-2">
         <select class="form-control" id="bshow">
             <option value="20">顯示20項商品</option>
             <option value="40">顯示40項商品</option>
             <option value="60">顯示60項商品</option>
         </select>
     </div>
-        <div class="col-md-2" id="bpage">
+            <div class="col-md-8">
+            <ul class="pagination justify-content-end" id="bpage">
+@*                  <li class="page-item disabled" >
+                    <a class="page-link"><<</a>
+                </li> 
+                <li class="page-item"><a class="page-link" href="#">page</a></li> 
+                <li class="page-item">
+                    <a class="page-link" href="#">>></a>
+                </li>  *@
+            </ul>
         </div>
-</div>
-
+            </div>
     <!--左到右-->
 <div class="row">
-    <div class="col-md-2">
+        <div class="col-md-2">
+            <label>品牌搜尋:</label>
         <select class="form-control" id="blabel">
             </select>
         </div>
-    <div class="col-md-2">
+    <div class="col-md-2"><label>分類搜尋:</label>
         <select class="form-control" id="bsub">
         </select>
     </div>
-    <div class="col-md-2">
+        <div class="col-md-2">
+            <label>分類商品ID順序搜尋:</label>
         <select class="form-control" id="bdesc" style="50px">
-            <option value="proID|asc">商品ID 順號</option>
-            <option value="proID|desc">商品ID 反向</option>
+                 <option value="proID|asc">正序</option>
+                <option value="proID|desc">倒序</option>
         </select>
     </div>
-    <div class="col-md-2">
+        <div class="col-md-2">
+            <label>文字搜尋:</label>
         <input type="text" class="form-control" placeholder="文字搜尋..." id="btext">
     </div>
-    <div class="col-md-2">
-        <input type="number" placeholder="商品ID搜尋" class="form-control" style="width: 200px;" id="bid" value="0">
+        <div class="col-md-2">
+            <label>商品ID搜尋:</label>
+        <input type="number" placeholder="(請輸入ID純數字)" class="form-control" style="width: 100px;" id="bid" value="0">
     </div>
     <div class="col-md-2">
-            <label for="bcheck">已下架</label>
-            <input type="checkbox" id="bcheck" />
+            <label>販售狀態</label>
+            <select class="form-control" id="bcheck" style="50px">
+                <option value="1" selected>販售中</option>
+                <option value="2">已下架</option>
+            </select>
         </div>
 </div>
     <!--左到右-->
@@ -226,7 +242,7 @@
                     "sortType": Sortselect[1],
                     "labelID": sblabel.value === "" ? 0 : sblabel.value,
                     "catID": sbsub.value === "" ? 0 : sbsub.value,
-                    "status": bcheck.checked ? 2 : 1
+                    "status": bcheck.value === "" ? 0 : bcheck.value
         }
         console.log("searchBata", searchBata);
        const table = document.getElementById('idtablep');
@@ -261,8 +277,19 @@
                       </tr>`)
         })
         table.innerHTML = pros.join('');
+                    //B.顯示分頁按鈕
+                    const max = datap.totalPages;
+                    const loadPage = (max) => {
+                        let liPages = "";
+                        for (let i = 1; i <= max; i++) {
+                            liPages += `<li onclick="pagingHandler(${i})" id="li${i}" class="page-item"><a class="page-link" href="#">${i}</a></li>`;
+                        }
+                        bpage.innerHTML = liPages;
+                    }
+                    loadPage(max);
 	}
         loadBPro();
+
        //載入商品清單>
        //<按下新增之後下面產出商品卡
         btnNewPro.addEventListener('click', clickNew);
@@ -323,7 +350,7 @@
                                                          <div class="col-md-8">
                                                         <div class="form-group">
                                                             <label for="example-text-input" class="form-control-label">商品說明</label>
-                                                                        <input class="form-control" type="text" id="newDes">
+                                                                        <input class="form-control" type="textarea" id="newDes" style="width"400px">
                                                         </div>
                                                     </div>
                                                         <div class="col-md-4">
@@ -438,7 +465,7 @@
                         return (`<option value="${labelId}">${labelId}.${labelName}</option>`);
                     });
 
-                    blabel.innerHTML += `<option value="0" selected>依照品牌搜尋</option>`;
+                    blabel.innerHTML += `<option value="0" selected>所有品牌</option>`;
                     blabel.innerHTML += addlabop.join('');
                     //<加入下拉式選單_分類名稱
                     const bsub = document.getElementById('bsub');
@@ -455,7 +482,7 @@
                         const { subCategoryId, subCategoryCname } = sn;
                         return (`<option value="${subCategoryId}">${subCategoryId}.${subCategoryCname}</option>`);
                     });
-                    bsub.innerHTML += `<option value="0" selected>依照分類搜尋</option>`;
+                    bsub.innerHTML += `<option value="0" selected>所有分類</option>`;
                     bsub.innerHTML += addsubop.join('');
                 }
         bsearchlabcat();
@@ -575,7 +602,7 @@
                                                                      <div class="col-md-8">
                                                                     <div class="form-group">
                                                                         <label for="example-text-input" class="form-control-label">商品說明</label>
-                                                                                                <input class="form-control" type="text" id="newDes" value="${description}">
+                                                                                                <input class="form-control" type="textarea" id="newDes" value="${description}">
                                                                     </div>
                                                                 </div>
                                                                     <div class="col-md-4">
@@ -669,58 +696,42 @@
                     alert(dataup);
                 } else {
                     alert("修改失敗 請重新檢查");
+                    return;
                 }
                 location.reload();
                 //0619
             }
             //search功能:
-        //         function dataChanged() {
-        //             // "searchword": btext.value,
-        //             //     "proId": bid.value,
-        //             //         "page": 1,
-        //             //             "pagesSize": bshow.value,
-        //             //                 "sortBy": Sortselect[0],
-        //             //                     "sortType": Sortselect[1],
-        //             //                         "labelID": sblabel.value === "" ? 0 : sblabel.value,
-        //             //                             "catID": sbsub.value === "" ? 0 : sbsub.value,
-        //             //                                 "status": bcheck.checked ? 2 : 1
-
-
-        //             console.log("dataChanged");
-        //             searchBata.searchword = btext.value;
-        //             searchBata.proId = bid.value;
-        //             searchBata.pagesSize = bshow.value;
-        //             // searchBata.sortBy = Sortselect[0];
-        //             // searchBata.sortType = Sortselect[1];
-        //             if (sblabel.value)
-        //             searchBata.labelID = sblabel.value;
-        //             searchBata.catID = sbsub.value;
-        //             searchBata.status = bcheck.value;
-        //             console.log("searchBata", searchBata);
-        //             loadBPro();
-        // }
+                function dataChanged() {
+                    console.log("dataChanged");
+                    searchBata.searchword = btext.value;
+                    searchBata.proId = bid.value;
+                    searchBata.pagesSize = bshow.value;
+                    let Sortselect = bdesc.value.split('|');
+                    searchBata.sortBy = Sortselect[0];
+                    searchBata.sortType = Sortselect[1];
+                    searchBata.labelID = sblabel.value;
+                    searchBata.catID = sbsub.value;
+                    searchBata.status = bcheck.value;
+                    console.log("searchBata", searchBata);
+                    loadBPro();
+        }
         //改變狀態時直接進行搜尋
-                // bshow.addEventListener('change', dataChanged);
-                // bshow.addEventListener('change', loadBPro);
-                // sblabel.addEventListener('change', loadBPro);
-                // sbsub.addEventListener('change', loadBPro);
-                // bdesc.addEventListener('change', loadBPro);
-                // bcheck.addEventListener('change', function (event) {
-                //     if (event.target.checked) {
-                //         loadBPro();
-                //     } else {
-                //         loadBPro();
-                //     }
-                // });
+                 bshow.addEventListener('change', dataChanged);
+                bshow.addEventListener('change', dataChanged);
+                sblabel.addEventListener('change', dataChanged);
+                sbsub.addEventListener('change', dataChanged);
+                bdesc.addEventListener('change', dataChanged);
+                bcheck.addEventListener('change', dataChanged)
         //輸入數字的按下Enter後搜尋
-        // btext.addEventListener('keydown', event => {
-        //     if (event.keyCode === 13) {
-        //         loadBPro();
-        //     }
-        // });
-        // bid.addEventListener('keydown', event => {
-        //     if (event.keyCode === 13) { loadBPro(); }
-        // });
+        btext.addEventListener('keydown', event => {
+            if (event.keyCode === 13) {
+                        dataChanged();
+            }
+        });
+        bid.addEventListener('keydown', event => {
+                    if (event.keyCode === 13) { dataChanged(); }
+        });
     </script>
 }
 
