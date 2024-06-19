@@ -300,6 +300,7 @@ namespace MSIT158_2_FinalProject.Controllers
 
         // GET: packageController/Delete/5
         //[HttpDelete("DeletePackage")]
+        [HttpDelete]
         public async Task<IActionResult> DeletePackage(int id)
         {
             try

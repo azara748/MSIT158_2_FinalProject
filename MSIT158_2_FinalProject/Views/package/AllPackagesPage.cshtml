@@ -29,7 +29,53 @@
         const table = document.querySelector("#table");
         const selector = document.querySelector("#selector");
 
-function eiditb() {
+        async function loadInfo() {
+            try {
+            const response = await fetch('@Url.Content("~/package/AllPackages")')
+            if (!response.ok) {
+                console.log(`erroe message:${response.status}`)
+                return
+            }
+            const datas = await response.json()
+            console.log(datas);
+            const package = datas.map(p => {
+                return `
+                                <tr>
+                                <td>${p.packName}</td>
+                                <td><img src="${'@Url.Content("~/assets/img/packageimages/")' + p.picture}" alt="${p.packName}" width="100" height="100" /></td>
+                                <td>價錢: ${p.price}</td>
+                                <td>
+                                                        <button type="button" class="btn btn-secondary" name="BEdit" id="BEdit${p.packageId}" >修改</button>
+                                                                <button type="button" class="btn btn-danger" name="BDel" id="BDel${p.packageId}">刪除</button></td>
+                            </tr>
+                        `
+            });
+            table.innerHTML = package.join("");
+
+                attachEventListeners();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function loadPackageCategories() {
+            try {
+                const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
+                if (!pCategoryRes.ok) {
+                    console.log(`erroe message:${pCategoryRes.status}`)
+                    return
+                }
+                const pCategoryDatas = await pCategoryRes.json()
+                console.log("styles:", pCategoryDatas);
+                const seletorPackage = pCategoryDatas.map(s => `<option id="${s.packageStyleId}" value="${s.styleName}">${s.styleName}</option>`)
+                selector.innerHTML = seletorPackage.join("");
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function attachEventListeners() {
+
             BEdit = document.getElementsByName('BEdit');
 
             BEdit.forEach(button => {
@@ -40,70 +86,81 @@ function eiditb() {
 
                 });
             });
+   
+            BDel = document.getElementsByName('BDel');
+
+            BDel.forEach(button => {
+                button.addEventListener('click', async e => {
+                    const button = e.target.id;
+                    const id = button.slice(4);
+
+                    try {
+                    console.log(id);
+                    const delID = await fetch(`@Url.Content("~/package/DeletePackage")?id=${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (!delID.ok) {
+                        console.log(`erroe message:${delID.status}`)
+                        return
+                    } 
+                        await loadInfo();
+                    } catch (error) {
+                        console.error('Error during delete operation:', error);
+                    }
+
+                });
+            });
+
         }
 
-        // addnew = document.getElementById(#addNew)
-        // addnew.addEventListener('cl')
 
-        (async () => {
-            const response = await fetch('@Url.Content("~/package/AllPackages")')
-            if (!response.ok) {
-                console.log(`erroe message:${response.status}`)
-                return
-            }
-            const datas = await response.json()
-            console.log(datas);
-            const package = datas.map(p => {
-                return `
-                        <tr>
-                        <td>${p.packName}</td>
-                        <td><img src="${'@Url.Content("~/assets/img/packageimages/")' + p.picture}" alt="${p.packName}" width="100" height="100" /></td>
-                        <td>價錢: ${p.price}</td>
-                        <td>
-                                                <button type="button" class="btn btn-secondary" name="BEdit" id="BEdit${p.packageId}" >修改</button>
-                                                        <button type="button" class="btn btn-danger" name="BDel" id="BDel${p.packageId}">刪除</button></td>
-                    </tr>
-                `
-            });
-            table.innerHTML = package.join("");
+        // (async () => {
+        //     const response = await fetch('@Url.Content("~/package/AllPackages")')
+        //     if (!response.ok) {
+        //         console.log(`erroe message:${response.status}`)
+        //         return
+        //     }
+        //     const datas = await response.json()
+        //     console.log(datas);
+        //     const package = datas.map(p => {
+        //         return `
+        //                 <tr>
+        //                 <td>${p.packName}</td>
+        //                 <td><img src="${'@Url.Content("~/assets/img/packageimages/")' + p.picture}" alt="${p.packName}" width="100" height="100" /></td>
+        //                 <td>價錢: ${p.price}</td>
+        //                 <td>
+        //                                         <button type="button" class="btn btn-secondary" name="BEdit" id="BEdit${p.packageId}" >修改</button>
+        //                                                 <button type="button" class="btn btn-danger" name="BDel" id="BDel${p.packageId}">刪除</button></td>
+        //             </tr>
+        //         `
+        //     });
+        //     table.innerHTML = package.join("");
 
-            eiditb();
-
-            // BDel = document.getElementsByName('BDel');
-
-            // BDel.forEach(button => {
-            //     button.addEventListener('click', async e => {
-            //         const button = e.target.id;
-            //         const id = button.slice(4);
-
-            //         console.log(id);
-            //         const delID = await fetch(`@Url.Content("~/package/DeletePackage")?id=${id}`, {
-            //             method: 'DELETE'
-            //         });
-
-            //         if (!delID.ok) {
-            //             console.log(`erroe message:${delID.status}`)
-            //             return
-            //         }
-
-            //     });
-            // });
+        //     attachEventListeners();
+           
 
             
 
-            const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
-            if (!pCategoryRes.ok) {
-                console.log(`erroe message:${pCategoryRes.status}`)
-                return
-            }
-            const pCategoryDatas = await pCategoryRes.json()
-            console.log("styles:" , pCategoryDatas);
-            const seletorPackage = pCategoryDatas.map(s => `<option id="${s.packageStyleId}" value="${s.styleName}">${s.styleName}</option>`)
-            selector.innerHTML = seletorPackage.join("");
+        //     const pCategoryRes = await fetch('@Url.Content("~/package/PackageCategory")')
+        //     if (!pCategoryRes.ok) {
+        //         console.log(`erroe message:${pCategoryRes.status}`)
+        //         return
+        //     }
+        //     const pCategoryDatas = await pCategoryRes.json()
+        //     console.log("styles:" , pCategoryDatas);
+        //     const seletorPackage = pCategoryDatas.map(s => `<option id="${s.packageStyleId}" value="${s.styleName}">${s.styleName}</option>`)
+        //     selector.innerHTML = seletorPackage.join("");
 
-        })()
 
-        
+        // })()
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadInfo();
+            await loadPackageCategories();
+        });
+
 
         selector.addEventListener("change", async (e) => {
             table.innerHTML = "";
@@ -142,7 +199,7 @@ function eiditb() {
                         `
             });
             table.innerHTML = package.join("");
-            eiditb();
+            attachEventListeners();
         })
         
 
