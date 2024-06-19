@@ -21,11 +21,13 @@ namespace MSIT158_2_API.Controllers
     public class TMembersController : ControllerBase
     {
         private readonly SelectShopContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
         private static string _pp = "";
         // 建構子注入資料庫上下文
-        public TMembersController(SelectShopContext context)
+        public TMembersController(SelectShopContext context,IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
         //登入會員帳號
         [HttpPost("Memberlogin")]
@@ -172,10 +174,24 @@ namespace MSIT158_2_API.Controllers
             var membersjoin = await _context.TMembers
                 .Include(m => m.Vip)
                 .ToListAsync();
-
+            string uploadPath = null;
             List<CmemberDetailDTO> cmemberDetailDTOs = new List<CmemberDetailDTO>();
             foreach (var member in membersjoin)
             {
+                if (string.IsNullOrEmpty(member.MemberPhoto))
+                    member.MemberPhoto = "default.jpg"; // 預設圖片名稱
+                //照片實際路徑
+                uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", member.MemberPhoto);
+                if (!System.IO.File.Exists(uploadPath))
+                    uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", "default.jpg"); // 預設圖片路徑
+                //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
+                var imageBytes = System.IO.File.ReadAllBytes(uploadPath);
+                //使用 Convert.ToBase64String(imageBytes) 將字節數組轉換為 Base64 字符串。
+                var base64String = Convert.ToBase64String(imageBytes);
+                //使用 data:{contentType};base64,{base64String} 格式生成 Base64 數據 URI，其中 {contentType} 是文件的 MIME 類型，
+                var contentType = new CGetContentType().GetContentType(uploadPath);
+                //{base64String} 是 Base64 編碼後的文件內容。
+                var base64Image = $"data:{contentType};base64,{base64String}";
                 CmemberDetailDTO cmemberDetailDTO = new CmemberDetailDTO()
                 {
                     Id = member.MemberId,
@@ -189,9 +205,12 @@ namespace MSIT158_2_API.Controllers
                     EMail = member.EMail,
                     Points = member.Points,
                     Vip = member.Vip?.Vipname,
-                    MemberPhoto = member.MemberPhoto,
+                    Vipphoto = member.Vip?.Vipphoto,
+                    MemberPhoto = base64Image,
                     Wallet = member.Wallet
                 };
+
+
                 cmemberDetailDTOs.Add(cmemberDetailDTO);
             }
 
@@ -384,25 +403,58 @@ namespace MSIT158_2_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TMember>> GetTMember(int id)
         {
-            var tMember = await _context.TMembers.FindAsync(id);
+            TMember user = _context.TMembers.FirstOrDefault(m => m.MemberId == id);
 
-            if (tMember == null)
-            {
-                return NotFound();
-            }
+            if (string.IsNullOrEmpty(user.MemberPhoto))
+                user.MemberPhoto = "default.jpg"; // 預設圖片名稱
 
-            return tMember;
+            //照片實際路徑
+            string uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", user.MemberPhoto);
+            if (!System.IO.File.Exists(uploadPath))
+                uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", "default.jpg"); // 預設圖片路徑
+
+            //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
+            var imageBytes = System.IO.File.ReadAllBytes(uploadPath);
+            //使用 Convert.ToBase64String(imageBytes) 將字節數組轉換為 Base64 字符串。
+            var base64String = Convert.ToBase64String(imageBytes);
+            //使用 data:{contentType};base64,{base64String} 格式生成 Base64 數據 URI，其中 {contentType} 是文件的 MIME 類型，
+            var contentType = new CGetContentType().GetContentType(uploadPath);
+            //{base64String} 是 Base64 編碼後的文件內容。
+            var base64Image = $"data:{contentType};base64,{base64String}";
+
+            //var tMember = await _context.TMembers.FindAsync(id);
+
+            //if (tMember == null)
+            //{
+            //    return NotFound();
+            //}
+
+            return Ok(new { base64Image });
         }
 
         // PUT: api/TMembers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTMember(int id, CMemberEditDTO memberIn)
+        public async Task<IActionResult> PutTMember(int id,[FromForm] CMemberEditDTO memberIn, IFormFile avatar)
         {
             if (id != memberIn.MemberId)
             {
                 return BadRequest();
             }
+            
+            // 從資料庫中獲取用戶的鹽和雜湊後的密碼
+            string salt = memberIn.Salt;
+            string Passwordsalted = memberIn.Password + salt;
+            //密碼加密，使用 SHA256 演算法
+            memberIn.Password = GetSha256Hash(Passwordsalted);
+
+            //照片實際路徑
+            string uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", avatar.FileName);
+            using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+            {
+                avatar.CopyTo(fileStream);
+            }
+
             TMember memberDb = _context.TMembers.FirstOrDefault(x => x.MemberId == memberIn.MemberId);
             if (memberDb != null)
             {
@@ -417,7 +469,7 @@ namespace MSIT158_2_API.Controllers
                 memberDb.Wallet = memberIn.Wallet;
                 memberDb.Salt = memberIn.Salt;
                 memberDb.EMail = memberIn.EMail;
-                memberDb.MemberPhoto = memberIn.MemberPhoto;
+                memberDb.MemberPhoto = avatar.FileName;
                 await _context.SaveChangesAsync();
             }
 

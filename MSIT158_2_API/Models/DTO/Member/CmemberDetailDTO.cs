@@ -24,6 +24,8 @@
 
         public string? Vip { get; set; }
 
+        public byte[]? Vipphoto { get; set; }
+
         public string? MemberPhoto { get; set; }
 
         public decimal? Wallet { get; set; }

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MSIT158_2_FinalProject.Models.TVip>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>會員等級資料一覽表</h1>
+
+<p>
+    <button type="button" class="btn btn-light"><a asp-action="Create">新增資料</a></button>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vipphoto)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vipid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vipname)
+            </td>
+            <td>
+                <img style="width: 100px; object-fit: contain;" src="@(item.Vipphoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(item.Vipphoto) : "")" alt="等級照片" /><br />
+                @* @Html.DisplayFor(modelItem => item.Vipphoto) *@
+            </td>
+            <td>
+                @Html.ActionLink("修改", "Edit", "ValuableCustomer", new { id = item.Vipid },  new {@class="btn btn-success"}) |
+                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
+                @Html.ActionLink("刪除", "Delete", "ValuableCustomer", new { id = item.Vipid }, new { onclick = "return confirm('確定要刪除嗎?')" ,@class="btn btn-danger"})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,45 @@
+﻿@model MSIT158_2_FinalProject.Models.TVip
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_Layout_Backstage";
+}
+
+<h1>修改資料</h1>
+
+<h4>填寫資訊</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Vipid" class="control-label"></label>
+                <input asp-for="Vipid" class="form-control" />
+                <span asp-validation-for="Vipid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vipname" class="control-label"></label>
+                <input asp-for="Vipname" class="form-control" />
+                <span asp-validation-for="Vipname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img style="height: 200px; object-fit: contain;" src="@(Model.Vipphoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.Vipphoto) : "")" alt="等級照片" /><br />
+                <label asp-for="Vipphoto" class="control-label"></label>
+                <input asp-for="Vipphoto" class="form-control" id="InputVipPhoto" name="avatar" type="file" />
+                <span asp-validation-for="Vipphoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="存檔並送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <button type="button" class="btn btn-light"><a asp-action="List">返回</a></button>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

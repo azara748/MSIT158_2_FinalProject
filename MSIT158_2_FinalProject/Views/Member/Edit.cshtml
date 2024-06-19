@@ -9,9 +9,9 @@
 
 <h4>填寫會員資訊</h4>
 <hr />
-<div class="row">
+<div class="row" style="min-width:500px;width:70%;margin:auto;">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="userForm" enctype="multipart/form-data">
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
 
             <input type="hidden" value="@Model.MemberId" name="MemberId" id="Inputid" />
@@ -32,8 +32,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" />
+                @* <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" /> *@
                 <span asp-validation-for="Sex" class="text-danger"></span>
+                <label class="control-label">性別</label>
+                <select class="form-select" aria-label="Default select example" id="InputSex" name="Sex">
+                    <option value="男" selected>男</option>
+                    <option value="女">女</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
@@ -41,9 +46,9 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Salt" class="control-label"></label>
-                <input asp-for="Salt" class="form-control" id="InputSalt" name="Salt" />
-                <span asp-validation-for="Salt" class="text-danger"></span>
+                <label asp-for="Salt" class="control-label" type="hidden"></label>
+                <input asp-for="Salt" class="form-control" id="InputSalt" name="Salt" type="hidden" />
+                <span asp-validation-for="Salt" class="text-danger" type="hidden"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EMail" class="control-label"></label>
@@ -52,17 +57,35 @@
             </div>
             <div class="form-group">
                 <label asp-for="Points" class="control-label"></label>
-                <input asp-for="Points" class="form-control" id="InputPoints" name="Points" />
+                @* <input asp-for="Points" class="form-control" id="InputPoints" name="Points" /> *@
                 <span asp-validation-for="Points" class="text-danger"></span>
+                <label class="control-label">個人點數</label>
+                <select class="form-select" aria-label="Default select example" id="InputPoints" name="Points">
+                    <option value="" selected>預設無</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="InputBirthday" class="form-label">生日</label>
                 <input type="date" class="form-control" id="InputBirthday" name="Birthday">
             </div>
             <div class="form-group">
-                <label asp-for="Vipid" class="control-label"></label>
+                @* <label asp-for="Vipid" class="control-label"></label>
                 <input asp-for="Vipid" class="form-control" id="InputVipid" name="Vipid" />
-                <span asp-validation-for="Vipid" class="text-danger"></span>
+                <span asp-validation-for="Vipid" class="text-danger"></span> *@
+                @* <img style="height: 400px; object-fit: contain;" src="@(Model.VipPhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.VipPhoto) : "")" alt="員工照片" /><br /> *@
+                <label class="control-label">會員資格</label>
+                <select class="form-select" aria-label="Default select example" id="InputVipid" name="Vipid">
+                    <option value="" selected>會員資格(預設無)</option>
+                    <option value="1">普通會員</option>
+                    <option value="2">中級會員</option>
+                    <option value="3">高級會員</option>
+                    <option value="4">頂級會員</option>
+                </select>
+            </div>
+            <div class="form-group" id="idShowphoto">
+                @* <img style="height: 400px; object-fit: contain;" src="@(Model.EmployeePhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.EmployeePhoto) : "")" alt="員工照片" /><br />                 *@
             </div>
             <div class="form-group">
                 <label asp-for="MemberPhoto" class="control-label"></label>
@@ -71,8 +94,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Wallet" class="control-label"></label>
-                <input asp-for="Wallet" class="form-control" id="InputWallet" name="Wallet" />
+                @* <input asp-for="Wallet" class="form-control" id="InputWallet" name="Wallet" /> *@
                 <span asp-validation-for="Wallet" class="text-danger"></span>
+                <label class="control-label">資金</label>
+                <select class="form-select" aria-label="Default select example" id="InputWallet" name="Wallet">
+                    <option value="" selected>預設無</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="送出並儲存" class="btn btn-primary" id="buttonSubmit" />
@@ -88,6 +117,22 @@
 
 @section Scripts {
     <script>
+        const memberId = document.querySelector('#Inputid').value;
+        console.log("測試1");
+        console.log(memberId);
+        (async () => {
+            const urlA = `https://localhost:7160/api/TMembers/${memberId}`;
+            const responseA = await fetch(urlA);
+            const dataA = await responseA.json();
+            //const AS = JSON.parse(dataA)
+            console.log(dataA);
+            console.log(dataA.base64Image);
+            document.querySelector('#idShowphoto').innerHTML = `<img src="${dataA.base64Image}"/>`;
+        })();
+
+
+
+
         document.addEventListener('DOMContentLoaded', function () {
             const divResult = document.querySelector("#div1");
             const btnSubmit = document.querySelector('#buttonSubmit');
@@ -96,66 +141,54 @@
                 evt.preventDefault(); // 防止預設行為的發生
 
                 // 獲取所有表單值
-                const memberId = document.querySelector('#Inputid').value;
-                const memberName = document.querySelector('#Inputname').value;
-                const memberphone = document.querySelector('#Inputphone').value;
-                const memberAddress = document.querySelector('#InputAddress').value;
-                const memberSex = document.querySelector('#InputSex').value;
-                const memberPassword = document.querySelector('#InputPassword').value;
-                const memberSalt = document.querySelector('#InputSalt').value;
-                const memberEMail = document.querySelector('#InputEMail').value;
-                const memberPoints = document.querySelector('#InputPoints').value;
-                const memberVipid = document.querySelector('#InputVipid').value;
-                const memberPhoto = document.querySelector('#InputPhoto').value;
-                const memberWallet = document.querySelector('#InputWallet').value;
+                // const memberName = document.querySelector('#Inputname').value;
+                // const memberphone = document.querySelector('#Inputphone').value;
+                // const memberAddress = document.querySelector('#InputAddress').value;
+                // const memberSex = document.querySelector('#InputSex').value;
+                // const memberPassword = document.querySelector('#InputPassword').value;
+                // const memberSalt = document.querySelector('#InputSalt').value;
+                // const memberEMail = document.querySelector('#InputEMail').value;
+                // const memberPoints = document.querySelector('#InputPoints').value;
+                // const memberVipid = document.querySelector('#InputVipid').value;
+                // const memberPhoto = document.querySelector('#InputPhoto').value;
+                // const memberWallet = document.querySelector('#InputWallet').value;
+                // const memberData = {
+                //     "MemberId": memberId,
+                //     "MemberName": memberName,
+                //     "Cellphone": memberphone,
+                //     "Address": memberAddress,
+                //     "Sex": memberSex,
+                //     "Password": memberPassword,
+                //     "Salt": memberSalt,
+                //     "EMail": memberEMail,
+                //     "Points": memberPoints,
+                //     "Vipid": memberVipid,
+                //     "MemberPhoto": memberPhoto,
+                //     "Wallet": memberWallet
+                // };
 
-                // 檢查所有值是否正確獲取
-                console.log("Member Data:", {
-                    memberId,
-                    memberName,
-                    memberphone,
-                    memberAddress,
-                    memberSex,
-                    memberPassword,
-                    memberSalt,
-                    memberEMail,
-                    memberPoints,
-                    memberVipid,
-                    memberPhoto,
-                    memberWallet
-                });
-
-                const memberData = {
-                    "MemberId": memberId,
-                    "MemberName": memberName,
-                    "Cellphone": memberphone,
-                    "Address": memberAddress,
-                    "Sex": memberSex,
-                    "Password": memberPassword,
-                    "Salt": memberSalt,
-                    "EMail": memberEMail,
-                    "Points": memberPoints,
-                    "Vipid": memberVipid,
-                    "MemberPhoto": memberPhoto,
-                    "Wallet": memberWallet
-                };
-
+                //將資料放進FormData
+                const myForm = document.querySelector('#userForm');
+                const fromdata = new FormData(myForm);
+                //測試FormData中有無資料
+                for (const pair of fromdata.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
                 const url = `https://localhost:7160/api/TMembers/${memberId}`;
                 const response = await fetch(url, {
                     method: 'PUT',
-                    body: JSON.stringify(memberData),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: fromdata
                 });
                 const data = await response.text();
                 console.log('data');
                 console.log(data);
-                const json = JSON.parse(data);
+                const jsonparse = JSON.parse(data);
                 console.log('json');
-                console.log(json);
-                const message = json.message;
+                console.log(jsonparse);
+                const message = jsonparse.message;
                 console.log('message');
                 console.log(message);
-                const Jname = json.memberDb.memberName;
+                const Jname = jsonparse.memberDb.memberName;
                 console.log('Jname');
                 console.log(Jname);
                 divResult.innerHTML = `<p>會員姓名：${Jname}/${message}</p>`;

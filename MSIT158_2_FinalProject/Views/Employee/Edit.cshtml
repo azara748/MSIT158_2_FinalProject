@@ -48,7 +48,7 @@
             <div class="form-group">
                 @* <label id="idtd2">${employeePhoto ? `<img style="width: 500px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片" />` : '沒有可用的圖片'}</label> *@
                 @* <img style="width: 500px; object-fit: contain;" src="data:image/jpeg;base64,@Model.EmployeePhoto" alt="員工照片" /> *@
-                <img style="height: 400px; object-fit: contain;" src="@(Model.EmployeePhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.EmployeePhoto) : "")" alt="員工照片" />
+                <img style="height: 400px; object-fit: contain;" src="@(Model.EmployeePhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.EmployeePhoto) : "")" alt="員工照片" /><br />
                 <label asp-for="EmployeePhoto" class="control-label"></label>
                 <input asp-for="EmployeePhoto" class="form-control" id="InputEmployeePhoto" name="avatar" type="file" />
                 <span asp-validation-for="EmployeePhoto" class="text-danger"></span>
