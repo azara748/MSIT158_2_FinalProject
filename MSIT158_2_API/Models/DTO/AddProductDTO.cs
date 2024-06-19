@@ -9,7 +9,7 @@
 		public int? LabelId { get; set; }
 		public int? SubCategoryId { get; set; }
 		public decimal? UnitPrice { get; set; }
-		public decimal? cost { get; set; }
+		public decimal? Cost { get; set; }
 		public string? Description { get; set; }
 		public DateOnly? LanchTime { get; set; }
 	}

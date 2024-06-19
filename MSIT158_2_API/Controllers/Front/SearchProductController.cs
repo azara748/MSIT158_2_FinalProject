@@ -220,9 +220,9 @@ namespace MSIT158_2_API.Controllers.Front
 			return Ok(toClientProduct);
 
 		}
-		
-		// DELETE: api/SearchProduct/5
-		[HttpDelete("{id}")]
+
+        // DELETE: api/SearchProduct/5
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteTProduct(int id)
 		{
 			var tProduct = await _context.TProducts.FindAsync(id);

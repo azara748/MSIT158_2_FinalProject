@@ -9,6 +9,7 @@
 		public int? SubCategoryId { get; set; }
 		public string? SubCatName { get; set; }
 		public decimal? Discount { get; set; }
+		public int? LabelId { get; set; }
 		public string? LabelName { get; set; }
 		public DateOnly? LanchTime { get; set; }
 		public int? ProductId { get; set; }

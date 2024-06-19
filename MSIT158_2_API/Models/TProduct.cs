@@ -29,6 +29,8 @@ public partial class TProduct
 
     public decimal? Cost { get; set; }
 
+    public int? Status { get; set; }
+
     public virtual TActive Active { get; set; }
 
     public virtual TLabel Label { get; set; }
