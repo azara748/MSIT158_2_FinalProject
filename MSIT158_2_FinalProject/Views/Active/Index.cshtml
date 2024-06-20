@@ -1,79 +1,160 @@
-﻿
+﻿@model IEnumerable<MSIT158_2_FinalProject.Models.TActive>
+
 @{
     ViewData["Title"] = "Index";
+    Layout = "_Layout_Backstage";
 }
 
-<title>活動投票頁面</title>
+<h1>活動列表</h1>
 
-<h1>請選擇你喜愛的選項</h1>
-<div id="options" class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-        <div class="card h-100">
-            <img src="#" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-            <label><input type="radio" name="vote" value="option1" /></label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="#" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a short card.</p>
-            </div>
-            <label><input type="radio" name="vote" value="option2" /></label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="#" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-            </div>
-            <label><input type="radio" name="vote" value="option3" /></label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="#" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-            <label><input type="radio" name="vote" value="option4" /></label>
-        </div>
-    </div>
-</div>
-
-<button onclick="vote()">投票</button>
-
-<h2>投票結果:</h2>
-<div id="result">
-    <p><span id="count1">0</span></p>
-    <p><span id="count2">0</span></p>
-    <p><span id="count3">0</span></p>
-    <p><span id="count4">0</span></p>
-</div>
+<label><input type="checkbox" id="chkStart" checked>起始時間</label>
+<label><input type="checkbox" id="chkEnd" checked>結束時間</label>
+<label><input type="checkbox" id="chkDiscount" checked>折扣</label>
+<label><input type="checkbox" id="chkDescription" checked>描述</label>
 
 
-@section Scripts
-{
-    <script>
-        function vote() { 
-            var selectedoption = document.querySelector('input[name="vote]:checked').value;
-            var countElement = document.getElementById("count" + selectedoption);
-            var count = parseInt(countElement.innerHTML);
-            countElement.innerHTML = count + 1;
+<p>
+    <a asp-action="Create">新增活動</a>
+</p>
+<table>
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveName)
+            </th>
+            <th id="StartDate-th">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th id="EndDate-th">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th id="Discount-th">
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+            <th id="Description-th">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th id="ActiveImage-th">
+                @Html.DisplayNameFor(model => model.ActiveImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActiveId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActiveName)
+                </td>
+                <td class="StartDate-td">
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td class="EndDate-td">
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td class="Discount-td">
+                    @Html.DisplayFor(modelItem => item.Discount)
+                </td>
+                <td class="Description-td">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="ActiveImage-td">
+                    @Html.DisplayFor(modelItem => item.ActiveImage)
+                </td>
+                <td>
+                    @Html.ActionLink("修改", "Edit", "Product", new { id = item.ActiveId }, null)|
+                    @Html.ActionLink("刪除", "delete", "Product", new { id = item.ActiveId }, new { onclick = "return confirm('您確定要刪除嗎??')" })
+                </td>
+            </tr>
         }
-    </script>
-}
-@section Styles
-{
-    <style>
+    </tbody>
+</table>
+@section Scripts {
+    <script>
 
-    </style>
+        document.getElementById('chkStart').addEventListener('change', function () {
+            var sth = document.getElementById('StartDate-th');
+            var std = document.getElementsByClassName('StartDate-td');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkEnd').addEventListener('change', function () {
+            var sth = document.getElementById('EndDate-th');
+            var std = document.getElementsByClassName('EndDate-td');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkSubCategoryId').addEventListener('change', function () {
+            var sth = document.getElementById('SubCategoryId-th');
+            var std = document.getElementsByClassName('SubCategoryId-td');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkDiscount').addEventListener('change', function () {
+            var sth = document.getElementById('Discount-th');
+            var std = document.getElementsByClassName('Discount-td');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkDescription').addEventListener('change', function () {
+            var sth = document.getElementById('Description-th');
+            var std = document.getElementsByClassName('Description-td');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+    </script>
 }
