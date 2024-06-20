@@ -111,22 +111,28 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             List<string> fields = new List<string>();
             fields = new fM結帳().明細(oid);
-
             string productname = null;
             foreach (var field in fields)
             {
                 productname += field.ToString();
                 productname += " #";
             }
+            // 修改訂單狀態 將StatusID改成2
+            var orderToUpdate = _context.TOrders.FirstOrDefault(o => o.OrderId == oid);
+            if (orderToUpdate != null)
+            {
+                orderToUpdate.StatusId = 2;
+                _context.SaveChanges();
+            }
+
 
 
             int cash = 1000;
-
             var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
             //需填入你的網址
             var website = $"https://localhost:7066";
             var Apiweb = "https://localhost:7160";
-            var ngrok = "https://1eeb-1-160-7-136.ngrok-free.app";
+            var ngrok = "https://cfc4-1-160-2-62.ngrok-free.app";
             var order = new Dictionary<string, string>
     {
         //綠界需要的參數
@@ -144,7 +150,7 @@ namespace MSIT158_2_FinalProject.Controllers
         //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
         { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
         //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
-        { "ClientBackURL",  $"{website}/Home/CashFlowB"},
+        { "ClientBackURL",  $"{website}/HomePage/Search"},
         { "MerchantID",  "3002607"},
         { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
         { "PaymentType",  "aio"},

@@ -536,10 +536,14 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("ReceiveCashFlow")]
         public async Task<ActionResult<TMember>> ReceiveCashFlow([FromForm] Dictionary<string,string> ecPayData)
         {           
-            var element = ecPayData.ElementAt(10); // 取出第10個元素 (索引從0開始)
-            string value10 = element.Value;
+            var element6 = ecPayData.ElementAt(6); // 取出第6個元素 (索引從0開始)
+            var element7 = ecPayData.ElementAt(7); 
+            var element10 = ecPayData.ElementAt(10); // 取出第10個元素 (索引從0開始)
+            string value6 = element6.Value; // [PaymentDate, 2024/06/20 15:10:25]
+            string value7 = element7.Value; // [PaymentType, Credit_CreditCard]
+            string value10 = element10.Value; // [RtnMsg, 交易成功]
 
-            return Ok(new { message = "確認成功", value10 });
+            return Ok(new { message = "確認成功", value7 });
         }
 
         private bool TMemberExists(int id)
