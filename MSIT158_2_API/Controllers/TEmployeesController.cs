@@ -31,30 +31,18 @@ namespace MSIT158_2_API.Controllers
         {
             TEmployee user = _context.TEmployees.FirstOrDefault(
                 t => t.EMail.Equals(vm.txtEmail) && t.Password.Equals(vm.txtPassword));
-
-            string json = "";
-            if (user != null && user.Password.Equals(vm.txtPassword))
-            {
-                json = JsonSerializer.Serialize(user);
-                _pp = json;
-                
-            }
-            return Ok(new { message = "登入成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件&密碼，將無法登入" });
+            return Ok(new { message = "登入成功", user });
         }
         //確認員工帳號
         [HttpPost("EmployeeCheck")]
         public async Task<ActionResult<TMember>> POSTEmployeeCheck([FromBody] CCheckViewModel vm)
         {
             TEmployee user = _context.TEmployees.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
-
-            string json = "";
-            if (user != null)
-            {
-                json = JsonSerializer.Serialize(user);
-                _pp = json;
-                
-            }
-            return Ok(new { message = "確認成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將無法登入" });
+            return Ok(new { message = "確認成功", user });
         }
 
         //搜尋員工資料

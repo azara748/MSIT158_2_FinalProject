@@ -93,7 +93,7 @@
             </tr>
         </thead>
         <tbody id="idtbody1">
-
+            
         </tbody>
     </table>
 </div>
@@ -200,6 +200,7 @@
         const thss = document.querySelector('#idtr1');
         const switchnames = [
             '序號',
+            '等級',
             '姓名',
             '電子信箱',
             '密碼',
@@ -254,24 +255,25 @@
 
             //顯示會員資料
             const MLists = data.membersResult.map(mlist => {
-                const { id, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vip, memberPhoto, wallet } = mlist;
+                const { id, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vip, vipphoto, memberPhoto, wallet } = mlist;
                 const count = 0;
                 return (
                     `
                         <tr>
                             <th scope="row" id="idtd1">${id}</th>
-                            <td id="idtd2">${memberName}</td>
-                            <td id="idtd3">${eMail}</td>
-                            <td id="idtd4">${password}</td>
-                            <td id="idtd5">${salt}</td>
-                            <td id="idtd6">${memberPhoto}</td>
-                            <td id="idtd7">${address}</td>
-                            <td id="idtd8">${cellphone}</td>
-                            <td id="idtd9">${birthday}</td>
-                            <td id="idtd10">${sex}</td>
-                            <td id="idtd11">${points}</td>
-                            <td id="idtd12">${vip}</td>
-                            <td id="idtd13">
+                            <td id="idtd2">${vipphoto ? `<img style="width: 30px; object-fit: contain;" src="data:image/jpeg;base64,${vipphoto}" alt="圖示"/>` : '無'}</td>
+                            <td id="idtd3">${memberName}</td>
+                            <td id="idtd4">${eMail}</td>
+                            <td id="idtd5">${password}</td>
+                            <td id="idtd6">${salt}</td>
+                            <td id="idtd7">${memberPhoto ? `<img style="width: 50px; object-fit: contain;" src="${memberPhoto}" alt="圖示"/>` : '無'}</td>
+                            <td id="idtd8">${address}</td>
+                            <td id="idtd9">${cellphone}</td>
+                            <td id="idtd10">${birthday}</td>
+                            <td id="idtd11">${sex}</td>
+                            <td id="idtd12">${points}</td>
+                            <td id="idtd13">${vip}</td>
+                            <td id="idtd14">
                             <button type="button" class="btn btn-success"><a href="/Member/Edit/${id}">修改</a></button> |
                             <!-- <a href="/Member/Details/${id}">Details</a> | -->
                             <button type="button" class="btn btn-warning" value="${id}" id="iddelete_${id}" onclick="deleteMember(${id})"><a href="/Member/Delete/${id}" onclick="return confirm('確定要刪除嗎?')"></a>刪除</button>
@@ -297,8 +299,8 @@
         };
         loadMemberList();
 
-        //刪除會員        
-        async function deleteMember(memberId) {
+        //刪除會員
+        async function deleteMember(id) {
             if (confirm('確定要刪除嗎?')) {
                 const url2 = `https://localhost:7160/api/TMembers/${id}`;
                 const response = await fetch(url2, {
