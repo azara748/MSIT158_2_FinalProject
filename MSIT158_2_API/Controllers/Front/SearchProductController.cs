@@ -96,7 +96,7 @@ namespace MSIT158_2_API.Controllers.Front
 		public async Task<ActionResult<ShowProductDTO>> GetProductBySearch(SearchProductDTO searchProductDTO)
 		{
 
-			var query = _context.TProducts
+			var query = _context.TProducts.Where(p => p.Status ==1)
 						.Include(p => p.SubCategory)
 						.Include(p => p.Active)
 						.Include(p => p.Label)
@@ -128,34 +128,15 @@ namespace MSIT158_2_API.Controllers.Front
                 query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime, currentDate) < 30);
 
 			}
-			//if (searchProductDTO.newlan)
-   //         {
-   //             //判斷是否小於60天
-   //             //query = query.Where(p => p.LaunchTime > 2024-)
-   //             DateTime now = DateTime.Now;
-   //             string currentDate = now.ToString("yyyy/MM/dd");
-   //             string birthday = "1988/06/08";
-   //             int daysUntilBirthday = CalculateDaysUntilBirthday(currentDate, birthday);
-			//	if (daysUntilBirthday < 60) { 
-					
-			//	}
-   //         }
-
-
 
             if (searchProductDTO.rankfour)
 			{
-
 				query = query.Where(p => p.TReviews.Average(x => x.RankId)>=4);
-
-
 			}
 			if (searchProductDTO.rankthree)
 			{
 				query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
-
 			}
-
 
 			//排序_
 			switch (searchProductDTO.sortBy)
@@ -186,8 +167,7 @@ namespace MSIT158_2_API.Controllers.Front
 				//	query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
 				//	break;
 			}
-			
-			
+					
 			
 			//計算評分	
 			int totalCount = query.Count();

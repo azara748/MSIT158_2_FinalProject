@@ -3,7 +3,7 @@
     public class ProductShowDTO
     {
         public int? ProductId { get; set; }
-        public byte[] Productphoto { get; set; }
+        public byte[]? Productphoto { get; set; }
         public string? ProductName { get; set; }
         public int? Stocks { get; set; }
         public decimal? UnitPrice { get; set; }
