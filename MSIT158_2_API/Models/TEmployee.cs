@@ -28,6 +28,4 @@ public partial class TEmployee
     public int? DepId { get; set; }
 
     public virtual TDepartment Dep { get; set; }
-
-    public virtual ICollection<TEventLog> TEventLogs { get; set; } = new List<TEventLog>();
 }

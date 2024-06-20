@@ -14,6 +14,6 @@
         public DateOnly? LanchTime { get; set; }
         public decimal? cost { get; set; }
         public string? Description { get; set; }
-        public string status { get; set; }
+        public int? Status { get; set; }
     }
 }

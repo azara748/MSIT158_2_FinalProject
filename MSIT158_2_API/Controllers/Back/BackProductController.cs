@@ -91,7 +91,7 @@ namespace MSIT158_2_API.Controllers.Back
 
         //商品清單
         [HttpPost("SearchBackProduct")]
-        public async Task<ActionResult<ShowProductDTO>> PostTProduct(ProductSearchDTO ProductsearchDTO)
+        public async Task<ActionResult<ProductShowDTO>> PostTProduct(ProductSearchDTO ProductsearchDTO)
         {
             Console.WriteLine(ProductsearchDTO);
             var query = _context.TProducts
@@ -159,7 +159,7 @@ namespace MSIT158_2_API.Controllers.Back
                     LanchTime = pro.LaunchTime,
                     Productphoto = pro.ProductPhoto,
                     Description = pro.Description,
-                    status = pro.Status<2? "販售中":"已下架"
+                    Status = pro.Status
                 }).ToList();
 
                 var toBackProduct = new ProductToBackDTO
@@ -172,9 +172,9 @@ namespace MSIT158_2_API.Controllers.Back
                 return Ok(toBackProduct);
 
             }
-
+        //新增商品
         [HttpPost("AddBackProduct")]
-        public async Task<ActionResult<ShowProductDTO>> AddTProduct(AddProductDTO addProductDTO)
+        public async Task<ActionResult<ProductShowDTO>> AddTProduct(AddProductDTO addProductDTO)
         {
             try
             {
@@ -192,12 +192,13 @@ namespace MSIT158_2_API.Controllers.Back
                 UnitPrice = addProductDTO.UnitPrice,
                 Cost = addProductDTO.Cost,
                 Description = addProductDTO.Description,
-                LaunchTime = addProductDTO.LanchTime
+                LaunchTime = addProductDTO.LanchTime,
+                Status = addProductDTO.status
             };
 
             _context.TProducts.Add(newtp);
             await _context.SaveChangesAsync();
-            return Ok(newtp);
+            return Ok(newtp.ProductId);
             }
             catch (FormatException ex)
             {
@@ -205,10 +206,9 @@ namespace MSIT158_2_API.Controllers.Back
                 return BadRequest("Invalid Base64 string: " + ex.Message);
             }
         }
-
         //ID找出該筆資料 一筆就好
         [HttpPost("IDFindBackProduct")]
-        public async Task<ActionResult<ShowProductDTO>> IDFindTProduct(int id)
+        public async Task<ActionResult<ProductShowDTO>> IDFindTProduct(int id)
         {
             //用ID找出Tproduct資料 回傳我要的
             var query = _context.TProducts
@@ -220,7 +220,7 @@ namespace MSIT158_2_API.Controllers.Back
                                     .AsQueryable();
             query = query.Where(x => x.ProductId == id);
 
-            var idtp = query.Select(pro => new ShowProductDTO
+            var idtp = query.Select(pro => new ProductShowDTO
             {
                 ProductId = pro.ProductId,
                 ProductName = pro.ProductName,
@@ -233,15 +233,16 @@ namespace MSIT158_2_API.Controllers.Back
                 cost = pro.Cost,
                 Description = pro.Description,
                 Productphoto = pro.ProductPhoto,
-                LanchTime = pro.LaunchTime
+                LanchTime = pro.LaunchTime,
+                Status = pro.Status
             }).ToList();
 
             return Ok(idtp);
 
         }
-        
+        //更新資料回傳
         [HttpPost("UpdateBackProduct")]
-        public async Task<ActionResult<ShowProductDTO>> UpdateTProduct(int id, AddProductDTO addProductDTO)
+        public async Task<ActionResult<ProductShowDTO>> UpdateTProduct(int id, AddProductDTO addProductDTO)
         {
             //把資料庫裡面那一筆的資料抓出來
             var product = await _context.TProducts.FirstOrDefaultAsync(x => x.ProductId == id);
@@ -271,8 +272,27 @@ namespace MSIT158_2_API.Controllers.Back
             return Ok("修改成功");
             
         }
+        //刪除資料(改變狀態)
+        [HttpPost("DownBackProduct")]
+        public async Task<ActionResult<ProductShowDTO>> DownTProduct(int id)
+        {
+
+            var query = await _context.TProducts.FirstOrDefaultAsync(p => p.ProductId == id);
+            if(query.Status == 1)
+            {
+                query.Status = 2;
+                await _context.SaveChangesAsync();
+                return Ok("商品已下架!!");
+            }
+            else
+            {
+                query.Status = 1;
+                await _context.SaveChangesAsync();
+                return Ok("商品已上架!!");
+            }
 
 
+        }
         //[HttpPost]
         //public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
         //{
