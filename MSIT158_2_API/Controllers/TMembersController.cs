@@ -90,7 +90,6 @@ namespace MSIT158_2_API.Controllers
             string receive = user.EMail;
             string subject = $"{user.MemberName}用戶重新設定密碼";
             string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
-            messages += "填寫form表單，submit送出到指定網址";
             messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\" enctype=\"multipart/form-data\">";
             messages += "<div class=\"mb-3\">";
             messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
@@ -114,19 +113,18 @@ namespace MSIT158_2_API.Controllers
         public async Task<ActionResult<TMember>> SenderEditPassword([FromForm] CLoginViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將修改密碼" });
             // 從資料庫中獲取用戶的鹽和雜湊後的密碼
             string salt = user.Salt;
             string Passwordsalted = vm.txtPassword + salt;
             //密碼加密，使用 SHA256 演算法
             vm.txtPassword = GetSha256Hash(Passwordsalted);
             string json = "";
-            if (user != null)
-            {
-                user.Password = vm.txtPassword;
-                await _context.SaveChangesAsync();
-                json = JsonSerializer.Serialize(user);
+            user.Password = vm.txtPassword;
+            await _context.SaveChangesAsync();
+            json = JsonSerializer.Serialize(user);
 
-            }
             return Ok(new { message = "密碼修改成功", user });
         }
         //Google,Facebook 登入，新增資料
@@ -353,10 +351,10 @@ namespace MSIT158_2_API.Controllers
             await _context.SaveChangesAsync();
             //註冊會員時，發送Email
             string receive = p.EMail;
-            string subject = "*** 用戶註冊驗證";
-            string messages = $"<h1>{p.MemberName}歡迎註冊***</h1>";
+            string subject = "Gifty 用戶註冊驗證";
+            string messages = $"<h1>{p.MemberName}歡迎註冊 Gifty</h1>";
             messages += "<p>請點擊以下連結驗證您的帳號:</p>";
-            messages += "<a href='https://localhost:7066/Member/List'>點擊這裡</a>進行驗證";
+            messages += "<a href='https://localhost:7066/Home/Login'>點擊這裡</a>進行驗證";
             new CEmailSender().getEmail(receive, subject, messages);
 
             return Ok(new { message = "新增成功", m });
