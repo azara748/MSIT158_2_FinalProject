@@ -7,45 +7,54 @@
 }
 
 
-<h1>EditPackage</h1>
+<h4 style="margin-left:1em">修改包裝</h4>
+<div style="display:flex; flex-direction:row; justify-content: center; ">
 <form id="updatePackageForm" enctype="multipart/form-data">
-    <input type="hidden" id="packageId" value="@Model.PackageId" name="PackageId" />
-    <div class="form-group">
+        <div style="display:flex; flex-direction:row; justify-content: center;  width:80%;">
+            <div style="width:50%; margin-right:1em">
+        <input type="hidden" id="packageId" value="@Model.PackageId" name="PackageId" />
+        <div class="form-group">
         <label for="packageName">包裝名稱</label>
         <input type="text" class="form-control" id="packageName" value="@Model.PackName" name="PackName">
-    </div>
-    <div class="form-group">
+        </div>
+                <div class="form-group" style="margin-top:2em">
         <label for="imageUpload">照片上傳</label>
         <input type="file" class="form-control-file" id="imageUpload" value="@Model.Picture" name="avatar">
-        <img src="~/assets/img/packageimages/@Model.Picture" class="figure-img img-fluid rounded" alt="@Model.Picture" id="imagePreview">
-    </div>
-    <div class="form-group">
-        <label for="packagePrice">包裝單價</label>
-        <input type="text" class="form-control" id="packagePrice" value="@Model.Price" name="Price">
+        <img src="~/assets/img/packageimages/@Model.Picture" class="figure-img img-fluid rounded" alt="@Model.Picture" id="imagePreview" style="width:20em; hight:20em;margin-top:1em">
+        </div>
     </div>
 
-    <div class="form-group">
+            <div style="width:50%; margin-left:1em">
+        <div class="form-group">
+        <label for="packagePrice">包裝單價</label>
+        <input type="text" class="form-control" id="packagePrice" value="@Model.Price" name="Price">
+        </div>
+
+        <div class="form-group">
         <label for="packageStyle">包裝形式</label>
         <select class="form-control" id="packageStyle" name="PackageStyleId">
         </select>
-    </div>
-    <div class="form-group">
+        </div>
+        <div class="form-group">
         <label for="packageMaterial">包裝材質</label>
         <select class="form-control" id="packageMaterial" value="@Model.MaterialId" name="MaterialId">
         </select>
-    </div>
+        </div>
   @*   <div class="form-group">
         <label for="exampleFormControlSelect1">顏色</label>
         <select class="form-control" id="mColor" value="">
             <option>請先選取包裝材質</option>
         </select>
     </div> *@
-    <div class="form-group">
+        <div class="form-group">
         <label for="description">包裝介紹</label>
-        <textarea class="form-control" id="description" rows="3" value="@Model.Description" name="Description"></textarea>
+        <textarea class="form-control" id="description" rows="3" name="Description">@Model.Description</textarea>
+        </div>
+        <button class="btn btn-primary" type="button" id="editForm">儲存</button>
     </div>
-    <button class="btn btn-primary" type="button" id="editForm">儲存</button>
-</form>
+    </div>
+    </form>
+</div>
  @section Scripts{
     <script>
         const packageName = document.querySelector("#packageName");
