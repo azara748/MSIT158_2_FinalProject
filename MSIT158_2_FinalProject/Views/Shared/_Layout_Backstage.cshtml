@@ -48,23 +48,7 @@
                         </div>
                         <span class="nav-link-text ms-1">商品管理</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="~/W/WordCensorship" id="WordCensorship">
-                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">評論管理</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="~/Member/List" id="Member">
-                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-app text-info text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">會員管理</span>
-                    </a>
-                </li>
+                </li>                
                 <li class="nav-item">
                     <a class="nav-link " href="~/package/AllPackagesPage" id="AllPackagesPage">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -76,41 +60,49 @@
                 <li class="nav-item">
                     <a class="nav-link " href="~/pages/rtl.html">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">行銷管理</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                @* <li class="nav-item">
                     <a class="nav-link " href="~/pages/rtl.html">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">品牌管理</span>
                     </a>
-                </li>            
+                </li>             *@
+                <li class="nav-item">
+                    <a class="nav-link " href="~/W/WordCensorship" id="WordCensorship">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">評論管理</span>
+                    </a>
+                </li>
                 <li class="nav-item mt-3">
-                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">其他</h6>
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">人員管理</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="~/pages/profile.html">
+                    <a class="nav-link " href="~/Member/List" id="Member">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">其他頁面</span>
+                        <span class="nav-link-text ms-1">會員管理</span>
                     </a>
-                    <a class="nav-link " href="~/Employee/List">
-                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">員工管理</span>
-                    </a>
-                    <a class="nav-link " href="~/ValuableCustomer/List">
+                    <a class="nav-link " href="~/ValuableCustomer/List" id="ValuableCustomer">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">會員等級管理</span>
                     </a>
+                    <a class="nav-link " href="~/Employee/List" id="Employee">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">員工管理</span>
+                    </a>                    
                 </li>
             </ul>
         </div>
@@ -264,11 +256,18 @@
         /////////////////////////////////
         let currentLocation = window.location;
         console.log(window.location)
+        console.log(currentLocation.pathname.substring(0, 13))
         if (currentLocation.pathname == '/W/WordCensorship'||currentLocation.pathname == '/W/WordCensorship2') {
             WordCensorship.className = "nav-link active"
         }
         else if (currentLocation.pathname == '/Member/List' || currentLocation.pathname == "/Member/Create") {
             Member.className = "nav-link active"
+        }
+        else if (currentLocation.pathname == '/ValuableCustomer/List' || currentLocation.pathname.substring(0, 22) == "/ValuableCustomer/Edit" || currentLocation.pathname == "/ValuableCustomer/Create") {
+            ValuableCustomer.className = "nav-link active"
+        }
+        else if (currentLocation.pathname == '/Employee/List' || currentLocation.pathname.substring(0, 14) == "/Employee/Edit" || currentLocation.pathname == "/Employee/Create") {
+            Employee.className = "nav-link active"
         }
         else if (currentLocation.pathname == '/package/AllPackagesPage' || currentLocation.pathname == "/package/EditPackage") {
             AllPackagesPage.className = "nav-link active"
