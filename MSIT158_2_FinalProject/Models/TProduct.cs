@@ -23,19 +23,21 @@ public partial class TProduct
 
     public int? ActiveId { get; set; }
 
-    public DateTime? LaunchTime { get; set; }
+    public DateOnly? LaunchTime { get; set; }
 
     public decimal? Cost { get; set; }
+
+    public int? Status { get; set; }
 
     public virtual TActive? Active { get; set; }
 
     public virtual TLabel? Label { get; set; }
 
+    public virtual TProductStatus? StatusNavigation { get; set; }
+
     public virtual TSubCategory? SubCategory { get; set; }
 
     public virtual ICollection<TCart> TCarts { get; set; } = new List<TCart>();
-
-    public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
 
     public virtual ICollection<TKeyword> TKeywords { get; set; } = new List<TKeyword>();
 

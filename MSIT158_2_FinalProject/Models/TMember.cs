@@ -33,8 +33,6 @@ public partial class TMember
 
     public virtual ICollection<TCart> TCarts { get; set; } = new List<TCart>();
 
-    public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
-
     public virtual ICollection<TMemberLike> TMemberLikes { get; set; } = new List<TMemberLike>();
 
     public virtual ICollection<TOrder> TOrders { get; set; } = new List<TOrder>();
