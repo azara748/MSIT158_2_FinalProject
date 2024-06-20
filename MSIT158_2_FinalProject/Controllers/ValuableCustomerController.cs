@@ -30,6 +30,9 @@ namespace MSIT158_2_FinalProject.Controllers
         [HttpPost]
         public IActionResult Edit(TVip vipIn, IFormFile avatar)
         {
+            if(avatar == null)
+                return RedirectToAction("List");
+
             //檔案上傳轉成二進位
             byte[] imgByte = null;
             using (var memoryStream = new MemoryStream())

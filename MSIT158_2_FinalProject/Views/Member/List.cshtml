@@ -299,8 +299,8 @@
         };
         loadMemberList();
 
-        //刪除會員        
-        async function deleteMember(memberId) {
+        //刪除會員
+        async function deleteMember(id) {
             if (confirm('確定要刪除嗎?')) {
                 const url2 = `https://localhost:7160/api/TMembers/${id}`;
                 const response = await fetch(url2, {
