@@ -1,0 +1,141 @@
+﻿@model MSIT158_2_FinalProject.Models.TAllPackage
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout_Backstage";
+}
+
+<h4 style="margin-left:1em">新增包裝</h4>
+<hr />
+<div >
+    <div style="display:flex; flex-direction:row; justify-content: center; ">
+        <form asp-action="Create" id="packageForm">
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
+            <div style="display:flex; flex-direction:row; justify-content: center;  width:80%;">
+            
+           
+            <div class="form-group" style="width:50%; margin-right:1em">
+                <label asp-for="Picture" class="control-label">照片上傳</label>
+                <input asp-for="Picture" type="file" class="form-control" id="imageUpload" />
+                <img src="~/assets/img/packageimages/uploadimage.jpg" style="width:25em; hight:25em; padding-top:1em;" class="figure-img img-fluid rounded" alt="uploadImage" id="imagePreview" style="width:25em; hight:25em;">
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            
+            </div>
+
+                <div style="width:50%; margin-left:1em">
+
+                    <div class="form-group">
+                <label asp-for="PackName" class="control-label">包裝名稱</label>
+                <input asp-for="PackName" class="form-control" />
+                <span asp-validation-for="PackName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               <label asp-for="Price" class="control-label">包裝單價</label>
+               <input asp-for="Price" class="form-control" />
+               <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackageStyleId" class="control-label">包裝形式</label>
+                <select asp-for="PackageStyleId" id="pStyle" class ="form-control" asp-items="ViewBag.PackageStyleId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaterialId"  class="control-label">包裝材質</label>
+                <select asp-for="MaterialId" id="maSele" class="form-control" asp-items="ViewBag.MaterialId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">包裝介紹</label>
+                <textarea asp-for="Description" class="form-control" id="description" rows="3"name="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+                <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="saveNew"/>
+                </div>
+            </div>
+                </div>
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a onclick="window.location.href='@Url.Content("~/package/AllPackagesPage")'">Back to List</a>
+</div>
+
+@section Scripts{
+    <script>
+        const maSele = document.querySelector("#maSele");
+        const pStyle = document.querySelector("#pStyle");
+        const imageUpload = document.querySelector("#imageUpload");
+        const imagePreview = document.querySelector("#imagePreview");
+
+        (async () => {
+
+            const pStyleRes = await fetch('@Url.Content("~/package/PackageCategory")')
+            if (!pStyleRes.ok) {
+                console.log(`erroe message:${pStyleRes.status}`)
+                return
+            }
+            const pStyleDatas = await pStyleRes.json()
+            const seletorPackageStyle = pStyleDatas.map(s => {
+                console.log(s);
+                return `<option id="s${s.packageStyleId}" value="${s.packageStyleId}" >${s.styleName}</option>`
+            })
+            pStyle.innerHTML = seletorPackageStyle.join("");
+
+
+            const pMaterialRes = await fetch('@Url.Content("~/package/Material")')
+            if (!pMaterialRes.ok) {
+                console.log(`erroe message:${pMaterialRes.status}`)
+                return
+            }
+            const pMaterialDatas = await pMaterialRes.json()
+            const seletorPackageMaterial = pMaterialDatas.map(s => {
+                console.log(s);
+                return `<option id="ma${s}" value="${s.materialId}" >${s.materialName}</option>`
+            })
+            maSele.innerHTML = seletorPackageMaterial.join("");
+        })()
+
+        imageUpload.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.querySelector('#saveNew').addEventListener('click', async function (event) { 
+            
+            event.preventDefault();
+            console.log("QQ");
+            // console.log(maSele.value);
+
+            const form = document.getElementById('packageForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(`@Url.Content("~/package/CreateNewPackage")`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Package created successfully', result);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to create package', errorText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            window.location.href = '@Url.Content("~/package/AllPackagesPage")';
+        })
+    </script>
+}
+
