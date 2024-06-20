@@ -33,11 +33,11 @@ public partial class TProduct
 
     public virtual TLabel? Label { get; set; }
 
+    public virtual TProductStatus? StatusNavigation { get; set; }
+
     public virtual TSubCategory? SubCategory { get; set; }
 
     public virtual ICollection<TCart> TCarts { get; set; } = new List<TCart>();
-
-    public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
 
     public virtual ICollection<TKeyword> TKeywords { get; set; } = new List<TKeyword>();
 
