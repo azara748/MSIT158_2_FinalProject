@@ -307,6 +307,8 @@
                     const user2 = jsonparse2.user;
                     const Jname2 = user2.memberName;
                     const Jemail2 = user2.eMail;
+                    const apimid = user2.memberId;
+                    sessionStorage.setItem("mID", apimid);
 
                     if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);

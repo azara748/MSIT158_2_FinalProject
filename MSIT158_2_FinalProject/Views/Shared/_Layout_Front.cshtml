@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hant">
 <head>
 
 	<meta charset="utf-8">
@@ -49,7 +49,7 @@
 					<li><a href="#"><i class="fa fa-gamepad"></i>本期活動</a></li>
 					<li><a href="#"><i class="fa fa-thumbs-up"></i>推薦商品</a></li>
 					<li><a href="#"><i class="fa fa-fire"></i>熱門主題</a></li>
-					<li><a href="#"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
+					<li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
 					<li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
 				</ul>
 				<ul class="header-links pull-right">
@@ -312,14 +312,15 @@
 			const Smember = document.querySelector('#idshowmember1');
 			Smember.textContent = '登入者 :' + memberName;
 			Smember.href = '@Url.Content("~/M/Memberpage")'
+			gopack.href = `http://localhost:4200/packages/${jsonss.MemberId}`
 			mid.value = jsonss.MemberId;
 			signOutbtn.style.display = "";
-
+	
 		})();
 		const signOutbtn = document.querySelector('#idsignOutButton1');
 		signOutbtn.style.display = 'none';
 
-
+		console.log(mid.value)
 
 		signOutbtn.addEventListener('click', async () => {
 			const url = '@Url.Content("~/ApiMember/ClearSession")';
