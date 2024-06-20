@@ -39,7 +39,8 @@
             const datass = await responsess.text();
             const jsonss = JSON.parse(datass);
             const memberName = jsonss.MemberName;
-            const Smember = document.querySelector('#idshowmember1');
+            const 
+            = document.querySelector('#idshowmember1');
             console.log('test1');
             console.log(Smember);
             Smember.textContent = '登入者 :' + memberName;
@@ -58,9 +59,9 @@
                 }).catch((error) => {
                     console.error('登出時出錯:', error);
                 });
-                window.location.href = "/Home/Index";
+                window.location.href = "/";
             }
         });
 
     </script>
-}
+} 

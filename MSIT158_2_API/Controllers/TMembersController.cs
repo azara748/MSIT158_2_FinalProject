@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
+using MSIT158_2_API.Models.DTO.Member;
 using MSIT158_2_API.ViewModel;
 
 namespace MSIT158_2_API.Controllers
@@ -37,8 +38,6 @@ namespace MSIT158_2_API.Controllers
             if (user != null && user.Password.Equals(vm.txtPassword))
             {
                 json = JsonSerializer.Serialize(user);
-                //_pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
             }
             return Ok(new { message = "登入成功", json });
         }
@@ -47,29 +46,18 @@ namespace MSIT158_2_API.Controllers
         public async Task<ActionResult<TMember>> POSTMemberCheck([FromBody] CCheckViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
-
-            string json = "";
-            if (user != null)
-            {
-                json = JsonSerializer.Serialize(user);
-                _pp = json;
-                //HttpContext.Session.SetString(CDictionary.SK_LOGIN_MEMBER, json);
-            }
-            return Ok(new { message = "確認成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將無法寄信修改密碼" });
+            return Ok(new { message = "確認成功", user });
         }
         //忘記密碼1(檢查帳戶)
         [HttpPost("MemberForgetPassword")]
         public async Task<ActionResult<TMember>> POSTMemberForgetPassword([FromForm] CCheckViewModel vm)
         {
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
-
-            string json = "";
-            if (user != null)
-            {
-                json = JsonSerializer.Serialize(user);
-
-            }
-            return Ok(new { message = "確認成功", json });
+            if (user == null)
+                return BadRequest(new { message = "沒有電子郵件，將無法寄信修改密碼" });
+            return Ok(new { message = "確認成功", user });
         }
         //忘記密碼2(修改密碼)
         [HttpPost("MemberEditPassword")]
@@ -86,6 +74,58 @@ namespace MSIT158_2_API.Controllers
 
             }
             return Ok(new { message = "密碼修改成功", json });
+        }
+        //忘記密碼A(修改密碼)
+        [HttpPost("SenderForgetPasswordEmail")]
+        public async Task<ActionResult<TMember>> POSTSenderForgetPasswordEmail([FromForm] CCheckViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+
+            //如果沒有密碼，將無法寄信修改密碼
+            if (string.IsNullOrEmpty(user.Password))
+                return BadRequest(new { message = "沒有密碼，將無法寄信修改密碼" });
+
+            string receive = user.EMail;
+            string subject = $"{user.MemberName}用戶重新設定密碼";
+            string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
+            messages += "填寫form表單，submit送出到指定網址";
+            messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\" enctype=\"multipart/form-data\">";
+            messages += "<div class=\"mb-3\">";
+            messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
+            messages += $"<input type=\"email\" class=\"form-control\" id=\"InputEmail\" name=\"txtEmail\" value=\"{user.EMail}\">";
+            messages += "</div>";
+            messages += "<div class=\"mb-3\">";
+            messages += "<label for=\"InputPassword\" class=\"form-label\">新密碼：</label>";
+            messages += "<input type=\"text\" class=\"form-control\" id=\"InputPassword\" name=\"txtPassword\">";
+            messages += "</div>";
+            messages += "<button type=\"submit\" class=\"btn btn-primary\" id=\"buttonSubmit\">修改新密碼並送出</button>";
+            messages += "</form>";
+            messages += "<p>請點擊以下連結回到登入頁面:</p>";
+            messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            //messages += "<script>console.log(\"test1\");</script>";
+            new CEmailSender().getEmail(receive, subject, messages);
+
+            return Ok(new { message = "郵件已成功發送" });
+        }
+        //忘記密碼B(修改新密碼)
+        [HttpPost("SenderEditPassword")]
+        public async Task<ActionResult<TMember>> SenderEditPassword([FromForm] CLoginViewModel vm)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
+            // 從資料庫中獲取用戶的鹽和雜湊後的密碼
+            string salt = user.Salt;
+            string Passwordsalted = vm.txtPassword + salt;
+            //密碼加密，使用 SHA256 演算法
+            vm.txtPassword = GetSha256Hash(Passwordsalted);
+            string json = "";
+            if (user != null)
+            {
+                user.Password = vm.txtPassword;
+                await _context.SaveChangesAsync();
+                json = JsonSerializer.Serialize(user);
+
+            }
+            return Ok(new { message = "密碼修改成功", user });
         }
         //Google,Facebook 登入，新增資料
         [HttpPost("OauthCreate")]
@@ -129,13 +169,40 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("MemberSearch")]
         public async Task<ActionResult<CMembersPagingDTO>> GetMembers([FromBody] CSearchDTO searchDTO)
         {
+            var membersjoin = await _context.TMembers
+                .Include(m => m.Vip)
+                .ToListAsync();
+
+            List<CmemberDetailDTO> cmemberDetailDTOs = new List<CmemberDetailDTO>();
+            foreach (var member in membersjoin)
+            {
+                CmemberDetailDTO cmemberDetailDTO = new CmemberDetailDTO()
+                {
+                    Id = member.MemberId,
+                    MemberName = member.MemberName,
+                    Cellphone = member.Cellphone,
+                    Address = member.Address,
+                    Birthday = member.Birthday,
+                    Sex = member.Sex,
+                    Password = member.Password,
+                    Salt = member.Salt,
+                    EMail = member.EMail,
+                    Points = member.Points,
+                    Vip = member.Vip?.Vipname,
+                    MemberPhoto = member.MemberPhoto,
+                    Wallet = member.Wallet
+                };
+                cmemberDetailDTOs.Add(cmemberDetailDTO);
+            }
+
+
             //根據分類編號搜尋會員資料
-            var members = searchDTO.memberId == 0 ? _context.TMembers : _context.TMembers.Where(s => s.MemberId == searchDTO.memberId);
-            //根據關鍵字搜尋會員資料(title、desc)
+            var members = searchDTO.memberId == 0 ? cmemberDetailDTOs : cmemberDetailDTOs.Where(s => s.Id == searchDTO.memberId);
+            //根據關鍵字搜尋會員資料(title)
             if (!string.IsNullOrEmpty(searchDTO.keyword))
-                members = members.Where(s => s.MemberName.Contains(searchDTO.keyword) ||
-                s.Address.Contains(searchDTO.keyword) ||
-                s.EMail.Contains(searchDTO.keyword));
+                members = members.Where(s => s.MemberName != null && s.MemberName.Contains(searchDTO.keyword) ||
+                    s.Address != null && s.Address.Contains(searchDTO.keyword) ||
+                    s.EMail != null && s.EMail.Contains(searchDTO.keyword));
 
             //排序
             switch (searchDTO.sortBy)
@@ -147,7 +214,7 @@ namespace MSIT158_2_API.Controllers
                     members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.EMail) : members.OrderByDescending(s => s.EMail);
                     break;
                 default:
-                    members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.MemberId) : members.OrderByDescending(s => s.MemberId);
+                    members = searchDTO.sortType == "asc" ? members.OrderBy(s => s.Id) : members.OrderByDescending(s => s.Id);
                     break;
             }
 
@@ -169,7 +236,7 @@ namespace MSIT158_2_API.Controllers
             CMembersPagingDTO membersPaging = new CMembersPagingDTO();
             membersPaging.TotalCount = totalCount;
             membersPaging.TotalPages = totalPages;
-            membersPaging.MembersResult = await members.ToListAsync();
+            membersPaging.MembersResult = members.ToList();
 
             return membersPaging;
         }

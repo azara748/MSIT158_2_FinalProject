@@ -14,5 +14,9 @@
 		public int? ProductId { get; set; }
 		public double? Score { get; set; }
 		public bool? isnew { get; set; }
-	}
+        //後臺用
+		public decimal? cost { get; set; }
+		public string? Description { get; set; }
+        
+    }
 }

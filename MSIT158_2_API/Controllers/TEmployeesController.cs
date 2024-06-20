@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
+using MSIT158_2_API.Models.DTO.Employee;
 using MSIT158_2_API.ViewModel;
 
 namespace MSIT158_2_API.Controllers
@@ -60,13 +61,36 @@ namespace MSIT158_2_API.Controllers
         [HttpPost("EmployeeSearch")]
         public async Task<ActionResult<CEmployePagingDTO>> GetEmployee([FromBody] CESearchDTO searchDTO)
         {
+            var employeejoin = await _context.TEmployees
+                .Include(e=>e.Dep)
+                .ToListAsync();
+
+            List<CemployeeDetailDTO> cemployeeDetailDTOs = new List<CemployeeDetailDTO>();
+            foreach (var employee in employeejoin)
+            {
+                CemployeeDetailDTO cemployeeDetailDTO = new CemployeeDetailDTO()
+                {
+                    EmployeeId = employee.EmployeeId,
+                    EmployeeName = employee.EmployeeName,
+                    Cellphone = employee.Cellphone,
+                    Birthday = employee.Birthday,
+                    Password = employee.Password,
+                    EMail = employee.EMail,
+                    EmployeePhoto = employee.EmployeePhoto,
+                    OnBoardDate = employee.OnBoardDate,
+                    DepName = employee.Dep?.DepName
+                };
+                cemployeeDetailDTOs.Add(cemployeeDetailDTO);
+            }
+
             //根據分類編號搜尋員工資料           
-            var employees = searchDTO.employeeId == 0 ? _context.TEmployees : _context.TEmployees.Where(s => s.EmployeeId == searchDTO.employeeId);
-            //根據關鍵字搜尋員工資料(title、desc)
+            var employees = searchDTO.employeeId == 0 ? cemployeeDetailDTOs : cemployeeDetailDTOs.Where(s => s.EmployeeId == searchDTO.employeeId);
+            //根據關鍵字搜尋員工資料(title)
             if (!string.IsNullOrEmpty(searchDTO.keyword))
-                employees = employees.Where(s => s.EmployeeName.Contains(searchDTO.keyword) ||
-                s.Address.Contains(searchDTO.keyword) ||
-                s.EMail.Contains(searchDTO.keyword));
+                employees = employees.Where(s => s.EmployeeName != null && s.EmployeeName.Contains(searchDTO.keyword) ||
+                s.Address != null && s.Address.Contains(searchDTO.keyword) ||
+                s.DepName != null && s.DepName.Contains(searchDTO.keyword) ||
+                s.EMail != null && s.EMail.Contains(searchDTO.keyword));
 
             //排序
             switch (searchDTO.sortBy)
@@ -100,7 +124,7 @@ namespace MSIT158_2_API.Controllers
             CEmployePagingDTO employeesPaging = new CEmployePagingDTO();
             employeesPaging.TotalCount = totalCount;
             employeesPaging.TotalPages = totalPages;
-            employeesPaging.EmployeesResult = await employees.ToListAsync();
+            employeesPaging.EmployeesResult = employees.ToList();
 
             return employeesPaging;
         }

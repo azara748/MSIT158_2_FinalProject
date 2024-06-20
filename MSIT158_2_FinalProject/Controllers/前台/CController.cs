@@ -35,7 +35,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             var 會員購物車 = db.TCarts.Where(x => x.MemberId == mid).Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
             new { y.ProductPhoto, y.ProductName, y.UnitPrice, y.ProductId, y.Stocks, x.Qty, x.CartId });
             ViewBag.會員購物車 = 會員購物車;           
-            ViewBag.運費 = 60;
+            ViewBag.運費 = 0;
             var 會員購物車2 =db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId ,y => y.PackageId, (x, y) =>
             new { y.Picture, y.PackName, y.Price, x.Qty, x.PackageCartId });
             ViewBag.會員購物車2 = 會員購物車2;
@@ -109,7 +109,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             new {  y.ProductName, y.UnitPrice,  x.Qty});
             var 會員購物車2 = db.TPackageCarts.Where(x => x.MemberId == mid).Join(db.TAllPackages, x => x.PackageId, y => y.PackageId, (x, y) =>
             new { y.PackName, y.Price, x.Qty});
-            ViewBag.運費 = 60;
+            ViewBag.運費 = 0;
             ViewBag.會員購物車 = 會員購物車;
             ViewBag.會員資料 = 會員資料;         
             ViewBag.會員購物車2 = 會員購物車2;
@@ -157,18 +157,18 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             db.TPackageCarts.Where(x => x.MemberId == value.MemberId).ExecuteDelete();
             db.SaveChanges();
             if(value.StatusId==2) return RedirectToAction("Memberpage", "M"); 
-            else   return RedirectToAction("Productpage", "P");
+            else   return RedirectToAction("CashFlow", "HOME", new { totalAmount =value.CheckoutAmount,oid=lo });
         }
-        [HttpPost]
-        public IActionResult Shippingpage2(int id)
-        {           
-            SelectShopContext db = new SelectShopContext();
-            TOrder o = db.TOrders.FirstOrDefault(x => x.OrderId==id);
-             o.StatusId = 2;
-             o.OrderDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Productpage", "P");
-        }
+        //[HttpPost]
+        //public IActionResult Shippingpage2(int id)
+        //{           
+        //    SelectShopContext db = new SelectShopContext();
+        //    TOrder o = db.TOrders.FirstOrDefault(x => x.OrderId==id);
+        //     o.StatusId = 2;
+        //     o.OrderDate = DateTime.Now;
+        //    db.SaveChanges();
+        //    return RedirectToAction("Productpage", "P");
+        //}
         //public IActionResult Index6([FromBody]TOrder value)
         //{
         //    SelectShopContext db = new SelectShopContext();

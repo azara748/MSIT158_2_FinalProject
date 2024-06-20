@@ -25,13 +25,9 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TCategory> TCategories { get; set; }
 
-    public virtual DbSet<TCollect> TCollects { get; set; }
-
     public virtual DbSet<TDepartment> TDepartments { get; set; }
 
     public virtual DbSet<TEmployee> TEmployees { get; set; }
-
-    public virtual DbSet<TEventLog> TEventLogs { get; set; }
 
     public virtual DbSet<TKeyword> TKeywords { get; set; }
 
@@ -53,11 +49,9 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TPackageWayDetail> TPackageWayDetails { get; set; }
 
-    public virtual DbSet<TPay> TPays { get; set; }
-
-    public virtual DbSet<TPayType> TPayTypes { get; set; }
-
     public virtual DbSet<TProduct> TProducts { get; set; }
+
+    public virtual DbSet<TProductStatus> TProductStatuses { get; set; }
 
     public virtual DbSet<TPurchase> TPurchases { get; set; }
 
@@ -159,25 +153,6 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.CategoryName).HasMaxLength(200);
         });
 
-        modelBuilder.Entity<TCollect>(entity =>
-        {
-            entity.HasKey(e => e.CollectId);
-
-            entity.ToTable("tCollect");
-
-            entity.Property(e => e.CollectId).HasColumnName("CollectID");
-            entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-            entity.HasOne(d => d.Member).WithMany(p => p.TCollects)
-                .HasForeignKey(d => d.MemberId)
-                .HasConstraintName("FK_tCollect_tMember");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.TCollects)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK_tCollect_tProduct");
-        });
-
         modelBuilder.Entity<TDepartment>(entity =>
         {
             entity.HasKey(e => e.DepId).HasName("PK_Department");
@@ -209,23 +184,6 @@ public partial class SelectShopContext : DbContext
             entity.HasOne(d => d.Dep).WithMany(p => p.TEmployees)
                 .HasForeignKey(d => d.DepId)
                 .HasConstraintName("FK_tEmployee_Department");
-        });
-
-        modelBuilder.Entity<TEventLog>(entity =>
-        {
-            entity.HasKey(e => e.EventId).HasName("PK_EventLog");
-
-            entity.ToTable("tEventLog");
-
-            entity.Property(e => e.EventId).HasColumnName("EventID");
-            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-            entity.Property(e => e.EventBrief).HasMaxLength(150);
-            entity.Property(e => e.EventDateTime).HasMaxLength(50);
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-            entity.HasOne(d => d.Employee).WithMany(p => p.TEventLogs)
-                .HasForeignKey(d => d.EmployeeId)
-                .HasConstraintName("FK_EventLog_tEmployee");
         });
 
         modelBuilder.Entity<TKeyword>(entity =>
@@ -440,34 +398,6 @@ public partial class SelectShopContext : DbContext
                 .HasConstraintName("FK_tPackageWayDetail_tAllPackage");
         });
 
-        modelBuilder.Entity<TPay>(entity =>
-        {
-            entity.HasKey(e => e.PayId);
-
-            entity.ToTable("tPay");
-
-            entity.Property(e => e.PayId).HasColumnName("PayID");
-            entity.Property(e => e.Amount).HasColumnType("money");
-            entity.Property(e => e.OrderId).HasColumnName("OrderID");
-            entity.Property(e => e.PayTypeId).HasColumnName("PayTypeID");
-
-            entity.HasOne(d => d.PayType).WithMany(p => p.TPays)
-                .HasForeignKey(d => d.PayTypeId)
-                .HasConstraintName("FK_tPay_tPayType");
-        });
-
-        modelBuilder.Entity<TPayType>(entity =>
-        {
-            entity.HasKey(e => e.PayTypeId);
-
-            entity.ToTable("tPayType");
-
-            entity.Property(e => e.PayTypeId).HasColumnName("PayTypeID");
-            entity.Property(e => e.PayKind).HasMaxLength(50);
-            entity.Property(e => e.PayTypeImagePath).HasMaxLength(200);
-            entity.Property(e => e.PayTypeName).HasMaxLength(200);
-        });
-
         modelBuilder.Entity<TProduct>(entity =>
         {
             entity.HasKey(e => e.ProductId);
@@ -479,7 +409,6 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Cost).HasColumnType("money");
             entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.LabelId).HasColumnName("LabelID");
-            entity.Property(e => e.LaunchTime).HasColumnType("datetime");
             entity.Property(e => e.ProductName).HasMaxLength(200);
             entity.Property(e => e.SubCategoryId).HasColumnName("SubCategoryID");
             entity.Property(e => e.UnitPrice).HasColumnType("money");
@@ -492,9 +421,23 @@ public partial class SelectShopContext : DbContext
                 .HasForeignKey(d => d.LabelId)
                 .HasConstraintName("FK_tProduct_tLabel");
 
+            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.TProducts)
+                .HasForeignKey(d => d.Status)
+                .HasConstraintName("FK_tProduct_tProductStatus");
+
             entity.HasOne(d => d.SubCategory).WithMany(p => p.TProducts)
                 .HasForeignKey(d => d.SubCategoryId)
                 .HasConstraintName("FK_tProduct_tSubCategory");
+        });
+
+        modelBuilder.Entity<TProductStatus>(entity =>
+        {
+            entity.HasKey(e => e.ProductStatusId);
+
+            entity.ToTable("tProductStatus");
+
+            entity.Property(e => e.ProductStatusId).HasColumnName("ProductStatusID");
+            entity.Property(e => e.Status).HasMaxLength(50);
         });
 
         modelBuilder.Entity<TPurchase>(entity =>
@@ -584,9 +527,7 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Vipname)
                 .HasMaxLength(50)
                 .HasColumnName("VIPName");
-            entity.Property(e => e.Vipphoto)
-                .HasMaxLength(50)
-                .HasColumnName("VIPPhoto");
+            entity.Property(e => e.Vipphoto).HasColumnName("VIPPhoto");
         });
 
         modelBuilder.Entity<TWordCensorship>(entity =>

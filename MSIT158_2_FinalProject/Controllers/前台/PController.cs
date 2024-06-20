@@ -19,7 +19,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 			var 商品類別 = db.TSubCategories.Where(x => x.SubCategoryId == Product.SubCategoryId).Join(db.TCategories, x => x.CategoryId, y => y.CategoryId, (x, y) =>
 			new { x.SubCategoryCname, y.CategoryCname, x.SubCategoryId }).FirstOrDefault();
 			ViewBag.商品類別 = 商品類別;
-			IEnumerable<TProduct> 相關商品 = db.TProducts.Where(x => x.SubCategoryId == 商品類別.SubCategoryId).Where(x => x.ProductId != id);
+			IEnumerable<TProduct> 相關商品 = db.TProducts.Where(x => x.SubCategoryId == 商品類別.SubCategoryId).Where(x => x.ProductId != id&&x.Status==1);
 			ViewBag.相關商品 = 相關商品.Take(4);
 			ViewBag.平均星 = Convert.ToInt32(此商品全部評價.Average(x => x.RankId));
 			ViewBag.評價數 = 此商品全部評價.Count();
@@ -35,14 +35,14 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 			ViewBag.d2 = 此商品全部評價.Where(x => x.RankId == 2).Count();
 			ViewBag.d1 = 此商品全部評價.Where(x => x.RankId == 1).Count();
             ViewBag.品牌= db.TLabels.FirstOrDefault(x => x.LabelId == Product.LabelId);
-            int mid = 0;
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
-            {
-                string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
-                TMember m = JsonSerializer.Deserialize<TMember>(js);
-                mid = m.MemberId;
-            }
-            ViewBag.mid = mid;
+            //int mid = 0;
+            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGIN_MEMBER))
+            //{
+            //    string js = HttpContext.Session.GetString(CDictionary.SK_LOGIN_MEMBER);
+            //    TMember m = JsonSerializer.Deserialize<TMember>(js);
+            //    mid = m.MemberId;
+            //}
+            //ViewBag.mid = mid;
             return View();
 		}
         public IActionResult ReviewsAPI([FromBody] DTO商品頁評價 a)

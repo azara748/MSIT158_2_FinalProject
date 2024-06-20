@@ -7,13 +7,13 @@
 <h1>商品列表</h1>
 
     <label><input type="checkbox" id="chkStocks" checked>庫存</label>
-    <label><input type="checkbox" id="chkLabelId" checked>品牌ID</label>
-    <label><input type="checkbox" id="chkSubCategoryId" checked>副類別ID</label>
-    <label><input type="checkbox" id="chkUnitPrice" checked>價格</label>
-    <label><input type="checkbox" id="chkDescription" checked>描述</label>
-    <label><input type="checkbox" id="chkActiveId" checked>活動ID</label>
-    <label><input type="checkbox" id="chkLaunchTime" checked>上架時間</label>
-    <label><input type="checkbox" id="chkCost" checked>成本</label>
+    <label><input type="checkbox" id="chkLabelId" checked>品牌</label>
+    <label><input type="checkbox" id="chkSubCategoryId" checked>副類別</label>
+    <label><input type="checkbox" id="chkUnitPrice" checked>售價</label>
+    <label><input type="checkbox" id="chkDescription" checked>說明</label>
+    <label><input type="checkbox" id="chkActiveId" checked>活動</label>
+<label><input type="checkbox" id="chkLaunchTime" checked>日期</label>
+    <label><input type="checkbox" id="chkCost" checked>成本價</label>
 
 <p>
     <a asp-action="Create">新增商品</a>
@@ -21,7 +21,6 @@
 <table>
     <thead>
         <tr>
-
             <th>
                 @Html.DisplayNameFor(model => model.ProductId)
             </th>
@@ -32,14 +31,14 @@
                     @Html.DisplayNameFor(model => model.Stocks)
             </th>
             <th id="LabelId-th">
-                @Html.DisplayNameFor(model => model.LabelId)
+                @Html.DisplayNameFor(model => model.Label.LabelName)
             </th>
             <th id="SubCategoryId-th">
-                @Html.DisplayNameFor(model => model.SubCategoryId)
+                @Html.DisplayNameFor(model => model.SubCategory.SubCategoryCname)
             </th>
-@*             <th>
+            <th>
                 @Html.DisplayNameFor(model => model.ProductPhoto)
-            </th> *@
+            </th>
             <th id="UnitPrice-th">
                 @Html.DisplayNameFor(model => model.UnitPrice)
             </th>
@@ -72,14 +71,14 @@
                 @Html.DisplayFor(modelItem => item.Stocks)
             </td>
                 <td class="LabelId-td">
-                @Html.DisplayFor(modelItem => item.LabelId)
+                @Html.DisplayFor(modelItem => item.Label.LabelName)
             </td>
                 <td class="SubCategoryId-td">
-                @Html.DisplayFor(modelItem => item.SubCategoryId)
+                @Html.DisplayFor(modelItem => item.SubCategory.SubCategoryCname)
             </td>
-@*             <td>
+@*              <td>
                 @Html.DisplayFor(modelItem => item.ProductPhoto)
-            </td> *@
+            </td>  *@
                 <td class="UnitPrice-td">
                 @Html.DisplayFor(modelItem => item.UnitPrice)
             </td>
@@ -87,7 +86,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
                 <td class="ActiveId-td">
-                @Html.DisplayFor(modelItem => item.ActiveId)
+                @Html.DisplayFor(modelItem => item.Active.ActiveName)
             </td>
                 <td class="LaunchTime-td">
                 @Html.DisplayFor(modelItem => item.LaunchTime)

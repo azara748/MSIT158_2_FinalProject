@@ -188,7 +188,7 @@
 
             //顯示員工資料
             const MLists = data.employeesResult.map(mlist => {
-                const { employeeId, employeeName, cellphone, address, birthday, password, eMail, onBoardDate, employeePhoto, depId } = mlist;
+                const { employeeId, employeeName, cellphone, address, birthday, password, eMail, onBoardDate, employeePhoto, depName } = mlist;
                 const count = 0;
                 return (
                     `
@@ -202,7 +202,7 @@
                             <td id="idtd7">${eMail}</td>
                             <td id="idtd8">${employeePhoto ? `<img style="width: 100px; object-fit: contain;" src="data:image/jpeg;base64,${employeePhoto}" alt="員工照片"/>` : '沒有可用的圖片'}</td>
                             <td id="idtd9">${onBoardDate}</td>
-                            <td id="idtd10">${depId}</td>
+                            <td id="idtd10">${depName}</td>
                         <td id="idtd11">
                             <button type="button" class="btn btn-success"><a href="/Employee/Edit/${employeeId}">修改</a></button> |
                             <!-- <a href="/Employee/Details/${employeeId}">Details</a> | -->

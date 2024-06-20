@@ -125,7 +125,7 @@ namespace MSIT158_2_API.Controllers.Front
 			{
 
 				var currentDate = DateTime.Now;
-				query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime.Value, currentDate) < 30);
+				query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(DateTime.Parse(p.LaunchTime.Value.ToString()), currentDate) < 30);
 
 			}
 			if (searchProductDTO.rankfour)
@@ -194,7 +194,7 @@ namespace MSIT158_2_API.Controllers.Front
 				LabelName = pro.Label.LabelName,
 				Productphoto = pro.ProductPhoto,
 				Score = pro.TReviews.Average(p => p.RankId),
-				isnew = pro.LaunchTime.HasValue && (DateTime.Now - pro.LaunchTime.Value).TotalDays < 30
+				isnew = pro.LaunchTime.HasValue && (DateTime.Now - DateTime.Parse(pro.LaunchTime.Value.ToString())).TotalDays < 30
 			}).ToList();
 
 			var toClientProduct = new ToClientProductDTO

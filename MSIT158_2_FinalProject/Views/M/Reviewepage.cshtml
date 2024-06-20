@@ -20,12 +20,12 @@
                                             <tr>                                                                                             
                                         <td><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>
                                             </tr>
-                                            <tr>
-                                                <td valign="center">
-                                                    <div class="input-rating">
+                                                   <tr >
+                                                    <td valign="center" >
+                                                      <div class="input-rating" >
                                                         <span>您的評價: </span>
-                                                              <div class="stars">
-                                                            <input  value="5" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star5")')" id="@(c+"star5")" onmousemove="mm('@(c+"star5")')" onmouseover=""></i>
+                                                            <div class="stars" onmouseout="md('@(c+"star")')" id="@(c+"star")">
+                                                            <input  value="5" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star" onclick="ck('@(c+"star5")')" id="@(c+"star5")" onmousemove="mm('@(c+"star5")')" onmouseover=""></i>
                                                             <input  value="4" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star4")')" id="@(c+"star4")" onmousemove="mm('@(c+"star4")')"></i>
                                                             <input  value="3" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star3")')" id="@(c+"star3")" onmousemove="mm('@(c+"star3")')"></i>
                                                             <input  value="2" type="radio"><i style='color: #D10024;font-weight: bold;margin-top:4px' class="fa fa-star-o" onclick="ck('@(c+"star2")')" id="@(c+"star2")" onmousemove="mm('@(c+"star2")')"></i>
@@ -52,14 +52,15 @@
 <div style="text-align:right">
     <input type="button" class="primary-btn" style="width:10%;font-size:20px" value="送出" onclick="送出()"></inputt>
 </div>
+@section Scripts {
 <script>
-    // function md(a) {
-    //     document.getElementById(a + "5").className = "fa fa-star"
-    //     document.getElementById(a + "4").className = "fa fa-star-o"
-    //     document.getElementById(a + "3").className = "fa fa-star-o"
-    //     document.getElementById(a + "2").className = "fa fa-star-o"
-    //     document.getElementById(a  +"1").className = "fa fa-star-o"
-    // }
+    function md(a) {
+        // document.getElementById(a + "5").className = "fa fa-star"
+        // document.getElementById(a + "4").className = "fa fa-star-o"
+        // document.getElementById(a + "3").className = "fa fa-star-o"
+        // document.getElementById(a + "2").className = "fa fa-star-o"
+        // document.getElementById(a  +"1").className = "fa fa-star-o"
+    }
 
 
 
@@ -128,3 +129,4 @@
  }
   
 </script>
+}
