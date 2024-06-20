@@ -80,18 +80,19 @@ namespace MSIT158_2_API.Controllers.Front
 			return NoContent();
 		}
 
-		// POST: api/SearchProduct
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		//[HttpPost]
-		//public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
-		//{
-		//    _context.TProducts.Add(tProduct);
-		//    await _context.SaveChangesAsync();
+        // POST: api/SearchProduct
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<TProduct>> PostTProduct(TProduct tProduct)
+        //{
+        //    _context.TProducts.Add(tProduct);
+        //    await _context.SaveChangesAsync();
 
-		//    return CreatedAtAction("GetTProduct", new { id = tProduct.ProductId }, tProduct);
-		//}
+        //    return CreatedAtAction("GetTProduct", new { id = tProduct.ProductId }, tProduct);
+        //}
 
-		[HttpPost]
+        DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+        [HttpPost]
 		public async Task<ActionResult<ShowProductDTO>> GetProductBySearch(SearchProductDTO searchProductDTO)
 		{
 
@@ -123,12 +124,26 @@ namespace MSIT158_2_API.Controllers.Front
 			}
 			if (searchProductDTO.newlan)
 			{
-
-				var currentDate = DateTime.Now;
-				query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(DateTime.Parse(p.LaunchTime.Value.ToString()), currentDate) < 30);
+				//var currentDate = DateTime.Now;
+                query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime, currentDate) < 30);
 
 			}
-			if (searchProductDTO.rankfour)
+			//if (searchProductDTO.newlan)
+   //         {
+   //             //判斷是否小於60天
+   //             //query = query.Where(p => p.LaunchTime > 2024-)
+   //             DateTime now = DateTime.Now;
+   //             string currentDate = now.ToString("yyyy/MM/dd");
+   //             string birthday = "1988/06/08";
+   //             int daysUntilBirthday = CalculateDaysUntilBirthday(currentDate, birthday);
+			//	if (daysUntilBirthday < 60) { 
+					
+			//	}
+   //         }
+
+
+
+            if (searchProductDTO.rankfour)
 			{
 
 				query = query.Where(p => p.TReviews.Average(x => x.RankId)>=4);
@@ -179,10 +194,8 @@ namespace MSIT158_2_API.Controllers.Front
 			int pageSize = searchProductDTO.pagesSize;
 			int page = searchProductDTO.page;
 			int totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-
-			query = query.Skip((page - 1) * pageSize).Take(pageSize);
-
-			var showProductDTOs = query.Select(pro => new ShowProductDTO
+            query = query.Skip((page - 1) * pageSize).Take(pageSize);
+            var showProductDTOs = query.Select(pro => new ShowProductDTO
 			{
 				ProductId=pro.ProductId,
 				ProductName = pro.ProductName,
@@ -194,7 +207,7 @@ namespace MSIT158_2_API.Controllers.Front
 				LabelName = pro.Label.LabelName,
 				Productphoto = pro.ProductPhoto,
 				Score = pro.TReviews.Average(p => p.RankId),
-				isnew = pro.LaunchTime.HasValue && (DateTime.Now - DateTime.Parse(pro.LaunchTime.Value.ToString())).TotalDays < 30
+				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay( pro.LaunchTime.Value,currentDate) < 30
 			}).ToList();
 
 			var toClientProduct = new ToClientProductDTO
@@ -207,9 +220,9 @@ namespace MSIT158_2_API.Controllers.Front
 			return Ok(toClientProduct);
 
 		}
-		
-		// DELETE: api/SearchProduct/5
-		[HttpDelete("{id}")]
+
+        // DELETE: api/SearchProduct/5
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteTProduct(int id)
 		{
 			var tProduct = await _context.TProducts.FindAsync(id);
@@ -228,5 +241,25 @@ namespace MSIT158_2_API.Controllers.Front
 		{
 			return _context.TProducts.Any(e => e.ProductId == id);
 		}
-	}
+
+        //static int CalculateDaysUntilBirthday(string currentDate, string birthday)
+        //{
+        //    DateTime current = DateTime.ParseExact(currentDate, "yyyy/MM/dd", null);
+        //    DateTime nextBirthday = DateTime.ParseExact(birthday, "yyyy/MM/dd", null);
+
+        //    // Adjust the next birthday to the current year
+        //    nextBirthday = new DateTime(current.Year, nextBirthday.Month, nextBirthday.Day);
+
+        //    // Calculate the difference in days
+        //    if (nextBirthday < current)
+        //    {
+        //        nextBirthday = nextBirthday.AddYears(1); // If next birthday has passed, add one year
+        //    }
+
+        //    TimeSpan difference = nextBirthday - current;
+        //    int days = (int)difference.TotalDays;
+
+        //    return days;
+        //}
+    }
 }

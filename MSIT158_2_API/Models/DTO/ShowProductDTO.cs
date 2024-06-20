@@ -9,8 +9,9 @@
 		public int? SubCategoryId { get; set; }
 		public string? SubCatName { get; set; }
 		public decimal? Discount { get; set; }
+		public int? LabelId { get; set; }
 		public string? LabelName { get; set; }
-		public string? LanchTime { get; set; }
+		public DateOnly? LanchTime { get; set; }
 		public int? ProductId { get; set; }
 		public double? Score { get; set; }
 		public bool? isnew { get; set; }

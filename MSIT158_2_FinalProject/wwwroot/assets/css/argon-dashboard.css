@@ -26815,9 +26815,9 @@ pre[class*="language-"] {
   cursor: help;
 }
 
-/*
+
  * Container style
- */
+ 
 .ps {
   overflow: hidden !important;
   overflow-anchor: none;
@@ -26826,18 +26826,18 @@ pre[class*="language-"] {
   -ms-touch-action: auto;
 }
 
-/*
+
  * Scrollbar rail styles
- */
+ 
 .ps__rail-x {
   display: none;
   opacity: 0;
   transition: background-color .2s linear, opacity .2s linear;
   -webkit-transition: background-color .2s linear, opacity .2s linear;
   height: 15px;
-  /* there must be 'bottom' or 'top' for ps__rail-x */
+   there must be 'bottom' or 'top' for ps__rail-x 
   bottom: 0px;
-  /* please don't change 'position' */
+   please don't change 'position' 
   position: absolute;
 }
 
@@ -26847,9 +26847,9 @@ pre[class*="language-"] {
   transition: background-color .2s linear, opacity .2s linear;
   -webkit-transition: background-color .2s linear, opacity .2s linear;
   width: 15px;
-  /* there must be 'right' or 'left' for ps__rail-y */
+   there must be 'right' or 'left' for ps__rail-y 
   right: 0;
-  /* please don't change 'position' */
+   please don't change 'position' 
   position: absolute;
 }
 
@@ -26878,18 +26878,18 @@ pre[class*="language-"] {
   opacity: 0.9;
 }
 
-/*
+
  * Scrollbar thumb styles
- */
+ 
 .ps__thumb-x {
   background-color: #aaa;
   border-radius: 6px;
   transition: background-color .2s linear, height .2s ease-in-out;
   -webkit-transition: background-color .2s linear, height .2s ease-in-out;
   height: 6px;
-  /* there must be 'bottom' for ps__thumb-x */
+   there must be 'bottom' for ps__thumb-x 
   bottom: 2px;
-  /* please don't change 'position' */
+   please don't change 'position' 
   position: absolute;
 }
 
@@ -26899,9 +26899,9 @@ pre[class*="language-"] {
   transition: background-color .2s linear, width .2s ease-in-out;
   -webkit-transition: background-color .2s linear, width .2s ease-in-out;
   width: 6px;
-  /* there must be 'right' for ps__thumb-y */
+   there must be 'right' for ps__thumb-y 
   right: 2px;
-  /* please don't change 'position' */
+   please don't change 'position' 
   position: absolute;
 }
 
@@ -26919,7 +26919,7 @@ pre[class*="language-"] {
   width: 11px;
 }
 
-/* MS supports */
+ MS supports 
 @supports (-ms-overflow-style: none) {
   .ps {
     overflow: auto !important;
@@ -26933,4 +26933,4 @@ pre[class*="language-"] {
   }
 }
 
-/*# sourceMappingURL=dashboard-free.css.map */
+# sourceMappingURL=dashboard-free.css.map 

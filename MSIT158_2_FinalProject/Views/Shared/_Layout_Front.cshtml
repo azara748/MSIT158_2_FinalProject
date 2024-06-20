@@ -1,456 +1,490 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-hant">
+<html lang="en">
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+	<title>Electro - HTML Ecommerce Template</title>
 
-    <!-- Google font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
-    <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="~/css/bootstrap.min.css" />
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="~/css/bootstrap.min.css" />
 
-    <!-- Slick -->
-    <link type="text/css" rel="stylesheet" href="~/css/slick.css" />
-    <link type="text/css" rel="stylesheet" href="~/css/slick-theme.css" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="~/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="~/css/slick-theme.css" />
 
-    <!-- nouislider -->
-    <link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css" />
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css" />
 
-    <!-- Font Awesome Icon -->
-    <link rel="stylesheet" href="~/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="~/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!-- Custom stlylesheet -->
-    <link type="text/css" rel="stylesheet" href="~/css/style.css" />
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="~/css/style.css" />
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    @await RenderSectionAsync("Styles", required: false)
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	@await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <!-- HEADER -->
-    <header>
-        <!-- TOP HEADER -->
-        <div id="top-header">
-            <div class="container">
-                <ul class="header-links pull-left">
+	<!-- HEADER -->
+	<header>
+		<!-- TOP HEADER -->
+		<div id="top-header">
+			<div class="container">
+				<ul class="header-links pull-left">
 
-                    <li><a href="#"><i class="fa fa-home"></i>首頁</a></li>
-                    <li><a href="#"><i class="fa fa-gamepad"></i>本期活動</a></li>
-                    <li><a href="#"><i class="fa fa-thumbs-up"></i>推薦商品</a></li>
-                    <li><a href="#"><i class="fa fa-fire"></i>熱門主題</a></li>
-                    <li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
-                    <li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
-                </ul>
-                <ul class="header-links pull-right">
-                    @* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
-                    <li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li> *@
-                    <!-- ///////////////////////////////////////////////////////////  -->
-                    <li><a id="idshowmember1" class="fa fa-user-o" href="~/Home/Login">未登入</a></li>
-                    <li><button id="idsignOutButton1" class="fa fa-user-o">登出</button></li>
-                    <!-- /////////////////////////////////////////////////////////// -->
-                </ul>
-            </div>
-        </div>
-        <!-- /TOP HEADER -->
-        <!-- MAIN HEADER -->
-        <div id="header">
-            <!-- container -->
-            <div class="container">
-                <!-- row -->
-                <div class="row">
-                    <!-- LOGO -->
-                    <div class="col-md-2">
-                        <div class="header-ctn">
-                            <div>
-                                <a href="https://localhost:7066/">
-                                    <i class="fa fa-gift"></i>
-                                    <span>選物平台</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="header-ctn">
-                            <div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /LOGO -->
-                    <!-- SEARCH BAR -->
-                    <div class="col-md-6">
-                        <div class="header-search" id="idform">
-                            <form id="idform">
-                                <input class="input" id="idinputsearch" placeholder="好物搜尋...">
-                                <button class="search-btn" id="idsearchButton">搜尋</button>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- /SEARCH BAR -->
-                    <!-- ACCOUNT -->
-                    <div class="col-md-3 clearfix">
-                        <div class="header-ctn">
-                            <!-- like -->
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="btnlikelist">
-                                    <i class="fa fa-heart-o"></i>
-                                    <span>願望清單</span>
-                                    <div class="qty">3</div>
-                                </a>
-                                <div class="cart-dropdown">
-                                    <div class="cart-list" id="idlikelist">
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="#">TBC</a>
-                                        <a href="#">YBC  <i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /like -->
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>購物車</span>
-                                    <!-- ////////////////////////////////////////////////////-->
-                                    <div class="qty" id="cartqty">3</div>
-                                    <!-- ////////////////////////////////////////////////////-->
-                                </a>
-                                <div class="cart-dropdown">
-                                    <!-- ////////////////////////////////////////////////////-->
-                                    <div class="cart-list" id="cart">
-                                        <!-- ////////////////////////////////////////////////////-->
-                                    </div>
-                                    <div class="cart-summary">
-                                        <!-- ////////////////////////////////////////////////////-->
-                                        <small id="Items">3 Item(s) selected</small>
-                                        <h5 id="SUBTOTAL">SUBTOTAL: $2940.00</h5>
-                                        <!-- ////////////////////////////////////////////////////-->
-                                    </div>
-                                    <div class="cart-btns">
-                                        <a href="~/C/Cartspage">查看購物車</a>
-                                        <a href="~/C/Shippingpage">去結帳<i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Cart -->
-                        </div>
-                    </div>
-                    <!-- /ACCOUNT -->
-                </div>
-                <!-- row -->
-            </div>
-            <!-- container -->
-        </div>
-        <!-- /MAIN HEADER -->
-    </header>
-    <!-- /HEADER -->
-    <!-- NAVIGATION -->
-    <nav id="navigation">
-        <!-- container -->
-        <div class="container">
-            <!-- responsive-nav -->
-            <div id="responsive-nav">
-                <!-- NAV -->
-                <ul class="main-nav nav navbar-nav" id="idultree">
-                    <!-- TBCTBCTBC -->
-                </ul>
-                <!-- /NAV -->
-            </div>
-            <!-- /responsive-nav -->
-        </div>
-        <!-- /container -->
-    </nav>
-                @RenderBody()      
-    <!-- NEWSLETTER -->
-        <div id="newsletter" class="section">
-            <!-- container -->
-            <div class="container">
-                <!-- row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="newsletter">
-                            <p><strong>訂閱電子報</strong></p>
-                            <span>即可獲得最新的折扣資訊、限時優惠、免費運送及特價商品通知。不要錯過網路購物平台的超值好康！</span>
-                            <form>
-                                <input class="input" type="email" placeholder="輸入 Email 完成訂閱">
-                                <button class="newsletter-btn"><i class="fa fa-envelope"></i>訂閱</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- /row -->
-            </div>
-            <!-- /container -->
-        </div>
-        <!-- /NEWSLETTER -->
-        <!-- FOOTER -->
-        <footer id="footer">
-            <!-- top footer -->
-            <div class="section">
-                <!-- container -->
-                <div class="container">
-                    <!-- row -->
-                    <div class="row">
-                        <div class="col-md-3 col-xs-6">
-                            <div class="footer">
-                                <h3 class="footer-title">關於我們</h3>
-                                <p>我們是一家專注禮品的網路商店，提供精美禮物及包裝搭配，為您解決送禮難題，讓每份心意更加完美。</p>
-                                <ul class="footer-links">
-                                    <li><a href="#"><i class="fa fa-map-marker"></i>台北市復興南路一段390號2樓</a></li>
-                                    <li><a href="#"><i class="fa fa-phone"></i>Tel : (02) 6631-6588</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope-o"></i>select.shop@gmail.com</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="clearfix visible-xs"></div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="footer">
-                                <h3 class="footer-title">付款方式</h3>
-                                <div style="margin-bottom: 10px;">
-                                    <img src="~/img/mastercard.png" width="45px" height="30px" style="border-radius: 8%;" />
-                                </div>
-                                <div style="margin-bottom: 10px;">
-                                    <img src="~/img/jcb.png" width="45px" height="30px" style="border-radius: 8%;" />
-                                </div>
-                                <div>
-                                    <img src="~/img/visa.png" width="45px" height="30px" style="border-radius: 8%;" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix visible-xs"></div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="footer">
-                                <h3 class="footer-title">物流合作</h3>
-                            </div>
-                        </div>
-                        <div class="clearfix visible-xs"></div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="footer">
-                                <h3 class="footer-title">其他服務</h3>
-                                <ul class="footer-links">
-                                <li><a asp-area="" asp-controller="Home" asp-action="BackLogin">企業專區</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /row -->
-                </div>
-                <!-- /container -->
-            </div>
-            <!-- /top footer -->
-            <!-- bottom footer -->
-            <div id="bottom-footer" class="section">
-                <div class="container">
-                    <!-- row -->
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <ul class="footer-payments">
-                            </ul>
-                            <span class="copyright">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            </span>
-                        </div>
-                    </div>
-                    <!-- /row -->
-                </div>
-                <!-- /container -->
-            </div>
-            <!-- /bottom footer -->
-        </footer>
-        <!-- /FOOTER -->
-        <!-- jQuery Plugins -->
-        <input type="hidden" id="mid" value="0" />
-        <script>
-            const layoutlikeData = {
-                "mMemberId": 3
-            };
-            const loadLike = async () => {
-                const url = 'https://localhost:7160/api/TMemberLikes';
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(layoutlikeData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                const likes = data.map(like => {
-                    const { productName, unitPrice, productphoto, productId, status } = like;
-                    if (status === 0) {
-                        return '';
-                    }
-                    return (`<a href="https://localhost:7066/homepage/index/${productId}">
-                            <div class="product-widget">
-                            <div class="product-img">
-                                                    ${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-                            </div>
-                            <div class="product-body">
-                                            <h3 class="product-name"><a href="#">${productName}</a></h3>
-                                    <h4 class="product-price"></span>$${unitPrice}</h4>
-                                                                                </div>
-                                                                                <button class="delete"><i class="fa fa-close"></i></button>
-                                                                            </div>`)
-                })
-                likelist.innerHTML = likes.join("");
-            }
-        </script>
-        <!--//////////////////////////////////////////////////////////////////////////////////-->
-        <script type="module">
-            // 從所需的 SDK 中匯入你需要的函式/Google 登入
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+					<li><a href="#"><i class="fa fa-home"></i>首頁</a></li>
+					<li><a href="#"><i class="fa fa-gamepad"></i>本期活動</a></li>
+					<li><a href="#"><i class="fa fa-thumbs-up"></i>推薦商品</a></li>
+					<li><a href="#"><i class="fa fa-fire"></i>熱門主題</a></li>
+					<li><a href="#"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
+					<li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
+				</ul>
+				<ul class="header-links pull-right">
+					@* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
+					<li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li> *@
+					<!-- ///////////////////////////////////////////////////////////  -->
+					<li><a id="idshowmember1" class="fa fa-user-o" href="~/Home/Login">未登入</a></li>
+					<li><button id="idsignOutButton1" class="fa fa-user-o">登出</button></li>					
+					<!-- /////////////////////////////////////////////////////////// -->
+				</ul>
+			</div>
+		</div>
+		<!-- /TOP HEADER -->
+		<!-- MAIN HEADER -->
+		<div id="header">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- LOGO -->
+					<div class="col-md-2">
+						<div class="header-ctn">
+							<div>
+								<a href="https://localhost:7066"/>
+									<i class="fa fa-gift"></i>
+									<span>選物平台</span>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-1">
+						<div class="header-ctn">
+							<div>
+							</div>
+						</div>
+					</div>
+					<!-- /LOGO -->
+					<!-- SEARCH BAR -->
+					<div class="col-md-6">
+						<div class="header-search" id="idform">
+							<form id="idform">
+								<input class="input" id="idinputsearch" placeholder="好物搜尋...">
+								<button class="search-btn" id="idsearchButton">搜尋</button>
+							</form>
+						</div>
+					</div>
+					<!-- /SEARCH BAR -->
+					<!-- ACCOUNT -->
+					<div class="col-md-3 clearfix">
+						<div class="header-ctn">
+							<!-- like -->
+							<div class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="btnlikelist">
+									<i class="fa fa-heart-o"></i>
+									<span>願望清單</span>
+									<div class="qty" id="likeqty">♥</div>
+								</a>
+								<div class="cart-dropdown" >
+									<div class="cart-list" id="idlikelist">
+									</div>
+									<div class="cart-btns">
+										<a onclick="deleteAllLLiked(event)">刪除全部</a>
+										<a href="#">TBC <i class="fa fa-arrow-circle-right"></i></a>
+									</div>
+								</div>
+							</div>
+							<!-- /like -->
+							<div class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<i class="fa fa-shopping-cart"></i>
+									<span>購物車</span>
+									<!-- ////////////////////////////////////////////////////-->
+									<div class="qty" id="cartqty">3</div>
+									<!-- ////////////////////////////////////////////////////-->
+								</a>
+								<div class="cart-dropdown">
+									<!-- ////////////////////////////////////////////////////-->
+									<div class="cart-list" id="cart">
+										<!-- ////////////////////////////////////////////////////-->
+									</div>
+									<div class="cart-summary">
+										<!-- ////////////////////////////////////////////////////-->
+										<small id="Items">3 Item(s) selected</small>
+										<h5 id="SUBTOTAL">SUBTOTAL: $2940.00</h5>
+										<!-- ////////////////////////////////////////////////////-->
+									</div>
+									<div class="cart-btns">
+										<a href="~/C/Cartspage">查看購物車</a>
+										<a href="~/C/Shippingpage">去結帳<i class="fa fa-arrow-circle-right"></i></a>
+									</div>
+								</div>
+							</div>
+							<!-- /Cart -->
+						</div>
+					</div>
+					<!-- /ACCOUNT -->
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+		</div>
+		<!-- /MAIN HEADER -->
+	</header>
+	<!-- /HEADER -->
+	<!-- NAVIGATION -->
+	<nav id="navigation">
+		<!-- container -->
+		<div class="container">
+			<!-- responsive-nav -->
+			<div id="responsive-nav">
+				<!-- NAV -->
+				<ul class="main-nav nav navbar-nav" id="idultree">
+					<!-- TBCTBCTBC -->
+				</ul>
+				<!-- /NAV -->
+			</div>
+			<!-- /responsive-nav -->
+		</div>
+		<!-- /container -->
+	</nav>
+	<!-- /NAVIGATION -->
+@* 	<div class="section">
+		<div class="container">
+			<div class="row"> *@
+	@RenderBody()
+@* 			</div>
+		</div>
+	</div> *@
+	<!-- NEWSLETTER -->
+	<div id="newsletter" class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+@* 			<div class="row">
+				<div class="col-md-12">
+					<div class="newsletter">
+						<p><strong>訂閱電子報</strong></p>
+							<span>即可獲得最新的折扣資訊、限時優惠、免費運送及特價商品通知。不要錯過網路購物平台的超值好康！</span>
+						<form>
+								<input class="input" type="email" placeholder="輸入 Email 完成訂閱">
+							<button class="newsletter-btn"><i class="fa fa-envelope"></i>訂閱</button>
+						</form>
+					</div>
+				</div>
+			</div> *@
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /NEWSLETTER -->
+	<!-- FOOTER -->
+	<footer id="footer">
+		<!-- top footer -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+						<div class="col-md-3 col-xs-6">
+						<div class="footer">
+							<h3 class="footer-title">關於我們</h3>
+								<p>我們是一家專注禮品的網路商店，提供精美禮物及包裝搭配，為您解決送禮難題，讓每份心意更加完美。</p>
+							<ul class="footer-links">
+									<li><a href="#"><i class="fa fa-map-marker"></i>台北市復興南路一段390號2樓</a></li>
+									<li><a href="#"><i class="fa fa-phone"></i>Tel : (02) 6631-6588</a></li>
+								<li><a href="#"><i class="fa fa-envelope-o"></i>select.shop@gmail.com</a></li>
+							</ul>
+						</div>
+					</div>
+						<div class="clearfix visible-xs"></div>
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">付款方式</h3>
+							<div style="margin-bottom: 10px;">
+								<img src="~/img/mastercard.png" width="45px" height="30px" style="border-radius: 8%;" />
+							</div>
+							<div style="margin-bottom: 10px;">
+								<img src="~/img/jcb.png" width="45px" height="30px" style="border-radius: 8%;" />
+							</div>
+							<div>
+								<img src="~/img/visa.png" width="45px" height="30px" style="border-radius: 8%;" />
+							</div>
+							</div>
+						</div>
+						<div class="clearfix visible-xs"></div>
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">贊助廠商</h3>
+							<img src="~/img/ispan.png" width="45px" height="30px" style="border-radius: 8%;" />
+							</div>
+						</div>
+					<div class="clearfix visible-xs"></div>
+						<div class="col-md-3 col-xs-6">
+						<div class="footer">
+							<h3 class="footer-title">其他服務</h3>
+							<ul class="footer-links">
+									<li><a asp-area="" asp-controller="Product" asp-action="BList">企業專區</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /top footer -->
+		<!-- bottom footer -->
+		<div id="bottom-footer" class="section">
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<ul class="footer-payments">
+						</ul>
+						<span class="copyright">
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</span>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /bottom footer -->
+	</footer>
+	<!-- /FOOTER -->
+	<!-- jQuery Plugins -->
+	<input  type="hidden" id="mid" value="0"/>
 
-            import { getAuth, signOut } from "https:www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<script type="module">
+		// 從所需的 SDK 中匯入你需要的函式/Google 登入
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-            // 在這裡添加你自己的 Firebase 設定
-            const firebaseConfig = {
-                apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
-                authDomain: "fir-t1-a5947.firebaseapp.com",
-                projectId: "fir-t1-a5947",
-                storageBucket: "fir-t1-a5947.appspot.com",
-                messagingSenderId: "617649416210",
-                appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
-            };
-            //================================================
-            // 初始化 Firebase
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
+		import { getAuth, signOut } from "https:www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-            // 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
-            (async () => {
-                const urlss = '@Url.Content("~/ApiMember/AddSession")';
-                const responsess = await fetch(urlss);
-                const datass = await responsess.text();
-                const jsonss = JSON.parse(datass);
-                const memberName = jsonss.MemberName;
-                const Smember = document.querySelector('#idshowmember1');
-                console.log('test1');
-                console.log(Smember);
-                Smember.textContent = '登入者 :' + memberName;
-                Smember.href = '@Url.Content("~/M/Memberpage")'
-                mid.value = jsonss.MemberId
-            gopack.href = `http://localhost:4200/packages/${jsonss.MemberId}`
-                signOutbtn.style.display = "";
-            })();
-            const signOutbtn = document.querySelector('#idsignOutButton1');
-            console.log('test2');
-            console.log(signOutbtn);
-            signOutbtn.style.display = 'none';
+		// 在這裡添加你自己的 Firebase 設定
+		const firebaseConfig = {
+			apiKey: "AIzaSyDkhjhkhDrTaypDx_cQlr2OBGlqJDpWTBA",
+			authDomain: "fir-t1-a5947.firebaseapp.com",
+			projectId: "fir-t1-a5947",
+			storageBucket: "fir-t1-a5947.appspot.com",
+			messagingSenderId: "617649416210",
+			appId: "1:617649416210:web:a7f6b85e50f19f9aa550cb"
+		};
+		//================================================
+		// 初始化 Firebase
+		const app = initializeApp(firebaseConfig);
+		const auth = getAuth(app);
+		
+		// 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
+		(async () => {
+			const urlss = '@Url.Content("~/ApiMember/AddSession")';
+			const responsess = await fetch(urlss);
+			const datass = await responsess.text();
+			const jsonss = JSON.parse(datass);
+			const memberName = jsonss.MemberName;
+			const Smember = document.querySelector('#idshowmember1');
+			Smember.textContent = '登入者 :' + memberName;
+			Smember.href = '@Url.Content("~/M/Memberpage")'
+			mid.value = jsonss.MemberId;
+			signOutbtn.style.display = "";
+
+		})();
+		const signOutbtn = document.querySelector('#idsignOutButton1');
+		signOutbtn.style.display = 'none';
 
 
-            signOutbtn.addEventListener('click', async () => {
-                const url = '@Url.Content("~/ApiMember/ClearSession")';
-                const response = await fetch(url);
-                if (confirm("確定登出嗎！")) {
-                    signOut(auth).then(() => {
-                        alert("你已成功登出！");
-                    }).catch((error) => {
-                        console.error('登出時出錯:', error);
-                    });
-                    window.location.href = '@Url.Content("~/HomePage/Search")';
-                }
-            });
 
-        </script>
-        <!--//////////////////////////////////////////////////////////////////////////////////-->
-        <script>
-            var 總價 = 0;
-            var 運費 = 60;
-            var b = ""
-            var bp = ""
-            var count = 0
-            async function cart1() {
-                var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
-                var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
-                b = await a.json()
-                bp = await ap.json()
-                cart2()
-            }
-            function cart2() {
-                var t = ``
-                count = 0
-                總價 = 0;
-                for (let f in b) {
-                    count++
-                    總價 += b[f].unitPrice * b[f].qty;
-                    t += `<div  id="c${f}"><div class="product-widget">
-                                                                                                <div class="product-img">
-                                                                                                                    <img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
-                                                                                                </div>
-                                                                                                <div class="product-body">
-                                                                                                                    <h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
-                                                                                                                    <h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
-                                                                                                </div>
-                                                                                                                <button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].cartId},${b[f].qty})"><i class="fa fa-close"></i></button>
-                                                                                                    </div></div>`
-                    //<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
+		signOutbtn.addEventListener('click', async () => {
+			const url = '@Url.Content("~/ApiMember/ClearSession")';
+			const response = await fetch(url);
+			if (confirm("確定登出嗎！")) {
+				signOut(auth).then(() => {
+					alert("你已成功登出！");
+					sessionStorage.removeItem("mID");
+				}).catch((error) => {
+					console.error('登出時出錯:', error);
+				});
+				window.location.href = '@Url.Content("~/")';
+			}
+		});
 
-                }
-                for (let f in bp) {
-                    count++
-                    總價 += bp[f].price * bp[f].qty;
-                    t += `<div  id="p${f}"><div class="product-widget">
-                                                                                                        <div class="product-img">
-                                                                                                           <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
-                                                                                                        </div>
-                                                                                                        <div class="product-body">
-                                                                                                                            <h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
-                                                                                                                                    <h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
-                                                                                                        </div>
-                                                                                                                                <button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].packageCartId},${bp[f].qty})"><i class="fa fa-close"></i></button>
-                                                                                                            </div></div>`
-                }
-                cart.innerHTML = t
-                cart3()
-            }
-            function cart3() {
-                SUBTOTAL.innerHTML = '$' + 總價
-                cartqty.innerHTML = count
-                Items.innerHTML = count + "樣商品"
-            }
-            async function dedet(d, p, id, q) {
-                if (!confirm("確定要刪除嗎?")) return
-                var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
-                var b2 = await a2.text()
-                if (b2 != "ok") return
-                document.getElementById("c" + d).innerHTML = "";
-                總價 -= Number(p * q)
-                count--
-                SUBTOTAL.innerHTML = '$' + 總價
-                cart3()
-            }
-            async function dedet2(d, p, id, q) {
-                if (!confirm("確定要刪除嗎?")) return
-                var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
-                var b2 = await a2.text()
-                if (b2 != "ok") return
-                document.getElementById("p" + d).innerHTML = "";
-                總價 -= Number(p * q)
-                count--
-                SUBTOTAL.innerHTML = '$' + 總價
-                cart3()
-            }
-            cart1()
-        </script>
-        <!--//////////////////////////////////////////////////////////////////////////////////-->
+	</script>
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<script>
+		var 總價 = 0;
+		var 運費 = 60;
+		var b = ""
+		var bp = ""
+		var count = 0
+		async function cart1() {
+			var a = await fetch(`@Url.Content("~/C/miniCartsAPI")`)
+			var ap = await fetch(`@Url.Content("~/C/miniCartsAPI2")`)
+			b = await a.json()
+			bp = await ap.json()
+			cart2()
+		}
+		function cart2() {
+			var t = ``
+			count = 0
+			總價 = 0;
+			for (let f in b) {
+				count++
+				總價 += b[f].unitPrice * b[f].qty;
+				t += `<div  id="c${f}"><div class="product-widget">
+																					<div class="product-img">
+																										<img src="data:image/jpeg;base64,${b[f].productPhoto}" alt="" style="object-fit: contain;">
+																					</div>
+																					<div class="product-body">
+																										<h3 class="product-name"><a herf=''>${b[f].productName}</a></h3>
+																										<h4 class="product-price"><span class="qty">${b[f].qty}x</span>${b[f].unitPrice}</h4>
+																					</div>
+																									<button class="delete" onclick="dedet(${f},${b[f].unitPrice} ,${b[f].cartId},${b[f].qty})"><i class="fa fa-close"></i></button>
+																						</div></div>`
+				//<a herf='@Url.Content("~/P/Productpage/")${b[f].productId}'>
 
-        <script src="~/js/jquery.min.js"></script>
-        <script src="~/js/bootstrap.min.js"></script>
-        <script src="~/js/slick.min.js"></script>
-        <script src="~/js/nouislider.min.js"></script>
-        <script src="~/js/jquery.zoom.min.js"></script>
-        <script src="~/js/main.js"></script>
-        @await RenderSectionAsync("Scripts", required: false)
+			}
+			for (let f in bp) {
+				count++
+				總價 += bp[f].price * bp[f].qty;
+				t += `<div  id="p${f}"><div class="product-widget">
+																							<div class="product-img">
+																							   <img src='@Url.Content("~/assets/img/packageImages/")${bp[f].picture}' alt="" style="object-fit: contain;">
+																							</div>
+																							<div class="product-body">
+																												<h3 class="product-name"><a href="#">${bp[f].packName}</a></h3>
+																														<h4 class="product-price"><span class="qty">${bp[f].qty}x</span>${bp[f].price}</h4>
+																							</div>
+																													<button class="delete" onclick="dedet2(${f},${bp[f].price} ,${bp[f].packageCartId},${bp[f].qty})"><i class="fa fa-close"></i></button>
+																								</div></div>`
+			}
+			cart.innerHTML = t
+			cart3()
+		}
+		function cart3() {
+			SUBTOTAL.innerHTML = '$' + 總價
+			cartqty.innerHTML = count
+			Items.innerHTML = count + "樣商品"
+		}
+		async function dedet(d, p, id, q) {
+			if (!confirm("確定要刪除嗎?")) return
+			var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
+			var b2 = await a2.text()
+			if (b2 != "ok") return
+			document.getElementById("c" + d).innerHTML = "";
+			總價 -= Number(p * q)
+			count--
+			SUBTOTAL.innerHTML = '$' + 總價
+			cart3()
+		}
+		async function dedet2(d, p, id, q) {
+			if (!confirm("確定要刪除嗎?")) return
+			var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
+			var b2 = await a2.text()
+			if (b2 != "ok") return
+			document.getElementById("p" + d).innerHTML = "";
+			總價 -= Number(p * q)
+			count--
+			SUBTOTAL.innerHTML = '$' + 總價
+			cart3()
+		}
+		cart1()
+	</script>
+	<!--//////////////////////////////////////////////////////////////////////////////////-->
+	<!--登入後載入願望清單-->
+	<script>
+		const btnlikelist = document.getElementById('btnlikelist');
+		const sessMemberId = Number(sessionStorage.getItem("mID"));
+		const showhowmanylike = document.getElementById('likeqty');
+		const loadLike = async (id) => {
+			if (id == 0) {
+					  alert("欲查看願望清單 請先登入會員!!");
+				location.href = `@Url.Content("~/Home/Login")`
+				  }
+				const url = `https://localhost:7160/api/TMemberLikes?id=${id}`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						//'accept: text/plain'
+						'Content-Type': 'application/json'
+					}
+				});
+				const data = await response.json();
+				const likes = data.showMemberLikeDTOs.map(like => {
+					const { productName, unitPrice, productphoto, productId, status } = like;
+					return (`<a href="https://localhost:7066/homepage/index/${productId}">
+								<div class="product-widget">
+								<div class="product-img">
+														${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+								</div>
+								<div class="product-body">
+												<h3 class="product-name"><a href="#">${productName}</a></h3>
+										<h4 class="product-price"></span>$${unitPrice}</h4>
+																					</div>
+																									<button class="delete" onclick="addlike(${sessionmID},${productId})"><i class="fa fa-close"></i></button>
+																				</div>`)
+				})
+				likelist.innerHTML = likes.join("");
+				const howmanylike = data.count;
+			console.log(howmanylike);
+			showhowmanylike.innerHTML = howmanylike;
+
+			}
+
+		btnlikelist.addEventListener('click', () => {
+			console.log("點愛心之後抓id?", sessMemberId);
+			loadLike(sessMemberId);
+		});
+		async function deleteAllLLiked(event) {
+			event.preventDefault();
+			const url = `https://localhost:7160/api/TMemberLikes/dislikeall?mid=` + `${sessMemberId}`;
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const message = await response.text();
+			loadLike(sessMemberId);
+			alert(message);
+		}
+
+	</script>
+	<!--/登入後載入願望清單-->
+
+	<script src="~/js/jquery.min.js"></script>
+	<script src="~/js/bootstrap.min.js"></script>
+	<script src="~/js/slick.min.js"></script>
+	<script src="~/js/nouislider.min.js"></script>
+	<script src="~/js/jquery.zoom.min.js"></script>
+	<script src="~/js/main.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
