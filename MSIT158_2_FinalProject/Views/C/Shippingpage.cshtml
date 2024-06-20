@@ -171,6 +171,7 @@
                             function 結帳() {
                                 if (Number(money.innerHTML.replace("$", "")) == 0) {
                                     window.alert("購物車沒有任何商品")
+                                    location.href = '@Url.Content("~/HomePage/Search")'
                                     return
                                 }
                                 if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
@@ -189,6 +190,7 @@
                             function 結帳2() {
                                 if (Number(money.innerHTML.replace("$", "")) == 0) { 
                                     window.alert("購物車沒有任何商品")
+                                    location.href = '@Url.Content("~/HomePage/Search")'
                                     return
                                 }
                                 if (!emailRule.test(sele6.value) || sele5.value.length < 2 || sele4.value.length < 10 || sele3.value.length < 6) {
