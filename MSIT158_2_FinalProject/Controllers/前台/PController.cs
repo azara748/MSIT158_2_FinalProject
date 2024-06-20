@@ -49,7 +49,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
 		{
 			SelectShopContext db = new SelectShopContext();
 			var 此商品全部評價 = db.TReviews.Where(x => x.ProductId == a.pid).Join(db.TMembers, x => x.MemberId, y => y.MemberId, (x, y) =>
-			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto} ).OrderByDescending(x=>x.ReviewDate).Skip((a.page - 1) * 7).Take(7);
+			new { x.ReviewDate, x.RankId, x.Comment, y.MemberName, y.MemberPhoto,x.ReviewId} ).OrderByDescending(x=>x.ReviewDate).OrderByDescending(x => x.ReviewId).Skip((a.page - 1) * 7).Take(7);
 			return Json(此商品全部評價);
 		}
         public IActionResult addCartAPI([FromBody] TCart a)
