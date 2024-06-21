@@ -15,9 +15,19 @@
             <td style="vertical-align: middle;">訂單狀態</td>
             <td style="vertical-align: middle;">@s</td>
         </tr>
+        @{
+            string p = "";
+            if (string.IsNullOrEmpty(ViewBag.o.pay))
+                p = "貨到付款";
+            else if (ViewBag.o.pay == "Credit_CreditCard")
+                p = "信用卡";
+            else if (ViewBag.o.pay == "TWQR_OPAY")
+                p = "歐付寶";
+            else p = ViewBag.o.pay;
+        }
         <tr>          
             <td style="vertical-align: middle;">付款方式</td>
-            <td style="vertical-align: middle;">@ViewBag.o.pay</td>
+            <td style="vertical-align: middle;">@p</td>
             <td style="vertical-align: middle;">總價</td>
             <td style="vertical-align: middle;">@ViewBag.o.總價.ToString("0")</td>
         </tr>
