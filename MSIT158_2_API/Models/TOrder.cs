@@ -41,6 +41,8 @@ public partial class TOrder
 
     public bool? Reviewed { get; set; }
 
+    public string? MerchantTradeNo { get; set; }
+
     public string? PaymentType { get; set; }
 
     public decimal? Freight { get; set; }
