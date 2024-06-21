@@ -4,8 +4,8 @@
 <table class="table table-hover" style="font-size:32px">
     <tbody style="font-size=32px">
         <tr>
-            <td style="vertical-align: middle;">日期</td>
-            <td style="vertical-align: middle;">@ViewBag.o.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
+            <td style="vertical-align: middle;width:250px">日期</td>
+            <td style="vertical-align: middle;width:400px">@ViewBag.o.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
             @{
                 string s = "";
                 if (ViewBag.o.StatusId == 1) s = "未結帳";
@@ -15,43 +15,57 @@
             <td style="vertical-align: middle;">訂單狀態</td>
             <td style="vertical-align: middle;">@s</td>
         </tr>
-        <tr>
+        <tr>          
+            <td style="vertical-align: middle;">付款方式</td>
+            <td style="vertical-align: middle;">@ViewBag.o.pay</td>
             <td style="vertical-align: middle;">總價</td>
             <td style="vertical-align: middle;">@ViewBag.o.總價.ToString("0")</td>
-            <td style="vertical-align: middle;">件數</td>
-            <td style="vertical-align: middle;">@ViewBag.o.總數</td>
         </tr>
         <tr>
             <td style="vertical-align: middle;">運送方式</td>
             <td style="vertical-align: middle;">宅配</td>
-            <td style="vertical-align: middle;"></td>
-            <td style="vertical-align: middle;"></td>
+            <td style="vertical-align: middle;">運費</td>
+            <td style="vertical-align: middle;">@ViewBag.o.Freight.ToString("0")</td>
         </tr>
+
+
         @{
-            if (@ViewBag.o.Reviewed == null || @ViewBag.o.Reviewed)
+            if (ViewBag.o.Freight.ToString("0") == "0")
             {
                 <tr>
+                    <td style="vertical-align: middle;">優惠碼</td>
+                    <td style="vertical-align: middle;">父親節免運費</td>
                     <td style="vertical-align: middle;"></td>
                     <td style="vertical-align: middle;"></td>
+                </tr>
+            }          
+        }
+
+        <tr>
+            <td style="vertical-align: middle;"></td>
+            <td style="vertical-align: middle;"></td>
+            @{
+                if (@ViewBag.o.Reviewed == null || @ViewBag.o.Reviewed)
+                {
                     <td style="vertical-align: middle;"></td>
                     <td style="vertical-align: middle;">
                         已評價
                     </td>
-                </tr>
-            }
-            else if (@ViewBag.o.StatusId != 2) ;
-            else
-            {
-                <tr>
+                }
+                else if (ViewBag.o.StatusId != 2)
+                {
                     <td style="vertical-align: middle;"></td>
                     <td style="vertical-align: middle;"></td>
+                }
+                else
+                {
                     <td style="vertical-align: middle;"></td>
                     <td style="vertical-align: middle;">
                         <a href="~/M/Reviewepage/@ViewBag.o.OrderId" style="Text-decoration:underline;color:#EA0000;">評價</a>
                     </td>
-                </tr>
+                }
             }
-        }
+        </tr>
     </tbody>
 </table>
 
@@ -70,8 +84,8 @@
         {
             <tr>
                 <td>
-                <a href="~/P/Productpage/@v.ProductId">
-                    <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
+                    <a href="~/P/Productpage/@v.ProductId">
+                        <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
                     </a>
                 </td>
                 <td style="vertical-align: middle;"><a href="~/P/Productpage/@v.ProductId">@v.ProductName</a></td>

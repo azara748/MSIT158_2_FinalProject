@@ -15,7 +15,7 @@ public partial class TKeyword
 
     public string? Color { get; set; }
 
-    public string Tag { get; set; } = null!;
+    public string? Tag { get; set; }
 
     public virtual TProduct? Product { get; set; }
 }

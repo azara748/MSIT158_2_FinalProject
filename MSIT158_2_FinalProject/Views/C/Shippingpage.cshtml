@@ -41,6 +41,9 @@
                             <input class="input" type="tel" name="RecipientPhone" placeholder="連絡電話" id="sele4" oninput="確認4()">
                         </div>
                         <div class="form-group">
+                            <input class="input" type="tel" placeholder="優惠碼" id="code" oninput="ccode()">
+                        </div>
+                        @* <div class="form-group">
                             <div class="input-checkbox">
                                 <input type="checkbox" id="create-account">
                                 <div class="caption">
@@ -48,7 +51,7 @@
                                     <input class="input" type="password" name="password" placeholder="Enter Your Password">
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                     <!-- /Billing Details -->
                     <!-- Shiping Details -->
@@ -119,28 +122,32 @@
                             int pk = 0;
                             foreach (var item in ViewBag.會員購物車)
                             {
-                                            <div class="order-products" id='@("sp"+p)'>
-                                                <div class="order-col">
-                                                    <div>@item.Qty x @item.ProductName</div>
-                                                    <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
-                                                </div>
-                                        </div>
+                                                                    <div class="order-products" id='@("sp"+p)'>
+                                                                        <div class="order-col">
+                                                                            <div>@item.Qty x @item.ProductName</div>
+                                                                            <div>@Convert.ToInt32(item.UnitPrice * item.Qty)</div>
+                                                                        </div>
+                                                                </div>
                                 p++;
                             }
                             foreach (var item in ViewBag.會員購物車2)
                             {
-                                        <div class="order-products" id='@("spk"+pk)'>
-                                            <div class="order-col">
-                                                <div>@item.Qty x @item.PackName</div>
-                                                <div>@Convert.ToInt32(item.Price * item.Qty)</div>
-                                            </div>
-                                        </div>
+                                                                <div class="order-products" id='@("spk"+pk)'>
+                                                                    <div class="order-col">
+                                                                        <div>@item.Qty x @item.PackName</div>
+                                                                        <div>@Convert.ToInt32(item.Price * item.Qty)</div>
+                                                                    </div>
+                                                                </div>
                                 pk++;
                             }
                         }
                         <div class="order-col">
                             <div>運費</div>
-                            <div><strong>@ViewBag.運費</strong></div>
+                            <div><strong id="m2">@ViewBag.運費</strong></div>
+                        </div>
+                        <div class="order-col" id="code2" style="display:none">
+                            <div>父親節優惠</div>
+                            <div><strong>結帳不限金額免運費</strong></div>
                         </div>
                         <div class="order-col">
                             <div><strong>總計</strong></div>
@@ -162,14 +169,15 @@
                     <input type="hidden" value="@ViewBag.會員資料.EMail" id="EMail" />
                     <input type="hidden" value="@ViewBag.會員資料.Address" id="Address" />
                     <input type="hidden" value="" id="MemberPhoto" />
-                    <input type="hidden" value="@(ViewBag.總價 + ViewBag.運費)" name="CheckoutAmount" />
+                    <input type="hidden" value="@(ViewBag.總價 + ViewBag.運費)" name="CheckoutAmount" id="CheckoutAmount" />
+                    <input type="hidden" value="@ViewBag.運費" name="Freight" id="m3" />
                     @section scripts
                     {
                         <script src="~/taiwan_districts.js"></script>
                         <script>
                             var emailRule = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                             function 結帳() {
-                                if (Number(money.innerHTML.replace("$", "")) == 0) {
+                                if (Number(cartqty.innerHTML) == 0) {
                                     window.alert("購物車沒有任何商品")
                                     location.href = '@Url.Content("~/HomePage/Search")'
                                     return
@@ -188,7 +196,7 @@
                                 lode.style.display = 'block'
                             }
                             function 結帳2() {
-                                if (Number(money.innerHTML.replace("$", "")) == 0) { 
+                                if (Number(cartqty.innerHTML) == 0) {
                                     window.alert("購物車沒有任何商品")
                                     location.href = '@Url.Content("~/HomePage/Search")'
                                     return
@@ -297,10 +305,9 @@
                                 SUBTOTAL.innerHTML = '$' + 總價
                                 var 總價0 = Number(money.innerHTML.replace("$", "")) - Number(p * q)
                                 money.innerHTML = '$' + 總價0
+                                CheckoutAmount.value = 總價0
                                 cartqty.innerHTML = Number(cartqty.innerHTML) - 1
                                 Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
-                                all.innerHTML = '$' + 總價
-                                allw.innerHTML = '$' + (總價 + 運費)
                             }
                             async function dedet2(d, p, id, q) {
                                 if (!confirm("確定要刪除嗎?")) return
@@ -314,11 +321,30 @@
                                 SUBTOTAL.innerHTML = '$' + 總價
                                 var 總價0 = Number(money.innerHTML.replace("$", "")) - Number(p * q)
                                 money.innerHTML = '$' + 總價0
+                                CheckoutAmount.value = 總價0
                                 cartqty.innerHTML = Number(cartqty.innerHTML) - 1
-                                Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
-                                all.innerHTML = '$' + 總價
-                                allw.innerHTML = '$' + (總價 + 運費)
+                                Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"                            
                             }
+                            function ccode() {
+                                if (code.value.length > 9) {
+                                    code.style.borderColor = "green";
+                                    code2.style.display = "";
+                                    運費 = 0;
+                                    m2.innerHTML = 運費
+                                    m3.value = 運費
+                                    money.innerHTML = '$' + (總價 + 運費)
+                                    CheckoutAmount.value = (總價 + 運費)
+                                }
+                                else {
+                                    code2.style.display = "none";
+                                    運費 = 60;
+                                    m2.innerHTML = 運費
+                                    m3.value = 運費
+                                    money.innerHTML = '$' + (總價 + 運費)
+                                    CheckoutAmount.value = (總價 + 運費)
+                                }
+                            }
+                            console.log(運費)
                         </script>
                     }
                 </div>

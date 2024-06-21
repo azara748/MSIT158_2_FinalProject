@@ -45,6 +45,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
            Reviewed = o.Reviewed,
            Qty = p.Qty,
            UnitPrice = pro.UnitPrice,
+           Freight = o.Freight,
            Photo = pro.ProductPhoto,
            Photo2 = "",
            Name = pro.ProductName,
@@ -64,21 +65,23 @@ namespace MSIT158_2_FinalProject.Controllers.前台
               Reviewed = o.Reviewed,
               Qty = pkw.PackQty,
               UnitPrice = apk.Price,
+              Freight = o.Freight,
               Photo = (byte[])null,
               Photo2 = apk.Picture,
               Name = apk.PackName,
           };
 
             var v = v1.Union(v2)
-           .GroupBy(x => new { x.OrderId, x.OrderDate, x.StatusId, x.Reviewed })
+           .GroupBy(x => new { x.OrderId, x.OrderDate, x.StatusId, x.Reviewed,x.Freight})
            .Select(g => new
            {
                g.Key.OrderId,
                g.Key.OrderDate,
                g.Key.StatusId,
                g.Key.Reviewed,
+               Freight=g.Key.Freight==null? 0 : g.Key.Freight,
                總數 = g.Sum(x => x.Qty),
-               總價 = g.Sum(x => x.Qty * x.UnitPrice),
+               總價 = g.Sum(x => x.Qty * x.UnitPrice)+g.Key.Freight,
                name = g.FirstOrDefault().Name,
                圖片 = g.FirstOrDefault().Photo,
                圖片2 = g.FirstOrDefault().Photo2,
@@ -160,6 +163,8 @@ namespace MSIT158_2_FinalProject.Controllers.前台
           Qty = p.Qty,
           UnitPrice = pro.UnitPrice,
           Name = pro.ProductName,
+          Freight = o.Freight,
+          pay=o.PaymentType
       };
             var v2 =
           from o in db.TOrders
@@ -177,21 +182,24 @@ namespace MSIT158_2_FinalProject.Controllers.前台
               Qty = pkw.PackQty,
               UnitPrice = apk.Price,
               Name = apk.PackName,
+              Freight = o.Freight,
+              pay = o.PaymentType
           };
 
             var v = v1.Union(v2)
-           .GroupBy(x => new { x.OrderId, x.OrderDate, x.StatusId, x.Reviewed })
+           .GroupBy(x => new { x.OrderId, x.OrderDate, x.StatusId, x.Reviewed,x.Freight,x.pay })
            .Select(g => new
            {
                g.Key.OrderId,
                g.Key.OrderDate,
                g.Key.StatusId,
                g.Key.Reviewed,
+               Freight=g.Key.Freight==null?0: g.Key.Freight,
+               pay=g.Key.pay == null ? "貨到付款" : g.Key.pay,
                總數 = g.Sum(x => x.Qty),
-               總價 = g.Sum(x => x.Qty * x.UnitPrice),
+               總價 = g.Sum(x => x.Qty * x.UnitPrice)+g.Key.Freight,
                name = g.FirstOrDefault().Name,
            });
-
             ViewBag.o = v.FirstOrDefault();
             return View();
         }
@@ -229,7 +237,7 @@ namespace MSIT158_2_FinalProject.Controllers.前台
             foreach(var v in a)
             {
                 if(string.IsNullOrEmpty(id.Comment))break;
-                if (id.Comment.Contains(v.Word))
+                if (id.Comment.ToLower().Contains(v.Word.ToLower()))
                 {
                     return Content("no", "text/plain");
                 }
