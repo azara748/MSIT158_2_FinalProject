@@ -266,6 +266,7 @@
 @section Scripts
 {
     <script>
+		var currentPage = window.location.hash;
 		sessionStorage.setItem('redirectAfterLogin', window.location.href);
 		const sessionmID = Number(sessionStorage.getItem("mID"));
 		//搜尋框&按鈕
@@ -630,6 +631,42 @@
 			}
 
 			searchData.searchword = inpSearch.value;
+			searchData.subcatId = 0;
+			searchData.page = 1;
+			searchData.pagesSize = showhowmanypro.value;
+			searchData.sortBy = selectedSort[0];
+			searchData.sortType = selectedSort[1];
+			searchData.lowPrice = 1;
+			searchData.highPrice = 20000;
+			searchcriteria.textContent = `關鍵字:${searchData.searchword} 的所有產品`;
+			loadPro();
+		}
+		function onlyTxt2() {
+			if (advstarfour.checked) {
+				searchData.rankfour = true;
+			}
+			else {
+				searchData.rankfour = false;
+			}
+			if (advstarthree.checked) {
+				searchData.rankthree = true;
+			}
+			else {
+				searchData.rankthree = false;
+			}
+			if (advstock.checked) {
+				searchData.stock = true;
+			}
+			else { searchData.stock = false; }
+
+			if (advnewlan.checked) {
+				searchData.newlan = true;
+			}
+			else {
+				searchData.newlan = false;
+			}
+			const sessKeyword = sessionStorage.getItem("keyword");
+			searchData.searchword = sessKeyword;
 			searchData.subcatId = 0;
 			searchData.page = 1;
 			searchData.pagesSize = showhowmanypro.value;
