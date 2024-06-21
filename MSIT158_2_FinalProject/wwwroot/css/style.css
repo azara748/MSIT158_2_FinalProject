@@ -725,7 +725,7 @@ textarea.input {
   top: 0;
   bottom: 0;
   left: 0px;
-  width: 60%;
+  width: 22%;
   background: #D10024;
   opacity: 0.9;
   -webkit-transform: skewX(-45deg);
@@ -787,13 +787,13 @@ textarea.input {
 ===========================================================*/
 
 #hot-deal.section {
-  padding: 60px 0px;
-  margin: 30px 0px;
-  background-color: #E4E7ED;
-  background-image: url('../img/hotdeal.png');
-  background-position: center;
-  background-repeat: no-repeat;
+    padding: 20px 10px;
+    margin: 10px 0px;
+    background-color: #E4E7ED;
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
 
 .hot-deal {
   text-align: center;

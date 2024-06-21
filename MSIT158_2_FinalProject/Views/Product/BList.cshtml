@@ -535,13 +535,13 @@
                                             <div class="card">
                                             <div class="card-header pb-0">
                                             <div class="d-flex align-items-center">
-                                            <p class="mb-0">商品資訊</p>
-                                                        <button class="btn btn-primary btn-sm ms-auto" onclick="saveChange(${productId})">修改並儲存</button>
+                                                    <h4>修改商品</h4>
                                                                                                            <button class="btn btn-primary btn-sm ms-auto" onclick="giveupUpdate()">放棄修改</button>
+                                                        <button class="btn btn-primary btn-sm ms-auto" onclick="saveChange(${productId})">修改並儲存</button>
                                                         </div>
                                             </div>
                                             <div class="card-body">
-                                              <p class="text-uppercase text-sm">修改商品</p>
+                                              <p class="text-uppercase text-sm">請修改商品資訊</p>
                                               <div class="row">
                                                <div class="col-md-6">
                                                 <div class="form-group">
@@ -664,15 +664,16 @@
             //修改並儲存
             const saveChange = async (id) => {
                 const saveUPData = {
-                    "productName": document.getElementById('newName').value,
-                    "stocks": document.getElementById('newStocks').value,
-                    "labelId": document.getElementById('selectLabel').value,
-                    "subCategoryId": document.getElementById('selectSub').value,
-                    "unitPrice": document.getElementById('newUnit').value,
-                    "cost": document.getElementById('newCost').value,
-                    "description": document.getElementById('newDes').value,
-                    "lanchTime": document.getElementById('newLantime').value,
-                        "productphoto": Updateprophoto
+                "productName": document.getElementById('newName').value,
+                "stocks": document.getElementById('newStocks').value,
+                "labelId": document.getElementById('selectLabel').value,
+                "subCategoryId": document.getElementById('selectSub').value,
+                "unitPrice": document.getElementById('newUnit').value,
+                "cost": document.getElementById('newCost').value,
+                "description": document.getElementById('newDes').value,
+                "lanchTime": document.getElementById('newLantime').value,
+                "status": document.getElementById('newStatus').value,
+                "productphoto": Updateprophoto
                 };
                 console.log("修改存檔", saveUPData);
                 const urlup = 'https://localhost:7160/api/BackProduct/UpdateBackProduct?id=' + `${id}`;

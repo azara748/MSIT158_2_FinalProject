@@ -14,6 +14,10 @@ namespace MSIT158_2_FinalProject.Controllers.Front
 			ViewBag.Id = id;
 			return View();
 		}
+        public IActionResult RealHome()
+        {
+            return View();
+        }
 
-	}
+    }
 }

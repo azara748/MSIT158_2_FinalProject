@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "_Layout_Front";
 }
+<!-- 存檔測試 -->
 <!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
 	<!-- container -->
@@ -498,9 +499,8 @@
 											${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
 							</div>
 							<div class="product-btns">
-																								<button class="add-to-wishlist" id="likebtn${productId}"  onclick="addlike(${sessionmID},${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
-								<button class="add-to-compare"><i class="fas fa-share-from-square"></i><span class="tooltipp">分享商品</span></button>
-										<button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+							<button class="add-to-wishlist" id="likebtn${productId}"  onclick="addlike(${sessionmID},${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+							<button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
 								</div>
 								</div>
 								<div class="add-to-cart">

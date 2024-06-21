@@ -14,6 +14,7 @@ using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MSIT158_2_API.Controllers.Front
 {
@@ -96,7 +97,7 @@ namespace MSIT158_2_API.Controllers.Front
 		public async Task<ActionResult<ShowProductDTO>> GetProductBySearch(SearchProductDTO searchProductDTO)
 		{
 
-			var query = _context.TProducts
+			var query = _context.TProducts.Where(p => p.Status ==1)
 						.Include(p => p.SubCategory)
 						.Include(p => p.Active)
 						.Include(p => p.Label)
@@ -128,34 +129,15 @@ namespace MSIT158_2_API.Controllers.Front
                 query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime, currentDate) < 30);
 
 			}
-			//if (searchProductDTO.newlan)
-   //         {
-   //             //判斷是否小於60天
-   //             //query = query.Where(p => p.LaunchTime > 2024-)
-   //             DateTime now = DateTime.Now;
-   //             string currentDate = now.ToString("yyyy/MM/dd");
-   //             string birthday = "1988/06/08";
-   //             int daysUntilBirthday = CalculateDaysUntilBirthday(currentDate, birthday);
-			//	if (daysUntilBirthday < 60) { 
-					
-			//	}
-   //         }
-
-
 
             if (searchProductDTO.rankfour)
 			{
-
 				query = query.Where(p => p.TReviews.Average(x => x.RankId)>=4);
-
-
 			}
 			if (searchProductDTO.rankthree)
 			{
 				query = query.Where(p => p.TReviews.Average(x => x.RankId) >= 3);
-
 			}
-
 
 			//排序_
 			switch (searchProductDTO.sortBy)
@@ -186,8 +168,7 @@ namespace MSIT158_2_API.Controllers.Front
 				//	query = searchProductDTO.sortType == "asc" ? query.OrderBy(s => s.ProductId) : query.OrderByDescending(s => s.ProductId);
 				//	break;
 			}
-			
-			
+					
 			
 			//計算評分	
 			int totalCount = query.Count();
@@ -221,8 +202,44 @@ namespace MSIT158_2_API.Controllers.Front
 
 		}
 
-        // DELETE: api/SearchProduct/5
-        [HttpDelete("{id}")]
+		//[HttpPost("TOP3SalePro")]
+		//public async Task<ActionResult<ShowProductDTO>> TOP3SalePro()
+		//{
+		//	var query = _context.TProducts.Include(p => p.TPurchases).AsQueryable();
+		//	query = query.Take(3).OrderByDescending(s => s.TPurchases.Sum(p => p.Qty));
+		//	var showProductDTOs = new ShowProductDTO
+		//	{ 
+		//		ProductName = query.ProductName,
+		//		Productphoto = query.ProductPhoto
+		//	}
+		//	return Ok(showProductDTOs);
+		//}
+		[HttpPost("TOP3SalePro")]
+		public async Task<ActionResult<List<ShowProductDTO>>> TOP3SalePro()
+		{
+			var query = _context.TProducts
+				.Include(p => p.TPurchases)
+				.Select(p => new
+				{
+					Product = p,
+					TotalQty = p.TPurchases.Sum(pur => pur.Qty)
+				})
+				.OrderByDescending(x => x.TotalQty)
+				.Take(3);
+
+			var result = await query
+				.Select(x => new ShowProductDTO
+				{
+					ProductName = x.Product.ProductName,
+					Productphoto = x.Product.ProductPhoto,
+					ProductId = x.Product.ProductId,
+				})
+				.ToListAsync();
+
+			return Ok(result);
+		}
+		// DELETE: api/SearchProduct/5
+		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteTProduct(int id)
 		{
 			var tProduct = await _context.TProducts.FindAsync(id);
