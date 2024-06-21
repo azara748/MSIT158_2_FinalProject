@@ -483,17 +483,14 @@
 			const inputElement = document.getElementById("idinputsearch");
 			const keywordValue = inputElement.value;
 			sessionStorage.setItem("keyword", keywordValue);
-
-			let currentPath = false;
-
-		if (currentPath === true) {
-			Change();
-				alert("在搜尋");
-		}
-		else if (currentPath === false) {
-			window.location.href = '/HomePage/Search';
-			alert("不在搜尋頁面所以跳到搜尋!!");
-		}
+			var currentPath = window.location.pathname;
+			if (currentPath === '/HomePage/Search') {
+				Change();
+			}
+			else if (currentPath === '/') {
+				window.location.href = '/HomePage/Search';
+			}
+			
 	
 	});
 		window.onload = function () {
@@ -504,7 +501,6 @@
 
 		function layoutSearch() {
 			onlyTxt2();
-			alert("onlyTxt");
 		}
 
 	</script>
