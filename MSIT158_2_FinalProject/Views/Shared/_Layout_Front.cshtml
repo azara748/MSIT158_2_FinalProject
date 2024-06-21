@@ -45,12 +45,9 @@
 			<div class="container">
 				<ul class="header-links pull-left">
 
-					<li><a href="#"><i class="fa fa-home"></i>首頁</a></li>
-					<li><a href="#"><i class="fa fa-gamepad"></i>本期活動</a></li>
-					<li><a href="#"><i class="fa fa-thumbs-up"></i>推薦商品</a></li>
-					<li><a href="#"><i class="fa fa-fire"></i>熱門主題</a></li>
+					<li><a href="https://localhost:7066/"><i class="fa fa-home"></i>首頁</a></li>
+					<li><a href="#"><i class="fa fa-gamepad"></i>活動資訊</a></li>
 					<li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
-					<li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
 				</ul>
 				<ul class="header-links pull-right">
 					@* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
@@ -91,7 +88,7 @@
 					<div class="col-md-6">
 						<div class="header-search" id="idform">
 							<form id="idform">
-								<input class="input" id="idinputsearch" placeholder="好物搜尋...">
+								<input class="input"  id="idinputsearch" placeholder="好物搜尋...">
 								<button class="search-btn" id="idsearchButton">搜尋</button>
 							</form>
 						</div>
@@ -476,7 +473,24 @@
 			loadLike(sessMemberId);
 			alert(message);
 		}
+	</script>
+	<script>
+	function jumptoSearch() {
+	window.alert("轉跳到搜尋頁面");
+	var searchUrl = '@Url.Content("~/HomePage/Search")';
+	location.href = searchUrl;
+	};
 
+	document.getElementById('idform').addEventListener('submit', function (event) {
+	event.preventDefault();
+	var searchQuery = document.getElementById('idinputsearch').value;
+	if (searchQuery) {
+	jumptoSearch();
+	window.alert("搜尋"+searchQuery+"相關商品");
+	} else {
+	alert('請輸入搜尋內容');
+	}
+	});
 	</script>
 	<!--/登入後載入願望清單-->
 

@@ -664,26 +664,16 @@
             //修改並儲存
             const saveChange = async (id) => {
                 const saveUPData = {
-                "productName": "香氛系列",
-                "stocks": 10,
-                "labelId": 26,
-                "subCategoryId": 5,
-                "unitPrice": 777,
-                "cost": 500,
-                "description": null,
-                        "lanchTime": document.getElementById('newLantime').value,
-                "status": 1,
-                 "productphoto": null
-                    // "productName": document.getElementById('newName').value,
-                    // "stocks": document.getElementById('newStocks').value,
-                    // "labelId": document.getElementById('selectLabel').value,
-                    // "subCategoryId": document.getElementById('selectSub').value,
-                    // "unitPrice": document.getElementById('newUnit').value,
-                    // "cost": document.getElementById('newCost').value,
-                    // "description": document.getElementById('newDes').value,
-                    // "lanchTime": document.getElementById('newLantime').value,
-                    // "status": document.getElementById('newStatus').value,
-                    //  "productphoto": Updateprophoto
+                "productName": document.getElementById('newName').value,
+                "stocks": document.getElementById('newStocks').value,
+                "labelId": document.getElementById('selectLabel').value,
+                "subCategoryId": document.getElementById('selectSub').value,
+                "unitPrice": document.getElementById('newUnit').value,
+                "cost": document.getElementById('newCost').value,
+                "description": document.getElementById('newDes').value,
+                "lanchTime": document.getElementById('newLantime').value,
+                "status": document.getElementById('newStatus').value,
+                "productphoto": Updateprophoto
                 };
                 console.log("修改存檔", saveUPData);
                 const urlup = 'https://localhost:7160/api/BackProduct/UpdateBackProduct?id=' + `${id}`;
