@@ -41,6 +41,10 @@ public partial class TOrder
 
     public bool? Reviewed { get; set; }
 
+    public string? PaymentType { get; set; }
+
+    public decimal? Freight { get; set; }
+
     public virtual TMember? Member { get; set; }
 
     public virtual TStatus? Status { get; set; }

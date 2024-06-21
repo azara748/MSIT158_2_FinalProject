@@ -14,12 +14,12 @@ namespace MSIT158_2_FinalProject.Controllers.後台
             if (delect == "delect")
             {
                 if (x != "ProductName")
-                    db.TReviews.Where(x => x.Comment.Contains(keyword)).ExecuteDelete();
+                    db.TReviews.Where(x => x.Comment.ToLower().Contains(keyword.ToLower())).ExecuteDelete();
                 else
                 {
-                    var xx = db.TProducts.FirstOrDefault(x => x.ProductName.Contains(keyword));
-
-                    db.TReviews.Where(x => x.ProductId == xx.ProductId).ExecuteDelete();
+                    var xx = db.TProducts.Where(x => x.ProductName.ToLower().Contains(keyword.ToLower())).ToList();
+                    foreach(var xxx in xx)
+                    db.TReviews.Where(x => x.ProductId == xxx.ProductId).ExecuteDelete();
                 }
                 db.SaveChanges();
             }
@@ -27,7 +27,7 @@ namespace MSIT158_2_FinalProject.Controllers.後台
 
 
             var v = db.TReviews.Join(db.TProducts, x => x.ProductId, y => y.ProductId, (x, y) =>
-            new { y.ProductPhoto, y.ProductName, x.ReviewDate, x.RankId, x.Comment, x.ReviewId,x.ProductId });
+            new { y.ProductPhoto, y.ProductName, x.ReviewDate, x.RankId, x.Comment, x.ReviewId,x.ProductId});
 
             ViewBag.x = "";
 
@@ -36,12 +36,12 @@ namespace MSIT158_2_FinalProject.Controllers.後台
                 if (x == "ProductName")
                 {
                     //var name = db.TProducts.FirstOrDefault(x=>x.ProductId==v.)
-                    v = v.Where(x => x.ProductName.Contains(keyword));
+                    v = v.Where(x => x.ProductName.ToLower().Contains(keyword.ToLower()));
                     ViewBag.x = "";
                 }
                 else
                 {
-                    v = v.Where(x => x.Comment.Contains(keyword));
+                    v = v.Where(x => x.Comment.ToLower().Contains(keyword.ToLower()));
                     ViewBag.x = "Comment";
                 }
             }
@@ -56,8 +56,8 @@ namespace MSIT158_2_FinalProject.Controllers.後台
             if (ode == 0) v = v.OrderByDescending(x => x.ReviewId);
             else if (ode == 1) v = v.OrderByDescending(x => x.RankId);
             else if (ode == 2) v = v.OrderBy(x => x.RankId);
-            else if (ode == 3) v = v.OrderByDescending(x => x.ReviewDate);
-            else if (ode == 4) v = v.OrderBy(x => x.ReviewDate);
+            else if (ode == 3) v = v.OrderByDescending(x => x.ReviewDate).OrderByDescending(x => x.ReviewId);
+            else if (ode == 4) v = v.OrderBy(x => x.ReviewId).OrderBy(x => x.ReviewDate);
             ViewBag.ode = ode;
 
             int 顯示數 = 25;
@@ -85,7 +85,7 @@ namespace MSIT158_2_FinalProject.Controllers.後台
             SelectShopContext db = new SelectShopContext();
             IEnumerable<TWordCensorship> a = db.TWordCensorships.OrderByDescending(x=>x.WordCensorshipId);
             if (!string.IsNullOrEmpty(keyword))
-                a =a.Where(x => x.Word.Contains(keyword));
+                a =a.Where(x => x.Word.ToLower().Contains(keyword.ToLower()));
             return View(a);
         }
         public IActionResult addWordCensorship2(string word)
