@@ -41,7 +41,7 @@
                             <input class="input" type="tel" name="RecipientPhone" placeholder="連絡電話" id="sele4" oninput="確認4()">
                         </div>
                         <div class="form-group">
-                            <input class="input" type="tel" placeholder="優惠碼" id="code" oninput="ccode()">
+                            <input class="input" type="tel" placeholder="優惠碼" id="code" oninput="ccode()" autocomplete="off">
                         </div>
                         @* <div class="form-group">
                             <div class="input-checkbox">
@@ -337,6 +337,7 @@
                                 }
                                 else {
                                     code2.style.display = "none";
+                                    code.style.borderColor = "red";
                                     運費 = 60;
                                     m2.innerHTML = 運費
                                     m3.value = 運費
