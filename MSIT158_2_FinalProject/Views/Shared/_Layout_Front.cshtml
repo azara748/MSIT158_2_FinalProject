@@ -484,18 +484,16 @@
 			const keywordValue = inputElement.value;
 			sessionStorage.setItem("keyword", keywordValue);
 
-			var currentPath = window.location.pathname;
-			//如果在搜尋就搜尋
-			if (currentPath === '/HomePage/Search') {
-				Change();
+			let currentPath = false;
 
-			} else {
-				//其他都要跳到搜尋
-				window.location.href = '/HomePage/Search';
-				alert("不在搜尋頁面所以跳到搜尋!!");
-				//儲存關鍵字!!!!!!!!!!
-
-			}
+		if (currentPath === true) {
+			Change();
+				alert("在搜尋");
+		}
+		else if (currentPath === false) {
+			window.location.href = '/HomePage/Search';
+			alert("不在搜尋頁面所以跳到搜尋!!");
+		}
 	
 	});
 		window.onload = function () {
