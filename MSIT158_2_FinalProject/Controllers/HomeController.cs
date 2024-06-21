@@ -117,22 +117,21 @@ namespace MSIT158_2_FinalProject.Controllers
                 productname += field.ToString();
                 productname += " #";
             }
+            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+
+
             // 修改訂單狀態 將StatusID改成2
             var orderToUpdate = _context.TOrders.FirstOrDefault(o => o.OrderId == oid);
             if (orderToUpdate != null)
             {
                 orderToUpdate.StatusId = 2;
+                orderToUpdate.MerchantTradeNo = orderId;
                 _context.SaveChanges();
             }
-
-
-
-            int cash = 1000;
-            var orderId = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
             //需填入你的網址
             var website = $"https://localhost:7066";
             var Apiweb = "https://localhost:7160";
-            var ngrok = "https://cfc4-1-160-2-62.ngrok-free.app";
+            var ngrok = "https://dc02-1-160-2-62.ngrok-free.app";
             var order = new Dictionary<string, string>
     {
         //綠界需要的參數

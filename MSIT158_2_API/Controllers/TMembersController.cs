@@ -540,6 +540,12 @@ namespace MSIT158_2_API.Controllers
             string value6 = element6.Value; // [PaymentDate, 2024/06/20 15:10:25]
             string value7 = element7.Value; // [PaymentType, Credit_CreditCard]
             string value10 = element10.Value; // [RtnMsg, 交易成功]
+            string value5 = ecPayData.ElementAt(5).Value; // [MerchantTradeNo, 603e85fcf33642d4b1ca]
+            var o = _context.TOrders.FirstOrDefault(x=>x.MerchantTradeNo == value5);
+            if (o == null)
+                return BadRequest(new { message = "綠界訂單編號不一致" });
+            o.PaymentType = value7;
+            await _context.SaveChangesAsync();
 
             return Ok(new { message = "確認成功", value7 });
         }

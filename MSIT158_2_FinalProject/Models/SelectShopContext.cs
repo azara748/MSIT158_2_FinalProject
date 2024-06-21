@@ -17,6 +17,8 @@ public partial class SelectShopContext : DbContext
 
     public virtual DbSet<TActive> TActives { get; set; }
 
+    public virtual DbSet<TActiveImage> TActiveImages { get; set; }
+
     public virtual DbSet<TAllPackage> TAllPackages { get; set; }
 
     public virtual DbSet<TAppraisal> TAppraisals { get; set; }
@@ -85,6 +87,15 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.Discount).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TActiveImage>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("tActiveImage");
+
+            entity.Property(e => e.ImageId).ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<TAllPackage>(entity =>
@@ -192,9 +203,7 @@ public partial class SelectShopContext : DbContext
 
             entity.ToTable("tKeyword");
 
-            entity.Property(e => e.TagId)
-                .ValueGeneratedNever()
-                .HasColumnName("TagID");
+            entity.Property(e => e.TagId).HasColumnName("TagID");
             entity.Property(e => e.Color)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -301,12 +310,15 @@ public partial class SelectShopContext : DbContext
             entity.Property(e => e.CheckoutAmount).HasColumnType("money");
             entity.Property(e => e.City).HasMaxLength(50);
             entity.Property(e => e.District).HasMaxLength(50);
+            entity.Property(e => e.Freight).HasColumnType("money");
             entity.Property(e => e.Gui)
                 .HasMaxLength(10)
                 .HasColumnName("GUI");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.Memo).HasMaxLength(50);
+            entity.Property(e => e.MerchantTradeNo).HasMaxLength(50);
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentType).HasMaxLength(50);
             entity.Property(e => e.RecMemberId).HasColumnName("RecMemberID");
             entity.Property(e => e.RecipientEamil).HasMaxLength(50);
             entity.Property(e => e.RecipientName).HasMaxLength(50);
