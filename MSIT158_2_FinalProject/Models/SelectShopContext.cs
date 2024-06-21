@@ -316,6 +316,7 @@ public partial class SelectShopContext : DbContext
                 .HasColumnName("GUI");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.Memo).HasMaxLength(50);
+            entity.Property(e => e.MerchantTradeNo).HasMaxLength(50);
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentType).HasMaxLength(50);
             entity.Property(e => e.RecMemberId).HasColumnName("RecMemberID");
