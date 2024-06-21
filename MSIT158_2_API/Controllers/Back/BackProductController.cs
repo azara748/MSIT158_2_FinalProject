@@ -244,21 +244,19 @@ namespace MSIT158_2_API.Controllers.Back
         [HttpPost("UpdateBackProduct")]
         public async Task<ActionResult<ProductShowDTO>> UpdateTProduct(int id, AddProductDTO addProductDTO)
         {
- //把資料庫裡面那一筆的資料抓出來
-                var product = await _context.TProducts.FirstOrDefaultAsync(x => x.ProductId == id);
-            ////改新的
+            var product = await _context.TProducts.FirstOrDefaultAsync(x => x.ProductId == id);
             byte[] imageBytes = Convert.FromBase64String(addProductDTO.Productphoto);
-                    // 更新產品資料
-                    product.ProductName = addProductDTO.ProductName;
+            product.ProductName = addProductDTO.ProductName;
             product.UnitPrice = addProductDTO.UnitPrice;
             product.Stocks = addProductDTO.Stocks;
             product.SubCategoryId = addProductDTO.SubCategoryId;
             product.LabelId = addProductDTO.LabelId;
             product.Cost = addProductDTO.Cost;
             product.Description = addProductDTO.Description;
-            product.ProductPhoto = null;
             product.LaunchTime =addProductDTO.LanchTime;
             product.Status = addProductDTO.status;
+            product.ProductPhoto = imageBytes;
+
 
             // 嘗試保存更改
             await _context.SaveChangesAsync();

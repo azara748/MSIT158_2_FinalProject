@@ -14,6 +14,7 @@ using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MSIT158_2_API.Controllers.Front
 {
@@ -201,8 +202,44 @@ namespace MSIT158_2_API.Controllers.Front
 
 		}
 
-        // DELETE: api/SearchProduct/5
-        [HttpDelete("{id}")]
+		//[HttpPost("TOP3SalePro")]
+		//public async Task<ActionResult<ShowProductDTO>> TOP3SalePro()
+		//{
+		//	var query = _context.TProducts.Include(p => p.TPurchases).AsQueryable();
+		//	query = query.Take(3).OrderByDescending(s => s.TPurchases.Sum(p => p.Qty));
+		//	var showProductDTOs = new ShowProductDTO
+		//	{ 
+		//		ProductName = query.ProductName,
+		//		Productphoto = query.ProductPhoto
+		//	}
+		//	return Ok(showProductDTOs);
+		//}
+		[HttpPost("TOP3SalePro")]
+		public async Task<ActionResult<List<ShowProductDTO>>> TOP3SalePro()
+		{
+			var query = _context.TProducts
+				.Include(p => p.TPurchases)
+				.Select(p => new
+				{
+					Product = p,
+					TotalQty = p.TPurchases.Sum(pur => pur.Qty)
+				})
+				.OrderByDescending(x => x.TotalQty)
+				.Take(3);
+
+			var result = await query
+				.Select(x => new ShowProductDTO
+				{
+					ProductName = x.Product.ProductName,
+					Productphoto = x.Product.ProductPhoto,
+					ProductId = x.Product.ProductId,
+				})
+				.ToListAsync();
+
+			return Ok(result);
+		}
+		// DELETE: api/SearchProduct/5
+		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteTProduct(int id)
 		{
 			var tProduct = await _context.TProducts.FindAsync(id);
