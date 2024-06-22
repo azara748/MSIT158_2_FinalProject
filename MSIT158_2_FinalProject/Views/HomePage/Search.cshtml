@@ -266,8 +266,9 @@
 @section Scripts
 {
     <script>
-		sessionStorage.setItem('redirectAfterLogin', window.location.href);
 		const sessionmID = Number(sessionStorage.getItem("mID"));
+
+		sessionStorage.setItem('redirectAfterLogin', window.location.href);
 		//搜尋框&按鈕
 		const form = document.getElementById('idform');
 		const inpSearch = document.getElementById('idinputsearch');
@@ -287,11 +288,13 @@
 		const Lbar = document.getElementById('price-min');
 		const Low = document.querySelector('.noUi-handle-lower');
 		const High = document.querySelector('.noUi-handle-upper');
+		let _keyword = '';
 		function priceChange() {
 			searchData.lowPrice = Lbar.value;
 			searchData.highPrice = Hbar.value;
 			console.log('pricebar', Hbar.value);
 			console.log('pricebar', Lbar.value);
+			_keyword = "value";
 		}
 		Lbar.addEventListener('blur', priceChange);
 		Hbar.addEventListener('blur', priceChange);
@@ -572,14 +575,8 @@
 
 		//一開始就執行
 		loadPro();
-		//loadLike();
-		//加到心儀
-		// function showlikelist() {
-		// 	btnlikelist.click(); 
-		// 	console.log("有嬤有嬤");
-		// }
-
 			const addlike = async (mMemberId, mProductId) => {
+				const keepAddLike = sessionStorage.setItem("keepLikeID", mProductId);
 				if (mMemberId == 0)
 				{
 					location.href = `@Url.Content("~/HOME/Login")`;
@@ -602,7 +599,13 @@
 			}
 			//addlike(sessionmID, mProductId);
 
-		
+		if (sessionmID > 0) {
+			const getkeeplike = sessionStorage.getItem("keepLikeID");
+			if (getkeeplike) {
+				addlike(sessionmID, getkeeplike);
+				sessionStorage.removeItem("keepLikeID");
+			}
+		}
 				//輸入文字後
 		function onlyTxt() {
 			if (advstarfour.checked) {

@@ -476,23 +476,23 @@
 		}
 	</script>
 	<script>
-	document.getElementById('idform').addEventListener('submit', function (event) {
-	event.preventDefault();
-	//當前位置
+        document.getElementById('idform').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const inputElement = document.getElementById("idinputsearch");
+            const keywordValue = inputElement.value;
+            console.log('test' + keywordValue);
+            sessionStorage.setItem("keyword", keywordValue);
+            var currentPath = window.location.pathname;
+            // if (keywordValue) {
+                if (currentPath === '/HomePage/Search') {
+                    Change();
+                }
+                else if (currentPath === '/') {
+                    window.location.href = '/HomePage/Search';
+                }
+            
 
-			const inputElement = document.getElementById("idinputsearch");
-			const keywordValue = inputElement.value;
-			sessionStorage.setItem("keyword", keywordValue);
-			var currentPath = window.location.pathname;
-			if (currentPath === '/HomePage/Search') {
-				Change();
-			}
-			else if (currentPath === '/') {
-				window.location.href = '/HomePage/Search';
-			}
-			
-	
-	});
+        });
 		window.onload = function () {
 			if (window.location.pathname === '/HomePage/Search') {
 				layoutSearch();

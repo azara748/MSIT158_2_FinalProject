@@ -85,7 +85,7 @@
     </form>
 </div>
 @* 登入輸入end *@
-
+<input  type=""/>
 
 @section Scripts{
     <script type="module">
@@ -238,7 +238,9 @@
                         console.log("test3");
                         console.log(JnamesB);
                         if (confirm(`${JnamesB}\n${JemailsB}\n確定要登入嗎!`)) {
-                            window.location.href = '@Url.Content("~/HomePage/Search")';
+                            const toOriginalPage = sessionStorage.getItem("redirectAfterLogin");
+                            alert(toOriginalPage);
+                            window.location.href = toOriginalPage;
                         }
                     }
                 };
@@ -313,7 +315,9 @@
 
                     if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);
-                        window.location.href = '@Url.Content("~/HomePage/Search")';
+                        const toOriginalPage = sessionStorage.getItem("redirectAfterLogin");
+                        alert(toOriginalPage);
+                        window.location.href = toOriginalPage;
                     }
                 }
 
