@@ -381,6 +381,7 @@
 			if (confirm("確定登出嗎！")) {
 				signOut(auth).then(() => {
 					alert("你已成功登出！");
+					sessionStorage.removeItem("mID");
 				}).catch((error) => {
 					console.error('登出時出錯:', error);
 				});

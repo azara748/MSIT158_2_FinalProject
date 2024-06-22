@@ -50,8 +50,6 @@
 					<li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
 				</ul>
 				<ul class="header-links pull-right">
-					@* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
-					<li><a href="#"><i class="fa fa-dollar"></i>全館標示價格均為新台幣</a></li> *@
 					<!-- ///////////////////////////////////////////////////////////  -->
 					<li><a id="idshowmember1" class="fa fa-user-o" href="~/Home/Login">未登入</a></li>
 					<li><button id="idsignOutButton1" class="fa fa-user-o">登出</button></li>					
@@ -108,8 +106,9 @@
 									<div class="cart-list" id="idlikelist">
 									</div>
 									<div class="cart-btns">
+										<a>共<span id="totalike"></span>個願望</a>
 										<a onclick="deleteAllLLiked(event)">刪除全部</a>
-										<a href="#">TBC <i class="fa fa-arrow-circle-right"></i></a>
+@* 										<a href="#">TBC <i class="fa fa-arrow-circle-right"></i></a> *@
 									</div>
 								</div>
 							</div>
@@ -421,6 +420,7 @@
 		const sessMemberId = Number(sessionStorage.getItem("mID"));
 		const sessKeyword = Number(sessionStorage.getItem("keyword"));
 		const showhowmanylike = document.getElementById('likeqty');
+		const counttotalliked = document.getElementById('totalike');
 		const loadLike = async (id) => {
 			if (id == 0) {
 					  alert("欲查看願望清單 請先登入會員!!");
@@ -451,8 +451,9 @@
 				})
 				likelist.innerHTML = likes.join("");
 				const howmanylike = data.count;
-			console.log(howmanylike);
+			const blackhowmanylike = data.count;
 			showhowmanylike.innerHTML = howmanylike;
+			counttotalliked.innerHTML = blackhowmanylike;
 
 			}
 
@@ -480,28 +481,23 @@
             event.preventDefault();
             const inputElement = document.getElementById("idinputsearch");
             const keywordValue = inputElement.value;
-            console.log('test' + keywordValue);
             sessionStorage.setItem("keyword", keywordValue);
             var currentPath = window.location.pathname;
-            // if (keywordValue) {
-                if (currentPath === '/HomePage/Search') {
-                    Change();
-                }
-                else if (currentPath === '/') {
-                    window.location.href = '/HomePage/Search';
-                }
-            
-
+			if (currentPath === '/HomePage/Search') {
+				Change();
+			}
+			else if (currentPath === '/') {
+				window.location.href = '/HomePage/Search';
+			}
+			else if (currentPath === '/HomePage/RealHome') {
+				window.location.href = '/HomePage/Search';
+			}
         });
 		window.onload = function () {
 			if (window.location.pathname === '/HomePage/Search') {
-				layoutSearch();
+				onlyTxt2();
 			}
 		};
-
-		function layoutSearch() {
-			onlyTxt2();
-		}
 
 	</script>
 	<!--/登入後載入願望清單-->

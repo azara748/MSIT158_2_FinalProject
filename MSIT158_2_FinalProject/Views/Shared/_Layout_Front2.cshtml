@@ -45,13 +45,9 @@
 		<div id="top-header">
 			<div class="container">
 				<ul class="header-links pull-left">
-
-					<li><a href="#"><i class="fa fa-home"></i>首頁</a></li>
-					<li><a href="#"><i class="fa fa-gamepad"></i>本期活動</a></li>
-					<li><a href="#"><i class="fa fa-thumbs-up"></i>推薦商品</a></li>
-					<li><a href="#"><i class="fa fa-fire"></i>熱門主題</a></li>
+					<li><a href="https://localhost:7066/"><i class="fa fa-home"></i>首頁</a></li>
+					<li><a href="#"><i class="fa fa-gamepad"></i>活動資訊</a></li>
 					<li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
-					<li><a href="#"><i class="fa fa-exchange"></i>交換禮物</a></li>
 				</ul>
 				<ul class="header-links pull-right">
 					@* <li><a href="#"><i class="fa fa-user-o"></i>會員登入</a></li>
@@ -107,7 +103,7 @@
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="btnlikelist">
 									<i class="fa fa-heart-o"></i>
 									<span>願望清單</span>
-									<div class="qty">3</div>
+									<div class="qty">♥</div>
 								</a>
 								<div class="cart-dropdown">
 									<div class="cart-list" id="idlikelist">
@@ -206,18 +202,6 @@
 		<!-- container -->
 		<div class="container">
 			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<div class="newsletter">
-						<p><strong>訂閱電子報</strong></p>
-						<span>即可獲得最新的折扣資訊、限時優惠、免費運送及特價商品通知。不要錯過網路購物平台的超值好康！</span>
-						<form>
-							<input class="input" type="email" placeholder="輸入 Email 完成訂閱">
-							<button class="newsletter-btn"><i class="fa fa-envelope"></i>訂閱</button>
-						</form>
-					</div>
-				</div>
-			</div>
 			<!-- /row -->
 		</div>
 		<!-- /container -->
@@ -260,7 +244,8 @@
 					<div class="clearfix visible-xs"></div>
 					<div class="col-md-3 col-xs-6">
 						<div class="footer">
-							<h3 class="footer-title">物流合作</h3>
+							<h3 class="footer-title">贊助廠商</h3>
+							<img src="~/img/ispan.png" width="45px" height="30px" style="border-radius: 8%;" />
 						</div>
 					</div>
 					<div class="clearfix visible-xs"></div>
@@ -385,6 +370,7 @@
 			if (confirm("確定登出嗎！")) {
 				signOut(auth).then(() => {
 					alert("你已成功登出！");
+					sessionStorage.removeItem("mID");
 				}).catch((error) => {
 					console.error('登出時出錯:', error);
 				});

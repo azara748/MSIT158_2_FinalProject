@@ -1,7 +1,6 @@
 ﻿@{
     Layout = "_Layout_Front";
 }
-<!-- 存檔測試 -->
 <!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
 	<!-- container -->
@@ -267,7 +266,6 @@
 {
     <script>
 		const sessionmID = Number(sessionStorage.getItem("mID"));
-
 		sessionStorage.setItem('redirectAfterLogin', window.location.href);
 		//搜尋框&按鈕
 		const form = document.getElementById('idform');
@@ -601,9 +599,11 @@
 
 		if (sessionmID > 0) {
 			const getkeeplike = sessionStorage.getItem("keepLikeID");
+			console.log("getkeeplike", getkeeplike);
 			if (getkeeplike) {
 				addlike(sessionmID, getkeeplike);
 				sessionStorage.removeItem("keepLikeID");
+				alert("刪山");
 			}
 		}
 				//輸入文字後
