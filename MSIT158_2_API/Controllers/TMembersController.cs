@@ -176,40 +176,41 @@ namespace MSIT158_2_API.Controllers
             List<CmemberDetailDTO> cmemberDetailDTOs = new List<CmemberDetailDTO>();
             foreach (var member in membersjoin)
             {
-                if (string.IsNullOrEmpty(member.MemberPhoto))
-                    member.MemberPhoto = "default.jpg"; // 預設圖片名稱
-                //照片實際路徑
-                uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", member.MemberPhoto);
-                if (!System.IO.File.Exists(uploadPath))
-                    uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", "default.jpg"); // 預設圖片路徑
-                //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
-                var imageBytes = System.IO.File.ReadAllBytes(uploadPath);
-                //使用 Convert.ToBase64String(imageBytes) 將字節數組轉換為 Base64 字符串。
-                var base64String = Convert.ToBase64String(imageBytes);
-                //使用 data:{contentType};base64,{base64String} 格式生成 Base64 數據 URI，其中 {contentType} 是文件的 MIME 類型，
-                var contentType = new CGetContentType().GetContentType(uploadPath);
-                //{base64String} 是 Base64 編碼後的文件內容。
-                var base64Image = $"data:{contentType};base64,{base64String}";
-                CmemberDetailDTO cmemberDetailDTO = new CmemberDetailDTO()
+                if (member.MemberStatus == 1)
                 {
-                    Id = member.MemberId,
-                    MemberName = member.MemberName,
-                    Cellphone = member.Cellphone,
-                    Address = member.Address,
-                    Birthday = member.Birthday,
-                    Sex = member.Sex,
-                    Password = member.Password,
-                    Salt = member.Salt,
-                    EMail = member.EMail,
-                    Points = member.Points,
-                    Vip = member.Vip?.Vipname,
-                    Vipphoto = member.Vip?.Vipphoto,
-                    MemberPhoto = base64Image,
-                    Wallet = member.Wallet
-                };
-
-
-                cmemberDetailDTOs.Add(cmemberDetailDTO);
+                    if (string.IsNullOrEmpty(member.MemberPhoto))
+                        member.MemberPhoto = "default.jpg"; // 預設圖片名稱
+                                                            //照片實際路徑
+                    uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", member.MemberPhoto);
+                    if (!System.IO.File.Exists(uploadPath))
+                        uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", "default.jpg"); // 預設圖片路徑
+                                                                                                              //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
+                    var imageBytes = System.IO.File.ReadAllBytes(uploadPath);
+                    //使用 Convert.ToBase64String(imageBytes) 將字節數組轉換為 Base64 字符串。
+                    var base64String = Convert.ToBase64String(imageBytes);
+                    //使用 data:{contentType};base64,{base64String} 格式生成 Base64 數據 URI，其中 {contentType} 是文件的 MIME 類型，
+                    var contentType = new CGetContentType().GetContentType(uploadPath);
+                    //{base64String} 是 Base64 編碼後的文件內容。
+                    var base64Image = $"data:{contentType};base64,{base64String}";
+                    CmemberDetailDTO cmemberDetailDTO = new CmemberDetailDTO()
+                    {
+                        Id = member.MemberId,
+                        MemberName = member.MemberName,
+                        Cellphone = member.Cellphone,
+                        Address = member.Address,
+                        Birthday = member.Birthday,
+                        Sex = member.Sex,
+                        Password = member.Password,
+                        Salt = member.Salt,
+                        EMail = member.EMail,
+                        Points = member.Points,
+                        Vip = member.Vip?.Vipname,
+                        Vipphoto = member.Vip?.Vipphoto,
+                        MemberPhoto = base64Image,
+                        Wallet = member.Wallet
+                    };
+                    cmemberDetailDTOs.Add(cmemberDetailDTO);
+                }
             }
 
 
@@ -347,6 +348,7 @@ namespace MSIT158_2_API.Controllers
             m.Points = p.Points;
             m.EMail = p.EMail;
             m.MemberPhoto = p.MemberPhoto;
+            m.MemberStatus = 1;
             _context.TMembers.Add(m);
             await _context.SaveChangesAsync();
             //註冊會員時，發送Email
@@ -528,6 +530,16 @@ namespace MSIT158_2_API.Controllers
             _context.TMembers.Remove(tMember);
             await _context.SaveChangesAsync();
 
+            return NoContent();
+        }
+        [HttpGet("MemberDelete{id}")]
+        public async Task<ActionResult<TMember>> POSTMemberDelete(int id)
+        {
+            TMember user = _context.TMembers.FirstOrDefault(t => t.MemberId.Equals(id));
+            if (user == null)
+                return BadRequest(new { message = "沒有會員資料，將無法刪除會員" });
+            user.MemberStatus = 2;
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

@@ -205,7 +205,7 @@
 </div>
 
 <p>
-    <button type="button" class="btn btn-light"><a asp-action="Create">新增會員</a></button>    
+    <a asp-action="Create" class="btn btn-light">新增會員</a>
 </p>
 
 <div class="row row-cols-1 row-cols-md-3 g-4" id="div1">
@@ -375,14 +375,11 @@
         ];
         //顯示隱藏按鈕
         const switchs = switchnames.map((name, index) => {
-            return (
-                `
-<div class="form-check form-switch col-1">
-    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_${index + 1}" checked>
-    <label class="form-check-label" for="flexSwitchCheckChecked_${index + 1}">${name}</label>
-</div>
-                `
-            )
+            return (`
+        <div class="form-check form-switch col-1">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked_${index + 1}" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked_${index + 1}">${name}</label>
+        </div>`)
         });
         divf.innerHTML = switchs.join("");
         //顯示標題
@@ -435,7 +432,7 @@
                             <td id="idtd14">
                             <a href="/Member/Edit/${id}" class="btn btn-success">修改</a> |
                             <!-- <a href="/Member/Details/${id}">Details</a> | -->
-                            <button type="button" class="btn btn-warning" value="${id}" id="iddelete_${id}" onclick="deleteMember(${id})"><a href="/Member/Delete/${id}" onclick="return confirm('確定要刪除嗎?')"></a>刪除</button>
+                            <a href="#" class="btn btn-warning" onclick="return deleteMember(${id})">刪除</a>
                             </td>
                         </tr>
                                 `
@@ -459,15 +456,18 @@
         loadMemberList();
 
         //刪除會員
-        async function deleteMember(id) {
+        const deleteMember = async (id) => {
             if (confirm('確定要刪除嗎?')) {
-                const url2 = `https://localhost:7160/api/TMembers/${id}`;
-                const response = await fetch(url2, {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                loadMemberList();
+                const urlA = `https://localhost:7160/api/TMembers/MemberDelete${id}`;
+                const response = await fetch(urlA);
+                if (response.ok) {
+                    alert('刪除成功');
+                    loadMemberList();
+                } else {
+                    alert('刪除失敗');
+                }
             }
+            return false;
         };
 
         //顯示選擇頁數按鈕

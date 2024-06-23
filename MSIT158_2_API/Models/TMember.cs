@@ -31,6 +31,8 @@ public partial class TMember
 
     public decimal? Wallet { get; set; }
 
+    public int? MemberStatus { get; set; }
+
     public virtual ICollection<TCart> TCarts { get; set; } = new List<TCart>();
 
     public virtual ICollection<TMemberLike> TMemberLikes { get; set; } = new List<TMemberLike>();

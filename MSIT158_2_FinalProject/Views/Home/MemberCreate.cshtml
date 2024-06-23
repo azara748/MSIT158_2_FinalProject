@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "MemberCreate";
+    Layout = "_Layout_Front2";
 }
 
 <h1>網路選物平台/建立會員資料</h1>
@@ -9,49 +10,64 @@
 <h4>填寫會員資訊</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="MemberCreate" id="userForm" enctype="multipart/form-data">
+    <div class="col-md-12">
+        <form asp-action="MemberCreate" id="userForm" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-            
 
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" id="InputName" name="MemberName" />
+
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="MemberName" class="control-label">會員名稱</label>
+                <input asp-for="MemberName" class="form-control" id="InputName" name="MemberName" required />
                 <span asp-validation-for="MemberName" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的會員名稱。
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Cellphone" class="control-label"></label>
-                <input asp-for="Cellphone" class="form-control" id="Inputphone" name="Cellphone" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Password" class="control-label">會員密碼</label>
+                <input asp-for="Password" class="form-control" id="InputPassword" name="Password" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的密碼。
+                </div>
+            </div>
+            <div class="form-group col-md-4 position-relative">
+                <label for="Inputrepassword" class="form-label">密碼確認</label>
+                <input type="text" class="form-control" id="Inputrepassword" name="repassword" required />
+                <div class="invalid-tooltip">
+                    再次輸入密碼，將做密碼二次確認。
+                </div>
+            </div>
+            <div class="form-group col-md-6 position-relative">
+                <label asp-for="Cellphone" class="control-label">會員手機</label>
+                <input asp-for="Cellphone" class="form-control" id="Inputphone" name="Cellphone" required />
                 <span asp-validation-for="Cellphone" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的會員手機。
+                </div>
             </div>
             @* <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" id="InputAddress" name="Address" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+            <label asp-for="Address" class="control-label"></label>
+            <input asp-for="Address" class="form-control" id="InputAddress" name="Address" />
+            <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" />
-                <span asp-validation-for="Sex" class="text-danger"></span>
+            <label asp-for="Sex" class="control-label"></label>
+            <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" />
+            <span asp-validation-for="Sex" class="text-danger"></span>
             </div> *@
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" id="InputPassword" name="Password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="Inputrepassword" class="form-label">密碼確認</label>
-                <input type="text" class="form-control" id="Inputrepassword" name="repassword">
-            </div>
             @* <div class="form-group">
             <label asp-for="Salt" class="control-label"></label>
             <input asp-for="Salt" class="form-control" />
             <span asp-validation-for="Salt" class="text-danger"></span>
             </div> *@
-            <div class="form-group">
-                <label asp-for="EMail" class="control-label"></label>
-                <input asp-for="EMail" class="form-control" id="InputEmail" name="EMail" />
+            <div class="form-group col-md-6 position-relative">
+                <label asp-for="EMail" class="control-label">電子郵件</label>
+                <input asp-for="EMail" class="form-control" id="InputEmail" name="EMail" required />
                 <span asp-validation-for="EMail" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的電子郵件。
+                </div>
             </div>
             @* <div class="form-group">
             <label asp-for="Points" class="control-label"></label>
@@ -64,9 +80,9 @@
             <span asp-validation-for="Vipid" class="text-danger"></span>
             </div> *@
             @* <div class="form-group">
-                <label asp-for="MemberPhoto" class="control-label"></label>
-                <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="avatar" type="file" />
-                <span asp-validation-for="MemberPhoto" class="text-danger"></span>
+            <label asp-for="MemberPhoto" class="control-label"></label>
+            <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="avatar" type="file" />
+            <span asp-validation-for="MemberPhoto" class="text-danger"></span>
             </div> *@
             @* <div class="form-group">
             <label asp-for="Wallet" class="control-label"></label>
@@ -74,22 +90,241 @@
             <span asp-validation-for="Wallet" class="text-danger"></span>
             </div> *@
             <div class="form-group">
-                <input type="submit" value="送出並新增" class="btn btn-primary" id="buttonSubmit"/>
+                <input type="submit" value="送出並新增" class="btn btn-primary" id="buttonSubmit" />
+                <button class="btn btn-danger" id="buttonSubmitB">快速填入</button>
+
+                <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" id="buttonSubmitC">平台介紹</button>
+                <div class="offcanvas offcanvas-top " data-bs-theme="dark" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasBottomLabel">網路選物商店：創業故事</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <p>網路選物商店：創業故事</p>
+                        
+                        <p>創業初衷</p>
+                        <p>在現代社會中，購物已經成為人們生活的一部分。然而，隨著商品種類的增多和消費者需求的多樣化，傳統商店難以滿足所有人的需求。正是在這樣的背景下，我們決定創立一個網路選物商店，旨在為消費者提供精心挑選的商品，讓購物變得更方便和愉快。</p>
+                        
+                        <p>靈感來源</p>
+                        <p>我們的靈感來源於旅行和探索的經歷。無論是在繁忙的都市街道上，還是在寧靜的鄉村小鎮，我們總能發現一些獨特而精緻的商品。這些商品往往具有獨特的故事和文化背景，能夠帶給人們不同的感受和體驗。我們希望通過網路選物商店，將這些美好的發現分享給更多的人。</p>
+
+                        <p>創業過程</p>
+                        <p>市場調查：我們首先進行了廣泛的市場調查，了解消費者的需求和偏好。我們發現，越來越多的人喜歡獨特、有故事的商品，而不是大規模生產的標準化產品。</p>
+
+                        <p>選品標準：我們制定了嚴格的選品標準，確保每一件商品都是精挑細選。無論是手工製作的藝術品、環保的日用品，還是有機的食品，我們都會親自考察供應商，了解產品的來源和製作過程。</p>
+
+                        <p>平台搭建：我們邀請了一流的技術團隊，搭建了一個功能強大且使用便捷的網路平台。平台不僅支持多種支付方式，還提供詳細的商品介紹和購買指南，讓消費者能夠輕鬆地找到自己喜歡的商品。</p>
+
+                        <p>品牌塑造：我們注重品牌的塑造，通過社交媒體、博客和電子郵件營銷等多種渠道，與消費者進行互動。我們分享商品背後的故事、使用心得以及生活小貼士，逐漸建立起與消費者之間的信任和情感聯繫。</p>
+
+                        <p>成果與展望</p>
+                        <p>自從網路選物商店上線以來，我們受到了廣大消費者的喜愛和支持。許多顧客在購買商品後，紛紛留言表達對我們選品理念的認同和讚賞。未來，我們將繼續堅持初衷，不斷發掘更多獨特而有價值的商品，為消費者提供更好的購物體驗。</p>
+
+                        <p>同時，我們計劃開展更多的線下活動，如市集展銷和手作坊，讓消費者能夠親身體驗和感受商品的魅力。我們相信，網路選物商店不僅僅是一個購物平台，更是一個分享美好生活方式的社區。</p>
+
+                        <p>透過我們的努力，願更多的人能夠在這裡找到心儀的商品，享受購物的樂趣，並在每一件商品中發現生活的美好。</p>
+                    </div>
+                </div>
             </div>
         </form>
         <div id="div1" class="alert alert-info mt-3"></div>
     </div>
+    <div class="horizontal-group">
+        <div id="carouselExampleInterval1" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval1" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval1" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval1" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="rounded-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (1).jpeg" class="d-block w-100" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (2).jpeg" class="d-block w-100" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (3).jpeg" class="d-block w-100" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (4).jpeg" class="d-block w-100" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="carouselExampleInterval2" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="rounded-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (5).jpeg" class="d-block w-100" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (6).jpeg" class="d-block w-100" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (7).jpeg" class="d-block w-100" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (8).jpeg" class="d-block w-100" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="carouselExampleInterval3" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval3" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval3" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval3" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="rounded-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (9).jpeg" class="d-block w-100" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (10).jpeg" class="d-block w-100" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (11).jpeg" class="d-block w-100" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (12).jpeg" class="d-block w-100" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="carouselExampleInterval4" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval4" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval4" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval4" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="rounded-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (13).jpeg" class="d-block w-100" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (14).jpeg" class="d-block w-100" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (15).jpeg" class="d-block w-100" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (16).jpeg" class="d-block w-100" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="carouselExampleInterval5" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval5" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval5" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval5" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval5" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="rounded-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (17).jpeg" class="d-block w-100" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (18).jpeg" class="d-block w-100" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (19).jpeg" class="d-block w-100" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="~/img/sdesigner (20).jpeg" class="d-block w-100" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div>
-    <button type="button" class="btn btn-light"><a asp-action="Login">返回登入</a></button>    
+    <a asp-action="Login" class="btn btn-light">返回登入</a>
 </div>
+@section Styles {
+    <style>
+        .vertical-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 確保垂直群組的項目水平置中 */
+            gap: 20px; /* 調整間距 */
+            width: 100%; /* 確保群組佔滿整個寬度 */
+        }
 
+        .horizontal-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; /* 確保旋轉木馬水平置中 */
+            align-items: stretch; /* 伸展項目以填滿容器 */
+            gap: 20px; /* 調整間距 */
+            margin: 10px auto; /* 左右各250px的間距 */
+            width: 100%; /* 確保群組佔滿50%的寬度 */
+        }
+
+        .custom-carousel {
+            flex: 1; /* 確保旋轉木馬佔據可用空間 */
+            width: 30%;
+            margin: auto; /* 使旋轉木馬居中 */
+        }
+
+        .carousel-item img {
+            border-radius: 15px; /* 圓角設置 */
+        }
+
+        .rounded-carousel {
+            border-radius: 15px; /* 可以根據需求調整框架的圓角大小 */
+            overflow: hidden; /* 確保圓角適用於整個框架內容 */
+        }
+    </style>
+}
 @section Scripts {
     <script>
         const divResult = document.querySelector("#div1");
         const btnSubmit = document.querySelector('#buttonSubmit');
 
+        // 用於在有無效欄位時禁用表單提交的示例啟動 JavaScript
+        (() => {
+            // 獲取所有需要應用自定義 Bootstrap 驗證樣式的表單
+            const forms = document.querySelectorAll('.needs-validation');
+
+            // 全部這些表單並阻止提交動作
+            Array.from(forms).forEach(form => {
+                form.addEventListener('click', event => {
+                    // 如果表單無效，則阻止提交
+                    if (!form.checkValidity()) {
+                        event.preventDefault(); // 阻止表單提交
+                        event.stopPropagation(); // 阻止事件冒泡
+                    }
+                    // 添加 Bootstrap 的驗證樣式類別
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        $('#buttonSubmitB').on('click', (evt) => {
+            evt.preventDefault(); //防止預設行為的發生
+            $('#InputName').val("史昆靈葛葛 您是一位帥哥 ");
+            $('#Inputphone').val("0988776655");
+            $('#InputEmail').val("k955339962@gmail.com");
+            $('#InputPassword').val("aaaa");
+            $('#Inputrepassword').val("aaaa");
+        });
         btnSubmit.addEventListener('click', async (evt) => {
             evt.preventDefault(); //防止預設行為的發生
             const memberName = document.querySelector('#InputName').value;
@@ -100,7 +335,7 @@
             // const memberAddress = document.querySelector('#InputAddress').value;
             // const memberSex = document.querySelector('#InputSex').value;
             // const memberPhoto = document.querySelector('#InputPhoto').value;
-            if (memberEmail && memberPassword) {
+            if (memberName && memberphone && memberEmail && memberPassword) {
                 if (memberPassword === rememberPassword) {
                     // const memberData = {
                     //     "MemberName": memberName,
@@ -129,24 +364,25 @@
                     console.log("test1");
                     console.log("test2");
                     console.log(response);
-                    const data = await response.text();
+                    const data = await response.json();
                     console.log("test3");
-                    const json = JSON.parse(data);
-                    console.log("test4");
-                    const message = json.message;
+                    const message = data.message;
+                    console.log(data);
                     console.log("test5");
-                    const Jname = json.m.memberName;
+                    const Jname = data.m.memberName;
                     console.log(Jname);
                     divResult.innerHTML = `<p>會員姓名：${Jname}：${message}</p>`;
                     // 等待5秒後自動轉跳到 /Home/Index
                     if (Jname != null) {
                         setTimeout(() => {
-                            window.location.href = "/";
+                            window.location.href = "/Home/Login";
                         }, 3000); // 3000 毫秒 = 3 秒
                     }
-                    
-                }
-            }
+
+                } else
+                    alert("請再次確認密碼是否一致");
+            } else
+                alert("尚未完成會員個人基本資料填寫");
         });
 
     </script>
