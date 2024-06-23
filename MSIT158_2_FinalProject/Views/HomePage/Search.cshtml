@@ -30,27 +30,31 @@
             <!-- ASIDE -->
             <div id="aside" class="col-md-3">
                 <!-- /aside Widget -->
-                <!-- 價錢區域 -->
+  <!-- 價錢區域 -->
+@*                 <div class="aside">
+                <h3 class="aside-title">依價格搜尋:</h3>
+                <input type="number" id="price-min">
+                <input type="number" id=" price-max">
+                </<div></div> *@
+        
                 <div class="aside">
                     <h3 class="aside-title">依價格搜尋:</h3>
                     <div class="price-filter">
-                        <div id="price-slider"></div>
+@*                         <div id="price-slider"></div> *@
                         <div class="input-number price-min">
-                            <input id="price-min" type="number">
+                            <input id="price-min" type="number" placeholder="最低價">
                             <span class="qty-up">+</span>
                             <span class="qty-down">-</span>
                         </div>
                         <span>-</span>
                         <div class="input-number price-max">
-                            <input id="price-max" type="number">
+                            <input id="price-max" type="number" placeholder="最高價">
                             <span class="qty-up">+</span>
                             <span class="qty-down">-</span>
                         </div>
                     </div>
                 </div>
-                <div class="aside" id="idpriceagain">
-                </div>
-                <!-- /價錢區域 -->
+                <!-- /價錢區域 --> 
                 <!-- 條件-->
                 <div class="aside">
                     <h3 class="aside-title">依條件篩選:</h3>
@@ -188,16 +192,16 @@
         //最高最低金額
         const Hbar = document.getElementById('price-max');
         const Lbar = document.getElementById('price-min');
-        const Low = document.querySelector('.noUi-handle-lower');
-        const High = document.querySelector('.noUi-handle-upper');
-        function priceChange() {
-            searchData.lowPrice = Lbar.value;
-            searchData.highPrice = Hbar.value;
-            console.log('pricebar', Hbar.value);
-            console.log('pricebar', Lbar.value);
-        }
-        Lbar.addEventListener('blur', priceChange);
-        Hbar.addEventListener('blur', priceChange);
+        // const Low = document.querySelector('.noUi-handle-lower');
+        // const High = document.querySelector('.noUi-handle-upper');
+        // function priceChange() {
+        //     searchData.lowPrice = Lbar.value;
+        //     searchData.highPrice = Hbar.value;
+        //     console.log('pricebar', Hbar.value);
+        //     console.log('pricebar', Lbar.value);
+        // }
+        // Lbar.addEventListener('blur', priceChange);
+        // Hbar.addEventListener('blur', priceChange);
         //搜尋結果文字顯示
         const idAns = document.getElementById('idAns');
         const idCount = document.getElementById('idCount');
@@ -245,31 +249,44 @@
             "rankthree": false
         };
         //顯示分類按鈕
-        (async function loadCatli() {
-            const urlC = 'https://localhost:7160/api/SubcatDTO/';
-            const responseC = await fetch(urlC);
-            const dataC = await responseC.json();
-            const liCat = dataC.map(cats => {
-                const { subCategoryId, subCategoryCname } = cats;
-                getcatname(subCategoryId, subCategoryCname);
-                getcatname(0, "全部");
-                return `<li onclick="categoryHandler(${subCategoryId})" value="${subCategoryCname}"><a class="Acategory" id="idc${subCategoryId}">${subCategoryCname}</a></li>`;
-            });
-            idultree.innerHTML = `<li onclick="categoryHandler(0)" value="0" id="idc0"><a class="Acategory">全部</a></li>`;
-            idultree.innerHTML += liCat.join("");
-            //被點分類換色
-            const category = document.querySelectorAll('.Acategory');
-            for (var item of category) {
-                item.addEventListener('click', (event) => {
-                    for (var i of category) {
-                        i.style.fontSize = '14px';
-                        i.style.color = 'black';
-                    }
-                    event.target.style.fontSize = '21px';
-                    event.target.style.color = '#D44949';
+                (async function loadCatli() {
+                    const urlC = 'https://localhost:7160/api/SubcatDTO/';
+                    const responseC = await fetch(urlC);
+                    const dataC = await responseC.json();
+                    const liCat = dataC.map(cats => {
+                        const { subCategoryId, subCategoryCname } = cats;
+                        getcatname(subCategoryId, subCategoryCname);
+                        getcatname(0, "全部");
+                        return `<li onclick="categoryHandler(${subCategoryId})" value="${subCategoryCname}"><a class="Acategory" id="idc${subCategoryId}">${subCategoryCname}</a></li>`;
+                    });
+                    idultree.innerHTML = `<li onclick="categoryHandler(0)" value="0" id="idc0"><a class="Acategory">全部</a></li>`;
+                    idultree.innerHTML += liCat.join("");
 
-                })
-            };
+                    // 被點分類換色
+                    const category = document.querySelectorAll('.Acategory');
+                    for (var item of category) {
+                        item.addEventListener('click', (event) => {
+                            for (var i of category) {
+                                i.style.fontSize = '14px';
+                                i.style.color = 'black';
+                            }
+                            event.target.style.fontSize = '21px';
+                            event.target.style.color = '#D44949';
+                        });
+                    }
+
+                    // 換色測試
+                    function setColor(elementId) {
+                        const element = document.getElementById(elementId);
+                        if (element) {
+                            for (var i of category) {
+                                i.style.fontSize = '14px';
+                                i.style.color = 'black';
+                            }
+                            element.style.fontSize = '21px';
+                            element.style.color = '#D44949';
+                        }
+                    }
         })();
         //左邊隨機推薦
         const foru = async () => {
@@ -357,13 +374,75 @@
             div1.innerHTML = pros.join("");
             idCount.textContent = `${data.totalCount}`;
             if (data.totalCount == 0) {
-                idAns.textContent = `很抱歉，目前沒有相關商品，您可以調整關鍵字或是看看以下推薦商品。`;
+                idAns.textContent = `很抱歉，目前沒有相關結果，請再重新搜尋或是看看下面推薦商品，謝謝。`;
                 inpSearch.value = "";
                 searchData.searchword = "";
                 searchData.sortBy = "coldpro";
                 searchData.sortType = "asc";
-                searchData.page = 1;
                 loadPro();
+                searchData.page = 1;
+                return;
+            }
+            //B.顯示分頁按鈕
+            const max = data.totalPages;
+            const loadPage = (max) => {
+                let liPages = "";
+                for (let i = 1; i < max + 1; i++) {
+                    liPages += `<li onclick="pagingHandler(${i})" id="li${i}"><a>${i}</a></li>`;
+                }
+                idpageul.innerHTML = liPages;
+            }
+            loadPage(max);
+            foru();
+        }
+        //顯示商品(條件維持)
+        const loadPro2 = async () => {
+            let memberid = Number(sessionStorage.getItem("mID"));
+            const url = 'https://localhost:7160/api/SearchProduct';
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(searchData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            const pros = data.showProducts.map(pro => {
+                const { productId, productName, discount, labelName, unitPrice, productphoto, score, isnew } = pro;
+                return (`<a href='@Url.Content("~/p/Productpage")/${productId}'>
+                                            <div class="col-md-4 col-xs-6">
+                                             <div class="product">
+                                                <div class="product-img">
+                                                    ${productphoto ? `<img style="width: 262px; height: 280px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+                                                        <div class="product-label">
+                                                <span class="sale">全館8折優惠</span>
+                                                        ${isnew ? '<span class="new">新上市</span>' : ''}
+                                            </div>
+                                            </div>
+                                            <div class="product-body">
+                                                    <p class="product-category">${labelName}</p>
+                                            <h3 class="product-name"><a href="#">${productName}</a></h3>
+                                            <h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4>
+                                                    <div class="product-rating">
+                                        ${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}
+                                                            ${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
+                                            </div>
+                                            <div class="product-btns">
+                                            <button class="add-to-wishlist" id="likebtn${productId}"  onclick="addlike(${sessionmID},${productId})"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+                                            <button class="quick-view" onclick="addcart2(${productId})"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+                                                </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                                        <button class="add-to-cart-btn" onclick="addcart3(${productId})"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
+                                                </div>
+                                            </div>
+                                        </div></a>`)
+            })
+            div1.innerHTML = pros.join("");
+            idCount.textContent = `${data.totalCount}`;
+            if (data.totalCount == 0) {
+                idAns.textContent = `很抱歉，此條件中沒有對應結果，請調整條件謝謝。`;
+                searchData.page = 1;
                 return;
             }
             //B.顯示分頁按鈕
@@ -397,6 +476,7 @@
                 const data = await response.json();
                 const { isAdded, message } = data;
                 alert(`${message}`);
+                sessionStorage.removeItem("keepLikeID");
             }
             loadLike(mMemberId);
         }
@@ -428,11 +508,23 @@
             searchData.searchword = inpSearch.value;
             searchData.subcatId = 0;
             searchData.page = 1;
-            searchData.pagesSize = showhowmanypro.value;.
+            searchData.pagesSize = showhowmanypro.value;
             let selectedSort = showsort.value.split('|');
             searchData.sortBy = selectedSort[0];
             searchData.sortType = selectedSort[1];
             idAns.textContent = `關鍵字:${searchData.searchword} 的所有產品`;
+            loadPro();
+        }
+        //從首頁來
+        function txtOnly2() {
+            ResetFilter();
+            searchData.subcatId = 0;
+            searchData.page = 1;
+            searchData.pagesSize = showhowmanypro.value;
+            let selectedSort = showsort.value.split('|');
+            searchData.sortBy = selectedSort[0];
+            searchData.sortType = selectedSort[1];
+            idAns.textContent = `關鍵字:${searchData.searchword} 的所有產品`
             loadPro();
         }
         //進階條件 用分類判斷!!!
@@ -470,8 +562,8 @@
                 searchData.sortType = selectedSort[1];
                 searchData.lowPrice = Lbar.value;
                 searchData.highPrice = Hbar.value;
-                idAns.textContent = `關鍵字:[${searchData.searchword}]的相關產品/ 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
-                loadPro();
+                idAns.textContent = `分類: [${catname[searchData.subcatId]}] 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
+                loadPro2();
             }
             //在全部裡面用關鍵字搜尋
             else {
@@ -510,87 +602,34 @@
                     searchData.lowPrice = Lbar.value;
                     searchData.highPrice = Hbar.value;
                     idAns.textContent = `關鍵字:[${searchData.searchword}]的相關產品/ 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
-                    loadPro();
+                    loadPro2();
                 }
             }
         }
-
-        //其他頁面來的處裡!!!
-
-        //輸入文字後
-        function onlyTxt() {
-            if (advstarfour.checked) {
-                searchData.rankfour = true;
-            }
-            else {
-                searchData.rankfour = false;
-            }
-            if (advstarthree.checked) {
-                searchData.rankthree = true;
-            }
-            else {
-                searchData.rankthree = false;
-            }
-            if (advstock.checked) {
-                searchData.stock = true;
-            }
-            else { searchData.stock = false; }
-
-            if (advnewlan.checked) {
-                searchData.newlan = true;
-            }
-            else {
-                searchData.newlan = false;
-            }
-
-            searchData.searchword = inpSearch.value;
-            searchData.subcatId = 0;
-            searchData.page = 1;
-            searchData.pagesSize = showhowmanypro.value;
-            searchData.sortBy = selectedSort[0];
-            searchData.sortType = selectedSort[1];
-            searchData.lowPrice = 1;
-            searchData.highPrice = 20000;
-            idAns.textContent = `關鍵字:${searchData.searchword} 的所有產品`;
-            loadPro();
-        }
-        function onlyTxt2() {
-            if (advstarfour.checked) {
-                searchData.rankfour = true;
-            }
-            else {
-                searchData.rankfour = false;
-            }
-            if (advstarthree.checked) {
-                searchData.rankthree = true;
-            }
-            else {
-                searchData.rankthree = false;
-            }
-            if (advstock.checked) {
-                searchData.stock = true;
-            }
-            else { searchData.stock = false; }
-
-            if (advnewlan.checked) {
-                searchData.newlan = true;
-            }
-            else {
-                searchData.newlan = false;
-            }
+        //其他頁面來的文字!!!
+        function fromOther(){
             const sessKeyword = sessionStorage.getItem("keyword");
-            searchData.searchword = sessKeyword;
-            searchData.subcatId = 0;
-            searchData.page = 1;
-            searchData.pagesSize = showhowmanypro.value;
-            searchData.sortBy = selectedSort[0];
-            searchData.sortType = selectedSort[1];
-            searchData.lowPrice = 1;
-            searchData.highPrice = 20000;
-            idAns.textContent = `關鍵字:${searchData.searchword} 的所有產品`;
-            loadPro();
+            if (sessKeyword) {
+                searchData.searchword = sessKeyword;
+                inpSearch.value = sessKeyword;
+                txtOnly2();
+                sessionStorage.removeItem("keyword");
+            }
+            // setColor('idc0');
+            // alert("換色");
         }
-        //條件共用
+        function onlythree() {
+            if (advstarfour.checked) {
+                advstarfour.checked = false;
+            }
+        }
+        function onlyfour() {
+            if (advstarthree.checked) {
+                advstarthree.checked = false;
+            }
+        }
+        //條件共用 TODO
+
         function pageChange() {
             searchData.searchword = inpSearch.value;
             if (searchData.searchword.trim() !== "") {
@@ -617,7 +656,6 @@
                 else {
                     searchData.newlan = false;
                 }
-
                 searchData.subcatId = 0;
                 searchData.pagesSize = showhowmanypro.value;
                 let selectedSort = showsort.value.split('|');
@@ -663,90 +701,7 @@
                 loadPro();
             }
         }
-        function Change() {
-            searchData.searchword = inpSearch.value;
-            if (searchData.searchword.trim() !== "") {
-                if (advstarfour.checked) {
-                    searchData.rankfour = true;
-                }
-                else {
-                    searchData.rankfour = false;
-                }
-                if (advstarthree.checked) {
-                    searchData.rankthree = true;
-                }
-                else {
-                    searchData.rankthree = false;
-                }
-                if (advstock.checked) {
-                    searchData.stock = true;
-                }
-                else { searchData.stock = false; }
 
-                if (advnewlan.checked) {
-                    searchData.newlan = true;
-                }
-                else {
-                    searchData.newlan = false;
-                }
-
-                searchData.subcatId = 0;
-                searchData.page = 1;
-                searchData.pagesSize = showhowmanypro.value;
-                let selectedSort = showsort.value.split('|');
-                searchData.sortBy = selectedSort[0];
-                searchData.sortType = selectedSort[1];
-                searchData.lowPrice = Lbar.value;
-                searchData.highPrice = Hbar.value;
-                idAns.textContent = `關鍵字:[${searchData.searchword}]的相關產品/ 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
-                loadPro();
-            }
-            else {
-                if (advstarfour.checked) {
-                    searchData.rankfour = true;
-                }
-                else {
-                    searchData.rankfour = false;
-                }
-                if (advstarthree.checked) {
-                    searchData.rankthree = true;
-                }
-                else {
-                    searchData.rankthree = false;
-                }
-                if (advstock.checked) {
-                    searchData.stock = true;
-                }
-                else { searchData.stock = false; }
-
-                if (advnewlan.checked) {
-                    searchData.newlan = true;
-                }
-                else {
-                    searchData.newlan = false;
-                }
-                inpSearch.value = "";
-                searchData.page = 1;
-                searchData.pagesSize = showhowmanypro.value;
-                let selectedSort = showsort.value.split('|');
-                searchData.sortBy = selectedSort[0];
-                searchData.sortType = selectedSort[1];
-                searchData.lowPrice = Lbar.value;
-                searchData.highPrice = Hbar.value;
-                idAns.textContent = ` 分類: [${catname[searchData.subcatId]}] 的相關產品 / 進階條件: 價格[${searchData.lowPrice}元至${searchData.highPrice}元] ${searchData.rankfour ? '[四星以上產品]' : ''} ${searchData.rankthree ? '[三星以上產品]' : ''} ${searchData.stock ? '[尚有庫存]' : ''} ${searchData.newlan ? '[新上市]' : ''}`;
-                loadPro();
-            }
-        }
-        function onlythree() {
-            if (advstarfour.checked) {
-                advstarfour.checked = false;
-            }
-        }
-        function onlyfour() {
-            if (advstarthree.checked) {
-                advstarthree.checked = false;
-            }
-        }
         //重置 價錢、條件
         function ResetFilter(){
             advstock.checked = false;
@@ -761,20 +716,20 @@
         }
 
         //條件
-        advstock.addEventListener('change', Change);
-        advnewlan.addEventListener('change', Change);
+        advstock.addEventListener('change', With);
+        advnewlan.addEventListener('change', With);
         advstarfour.addEventListener('change', onlyfour);
-        advstarfour.addEventListener('change', Change);
+        advstarfour.addEventListener('change', With);
         advstarthree.addEventListener('change', onlythree);
-        advstarthree.addEventListener('change', Change);
+        advstarthree.addEventListener('change', With);
 
-        showsort.addEventListener('change', Change);
-        showhowmanypro.addEventListener('change', Change);
-        Lbar.addEventListener('change', Change);
-        Hbar.addEventListener('change', Change);
+        showsort.addEventListener('change', With);
+        showhowmanypro.addEventListener('change', With);
+        Lbar.addEventListener('change', With);
+        Hbar.addEventListener('change', With);
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            onlyTxt();
+            txtOnly();
         });
 
         /////////////////////////////////////////////////////////

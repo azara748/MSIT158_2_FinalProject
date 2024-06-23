@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<faDTO>
+@using MSIT158_2_FinalProject.Models.DTO
+@{
     Layout = "_Layout_Front";
 }
 
@@ -38,57 +40,83 @@
 				</div>
 			</div> *@
 		</div>
+	</div>
+</div>
 		<!-- SECTION -->
-		<div class="section">
+ 		<div class="section"> 
 			<!-- container -->
-			<div class="container">
+ 			<div class="container"> 
 				<!-- row -->
 				<div class="row">
-					<!-- section title -->
-					<!-- /section title -->
-					<!-- Products tab & slick -->
 					<div class="col-md-12">
 						<div class="row">
 							<div class="products-tabs">
 								<!-- tab -->
-								<div id="tab2" class="tab-pane fade in active">
-									<div class="products-slick" data-nav="#slick-nav-2" id="runPro">
-@* 										<!-- product -->
-										<div class="product">
-											<div class="product-img">
-												<img src="./img/product06.png" alt="">
-												<div class="product-label">
-													<span class="sale">-30%</span>
-													<span class="new">NEW</span>
-												</div>
-											</div>
-											<div class="product-body">
-												<p class="product-category">Category</p>
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-													<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-												</div>
-											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+						<h2>父親節主打商品</h2>
+						    <div id="tab2" class="tab-pane fade in active">
+									<div class="products-slick" data-nav="#slick-nav-2" id="runPro0">
+								@foreach (var product in Model)
+								{
+									<div class="product">
+										<div class="product-img">
+											@if (product.Productphoto != null && product.Productphoto.Length > 0)
+											{
+												var imageBase64 = Convert.ToBase64String(product.Productphoto);
+												<img style="width: 250px; height: 250px; object-fit: contain;" src="data:image/jpeg;base64,@imageBase64" alt="Product Image" />
+											}
+											else
+											{
+												<p>No Image Available</p>
+											}
+											<div class="product-label">
+												<span class="sale">全館八折優惠</span>
 											</div>
 										</div>
-										<!-- /product --> *@
+										<div class="product-body">
+											<p class="product-category">@product.SubCatName</p>
+											<h3 class="product-name"><a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>@product.ProductName</a></h3>
+											@if (product.UnitPrice.HasValue)
+											{
+												<h4 class="product-price">
+													$@product.UnitPrice.Value.ToString("0")
+													<del class="product-old-price">$@(Math.Round(product.UnitPrice.Value * 1.25m, 0))</del>
+												</h4>
+											}
+											@* <h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4> *@
+											<div class="product-rating">
+												@* ${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''} *@
+												@{
+													if (product.Score.HasValue)
+													{
+														var fullStars = (int)Math.Floor(product.Score.Value);
+														var halfStar = product.Score.Value - fullStars > 0.4;
+
+														for (var i = 0; i < fullStars; i++)
+														{
+															<i class="fa fa-star" style="font-size: 13px;"></i>
+														}
+
+														if (halfStar)
+														{
+															<i class="fa fa-star-half" style="font-size: 13px;"></i>
+														}
+													}
+												}
+											</div>
+											<div class="product-btns">
+												<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+												<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+											</div>
+										</div>
+										<div class="add-to-cart">
+										</div>
+									</div>
+								}
 									</div>
 									<!-- 按鈕!!!! -->
-									<div id="slick-nav-2" class="products-slick-nav"></div>
-								</div>
+							<div id="slick-nav-2" class="products-slick-nav"></div>
 								<!-- /tab -->
+							</div>
 							</div>
 						</div>
 					</div>
@@ -97,19 +125,8 @@
 				<!-- /row -->
 			</div>
 			<!-- /container -->
-		</div> 
+		</div>
 		<!-- /SECTION -->
-
-	</div>
-</div>
-			<!-- /shop -->
-
-
-@* @section Styles
-{
-    <style>
-    </style>
-} *@
 
 @section Scripts
 {
@@ -118,23 +135,7 @@
 		const showTop3 = document.getElementById('showTop3');
 		const runPro = document.getElementById('runPro');
 
-		const searchData = {
-			"subcatId": 3,
-			"searchword": "",
-			"page": 1,
-			"pagesSize": 5,
-			"sortBy": "",
-			"sortType": "asc",
-			"lowPrice": null,
-			"highPrice": null,
-			"stock": false,
-			"newlan": false,
-			"rankfour": false,
-			"rankthree": false
-		};
-
-
-		const loadThree = async () => {
+		(async function loadThree() {
 			const urlT = 'https://localhost:7160/api/SearchProduct/TOP3SalePro';
 			const responseT = await fetch(urlT, {
 				method: 'POST',
@@ -150,22 +151,24 @@
 			const dataT = await responseT.json();
 			const prosT = dataT.map(pro => {
 				const { productName, productphoto, productId} = pro;
-				return `<div class="col-md-4">
-									<div class="shop">
-										<div class="shop-img">
-												${productphoto ? `<img style="object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-											</div>
-							<div class="shop-body">
-												<h4 style="color: white"><strong>${productName}</strong></h4>
-                               <a onclick="toProductDetail('${productId}')" class="cta-btn">查看商品<i class="fa fa-arrow-circle-right"></i></a>
+				return `<a href='@Url.Content("~/p/Productpage")/${productId}'>
+				<div class="col-md-4">
+							<div class="shop">
+							<div class="shop-img">
+									${productphoto ? `<img style="object-fit:contain;" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
 							</div>
-					 	</div>
-							</div>`;;
+							<div class="shop-body">
+						     <h4 style="color: white"><strong>${productName}</strong></h4>
+                              <a onclick="toProductDetail('${productId}')" class="cta-btn">查看商品<i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+					    	</div>
+							</div>
+							</a>`;
 			});
 			showTop3.innerHTML += `<h2>本周暢銷商品TOP3</h2>`;
 			showTop3.innerHTML += prosT.join('');
-		};
-		loadThree();
+		})();
+		//loadThree();
 
 		function toProductDetail(pid) {
 			const urlto = `https://localhost:7066/p/Productpage/${pid}`;
@@ -174,46 +177,43 @@
 
 
 		//顯示父親節商品
-		const loadFa = async () => {
-			const urlf = 'https://localhost:7160/api/SearchProduct';
+				(async function loadFa () {
+			const urlf = 'https://localhost:7160/api/SearchProduct/fatherday';
 			const responsef = await fetch(urlf, {
 				method: 'POST',
-				body: JSON.stringify(searchData),
+				body: JSON.stringify(),
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			});
 			const dataf = await responsef.json();
-			const pros = dataf.showProducts.map(pro => {
+			const pros = dataf.map(pro => {
 				const { productId, productName, discount, labelName, unitPrice, productphoto, score, isnew } = pro;
-				return `<div class="product">
-							<div class="product-img">
-										${productphoto ? `<img style="width: 50px; height: 50px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-														<div class="product-label">
-															<span class="sale">全館八折優惠</span>
-														</div>
-													</div>
-													<div class="product-body">
+						return `<div class="product">
+									<div class="product-img">
+												${productphoto ? `<img style="width: 250px; height: 250px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+																<div class="product-label">
+																	<span class="sale">全館八折優惠</span>
+																</div>
+															</div>
+															<div class="product-body">
 																<p class="product-category">${labelName}</p>
-														<h3 class="product-name"><a href="#">${productName}</a></h3>
+																<h3 class="product-name"><a href="#">${productName}</a></h3>
 																<h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4>
-														<div class="product-rating">
-		${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}
-													${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
-														</div>
-														<div class="product-btns">
-															<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-															<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-															<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-														</div>
-													</div>
-													<div class="add-to-cart">
-														<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-													</div>
-												</div>`;
-		})
-			runPro.innerHTML = pros.join("");
-		}
-		loadFa();
+																<div class="product-rating">
+										${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
+																</div>
+																<div class="product-btns">
+																	<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+																	<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+																</div>
+															</div>
+															<div class="add-to-cart">
+															</div>
+														</div>`;
+			});
+			runPro.innerHTML = pros.join('');
+		})();
+
 	</script>
 }

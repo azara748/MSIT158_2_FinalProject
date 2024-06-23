@@ -106,7 +106,7 @@
 									<div class="cart-list" id="idlikelist">
 									</div>
 									<div class="cart-btns">
-										<a>共<span id="totalike"></span>個願望</a>
+										<a>共<span id="totalike">0</span>個願望</a>
 										<a onclick="deleteAllLLiked(event)">刪除全部</a>
 @* 										<a href="#">TBC <i class="fa fa-arrow-circle-right"></i></a> *@
 									</div>
@@ -316,8 +316,6 @@
 		const signOutbtn = document.querySelector('#idsignOutButton1');
 		signOutbtn.style.display = 'none';
 
-		console.log(mid.value)
-
 		signOutbtn.addEventListener('click', async () => {
 			const url = '@Url.Content("~/ApiMember/ClearSession")';
 			const response = await fetch(url);
@@ -418,7 +416,8 @@
 	<script>
 		const btnlikelist = document.getElementById('btnlikelist');
 		const sessMemberId = Number(sessionStorage.getItem("mID"));
-		const sessKeyword = Number(sessionStorage.getItem("keyword"));
+		const sessKeyword = sessionStorage.getItem("keyword");
+		const likelist = document.getElementById('idlikelist');
 		const showhowmanylike = document.getElementById('likeqty');
 		const counttotalliked = document.getElementById('totalike');
 		const loadLike = async (id) => {
@@ -430,7 +429,6 @@
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
-						//'accept: text/plain'
 						'Content-Type': 'application/json'
 					}
 				});
@@ -450,7 +448,7 @@
 																				</div>`)
 				})
 				likelist.innerHTML = likes.join("");
-				const howmanylike = data.count;
+			const howmanylike = data.count;
 			const blackhowmanylike = data.count;
 			showhowmanylike.innerHTML = howmanylike;
 			counttotalliked.innerHTML = blackhowmanylike;
@@ -484,7 +482,7 @@
             sessionStorage.setItem("keyword", keywordValue);
             var currentPath = window.location.pathname;
 			if (currentPath === '/HomePage/Search') {
-				Change();
+				txtOnly();
 			}
 			else if (currentPath === '/') {
 				window.location.href = '/HomePage/Search';
@@ -495,7 +493,10 @@
         });
 		window.onload = function () {
 			if (window.location.pathname === '/HomePage/Search') {
-				onlyTxt2();
+				const sessKeywords = sessionStorage.getItem("keyword");
+				if (sessKeywords) { 
+					fromOther();
+				}
 			}
 		};
 

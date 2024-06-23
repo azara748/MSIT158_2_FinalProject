@@ -202,18 +202,6 @@ namespace MSIT158_2_API.Controllers.Front
 
 		}
 
-		//[HttpPost("TOP3SalePro")]
-		//public async Task<ActionResult<ShowProductDTO>> TOP3SalePro()
-		//{
-		//	var query = _context.TProducts.Include(p => p.TPurchases).AsQueryable();
-		//	query = query.Take(3).OrderByDescending(s => s.TPurchases.Sum(p => p.Qty));
-		//	var showProductDTOs = new ShowProductDTO
-		//	{ 
-		//		ProductName = query.ProductName,
-		//		Productphoto = query.ProductPhoto
-		//	}
-		//	return Ok(showProductDTOs);
-		//}
 		[HttpPost("TOP3SalePro")]
 		public async Task<ActionResult<List<ShowProductDTO>>> TOP3SalePro()
 		{
@@ -238,8 +226,34 @@ namespace MSIT158_2_API.Controllers.Front
 
 			return Ok(result);
 		}
-		// DELETE: api/SearchProduct/5
-		[HttpDelete("{id}")]
+        [HttpPost("fatherday")]
+        public async Task<ActionResult<List<ShowProductDTO>>> fatherday()
+        {
+			var query = _context.TProducts
+								  .Include(p => p.TKeywords)
+								  .Where(p => p.TKeywords.Any(k => k.Festival.Contains("父親節")))
+								  .AsQueryable();
+
+            var father = await query.Select(pro => new ShowProductDTO
+            {
+                    ProductId = pro.ProductId,
+                    ProductName = pro.ProductName,
+				Productphoto = pro.ProductPhoto,
+				SubCategoryId = pro.SubCategoryId,
+				SubCatName = pro.SubCategory.SubCategoryCname,
+				Stocks = pro.Stocks,
+				UnitPrice = pro.UnitPrice,
+				Discount = pro.Active.Discount,
+				LabelName = pro.Label.LabelName,
+				Score = pro.TReviews.Average(p => p.RankId),
+				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay(pro.LaunchTime.Value, currentDate) < 30
+			})
+                .ToListAsync();
+
+            return Ok(father);
+        }
+        // DELETE: api/SearchProduct/5
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteTProduct(int id)
 		{
 			var tProduct = await _context.TProducts.FindAsync(id);
