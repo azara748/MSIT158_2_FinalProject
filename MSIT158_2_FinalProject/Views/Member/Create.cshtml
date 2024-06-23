@@ -96,14 +96,14 @@
                 <button class="btn btn-danger" id="buttonSubmitB">快速填入</button>
 
                 <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" id="buttonSubmitC">商標圖片</button>
-                <div class="offcanvas offcanvas-bottom" data-bs-theme="dark" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas offcanvas-end" data-bs-theme="dark" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasBottomLabel">商標圖片</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
 
-                        <div class="horizontal-group">
+                        <div class="vertical-group">
                             <div id="carouselExampleInterval1" class="carousel slide custom-carousel" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
                                     <button type="button" data-bs-target="#carouselExampleInterval1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -241,8 +241,10 @@
         .vertical-group {
             display: flex;
             flex-direction: column;
-            align-items: center; /* 確保垂直群組的項目水平置中 */
+            justify-content: center; /* 確保旋轉木馬水平置中 */
+            align-items: stretch; /* 確保垂直群組的項目水平置中 */
             gap: 20px; /* 調整間距 */
+            margin: 10px auto; /* 左右各250px的間距 */
             width: 100%; /* 確保群組佔滿整個寬度 */
         }
 

@@ -349,6 +349,7 @@ namespace MSIT158_2_API.Controllers
             m.EMail = p.EMail;
             m.MemberPhoto = p.MemberPhoto;
             m.MemberStatus = 1;
+            m.Vipid = 1;
             _context.TMembers.Add(m);
             await _context.SaveChangesAsync();
             //註冊會員時，發送Email

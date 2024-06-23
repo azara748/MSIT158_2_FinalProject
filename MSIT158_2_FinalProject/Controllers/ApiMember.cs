@@ -132,6 +132,7 @@ namespace MSIT158_2_FinalProject.Controllers
             foreach (var member in members)
             {
                 member.MemberStatus = 1;
+                member.Vipid = new Random().Next(1, 5);
             }
 
             _context.SaveChanges();
