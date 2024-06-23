@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_FinalProject.Models;
+using System.Web;
 
 namespace MSIT158_2_FinalProject.Controllers
 {
@@ -12,26 +13,47 @@ namespace MSIT158_2_FinalProject.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TActive active, IFormFile myimg)
-        {
+        public ActionResult Create(ActiveImage photo, HttpPostedFileBase image)
+        {   //                                                           ****************************
             if (ModelState.IsValid)
-            {
-                if (myimg != null)
+            {   //*** 檔案上傳 ****************************************(start)
+                if (image != null)
                 {
-                    using (var ms = new MemoryStream())
-                    {
-                        myimg.CopyTo(ms);
-                        active.ActiveImage = ms.ToArray();
-                    }
+                    photo.PhotoFile = new byte[image.ContentLength];
+                    image.InputStream.Read(photo.PhotoFile, 0, image.ContentLength);
                 }
-                _context.Add(active);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //*** 檔案上傳 ****************************************(end)
+                SelectShopContext db = new SelectShopContext();
+                _db.Photos.Add(photo);   // 新增一筆記錄
+                _db.SaveChanges();   // 正式寫入資料庫！
+
+                return RedirectToAction("ImageIndex");
             }
-            ViewData["Categories"] = new SelectList(_context.Set<TActive>(), "Id", "Name", active.ActiveId);
-            return View(active);
+
+            return View(photo);
         }
+
+        public ActionResult ImageIndex()
+        {
+            return View("ImageIndex", _db.Photos.ToList());
+        }
+
+        //*** 把資料表裡面的「二進位」內容，還原成圖片檔 ****************************
+        public FileContentResult GetImage(int PhotoID)
+        {
+            Photo requestedPhoto = _db.Photos.FirstOrDefault(p => p.PhotoID == PhotoID);
+
+
+            if (requestedPhoto != null)
+            {
+                return File(requestedPhoto.PhotoFile, "image/jpeg");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public IActionResult Create()
         {
             return View();
