@@ -81,5 +81,10 @@ namespace MSIT158_2_FinalProject.Controllers
         //    }
         //    return RedirectToAction("List");
         //}
+
+        public IActionResult testA()
+        {
+            return View();
+        }
     }
 }
