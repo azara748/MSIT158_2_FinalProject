@@ -131,7 +131,7 @@ namespace MSIT158_2_FinalProject.Controllers
             //需填入你的網址
             var website = $"https://localhost:7066";
             var Apiweb = "https://localhost:7160";
-            var ngrok = "https://dc02-1-160-2-62.ngrok-free.app";
+            var ngrok = "https://5e0e-1-160-2-62.ngrok-free.app";
             var order = new Dictionary<string, string>
     {
         //綠界需要的參數
@@ -149,7 +149,7 @@ namespace MSIT158_2_FinalProject.Controllers
         //{ "OrderResultURL", $"{website}/Home/PayInfo/{orderId}"},
         { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
         //{ "ClientRedirectURL",  $"{website}/Home/AccountInfo/{orderId}"},
-        { "ClientBackURL",  $"{website}/HomePage/Search"},
+        { "ClientBackURL",  $"{website}/M/Memberpage"},
         { "MerchantID",  "3002607"},
         { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
         { "PaymentType",  "aio"},

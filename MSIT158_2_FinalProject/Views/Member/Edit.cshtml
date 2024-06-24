@@ -2,80 +2,95 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "_Layout_Backstage";
+    Layout = "_Layout_Backstage2";
 }
 
 <h1>修改會員資料</h1>
 
 <h4>填寫會員資訊</h4>
 <hr />
-<div class="row" style="min-width:500px;width:70%;margin:auto;">
-    <div class="col-md-4">
-        <form asp-action="Edit" id="userForm" enctype="multipart/form-data">
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" id="userForm" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
 
             <input type="hidden" value="@Model.MemberId" name="MemberId" id="Inputid" />
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" id="Inputname" name="MemberName" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="MemberName" class="control-label">會員名稱</label>
+                <input asp-for="MemberName" class="form-control" id="Inputname" name="MemberName" required />
                 <span asp-validation-for="MemberName" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的會員名稱。
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Cellphone" class="control-label"></label>
-                <input asp-for="Cellphone" class="form-control" id="Inputphone" name="Cellphone" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Cellphone" class="control-label">會員手機</label>
+                <input asp-for="Cellphone" class="form-control" id="Inputphone" name="Cellphone" required />
                 <span asp-validation-for="Cellphone" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的會員手機。
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" id="InputAddress" name="Address" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Address" class="control-label">會員地址</label>
+                <input asp-for="Address" class="form-control" id="InputAddress" name="Address" required />
                 <span asp-validation-for="Address" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的戶籍地址。
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Sex" class="control-label"></label>
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Sex" class="control-label">性別</label>
                 @* <input asp-for="Sex" class="form-control" id="InputSex" name="Sex" /> *@
-                <span asp-validation-for="Sex" class="text-danger"></span>
-                <label class="control-label">性別</label>
+                <span asp-validation-for="Sex" class="text-danger"></span>                
                 <select class="form-select" aria-label="Default select example" id="InputSex" name="Sex">
                     <option value="男" selected>男</option>
                     <option value="女">女</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" id="InputPassword" name="Password" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Password" class="control-label">會員密碼</label>
+                <input asp-for="Password" class="form-control" id="InputPassword" name="Password" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的密碼。
+                </div>
             </div>
-            <div class="form-group">
+            @* <div class="form-group col-md-0 position-relative">
                 <label asp-for="Salt" class="control-label" type="hidden"></label>
                 <input asp-for="Salt" class="form-control" id="InputSalt" name="Salt" type="hidden" />
                 <span asp-validation-for="Salt" class="text-danger" type="hidden"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EMail" class="control-label"></label>
-                <input asp-for="EMail" class="form-control" id="InputEMail" name="EMail" />
+            </div> *@
+            <input type="hidden" value="@Model.Salt" name="Salt" id="InputSalt" />
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="EMail" class="control-label">電子郵件</label>
+                <input asp-for="EMail" class="form-control" id="InputEMail" name="EMail" required />
                 <span asp-validation-for="EMail" class="text-danger"></span>
+                <div class="invalid-tooltip">
+                    請輸入有效的電子郵件。
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Points" class="control-label"></label>
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Points" class="control-label">個人點數</label>
                 @* <input asp-for="Points" class="form-control" id="InputPoints" name="Points" /> *@
                 <span asp-validation-for="Points" class="text-danger"></span>
-                <label class="control-label">個人點數</label>
                 <select class="form-select" aria-label="Default select example" id="InputPoints" name="Points">
                     <option value="" selected>預設無</option>
                     <option value="100">100</option>
                     <option value="200">200</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4 position-relative">
                 <label for="InputBirthday" class="form-label">生日</label>
-                <input type="date" class="form-control" id="InputBirthday" name="Birthday">
+                <input type="date" class="form-control" id="InputBirthday" name="Birthday" required>
+                <div class="invalid-tooltip">
+                    請輸入有效的會員生日。
+                </div>
             </div>
-            <div class="form-group">
-                @* <label asp-for="Vipid" class="control-label"></label>
-                <input asp-for="Vipid" class="form-control" id="InputVipid" name="Vipid" />
-                <span asp-validation-for="Vipid" class="text-danger"></span> *@
-                @* <img style="height: 400px; object-fit: contain;" src="@(Model.VipPhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.VipPhoto) : "")" alt="員工照片" /><br /> *@
-                <label class="control-label">會員資格</label>
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="Vipid" class="control-label">會員資格</label>
+                @* <input asp-for="Vipid" class="form-control" id="InputVipid" name="Vipid" /> *@
+                <span asp-validation-for="Vipid" class="text-danger"></span>
                 <select class="form-select" aria-label="Default select example" id="InputVipid" name="Vipid">
                     <option value="" selected>會員資格(預設無)</option>
                     <option value="1">普通會員</option>
@@ -87,24 +102,24 @@
             <div class="form-group" id="idShowphoto">
                 @* <img style="height: 400px; object-fit: contain;" src="@(Model.EmployeePhoto != null ? "data:image/jpeg;base64," + Convert.ToBase64String(Model.EmployeePhoto) : "")" alt="員工照片" /><br />                 *@
             </div>
-            <div class="form-group">
-                <label asp-for="MemberPhoto" class="control-label"></label>
+            <div class="form-group col-md-4 position-relative">
+                <label asp-for="MemberPhoto" class="control-label">會員照片</label>
                 <input asp-for="MemberPhoto" class="form-control" id="InputPhoto" name="avatar" type="file" />
                 <span asp-validation-for="MemberPhoto" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Wallet" class="control-label"></label>
-                @* <input asp-for="Wallet" class="form-control" id="InputWallet" name="Wallet" /> *@
+            @* <div class="form-group col-md-4 position-relative">
+                <label asp-for="Wallet" class="control-label">個人資金</label>
+                <!-- <input asp-for="Wallet" class="form-control" id="InputWallet" name="Wallet" /> -->
                 <span asp-validation-for="Wallet" class="text-danger"></span>
-                <label class="control-label">資金</label>
                 <select class="form-select" aria-label="Default select example" id="InputWallet" name="Wallet">
                     <option value="" selected>預設無</option>
                     <option value="100">100</option>
                     <option value="200">200</option>
                 </select>
-            </div>
-            <div class="form-group">
+            </div> *@
+            <div class="form-group col-md-4 position-relative">
                 <input type="submit" value="送出並儲存" class="btn btn-primary" id="buttonSubmit" />
+                <button class="btn btn-danger" id="buttonSubmitB">快速填入</button>
             </div>
         </form>
         <div id="div1" class="alert alert-info mt-3"></div>
@@ -112,26 +127,84 @@
 </div>
 
 <div>
-    <button type="button" class="btn btn-light"><a asp-action="List">返回</a></button>
+    <a asp-action="List" class="btn btn-light">返回</a>
 </div>
+@section Styles {
+    <style>
+        .vertical-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 確保垂直群組的項目水平置中 */
+            gap: 20px; /* 調整間距 */
+            width: 100%; /* 確保群組佔滿整個寬度 */
+        }
 
+        .horizontal-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; /* 確保旋轉木馬水平置中 */
+            align-items: stretch; /* 伸展項目以填滿容器 */
+            gap: 20px; /* 調整間距 */
+            margin: 10px auto; /* 左右各250px的間距 */
+            width: 100%; /* 確保群組佔滿50%的寬度 */
+        }
+
+        .custom-carousel {
+            flex: 1; /* 確保旋轉木馬佔據可用空間 */
+            width: 30%;
+            margin: auto; /* 使旋轉木馬居中 */
+        }
+
+        .carousel-item img {
+            border-radius: 15px; /* 圓角設置 */
+        }
+
+        .rounded-carousel {
+            border-radius: 15px; /* 可以根據需求調整框架的圓角大小 */
+            overflow: hidden; /* 確保圓角適用於整個框架內容 */
+        }
+    </style>
+}
 @section Scripts {
     <script>
         const memberId = document.querySelector('#Inputid').value;
-        console.log("測試1");
-        console.log(memberId);
         (async () => {
             const urlA = `https://localhost:7160/api/TMembers/${memberId}`;
             const responseA = await fetch(urlA);
             const dataA = await responseA.json();
-            //const AS = JSON.parse(dataA)
-            console.log(dataA);
-            console.log(dataA.base64Image);
-            document.querySelector('#idShowphoto').innerHTML = `<img src="${dataA.base64Image}"/>`;
+            document.querySelector('#idShowphoto').innerHTML = `<img src="${dataA.base64Image}" style="height: 350px;"/>`;
+            document.querySelector('#InputPassword').value = null;
         })();
 
+        // 用於在有無效欄位時禁用表單提交的示例啟動 JavaScript
+        (() => {
+            // 獲取所有需要應用自定義 Bootstrap 驗證樣式的表單
+            const forms = document.querySelectorAll('.needs-validation');
 
+            // 全部這些表單並阻止提交動作
+            Array.from(forms).forEach(form => {
+                form.addEventListener('click', event => {
+                    // 如果表單無效，則阻止提交
+                    if (!form.checkValidity()) {
+                        event.preventDefault(); // 阻止表單提交
+                        event.stopPropagation(); // 阻止事件冒泡
+                    }
+                    // 添加 Bootstrap 的驗證樣式類別
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
 
+        document.querySelector('#buttonSubmitB').addEventListener('click', (evt) => {
+            evt.preventDefault(); // 防止預設行為的發生
+            document.querySelector('#Inputname').value = "史昆靈葛葛 您是一位帥哥";
+            document.querySelector('#Inputphone').value = "0988776655";
+            document.querySelector('#InputEMail').value = "k955339962@gmail.com";
+            document.querySelector('#InputPassword').value = "aaaa";
+            document.querySelector('#InputAddress').value = "台北市大安區復興南路一段390號2樓";
+            document.querySelector('#InputBirthday').value = "1995-04-01";
+            document.querySelector('#InputVipid').value = @Model.Vipid;
+        });
 
         document.addEventListener('DOMContentLoaded', function () {
             const divResult = document.querySelector("#div1");
@@ -141,16 +214,16 @@
                 evt.preventDefault(); // 防止預設行為的發生
 
                 // 獲取所有表單值
-                // const memberName = document.querySelector('#Inputname').value;
-                // const memberphone = document.querySelector('#Inputphone').value;
+                const memberName = document.querySelector('#Inputname').value;
+                const memberphone = document.querySelector('#Inputphone').value;
+                const memberEMail = document.querySelector('#InputEMail').value;
+                const memberPassword = document.querySelector('#InputPassword').value;
                 // const memberAddress = document.querySelector('#InputAddress').value;
                 // const memberSex = document.querySelector('#InputSex').value;
-                // const memberPassword = document.querySelector('#InputPassword').value;
                 // const memberSalt = document.querySelector('#InputSalt').value;
-                // const memberEMail = document.querySelector('#InputEMail').value;
                 // const memberPoints = document.querySelector('#InputPoints').value;
                 // const memberVipid = document.querySelector('#InputVipid').value;
-                // const memberPhoto = document.querySelector('#InputPhoto').value;
+                const memberPhoto = document.querySelector('#InputPhoto').value;
                 // const memberWallet = document.querySelector('#InputWallet').value;
                 // const memberData = {
                 //     "MemberId": memberId,
@@ -167,36 +240,33 @@
                 //     "Wallet": memberWallet
                 // };
 
-                //將資料放進FormData
-                const myForm = document.querySelector('#userForm');
-                const fromdata = new FormData(myForm);
-                //測試FormData中有無資料
-                for (const pair of fromdata.entries()) {
-                    console.log(pair[0], pair[1]);
-                }
-                const url = `https://localhost:7160/api/TMembers/${memberId}`;
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    body: fromdata
-                });
-                const data = await response.text();
-                console.log('data');
-                console.log(data);
-                const jsonparse = JSON.parse(data);
-                console.log('json');
-                console.log(jsonparse);
-                const message = jsonparse.message;
-                console.log('message');
-                console.log(message);
-                const Jname = jsonparse.memberDb.memberName;
-                console.log('Jname');
-                console.log(Jname);
-                divResult.innerHTML = `<p>會員姓名：${Jname}/${message}</p>`;
-                if (message) {
-                    setTimeout(() => {
-                        window.location.href = "/Member/List";
-                    }, 3000); // 3000 毫秒 = 3 秒
-                }
+                if (memberName && memberphone && memberEMail && memberPassword) {
+                    if (memberPhoto) {
+                        //將資料放進FormData
+                        const myForm = document.querySelector('#userForm');
+                        const fromdata = new FormData(myForm);
+                        //測試FormData中有無資料
+                        for (const pair of fromdata.entries()) {
+                            console.log(pair[0], pair[1]);
+                        }
+                        const url = `https://localhost:7160/api/TMembers/${memberId}`;
+                        const response = await fetch(url, {
+                            method: 'PUT',
+                            body: fromdata
+                        });
+                        const data = await response.json();
+                        const message = data.message;
+                        const Jname = data.memberDb.memberName;
+                        divResult.innerHTML = `<p>會員姓名：${Jname}/${message}</p>`;
+                        if (message) {
+                            setTimeout(() => {
+                                window.location.href = "/Member/List";
+                            }, 3000); // 3000 毫秒 = 3 秒
+                        }
+                    } else
+                        alert("尚未輸入會員的新照片");
+                } else
+                    alert("尚未完成會員個人基本資料作業，請繼續修改個人基本資料");
             });
         });
     </script>
