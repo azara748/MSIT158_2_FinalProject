@@ -56,7 +56,7 @@ namespace MSIT158_2_FinalProject.Controllers.後台
             if (ode == 0) v = v.OrderByDescending(x => x.ReviewId);
             else if (ode == 1) v = v.OrderByDescending(x => x.RankId);
             else if (ode == 2) v = v.OrderBy(x => x.RankId);
-            else if (ode == 3) v = v.OrderByDescending(x => x.ReviewDate).OrderByDescending(x => x.ReviewId);
+            else if (ode == 3) v = v.OrderByDescending(x => x.ReviewId).OrderByDescending(x => x.ReviewDate);
             else if (ode == 4) v = v.OrderBy(x => x.ReviewId).OrderBy(x => x.ReviewDate);
             ViewBag.ode = ode;
 
