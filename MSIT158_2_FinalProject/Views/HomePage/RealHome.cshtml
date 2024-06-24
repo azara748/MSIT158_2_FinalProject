@@ -57,7 +57,9 @@
 									<div class="products-slick" data-nav="#slick-nav-2" id="runPro0">
 								@foreach (var product in Model)
 								{
+
 									<div class="product">
+										<a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>
 										<div class="product-img">
 											@if (product.Productphoto != null && product.Productphoto.Length > 0)
 											{
@@ -111,6 +113,7 @@
 											<div class="add-to-cart">
 												<button class="add-to-cart-btn" onclick="addcart3(${productId})"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
 											</div>
+											</a>
 									</div>
 								}
 									</div>
