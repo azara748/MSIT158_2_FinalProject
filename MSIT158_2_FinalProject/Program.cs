@@ -51,6 +51,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=MemberCreate}/{id?}");
+    pattern: "{controller=HomePage}/{action=Search}/{id?}");
 
 app.Run();
