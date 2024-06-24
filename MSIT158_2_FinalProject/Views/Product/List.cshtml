@@ -60,7 +60,7 @@
     </thead>
     <tbody>
 
-@foreach (var item in Model) {
+@* @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductId)
@@ -76,11 +76,11 @@
             </td>
                 <td class="SubCategoryId-td">
                 @Html.DisplayFor(modelItem => item.SubCategoryId)
-            </td>
+            </td> *@
 @*             <td>
                 @Html.DisplayFor(modelItem => item.ProductPhoto)
             </td> *@
-                <td class="UnitPrice-td">
+          @*       <td class="UnitPrice-td">
                 @Html.DisplayFor(modelItem => item.UnitPrice)
             </td>
                 <td class="Description-td">
@@ -100,7 +100,7 @@
               @Html.ActionLink("刪除", "delete", "Product", new { id = item.ProductId }, new { onclick = "return confirm('您確定要刪除嗎??')"})
             </td>
         </tr>
-    }
+    } *@
     </tbody>
 </table>
 @section Scripts {
