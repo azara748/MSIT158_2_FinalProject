@@ -80,6 +80,7 @@
         </div>
         <p class="text-sm mt-3 mb-0">沒有帳號? <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></button></p>
         <button type="button" class="btn btn-light"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></button>
+        <button class="btn btn-danger" id="buttonSubmitB">快速填入</button>
         @* <p class="text-sm mt-3 mb-0">沒有帳號? <a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("建立新帳號", "MemberCreate")</a></p> *@
         @* <p class="text-sm mt-3 mb-0"><a href="javascript:;" class="text-dark font-weight-bolder">@Html.ActionLink("忘記密碼", "MemberForgetPassword")</a></p> *@
     </form>
@@ -252,12 +253,19 @@
         //=====================Google==============Facebook==============================================
         const btnSubmit = document.querySelector('#buttonSubmit');
 
+        document.querySelector('#buttonSubmitB').addEventListener('click', (evt) => {
+            evt.preventDefault(); // 防止預設行為的發生
+            document.querySelector('#Inputemail').value = "k955339962@gmail.com";
+            document.querySelector('#InputPassword').value = "aaaa1234";
+        });
+
+
         btnSubmit.addEventListener('click', async (evt) => {
             evt.preventDefault(); //防止預設行為的發生
 
             const femail = document.querySelector('#Inputemail').value;
             const fpassword = document.querySelector('#InputPassword').value;
-            if (femail != null && fpassword != null) {
+            if (femail && fpassword) {
                 const memberData = {
                     "txtEmail": femail,
                     "txtPassword": fpassword
@@ -315,7 +323,11 @@
                     if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);
                         const toOriginalPage = sessionStorage.getItem("redirectAfterLogin");
-                        window.location.href = toOriginalPage;
+                        if (!toOriginalPage) {
+                            alert("跳首頁");
+                            window.location.href = "/";
+                        } else
+                            window.location.href = toOriginalPage;
                     }
                 }
 

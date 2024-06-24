@@ -7,11 +7,11 @@
 
 <form role="form" method="post" action="~/Home/BackLogin" id="userForm">
     <div class="mb-3">
-        <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" value="ivy@gmail.com" name="txtEmail" id="Inputemail">
+        <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" value="" name="txtEmail" id="Inputemail">
         @* @Html.TextBox("txtEmail", "ivy@gmail.com", new { @class = "form-control form-control-lg", type = "email", placeholder = "Email", @aria_label = "Email" }) *@
     </div>
     <div class="mb-3">
-        <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" value="11111" name="txtPassword" id="InputPassword">
+        <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" value="" name="txtPassword" id="InputPassword">
         @* @Html.Password("txtPassword", "11111", new { @class = "form-control form-control-lg", placeholder = "Password", @aria_label = "Password" }) *@
     </div>
     @* 記住我 *@
@@ -22,12 +22,20 @@
     @* 記住我end *@
     <div class="text-center">
         <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" id="buttonSubmit">登入</button>
+        <button class="btn btn-danger" id="buttonSubmitB">快速填入</button>
     </div>
 </form>
 
 @section Scripts {
     <script>
         const btnSubmit = document.querySelector('#buttonSubmit');
+
+        document.querySelector('#buttonSubmitB').addEventListener('click', (evt) => {
+            evt.preventDefault(); // 防止預設行為的發生
+            document.querySelector('#Inputemail').value = "ivy@gmail.com";
+            document.querySelector('#InputPassword').value = "11111";
+        });
+
 
         btnSubmit.addEventListener('click', async (evt) => {
             evt.preventDefault(); //防止預設行為的發生
@@ -84,7 +92,8 @@
                     }
                 }
 
-            }
+            } else
+                alert("請輸入帳號及密碼");
 
         });
 

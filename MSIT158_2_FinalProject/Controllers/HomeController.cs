@@ -96,6 +96,10 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             return View();
         }
+        public IActionResult MemberForgetPasswordB()
+        {
+            return View();
+        }
         //google 第三方登入(API)
         public IActionResult GoogleAuth()
         {
