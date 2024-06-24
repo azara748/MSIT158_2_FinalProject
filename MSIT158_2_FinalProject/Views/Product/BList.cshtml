@@ -25,15 +25,16 @@
         </div>
     <!--左到右-->
 <div class="row">
+    <div class="col-md-2">
+        <label>分類搜尋:</label>
+        <select class="form-control" id="bsub">
+        </select>
+    </div>
         <div class="col-md-2">
             <label>品牌搜尋:</label>
         <select class="form-control" id="blabel">
             </select>
         </div>
-    <div class="col-md-2"><label>分類搜尋:</label>
-        <select class="form-control" id="bsub">
-        </select>
-    </div>
         <div class="col-md-2">
             <label>分類商品ID順序搜尋:</label>
         <select class="form-control" id="bdesc" style="50px">
@@ -66,19 +67,23 @@
                     <thead>
                         <tr>
 @*                     <th><button>下架所有被勾選</button></th> *@
-
+<span>是否顯示欄位?:</span>
+                    <label><input type="checkbox" id="chkUnitPrice" checked>販售價</label>
+                    <label><input type="checkbox" id="chkCost" checked>成本價</label>
+                    <label><input type="checkbox" id="chkDescription" checked>產品說明</label>
+                    <label><input type="checkbox" id="chkDate" checked>新增日期</label>
                     <th colspan=2>商品狀態</th>
                         <th>修改</th>
                         <th>ID</th>
                         <th>商品名稱</th>
                         <th>商品照片</th>
                         <th>商品庫存</th>
-                        <th>商品品牌</th>
                         <th>商品分類</th>
-                        <th>販售價</th>
-                        <th>成本價</th>
-                        <th>商品說明</th>
-                        <th>新增日期</th>
+                        <th>商品品牌</th>
+                    <th id ="uniHideth">販售價</th>
+                    <th id="cosHideth">成本價</th>
+                     <th id="desHideth">商品說明</th>
+                    <th id="dateHideth">新增日期</th>
                         </tr>
                     </thead>
                     <tbody id="idtablep">
@@ -229,18 +234,22 @@
                         const { productId, productName, productphoto, unitPrice, cost, stocks, description, subCatName, labelName, lanchTime, status} = pro;
             return (` <tr>
                       <th><button onclick="clickDelete(${productId})">${status === 1 ? '停售' : '販售'}</button></th>
-                                                        <th>${status === 1 ? '販售中' : '停售中'}</th>
+                                                                <th> ${status === 1 ? '販售中' : '<span style="color: red;">停售中</span>'}</th>
                       <th><button onclick="clickUpdate(${productId})">修改</button></th>
                       <th>${productId}</th>
                       <th>${productName}</th>
                       <th>${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""  style="width: 30px; height: 30px;"/>` : '(無圖片)'}</th>
-                      <th>${stocks}</th>
+                              <th>  ${stocks === 0
+                        ? '<span style="color: red;">0</span>'
+                        : stocks < 5
+                            ? `<span style="color: blue;">${stocks}</span>`
+                            : stocks}</th>
                       <th>${labelName}</th>
                       <th>${subCatName}</th>
-                      <th>${unitPrice}</th>
-                      <th>${cost}</th>
-                      <th>${description ? (description.length > 30 ? `${description.substring(0, 30)}...` : description) : ''}</th>
-                      <th>${lanchTime}</th>
+                       <th  class="uniHidetd">$${unitPrice}</th>
+                       <th class="cosHidetd">$${cost}</th>
+                      <th class="desHidetd">${description ? (description.length > 30 ? `${description.substring(0, 30)}...` : description) : ''}</th>
+                      <th class="dateHidetd">${lanchTime}</th>
 
                       </tr>`)
         })
@@ -280,7 +289,10 @@
                                      <div class="card-header pb-0">
                                     <div class="d-flex align-items-center">
                                 <h4>新增商品</h4>
+                                        <div class="ms-auto">
+                                                              <button class="btn btn-outline-secondary  btn-sm ms-auto" onclick="demoNew()">快速填入範本</button>
                                               <button class="btn btn-primary btn-sm ms-auto" onclick="addNew()">儲存新商品</button>
+                                              </div>
                                               </div>
                                               </div>
                                               <div class="card-body">
@@ -300,14 +312,14 @@
                                                                   </div>
                                                                   <div class="col-md-6">
                                                                       <div class="form-group">
-                                                               <label for="selectLabel" class="form-control-label">品牌</label>
-                                                              <select id="selectLabel" class="form-control"></select>
+                                                                         <label for="selectSub" class="form-control-label">分類</label>
+                                                                             <select id="selectSub" class="form-control"></select>
                                                                       </div>
                                                                   </div>
                                                                   <div class="col-md-6">
                                                                       <div class="form-group">
-                                                                                      <label for="selectSub" class="form-control-label">分類</label>
-                                                                          <select id="selectSub" class="form-control"></select>
+                                                                          <label for="selectLabel" class="form-control-label">品牌</label>
+                                                                      <select id="selectLabel" class="form-control"></select>
                                                                       </div>
                                                                   </div>
                                                                   <div class="col-md-6">
@@ -396,6 +408,18 @@
                 })
             }
             addNewBool = !addNewBool;
+        }
+        //DEMO按鍵_新增用
+        function demoNew(){
+            document.getElementById('newName').value = "嬰兒鞋子(小熊款)";
+            document.getElementById('newStocks').value = 5;
+            document.getElementById('selectSub').value = 2;
+            document.getElementById('selectLabel').value = 34;
+            document.getElementById('newUnit').value = 499;
+            document.getElementById('newCost').value = 150;
+            document.getElementById('newDes').value = "●【nikokids】嬰兒鞋細心呵護您的寶貝，一起陪伴他一步一步長大\n●給寶貝穿卡哇伊又防滑的鞋鞋\n●防滑底部，保護寶寶每一步都走得安穩不滑腳，安心學走路\n●超多可愛、亮麗、帥氣、學院風款式顏色任選，讓寶貝有個繽紛的小童年 ";
+            document.getElementById('newLantime').value = "2024-06-28";
+            document.getElementById('newStatus').value = 1;
         }
         
             //兩個下拉式選單加入
@@ -537,8 +561,10 @@
                                             <div class="card-header pb-0">
                                             <div class="d-flex align-items-center">
                                                     <h4>修改商品</h4>
-                                                                                                           <button class="btn btn-primary btn-sm ms-auto" onclick="giveupUpdate()">放棄修改</button>
+                                                                                                    <div class="ms-auto">
+                                                                                                                   <button class="btn btn-outline-danger btn-sm ms-auto" onclick="giveupUpdate()">放棄修改</button>
                                                         <button class="btn btn-primary btn-sm ms-auto" onclick="saveChange(${productId})">修改並儲存</button>
+                                                        </div>
                                                         </div>
                                             </div>
                                             <div class="card-body">
@@ -692,8 +718,8 @@
                     alert("修改失敗 請重新檢查");
                     return;
                 }
-                location.reload();
-                //0619
+                bid.value = id;
+                dataChanged();
             }
         const giveupUpdate = async() =>{
             idcardzone.innerHTML = "";
@@ -714,7 +740,6 @@
         }
             //search功能:
                 function dataChanged() {
-                    console.log("dataChanged");
                     searchBata.page = 1;
                     searchBata.searchword = btext.value;
                     searchBata.proId = bid.value;
@@ -776,8 +801,68 @@
                 alert(datad);
                 }
         }
-
-
+        //顯示功能:
+         document.getElementById('chkDescription').addEventListener('change', function () {
+            var sth = document.getElementById('desHideth');
+            var std = document.getElementsByClassName('desHidetd');
+        if (!this.checked) {
+           sth.style.display = 'none';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = 'none';
+            }
+        } else {
+            sth.style.display = '';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = '';
+            }
+        }
+                });
+    document.getElementById('chkDate').addEventListener('change', function () {
+            var sth = document.getElementById('dateHideth');
+            var std = document.getElementsByClassName('dateHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+    document.getElementById('chkUnitPrice').addEventListener('change', function () {
+            var sth = document.getElementById('uniHideth');
+            var std = document.getElementsByClassName('uniHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+     document.getElementById('chkCost').addEventListener('change', function () {
+            var sth = document.getElementById('cosHideth');
+            var std = document.getElementsByClassName('cosHidetd');
+        if (!this.checked) {
+           sth.style.display = 'none';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = 'none';
+            }
+        } else {
+            sth.style.display = '';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = '';
+            }
+        }
+                });
+        
 
     </script>
 }
