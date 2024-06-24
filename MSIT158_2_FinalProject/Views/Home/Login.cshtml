@@ -239,7 +239,6 @@
                         console.log(JnamesB);
                         if (confirm(`${JnamesB}\n${JemailsB}\n確定要登入嗎!`)) {
                             const toOriginalPage = sessionStorage.getItem("redirectAfterLogin");
-                            alert(toOriginalPage);
                             window.location.href = toOriginalPage;
                         }
                     }
@@ -316,7 +315,6 @@
                     if (Jname2 != null) {
                         alert(`${Jname2}：${message2}`);
                         const toOriginalPage = sessionStorage.getItem("redirectAfterLogin");
-                        alert(toOriginalPage);
                         window.location.href = toOriginalPage;
                     }
                 }
