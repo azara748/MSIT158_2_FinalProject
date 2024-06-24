@@ -435,24 +435,23 @@
 				const data = await response.json();
 				const likes = data.showMemberLikeDTOs.map(like => {
 					const { productName, unitPrice, productphoto, productId, status } = like;
-					return (`<a href="https://localhost:7066/homepage/index/${productId}">
-								<div class="product-widget">
+				return (`<a href='@Url.Content("~/p/Productpage")/${productId}'><div class="product-widget">
 								<div class="product-img">
 														${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
 								</div>
 								<div class="product-body">
-												<h3 class="product-name"><a href="#">${productName}</a></h3>
+														<h3 class="product-name">${productName}</h3>
 										<h4 class="product-price"></span>$${unitPrice}</h4>
 																					</div>
 																									<button class="delete" onclick="addlike(${sessionmID},${productId})"><i class="fa fa-close"></i></button>
-																				</div>`)
+																						</div></a>`)
 				})
 				likelist.innerHTML = likes.join("");
 			const howmanylike = data.count;
 			const blackhowmanylike = data.count;
 			showhowmanylike.innerHTML = howmanylike;
 			counttotalliked.innerHTML = blackhowmanylike;
-
+			alert("確認位置");
 			}
 
 		btnlikelist.addEventListener('click', () => {
