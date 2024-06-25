@@ -9,9 +9,17 @@ namespace MSIT158_2_FinalProject.Controllers.Front
 {
 	public class HomePageController : Controller
 	{
-		public IActionResult Search()
+        //public IActionResult Search()
+        public async Task<IActionResult> Search()
 		{
-			return View();
+            SelectShopContext db = new SelectShopContext();
+			var query = db.TSubCategories;
+			var subname = await query.Select(s => new subDTO
+			{
+				SubCategoryId = s.SubCategoryId,
+				SubCategoryCname = s.SubCategoryCname
+			}).ToListAsync();
+            return View(subname);
 		}
 		public IActionResult index(int? id)
 		{

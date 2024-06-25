@@ -64,7 +64,7 @@
 											@if (product.Productphoto != null && product.Productphoto.Length > 0)
 											{
 												var imageBase64 = Convert.ToBase64String(product.Productphoto);
-												<img style="width: 250px; height: 250px; object-fit: contain;" src="data:image/jpeg;base64,@imageBase64" alt="Product Image" />
+												<img style="width: 262px; height: 280px; object-fit: contain;" src="data:image/jpeg;base64,@imageBase64" alt="Product Image" />
 											}
 											else
 											{
@@ -181,43 +181,43 @@
 
 
 		//顯示父親節商品
-				(async function loadFa () {
-			const urlf = 'https://localhost:7160/api/SearchProduct/fatherday';
-			const responsef = await fetch(urlf, {
-				method: 'POST',
-				body: JSON.stringify(),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			const dataf = await responsef.json();
-			const pros = dataf.map(pro => {
-				const { productId, productName, discount, labelName, unitPrice, productphoto, score, isnew } = pro;
-						return `<div class="product">
-									<div class="product-img">
-												${productphoto ? `<img style="width: 250px; height: 250px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
-																<div class="product-label">
-																	<span class="sale">全館八折優惠</span>
-																</div>
-															</div>
-															<div class="product-body">
-																<p class="product-category">${labelName}</p>
-																<h3 class="product-name"><a href="#">${productName}</a></h3>
-																<h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4>
-																<div class="product-rating">
-										${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
-																</div>
-																<div class="product-btns">
-																	<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-																	<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-																</div>
-															</div>
-															<div class="add-to-cart">
-															</div>
-														</div>`;
-			});
-			runPro.innerHTML = pros.join('');
-		})();
+		// 		(async function loadFa () {
+		// 	const urlf = 'https://localhost:7160/api/SearchProduct/fatherday';
+		// 	const responsef = await fetch(urlf, {
+		// 		method: 'POST',
+		// 		body: JSON.stringify(),
+		// 		headers: {
+		// 			'Content-Type': 'application/json'
+		// 		}
+		// 	});
+		// 	const dataf = await responsef.json();
+		// 	const pros = dataf.map(pro => {
+		// 		const { productId, productName, discount, labelName, unitPrice, productphoto, score, isnew } = pro;
+		// 				return `<div class="product">
+		// 							<div class="product-img">
+		// 										${productphoto ? `<img style="width: 250px; height: 250px;object-fit:contain" src="data:image/jpeg;base64,${productphoto}" alt=""/>` : 'No Image Available'}
+		// 														<div class="product-label">
+		// 															<span class="sale">全館八折優惠</span>
+		// 														</div>
+		// 													</div>
+		// 													<div class="product-body">
+		// 														<p class="product-category">${labelName}</p>
+		// 														<h3 class="product-name"><a href="#">${productName}</a></h3>
+		// 														<h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4>
+		// 														<div class="product-rating">
+		// 								${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''}
+		// 														</div>
+		// 														<div class="product-btns">
+		// 															<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+		// 															<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+		// 														</div>
+		// 													</div>
+		// 													<div class="add-to-cart">
+		// 													</div>
+		// 												</div>`;
+		// 	});
+		// 	runPro.innerHTML = pros.join('');
+		// })();
 
 	</script>
 }

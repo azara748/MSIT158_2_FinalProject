@@ -25,15 +25,16 @@
         </div>
     <!--左到右-->
 <div class="row">
+    <div class="col-md-2">
+        <label>分類搜尋:</label>
+        <select class="form-control" id="bsub">
+        </select>
+    </div>
         <div class="col-md-2">
             <label>品牌搜尋:</label>
         <select class="form-control" id="blabel">
             </select>
         </div>
-    <div class="col-md-2"><label>分類搜尋:</label>
-        <select class="form-control" id="bsub">
-        </select>
-    </div>
         <div class="col-md-2">
             <label>分類商品ID順序搜尋:</label>
         <select class="form-control" id="bdesc" style="50px">
@@ -66,19 +67,26 @@
                     <thead>
                         <tr>
 @*                     <th><button>下架所有被勾選</button></th> *@
-
+<span>是否顯示欄位?:</span>
+                    <label><input type="checkbox" id="chkStocks" checked>商品庫存</label>
+                    <label><input type="checkbox" id="chkSubCategoryId" checked>商品分類</label>
+                    <label><input type="checkbox" id="chkLabelId" checked>商品品牌</label>
+                    <label><input type="checkbox" id="chkUnitPrice" checked>販售價</label>
+                    <label><input type="checkbox" id="chkCost" checked>成本價</label>
+                    <label><input type="checkbox" id="chkDescription" checked>商品說明</label>
+                    <label><input type="checkbox" id="chkDate" checked>新增日期</label>
                     <th colspan=2>商品狀態</th>
                         <th>修改</th>
                         <th>ID</th>
                         <th>商品名稱</th>
                         <th>商品照片</th>
-                        <th>商品庫存</th>
-                        <th>商品品牌</th>
-                        <th>商品分類</th>
-                        <th>販售價</th>
-                        <th>成本價</th>
-                        <th>商品說明</th>
-                        <th>新增日期</th>
+                    <th id="stoHideth">商品庫存</th>
+                    <th id="subHideth">商品分類</th>
+                    <th id ="labHideth">商品品牌</th>
+                    <th id ="uniHideth">販售價</th>
+                    <th id="cosHideth">成本價</th>
+                     <th id="desHideth">商品說明</th>
+                    <th id="dateHideth">新增日期</th>
                         </tr>
                     </thead>
                     <tbody id="idtablep">
@@ -188,6 +196,7 @@
         const idcardzone = document.getElementById('idcardzone');
         const idup = document.getElementById('idup');
         let addNewBool = true;
+        let updateBool = true;
 //搜尋列
                 const bshow = document.getElementById('bshow');
                 const bpage = document.getElementById('bpage');
@@ -229,18 +238,22 @@
                         const { productId, productName, productphoto, unitPrice, cost, stocks, description, subCatName, labelName, lanchTime, status} = pro;
             return (` <tr>
                       <th><button onclick="clickDelete(${productId})">${status === 1 ? '停售' : '販售'}</button></th>
-                                                        <th>${status === 1 ? '販售中' : '停售中'}</th>
+                                                                <th> ${status === 1 ? '販售中' : '<span style="color: red;">停售中</span>'}</th>
                       <th><button onclick="clickUpdate(${productId})">修改</button></th>
                       <th>${productId}</th>
                       <th>${productName}</th>
                       <th>${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt=""  style="width: 30px; height: 30px;"/>` : '(無圖片)'}</th>
-                      <th>${stocks}</th>
-                      <th>${labelName}</th>
-                      <th>${subCatName}</th>
-                      <th>${unitPrice}</th>
-                      <th>${cost}</th>
-                      <th>${description ? (description.length > 30 ? `${description.substring(0, 30)}...` : description) : ''}</th>
-                      <th>${lanchTime}</th>
+                                      <th  class="stoHidetd">  ${stocks === 0
+                        ? '<span style="color: red;">0</span>'
+                        : stocks < 5
+                            ? `<span style="color: blue;">${stocks}</span>`
+                            : stocks}</th>
+                              <th class="subHidetd">${subCatName}</th>
+                              <th class="labHidetd">${labelName}</th>
+                       <th  class="uniHidetd">$${unitPrice}</th>
+                       <th class="cosHidetd">$${cost}</th>
+                      <th class="desHidetd">${description ? (description.length > 30 ? `${description.substring(0, 30)}...` : description) : ''}</th>
+                      <th class="dateHidetd">${lanchTime}</th>
 
                       </tr>`)
         })
@@ -280,7 +293,10 @@
                                      <div class="card-header pb-0">
                                     <div class="d-flex align-items-center">
                                 <h4>新增商品</h4>
+                                        <div class="ms-auto">
+                                                              <button class="btn btn-outline-secondary  btn-sm ms-auto" onclick="demoNew()">快速填入範本</button>
                                               <button class="btn btn-primary btn-sm ms-auto" onclick="addNew()">儲存新商品</button>
+                                              </div>
                                               </div>
                                               </div>
                                               <div class="card-body">
@@ -300,14 +316,14 @@
                                                                   </div>
                                                                   <div class="col-md-6">
                                                                       <div class="form-group">
-                                                               <label for="selectLabel" class="form-control-label">品牌</label>
-                                                              <select id="selectLabel" class="form-control"></select>
+                                                                         <label for="selectSub" class="form-control-label">分類</label>
+                                                                             <select id="selectSub" class="form-control"></select>
                                                                       </div>
                                                                   </div>
                                                                   <div class="col-md-6">
                                                                       <div class="form-group">
-                                                                                      <label for="selectSub" class="form-control-label">分類</label>
-                                                                          <select id="selectSub" class="form-control"></select>
+                                                                          <label for="selectLabel" class="form-control-label">品牌</label>
+                                                                      <select id="selectLabel" class="form-control"></select>
                                                                       </div>
                                                                   </div>
                                                                   <div class="col-md-6">
@@ -396,6 +412,18 @@
                 })
             }
             addNewBool = !addNewBool;
+        }
+        //DEMO按鍵_新增用
+        function demoNew(){
+            document.getElementById('newName').value = "嬰兒鞋子(小熊款)";
+            document.getElementById('newStocks').value = 5;
+            document.getElementById('selectSub').value = 2;
+            document.getElementById('selectLabel').value = 34;
+            document.getElementById('newUnit').value = 499;
+            document.getElementById('newCost').value = 150;
+            document.getElementById('newDes').value = "●【nikokids】嬰兒鞋細心呵護您的寶貝，一起陪伴他一步一步長大\n●給寶貝穿卡哇伊又防滑的鞋鞋\n●防滑底部，保護寶寶每一步都走得安穩不滑腳，安心學走路\n●超多可愛、亮麗、帥氣、學院風款式顏色任選，讓寶貝有個繽紛的小童年 ";
+            document.getElementById('newLantime').value = "2024-06-28";
+            document.getElementById('newStatus').value = 1;
         }
         
             //兩個下拉式選單加入
@@ -503,7 +531,6 @@
                 if (responsen.ok) {
                     alert("新增商品成功");
                 idcardzone.innerHTML = "";
-                searchBata.proId = datan;
                 afterNewChanged();
                     console.log("新增完成",searchBata);
                 } else {
@@ -515,151 +542,152 @@
             }
 
         //更新功能
-                const clickUpdate = async (id) => {
+        const clickUpdate = async (id) => {
             console.log("更新", id);
             //產出修改卡
-           const urlu = 'https://localhost:7160/api/BackProduct/IDFindBackProduct?id=' + `${id}`;
-            const responseu = await fetch(urlu, {
-                        method: 'POST',
-                        body: JSON.stringify(),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    const datau = await responseu.json();
-                    const up = datau.map(upp => {
-                const { productName, stocks, subCategoryId, subCatName, labelId, labelName, unitPrice, cost, lanchTime, description, productphoto, productId, status } = upp;
-                        //先產出表
-                        return (`<div class="container-fluid py-4">
-                                            <div class="row">
-                                            <div class="col-md-8">
-                                            <div class="card">
-                                            <div class="card-header pb-0">
-                                            <div class="d-flex align-items-center">
-                                                    <h4>修改商品</h4>
-                                                                                                           <button class="btn btn-primary btn-sm ms-auto" onclick="giveupUpdate()">放棄修改</button>
-                                                        <button class="btn btn-primary btn-sm ms-auto" onclick="saveChange(${productId})">修改並儲存</button>
-                                                        </div>
-                                            </div>
-                                            <div class="card-body">
-                                              <p class="text-uppercase text-sm">請修改商品資訊</p>
-                                              <div class="row">
-                                               <div class="col-md-6">
-                                                <div class="form-group">
-                                                 <label for="example-text-input" class="form-control-label">商品名稱</label>
-                                                             <input class="form-control" type="text" id="newName" value="${productName}">
-                                                                    </div>
+            if (!updateBool) { idcardzone.innerHTML = ""; }
+            else {
+                const urlu = 'https://localhost:7160/api/BackProduct/IDFindBackProduct?id=' + `${id}`;
+                const responseu = await fetch(urlu, {
+                    method: 'POST',
+                    body: JSON.stringify(),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const datau = await responseu.json();
+                const up = datau.map(upp => {
+                    const { productName, stocks, subCategoryId, subCatName, labelId, labelName, unitPrice, cost, lanchTime, description, productphoto, productId, status } = upp;
+                    //先產出表
+                    return (`<div class="container-fluid py-4">
+                                                    <div class="row">
+                                                    <div class="col-md-8">
+                                                    <div class="card">
+                                                    <div class="card-header pb-0">
+                                                    <div class="d-flex align-items-center">
+                                                            <h4>修改商品</h4>
+                                                                                                            <div class="ms-auto">
+                                                                                                                           <button class="btn btn-outline-danger btn-sm ms-auto" onclick="giveupUpdate()">放棄修改</button>
+                                                                <button class="btn btn-primary btn-sm ms-auto" onclick="saveChange(${productId})">修改並儲存</button>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="example-text-input" class="form-control-label">庫存數量	</label>
-                                                                                                 <input class="form-control" type="number" id="newStocks" value="${stocks}">
-                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                <span>品牌:${labelId}.${labelName}</span>
-                                                             <label for="selectLabel" class="form-control-label">更改品牌</label>
-                                                    <select id="selectLabel"></select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                     <span>分類:${subCategoryId}.${subCatName}</span>
-                                                                                    <label for="selectSub" class="form-control-label">更改分類</label>
-                                                                <select id="selectSub"></select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="example-text-input" class="form-control-label">販售價格</label>
-                                                                                                            <input class="form-control" type="number" id="newUnit" value="${unitPrice}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="example-text-input" class="form-control-label">成本價格</label>
-                                                                                                                        <input class="form-control" type="number" id="newCost" value="${cost}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr class="horizontal dark">
-                                                                  <div class="row">
-                                                                     <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="example-text-input" class="form-control-label">商品說明</label>
-                                                                                    <textarea class="form-control" id="newDes">${description}</textarea>
-                                                                    </div>
-                                                                </div>
-                                                                    <div class="col-md-4">
-                                                                         <div class="form-group">
-                                                                        <label for="example-text-input" class="form-control-label">新增日期</label>
-                                                                                   <input class="form-control" type="date" id="newLantime" value="${lanchTime}"">
-                                                                            </div>
-                                                                    </div>
-                                                                      <div class="col-md-2">
-  <label for="example-text-input" class="form-control-label">商品狀態</label>
-                                                           <select class="form-control" id="newStatus">
-                        <option value="1" ${status === 1 ? 'selected' : ''}>販售中</option>
-                        <option value="2" ${status === 2 ? 'selected' : ''}>停售中</option>
-              </select>
-                                                                               </div>
-                                                                  </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                <div class="col-md-4">
-                                                    <div class="card card-profile">
-                                              ${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt="" id="preview" class="card-img-top"/>` : '*****此產品尚無圖片資訊*****'}
-                                                        <div class="row justify-content-center">
-                                                            <div class="col-4 col-lg-4 order-lg-2">
+                                                    <div class="card-body">
+                                                      <p class="text-uppercase text-sm">請修改商品資訊</p>
+                                                      <div class="row">
+                                                       <div class="col-md-6">
+                                                        <div class="form-group">
+                                                         <label for="example-text-input" class="form-control-label">商品名稱</label>
+                                                                     <input class="form-control" type="text" id="newName" value="${productName}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="example-text-input" class="form-control-label">庫存數量	</label>
+                                                                                                         <input class="form-control" type="number" id="newStocks" value="${stocks}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                        <span>品牌:${labelId}.${labelName}</span>
+                                                                     <label for="selectLabel" class="form-control-label">更改品牌</label>
+                                                            <select id="selectLabel"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                             <span>分類:${subCategoryId}.${subCatName}</span>
+                                                                                            <label for="selectSub" class="form-control-label">更改分類</label>
+                                                                        <select id="selectSub"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="example-text-input" class="form-control-label">販售價格</label>
+                                                                                                                    <input class="form-control" type="number" id="newUnit" value="${unitPrice}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="example-text-input" class="form-control-label">成本價格</label>
+                                                                                                                                <input class="form-control" type="number" id="newCost" value="${cost}">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="horizontal dark">
+                                                                          <div class="row">
+                                                                             <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="example-text-input" class="form-control-label">商品說明</label>
+                                                                                            <textarea class="form-control" id="newDes">${description}</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                            <div class="col-md-4">
+                                                                                 <div class="form-group">
+                                                                                <label for="example-text-input" class="form-control-label">新增日期</label>
+                                                                                           <input class="form-control" type="date" id="newLantime" value="${lanchTime}"">
+                                                                                    </div>
+                                                                            </div>
+                                                                              <div class="col-md-2">
+          <label for="example-text-input" class="form-control-label">商品狀態</label>
+                                                                   <select class="form-control" id="newStatus">
+                                <option value="1" ${status === 1 ? 'selected' : ''}>販售中</option>
+                                <option value="2" ${status === 2 ? 'selected' : ''}>停售中</option>
+                      </select>
+                                                                                       </div>
+                                                                          </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                                                            <div class="d-flex justify-content-between">
-                                                                            <input class="form-control" type="file" id="uploadFile" accept=".jpg,.jpeg,.png" maxlength="1048576">
-                                                                <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
-                                                                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block" >取消上傳</a>
-                                                                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+                                                        <div class="col-md-4">
+                                                            <div class="card card-profile">
+                                                      ${productphoto ? `<img src="data:image/jpeg;base64,${productphoto}" alt="" id="preview" class="card-img-top"/>` : '*****此產品尚無圖片資訊*****'}
+                                                                <div class="row justify-content-center">
+                                                                    <div class="col-4 col-lg-4 order-lg-2">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+                                                                    <div class="d-flex justify-content-between">
+                                                                                    <input class="form-control" type="file" id="uploadFile" accept=".jpg,.jpeg,.png" maxlength="1048576">
+                                                                        <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+                                                                        <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block" >取消上傳</a>
+                                                                        <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        `)
-                    })
+                                                `)
+                })
                 idcardzone.innerHTML = up.join("");
                 newCardFunction();
-               
-                        //兩個下拉式選單載入
-                        //newCardFunction();
-                        //加入讀取照片功能
-                    document.getElementById('uploadFile').addEventListener('change', function (event) {
-                        const fileInput = event.target;
-                        const files = fileInput.files;
-                        const preview = document.getElementById('preview');
-                        if (files.length > 0) {
-                            const file = files[0];
-                            const reader = new FileReader();
-                            reader.onload = function (e) {
-                                preview.src = e.target.result;
-                            };
-                            reader.readAsDataURL(file);
-                            const byteReader = new FileReader();
-                            byteReader.onload = function (e) {
+                document.getElementById('uploadFile').addEventListener('change', function (event) {
+                    const fileInput = event.target;
+                    const files = fileInput.files;
+                    const preview = document.getElementById('preview');
+                    if (files.length > 0) {
+                        const file = files[0];
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                        const byteReader = new FileReader();
+                        byteReader.onload = function (e) {
 
-                                const arrayBuffer = e.target.result;
-                                const byteArray = new Uint8Array(arrayBuffer);
-                                const base64String = btoa(String.fromCharCode.apply(null, byteArray));
-                                Updateprophoto = base64String;
-                                // console.log('Image in base64:', newprophoto);
-                            };
-                            byteReader.readAsArrayBuffer(file);
-                        }
-                    })
+                            const arrayBuffer = e.target.result;
+                            const byteArray = new Uint8Array(arrayBuffer);
+                            const base64String = btoa(String.fromCharCode.apply(null, byteArray));
+                            Updateprophoto = base64String;
+                            // console.log('Image in base64:', newprophoto);
+                        };
+                        byteReader.readAsArrayBuffer(file);
                     }
-
+                })
+            }
+            updateBool = !updateBool;
+        }
             //修改卡裡面要帶入原先資料
             //上架改成修改完成
             //修改並儲存
@@ -688,33 +716,29 @@
                 const dataup = await responseup.text();
                 if (responseup.ok) {
                     alert(dataup);
+                idcardzone.innerHTML = "";
                 } else {
                     alert("修改失敗 請重新檢查");
                     return;
                 }
-                location.reload();
-                //0619
+                bid.value = id;
+                dataChanged();
             }
         const giveupUpdate = async() =>{
             idcardzone.innerHTML = "";
-            console.log("giveup");
         }
         function afterNewChanged() {
-            console.log("afterNewChanged");
             searchBata.searchword = btext.value;
             searchBata.pagesSize = bshow.value;
-            let Sortselect = bdesc.value.split('|');
-            searchBata.sortBy = Sortselect[0];
-            searchBata.sortType = Sortselect[1];
+            searchBata.sortBy = "proID";
+            searchBata.sortType = "desc";
             searchBata.labelID = sblabel.value;
             searchBata.catID = sbsub.value;
             searchBata.status = bcheck.value;
-            console.log("afterNewChangedsearchBata", searchBata);
             loadBPro();
         }
             //search功能:
                 function dataChanged() {
-                    console.log("dataChanged");
                     searchBata.page = 1;
                     searchBata.searchword = btext.value;
                     searchBata.proId = bid.value;
@@ -776,8 +800,113 @@
                 alert(datad);
                 }
         }
+        //顯示功能:
+         document.getElementById('chkDescription').addEventListener('change', function () {
+            var sth = document.getElementById('desHideth');
+            var std = document.getElementsByClassName('desHidetd');
+        if (!this.checked) {
+           sth.style.display = 'none';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = 'none';
+            }
+        } else {
+            sth.style.display = '';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = '';
+            }
+        }
+                });
+    document.getElementById('chkDate').addEventListener('change', function () {
+            var sth = document.getElementById('dateHideth');
+            var std = document.getElementsByClassName('dateHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+    document.getElementById('chkUnitPrice').addEventListener('change', function () {
+            var sth = document.getElementById('uniHideth');
+            var std = document.getElementsByClassName('uniHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+     document.getElementById('chkCost').addEventListener('change', function () {
+            var sth = document.getElementById('cosHideth');
+            var std = document.getElementsByClassName('cosHidetd');
+        if (!this.checked) {
+           sth.style.display = 'none';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = 'none';
+            }
+        } else {
+            sth.style.display = '';
+            for (var i = 0; i < std.length; i++) {
+                std[i].style.display = '';
+            }
+        }
+      });
 
-
+        document.getElementById('chkStocks').addEventListener('change', function () {
+            var sth = document.getElementById('stoHideth');
+            var std = document.getElementsByClassName('stoHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkSubCategoryId').addEventListener('change', function () {
+            var sth = document.getElementById('subHideth');
+            var std = document.getElementsByClassName('subHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
+        document.getElementById('chkLabelId').addEventListener('change', function () {
+            var sth = document.getElementById('labHideth');
+            var std = document.getElementsByClassName('labHidetd');
+            if (!this.checked) {
+                sth.style.display = 'none';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = 'none';
+                }
+            } else {
+                sth.style.display = '';
+                for (var i = 0; i < std.length; i++) {
+                    std[i].style.display = '';
+                }
+            }
+        });
 
     </script>
 }
