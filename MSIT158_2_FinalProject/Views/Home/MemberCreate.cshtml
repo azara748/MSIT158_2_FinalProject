@@ -100,6 +100,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
+                        <div class="d3">
+                            <figure class="f1">
+                                <img class ="img1" src="~/img/ssdesigner (23).jpeg" alt="選禮電子商城😴💤" title="選禮電子商城" />
+                                <figcaption>選禮電子商城😴💤</figcaption>
+                            </figure>
+                        </div>
                         <p>網路選物商店：創業故事</p>
                         
                         <p>創業初衷</p>
@@ -291,6 +297,22 @@
             border-radius: 15px; /* 可以根據需求調整框架的圓角大小 */
             overflow: hidden; /* 確保圓角適用於整個框架內容 */
         }
+
+        .d3 {
+            padding: 3px;
+        }
+
+        .f1 {
+            width: 25%;
+            float: left;
+            /* border: 2px solid gray; */
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        .img1 {
+            width: 100%;
+        }
     </style>
 }
 @section Scripts {
@@ -319,7 +341,7 @@
 
         $('#buttonSubmitB').on('click', (evt) => {
             evt.preventDefault(); //防止預設行為的發生
-            $('#InputName').val("史昆靈葛葛 您是一位帥哥 ");
+            $('#InputName').val("資展國際 史昆靈 ");
             $('#Inputphone').val("0988776655");
             $('#InputEmail').val("k955339962@gmail.com");
             $('#InputPassword').val("aaaa1234");
@@ -371,12 +393,10 @@
                     console.log("test5");
                     const Jname = data.m.memberName;
                     console.log(Jname);
-                    divResult.innerHTML = `<p>會員姓名：${Jname}：${message}</p>`;
-                    // 等待5秒後自動轉跳到 /Home/Index
-                    if (Jname != null) {
-                        setTimeout(() => {
-                            window.location.href = "/Home/Login";
-                        }, 3000); // 3000 毫秒 = 3 秒
+                    divResult.innerHTML = `會員姓名：${Jname}：${message}`;
+                    if (Jname) {
+                        alert(`會員姓名：${Jname}：${message}`);
+                        window.location.href = "/Home/Login";
                     }
 
                 } else
