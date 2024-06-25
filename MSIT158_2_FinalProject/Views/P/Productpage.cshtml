@@ -144,7 +144,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     @* <p>@((MarkupString)d)</p> *@
-                                    <h4>@Html.Raw(ViewBag.商品詳細)</h4>
+                                    <h2>@Html.Raw(ViewBag.商品詳細)</h2>
                                 </div>
                             </div>
                         </div>
@@ -325,7 +325,7 @@
                             </div>
                             <div class="product-btns">
                                 <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
-                                <button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+                                <button class="quick-view" onclick="addcart2(@v.ProductId)"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
                             </div>
                         </div>
                         <div class="add-to-cart">
