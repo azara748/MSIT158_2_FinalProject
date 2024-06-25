@@ -90,19 +90,20 @@ namespace MSIT158_2_API.Controllers
             string receive = user.EMail;
             string subject = $"{user.MemberName}用戶重新設定密碼";
             string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
-            messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\" enctype=\"multipart/form-data\">";
-            messages += "<div class=\"mb-3\">";
-            messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
-            messages += $"<input type=\"email\" class=\"form-control\" id=\"InputEmail\" name=\"txtEmail\" value=\"{user.EMail}\">";
-            messages += "</div>";
-            messages += "<div class=\"mb-3\">";
-            messages += "<label for=\"InputPassword\" class=\"form-label\">新密碼：</label>";
-            messages += "<input type=\"text\" class=\"form-control\" id=\"InputPassword\" name=\"txtPassword\">";
-            messages += "</div>";
-            messages += "<button type=\"submit\" class=\"btn btn-primary\" id=\"buttonSubmit\">修改新密碼並送出</button>";
-            messages += "</form>";
-            messages += "<p>請點擊以下連結回到登入頁面:</p>";
-            messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            //messages += "<form method=\"post\" action=\"https://localhost:7160/api/TMembers/SenderEditPassword\" id=\"userForm\" enctype=\"multipart/form-data\">";
+            //messages += "<div class=\"mb-3\">";
+            //messages += "<label for=\"InputEmail\" class=\"form-label\">電子郵件：</label>";
+            //messages += $"<input type=\"email\" class=\"form-control\" id=\"InputEmail\" name=\"txtEmail\" value=\"{user.EMail}\">";
+            //messages += "</div>";
+            //messages += "<div class=\"mb-3\">";
+            //messages += "<label for=\"InputPassword\" class=\"form-label\">新密碼：</label>";
+            //messages += "<input type=\"text\" class=\"form-control\" id=\"InputPassword\" name=\"txtPassword\">";
+            //messages += "</div>";
+            //messages += "<button type=\"submit\" class=\"btn btn-primary\" id=\"buttonSubmit\">修改新密碼並送出</button>";
+            //messages += "</form>";
+            //messages += "<p>請點擊以下連結回到登入頁面:</p>";
+            //messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            messages += "<a href='https://localhost:7066/Home/MemberForgetPasswordB'>修改密碼</a>點擊這裡";
             //messages += "<script>console.log(\"test1\");</script>";
             new CEmailSender().getEmail(receive, subject, messages);
 
@@ -120,10 +121,9 @@ namespace MSIT158_2_API.Controllers
             string Passwordsalted = vm.txtPassword + salt;
             //密碼加密，使用 SHA256 演算法
             vm.txtPassword = GetSha256Hash(Passwordsalted);
-            string json = "";
             user.Password = vm.txtPassword;
             await _context.SaveChangesAsync();
-            json = JsonSerializer.Serialize(user);
+            //string json = JsonSerializer.Serialize(user);
 
             return Ok(new { message = "密碼修改成功", user });
         }
@@ -178,13 +178,30 @@ namespace MSIT158_2_API.Controllers
             {
                 if (member.MemberStatus == 1)
                 {
+                    if (string.IsNullOrEmpty(member.Cellphone))
+                        member.Cellphone = "";
+                    if (string.IsNullOrEmpty(member.Address))
+                        member.Address = "";
+                    if (string.IsNullOrEmpty(member.Sex))
+                        member.Sex = "";
+                    if (string.IsNullOrEmpty(member.Password))
+                        member.Password = "";
+                    if (string.IsNullOrEmpty(member.Salt))
+                        member.Salt = "";
+                    if (string.IsNullOrEmpty(member.EMail))
+                        member.EMail = "";
+                    if (member.Birthday == null)
+                        member.Birthday = new DateOnly(2000, 01, 01);
+
                     if (string.IsNullOrEmpty(member.MemberPhoto))
                         member.MemberPhoto = "default.jpg"; // 預設圖片名稱
-                                                            //照片實際路徑
+
+                    //照片實際路徑
                     uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", member.MemberPhoto);
                     if (!System.IO.File.Exists(uploadPath))
                         uploadPath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", "default.jpg"); // 預設圖片路徑
-                                                                                                              //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
+
+                    //使用 System.IO.File.ReadAllBytes(filePath) 讀取文件內容並將其轉換為字節數組。
                     var imageBytes = System.IO.File.ReadAllBytes(uploadPath);
                     //使用 Convert.ToBase64String(imageBytes) 將字節數組轉換為 Base64 字符串。
                     var base64String = Convert.ToBase64String(imageBytes);

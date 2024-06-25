@@ -362,14 +362,11 @@
             '等級',
             '姓名',
             '電子信箱',
-            '密碼',
-            '密碼加鹽',
             '會員照片',
             '地址',
             '手機',
             '生日',
             '性別',
-            '點數',
             '會員等級',
             '功能按鈕'
         ];
@@ -394,7 +391,7 @@
             "keyword": "",
             "page": 1,
             "pageSize": 30,
-            "sortType": "desc",
+            "sortType": "asc",
             "sortBy": "SpotId"
         };
 
@@ -420,17 +417,14 @@
                             <td id="idtd2">${vipphoto ? `<img style="width: 30px; object-fit: contain;" src="data:image/jpeg;base64,${vipphoto}" alt="圖示"/>` : '無'}</td>
                             <td id="idtd3">${memberName}</td>
                             <td id="idtd4">${eMail}</td>
-                            <td id="idtd5">${password}</td>
-                            <td id="idtd6">${salt}</td>
-                            <td id="idtd7">${memberPhoto ? `<img style="width: 50px; object-fit: contain;" src="${memberPhoto}" alt="圖示"/>` : '無'}</td>
-                            <td id="idtd8">${address}</td>
-                            <td id="idtd9">${cellphone}</td>
-                            <td id="idtd10">${birthday}</td>
-                            <td id="idtd11">${sex}</td>
-                            <td id="idtd12">${points}</td>
-                            <td id="idtd13">${vip}</td>
-                            <td id="idtd14">
-                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a> |
+                            <td id="idtd5">${memberPhoto ? `<img style="width: 50px; object-fit: contain;" src="${memberPhoto}" alt="圖示"/>` : '無'}</td>
+                            <td id="idtd6">${address}</td>
+                            <td id="idtd7">${cellphone}</td>
+                            <td id="idtd8">${birthday}</td>
+                            <td id="idtd9">${sex}</td>
+                            <td id="idtd10">${vip}</td>
+                            <td id="idtd11">
+                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a> 
                             <!-- <a href="/Member/Details/${id}">Details</a> | -->
                             <a href="#" class="btn btn-warning" onclick="return deleteMember(${id})">刪除</a>
                             </td>
