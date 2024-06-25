@@ -57,13 +57,13 @@
                     <div class="price-filter">
 @*                         <div id="price-slider"></div> *@
                         <div class="input-number price-min">
-                            <input id="price-min" type="number" placeholder="最低價">
+                            <input id="price-min" type="number" placeholder="最低價" width="80">
                             <span class="qty-up">+</span>
                             <span class="qty-down">-</span>
                         </div>
                         <span>-</span>
                         <div class="input-number price-max">
-                            <input id="price-max" type="number" placeholder="最高價">
+                            <input id="price-max" type="number" placeholder="最高價" width="80">
                             <span class="qty-up">+</span>
                             <span class="qty-down">-</span>
                         </div>
@@ -533,7 +533,7 @@
             idAns.textContent = `關鍵字:${searchData.searchword} 的所有產品`;
             loadPro();
         }
-        //從首頁來
+        //從新首頁來
         function txtOnly2() {
             ResetFilter();
             searchData.subcatId = 0;
@@ -630,6 +630,7 @@
             if (sessKeyword) {
                 searchData.searchword = sessKeyword;
                 inpSearch.value = sessKeyword;
+                alert("為您搜尋: "+sessKeyword+" 相關商品~");
                 txtOnly2();
                 sessionStorage.removeItem("keyword");
             }
