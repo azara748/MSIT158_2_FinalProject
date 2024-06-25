@@ -222,6 +222,9 @@
             } else {
                 console.error('Failed to update package', response.statusText);
             }
+
+            window.location.href = '@Url.Content("~/package/AllPackagesPage")';
+
         });
 
 
