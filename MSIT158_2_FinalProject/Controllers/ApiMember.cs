@@ -22,7 +22,7 @@ namespace MSIT158_2_FinalProject.Controllers
         {
             TMember tuser = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
             if(tuser == null)
-                return BadRequest(new { message = "無效的電子郵件或密碼" });
+                return Content("無效的電子郵件或密碼", "text/plain", System.Text.Encoding.UTF8);
 
             // 從資料庫中獲取用戶的鹽和雜湊後的密碼
             string salt = tuser.Salt;
