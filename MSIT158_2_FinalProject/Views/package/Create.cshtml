@@ -26,13 +26,13 @@
                 <div style="width:50%; margin-left:1em">
 
                     <div class="form-group">
-                <label asp-for="PackName" class="control-label">包裝名稱</label>
-                <input asp-for="PackName" class="form-control" />
+                <label asp-for="PackName" class="control-label" >包裝名稱</label>
+                <input asp-for="PackName" class="form-control" id="pName" />
                 <span asp-validation-for="PackName" class="text-danger"></span>
             </div>
             <div class="form-group">
                <label asp-for="Price" class="control-label">包裝單價</label>
-               <input asp-for="Price" class="form-control" />
+               <input asp-for="Price" class="form-control" id="pPrice"/>
                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -50,6 +50,7 @@
             </div>
                 <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" id="saveNew"/>
+                <input type="button" value="Demo" class="btn btn-secondary" id="demo" />
                 </div>
             </div>
                 </div>
@@ -68,6 +69,9 @@
         const pStyle = document.querySelector("#pStyle");
         const imageUpload = document.querySelector("#imageUpload");
         const imagePreview = document.querySelector("#imagePreview");
+        const pName = document.querySelector("#pName");
+        const pPrice = document.querySelector("#pPrice");
+        const description = document.querySelector("#description");
 
         (async () => {
 
@@ -108,6 +112,13 @@
                 reader.readAsDataURL(file);
             }
         });
+
+        document.querySelector('#demo').addEventListener('click', function () { 
+            pName.value = "派盒";
+            pPrice.value = 30;
+            description.value = "小型包裝";
+            maSele.value = 5;
+        })
 
         document.querySelector('#saveNew').addEventListener('click', async function (event) { 
             
