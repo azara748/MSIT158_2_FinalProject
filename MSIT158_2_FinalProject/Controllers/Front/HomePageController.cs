@@ -48,7 +48,7 @@ namespace MSIT158_2_FinalProject.Controllers.Front
 				Discount = pro.Active.Discount,
 				LabelName = pro.Label.LabelName,
 				Score = pro.TReviews.Average(p => p.RankId),
-				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay(pro.LaunchTime.Value, currentDate) < 30
+				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay(pro.LaunchTime.Value, currentDate) < 60
 			})
 			.ToListAsync();
 

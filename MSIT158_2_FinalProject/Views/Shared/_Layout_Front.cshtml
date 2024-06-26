@@ -1,13 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-hant">
 <head>
-
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>Electro - HTML Ecommerce Template</title>
+	<title>SelectShop 網路選物商店</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -492,15 +491,13 @@
 		window.onload = function () {
 			if (window.location.pathname === '/HomePage/Search') {
 				const sessKeywords = sessionStorage.getItem("keyword");
-				if (sessKeywords) { 
+				if (sessKeywords) {
 					fromOther();
 				}
 			}
 		};
 
 	</script>
-	<!--/登入後載入願望清單-->
-
 	<script src="~/js/jquery.min.js"></script>
 	<script src="~/js/bootstrap.min.js"></script>
 	<script src="~/js/slick.min.js"></script>

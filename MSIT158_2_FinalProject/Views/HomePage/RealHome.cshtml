@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="col-md-12" style="width:1200px">
 				<div>
-                    <img src="~/img/fatest.jpg" />
+                    <img src="~/img/fatherevent.jpg" />
 				</div>
 			</div>
 		</div>
@@ -22,6 +22,93 @@
 </div>
 <!-- /HOT DEAL SECTION -->
 <!-- SECTION -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="products-tabs">
+						<!-- tab -->
+						<h2>父親節主打商品</h2>
+						<div id="tab2" class="tab-pane fade in active">
+							<div class="products-slick" data-nav="#slick-nav-2" id="runPro0">
+								@foreach (var product in Model)
+								{
+
+									<div class="product">
+										<a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>
+											<div class="product-img">
+												@if (product.Productphoto != null && product.Productphoto.Length > 0)
+												{
+													var imageBase64 = Convert.ToBase64String(product.Productphoto);
+													<img style="width: 262px; height: 280px; object-fit: contain;" src="data:image/jpeg;base64,@imageBase64" alt="Product Image" />
+												}
+												else
+												{
+													<p>No Image Available</p>
+												}
+												<div class="product-label">
+													<span class="sale">全館八折優惠</span>
+												</div>
+											</div>
+											<div class="product-body">
+												<p class="product-category">@product.SubCatName</p>
+												<h3 class="product-name"><a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>@product.ProductName</a></h3>
+												@if (product.UnitPrice.HasValue)
+												{
+													<h4 class="product-price">
+														$@product.UnitPrice.Value.ToString("0")
+														<del class="product-old-price">$@(Math.Round(product.UnitPrice.Value * 1.25m, 0))</del>
+													</h4>
+												}
+												@* <h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4> *@
+												<div class="product-rating">
+													@* ${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''} *@
+													@{
+														if (product.Score.HasValue)
+														{
+															var fullStars = (int)Math.Floor(product.Score.Value);
+															var halfStar = product.Score.Value - fullStars > 0.4;
+
+															for (var i = 0; i < fullStars; i++)
+															{
+																<i class="fa fa-star" style="font-size: 13px;"></i>
+															}
+
+															if (halfStar)
+															{
+																<i class="fa fa-star-half" style="font-size: 13px;"></i>
+															}
+														}
+													}
+												</div>
+												<div class="product-btns">
+													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
+													<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<button class="add-to-cart-btn" onclick="addcart3(${productId})"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
+											</div>
+										</a>
+									</div>
+								}
+							</div>
+							<!-- 按鈕!!!! -->
+							<div id="slick-nav-2" class="products-slick-nav"></div>
+							<!-- /tab -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Products tab & slick -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
 <div class="section">
 	<!-- container -->
 	<div class="container">
@@ -43,93 +130,7 @@
 	</div>
 </div>
 		<!-- SECTION -->
- 		<div class="section"> 
-			<!-- container -->
- 			<div class="container"> 
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<div class="row">
-							<div class="products-tabs">
-								<!-- tab -->
-						<h2>父親節主打商品</h2>
-						    <div id="tab2" class="tab-pane fade in active">
-									<div class="products-slick" data-nav="#slick-nav-2" id="runPro0">
-								@foreach (var product in Model)
-								{
 
-									<div class="product">
-										<a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>
-										<div class="product-img">
-											@if (product.Productphoto != null && product.Productphoto.Length > 0)
-											{
-												var imageBase64 = Convert.ToBase64String(product.Productphoto);
-												<img style="width: 262px; height: 280px; object-fit: contain;" src="data:image/jpeg;base64,@imageBase64" alt="Product Image" />
-											}
-											else
-											{
-												<p>No Image Available</p>
-											}
-											<div class="product-label">
-												<span class="sale">全館八折優惠</span>
-											</div>
-										</div>
-										<div class="product-body">
-											<p class="product-category">@product.SubCatName</p>
-											<h3 class="product-name"><a href='@Url.Content($"~/p/Productpage/{product.ProductId}")'>@product.ProductName</a></h3>
-											@if (product.UnitPrice.HasValue)
-											{
-												<h4 class="product-price">
-													$@product.UnitPrice.Value.ToString("0")
-													<del class="product-old-price">$@(Math.Round(product.UnitPrice.Value * 1.25m, 0))</del>
-												</h4>
-											}
-											@* <h4 class="product-price">$${unitPrice}<del class="product-old-price">$${Math.round(unitPrice * 1.25)}</del></h4> *@
-											<div class="product-rating">
-												@* ${Array(Math.floor(score)).fill('<i class="fa fa-star" style="font-size: 13px;"></i> ').join('')}${score - Math.floor(score) > 0.4 ? '<i class="fa fa-star-half" style="font-size: 13px;"></i>' : ''} *@
-												@{
-													if (product.Score.HasValue)
-													{
-														var fullStars = (int)Math.Floor(product.Score.Value);
-														var halfStar = product.Score.Value - fullStars > 0.4;
-
-														for (var i = 0; i < fullStars; i++)
-														{
-															<i class="fa fa-star" style="font-size: 13px;"></i>
-														}
-
-														if (halfStar)
-														{
-															<i class="fa fa-star-half" style="font-size: 13px;"></i>
-														}
-													}
-												}
-											</div>
-											<div class="product-btns">
-												<button class="add-to-wishlist" ><i class="fa fa-heart-o"></i><span class="tooltipp">加入願望清單</span></button>
-												<button class="quick-view"><i class="fa fa-shopping-cart"></i><span class="tooltipp">加入購物車</span></button>
-											</div>
-										</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn" onclick="addcart3(${productId})"><i class="fa-solid fa-bag-shopping"></i>直接購買</button>
-											</div>
-											</a>
-									</div>
-								}
-									</div>
-									<!-- 按鈕!!!! -->
-							<div id="slick-nav-2" class="products-slick-nav"></div>
-								<!-- /tab -->
-							</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Products tab & slick -->
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
 		<!-- /SECTION -->
 
 @section Scripts

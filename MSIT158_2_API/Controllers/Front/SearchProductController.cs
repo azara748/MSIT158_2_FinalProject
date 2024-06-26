@@ -126,7 +126,7 @@ namespace MSIT158_2_API.Controllers.Front
 			if (searchProductDTO.newlan)
 			{
 				//var currentDate = DateTime.Now;
-                query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime, currentDate) < 30);
+                query = query.Where(p => p.LaunchTime.HasValue && EF.Functions.DateDiffDay(p.LaunchTime, currentDate) < 60);
 
 			}
 
@@ -188,7 +188,7 @@ namespace MSIT158_2_API.Controllers.Front
 				LabelName = pro.Label.LabelName,
 				Productphoto = pro.ProductPhoto,
 				Score = pro.TReviews.Average(p => p.RankId),
-				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay( pro.LaunchTime.Value,currentDate) < 30
+				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay( pro.LaunchTime.Value,currentDate) < 60
 			}).ToList();
 
 			var toClientProduct = new ToClientProductDTO
@@ -246,7 +246,7 @@ namespace MSIT158_2_API.Controllers.Front
 				Discount = pro.Active.Discount,
 				LabelName = pro.Label.LabelName,
 				Score = pro.TReviews.Average(p => p.RankId),
-				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay(pro.LaunchTime.Value, currentDate) < 30
+				isnew = pro.LaunchTime.HasValue && EF.Functions.DateDiffDay(pro.LaunchTime.Value, currentDate) < 60
 			})
                 .ToListAsync();
 
