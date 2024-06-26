@@ -586,11 +586,15 @@ namespace MSIT158_2_API.Controllers
             var MemberAmount = await _context.TOrders
                 .Include(m => m.TPurchases)
                 .ThenInclude(p => p.Product)
+                .Include(m => m.TPackageWayDetails)
+                .ThenInclude(k => k.Package)
                 .Include(m => m.Member)
                 .Where(m => m.MemberId == id)
                 .ToListAsync();
 
             decimal total = 0;
+            decimal totalA = 0;
+            decimal totalB = 0;
             foreach (var order in MemberAmount)
             {
                 foreach (var purchase in order.TPurchases)
@@ -600,11 +604,21 @@ namespace MSIT158_2_API.Controllers
                         decimal amount = purchase.Qty.Value;
                         decimal price = purchase.Product.UnitPrice.Value;
 
-                        total += amount * price;
+                        totalA += amount * price;
+                    }
+                }
+                foreach (var packageway in order.TPackageWayDetails)
+                {
+                    if (packageway.Package != null && packageway.PackQty.HasValue && packageway.Package.Price.HasValue)
+                    {
+                        decimal packageAmount = packageway.PackQty.Value;
+                        decimal packagePrice = packageway.Package.Price.Value;
+
+                        totalB += packageAmount * packagePrice;
                     }
                 }
             }
-
+            total = totalA + totalB;
             return Ok(new { message = "查詢成功", total });
         }
         private bool TMemberExists(int id)
