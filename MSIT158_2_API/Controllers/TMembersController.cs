@@ -139,6 +139,8 @@ namespace MSIT158_2_API.Controllers
             TMember m = new TMember();
             m.MemberName = vm.txtOauthName;
             m.EMail = vm.txtOauthEmail;
+            m.MemberStatus = 1;
+            m.Vipid = 1;
 
 
             _context.TMembers.Add(m);
