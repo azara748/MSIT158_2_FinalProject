@@ -580,6 +580,33 @@ namespace MSIT158_2_API.Controllers
             return Ok(new { message = "確認成功", value7 });
         }
 
+        [HttpGet("MemberSumAmount{id}")]
+        public async Task<ActionResult<TMember>> POSTMemberSumAmount(int id)
+        {
+            var MemberAmount = await _context.TOrders
+                .Include(m => m.TPurchases)
+                .ThenInclude(p => p.Product)
+                .Include(m => m.Member)
+                .Where(m => m.MemberId == id)
+                .ToListAsync();
+
+            decimal total = 0;
+            foreach (var order in MemberAmount)
+            {
+                foreach (var purchase in order.TPurchases)
+                {
+                    if (purchase.Product != null && purchase.Qty.HasValue && purchase.Product.UnitPrice.HasValue)
+                    {
+                        decimal amount = purchase.Qty.Value;
+                        decimal price = purchase.Product.UnitPrice.Value;
+
+                        total += amount * price;
+                    }
+                }
+            }
+
+            return Ok(new { message = "查詢成功", total });
+        }
         private bool TMemberExists(int id)
         {
             return _context.TMembers.Any(e => e.MemberId == id);
