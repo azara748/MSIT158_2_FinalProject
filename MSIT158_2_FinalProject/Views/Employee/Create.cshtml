@@ -118,7 +118,7 @@
             }
 
             if (employeeName && employeeEMail && employeePassword) {
-                const url = 'https://localhost:7160/api/TEmployees/Create';
+                const url = '`@Url.Content("~/TEmployees/Create")`';           
                 console.log("test1");
                 const response = await fetch(url, {
                     method: 'POST',
@@ -134,7 +134,7 @@
                 if (Jname != null) {
                     // 等待3秒後自動轉跳
                     setTimeout(() => {
-                        window.location.href = "/Employee/List";
+                        window.location.href = `@Url.Content("~/Employee/List")`;                       
                     }, 3000);
                 }
             }           

@@ -168,7 +168,8 @@
             const selectedId = selectedOption.id;
             console.log('Selected option ID:', selectedId);
 
-            const url = `https://localhost:7160/api/TAllPackages/selectID?seletId=${selectedId}`;
+            const url = `@Url.Content("~/api/TAllPackages/selectID?seletId=")${selectedId}`;
+           
 
             const packageRes = await fetch(url, {
                 method: 'POST',

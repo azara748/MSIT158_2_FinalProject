@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_FinalProject.Models;
+using MSIT158_2_FinalProject.Models.前台;
 using System.Security.Cryptography;
 using System.Text.Json;
 

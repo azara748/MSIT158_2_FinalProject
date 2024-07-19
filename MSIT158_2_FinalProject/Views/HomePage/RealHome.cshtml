@@ -141,7 +141,7 @@
 		const runPro = document.getElementById('runPro');
 
 		(async function loadThree() {
-			const urlT = 'https://localhost:7160/api/SearchProduct/TOP3SalePro';
+			const urlT = '@Url.Content("~/api/SearchProduct/TOP3SalePro")';
 			const responseT = await fetch(urlT, {
 				method: 'POST',
 				// body: JSON.stringify(),
@@ -176,7 +176,7 @@
 		//loadThree();
 
 		function toProductDetail(pid) {
-			const urlto = `https://localhost:7066/p/Productpage/${pid}`;
+			const urlto = '@Url.Content("~/p/Productpage/")' + `${pid}`;
 			window.location.href = urlto;
 		}
 

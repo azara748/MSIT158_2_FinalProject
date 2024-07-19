@@ -44,7 +44,7 @@
 			<div class="container">
 				<ul class="header-links pull-left">
 
-					<li><a href="https://localhost:7066/"><i class="fa fa-home"></i>首頁</a></li>
+					<li><a href="~/"><i class="fa fa-home"></i>首頁</a></li>
 					<li><a href="#"><i class="fa fa-gamepad"></i>活動資訊</a></li>
 					<li><a href="http://localhost:4200/packages/0" id="gopack"><i class="fa fa-envelope-open"></i>包裝介紹</a></li>
 				</ul>
@@ -67,7 +67,7 @@
 					<div class="col-md-2">
 						<div class="header-ctn">
 							<div>
-								<a href="https://localhost:7066"/>
+								<a href="~/"/>
 									<i class="fa fa-gift"></i>
 									<span>選物平台</span>
 								</a>
@@ -117,7 +117,7 @@
 									<i class="fa fa-shopping-cart"></i>
 									<span>購物車</span>
 									<!-- ////////////////////////////////////////////////////-->
-									<div class="qty" id="cartqty">3</div>
+									<div class="qty" id="cartqty">0</div>
 									<!-- ////////////////////////////////////////////////////-->
 								</a>
 								<div class="cart-dropdown">
@@ -127,8 +127,8 @@
 									</div>
 									<div class="cart-summary">
 										<!-- ////////////////////////////////////////////////////-->
-										<small id="Items">3 Item(s) selected</small>
-										<h5 id="SUBTOTAL">SUBTOTAL: $2940.00</h5>
+										<small id="Items">0樣商品</small>
+										<h5 id="SUBTOTAL">總價: $0</h5>
 										<!-- ////////////////////////////////////////////////////-->
 									</div>
 									<div class="cart-btns">
@@ -296,7 +296,7 @@
 		// 初始化 Firebase
 		const app = initializeApp(firebaseConfig);
 		const auth = getAuth(app);
-		
+
 		// 使用 Html.Raw(Json.Encode(...)) 來正確處理包含中文的字符串
 		(async () => {
 			const urlss = '@Url.Content("~/ApiMember/AddSession")';
@@ -305,15 +305,19 @@
 			const jsonss = JSON.parse(datass);
 			const memberName = jsonss.MemberName;
 			const Smember = document.querySelector('#idshowmember1');
+			console.log('test1');
+			console.log(Smember);
 			Smember.textContent = '登入者 :' + memberName;
 			Smember.href = '@Url.Content("~/M/Memberpage")'
+			mid.value = jsonss.MemberId
 			gopack.href = `http://localhost:4200/packages/${jsonss.MemberId}`
-			mid.value = jsonss.MemberId;
 			signOutbtn.style.display = "";
-	
 		})();
 		const signOutbtn = document.querySelector('#idsignOutButton1');
+		console.log('test2');
+		console.log(signOutbtn);
 		signOutbtn.style.display = 'none';
+
 
 		signOutbtn.addEventListener('click', async () => {
 			const url = '@Url.Content("~/ApiMember/ClearSession")';
@@ -325,7 +329,7 @@
 				}).catch((error) => {
 					console.error('登出時出錯:', error);
 				});
-				window.location.href = '@Url.Content("~/")';
+				window.location.href = '@Url.Content("~/HomePage/Search")';
 			}
 		});
 
@@ -424,7 +428,7 @@
 					  alert("欲查看願望清單 請先登入會員!!");
 				location.href = `@Url.Content("~/Home/Login")`
 				  }
-				const url = `https://localhost:7160/api/TMemberLikes?id=${id}`;
+				const url = `@Url.Content("~/api/TMemberLikes?id=")${Id}`
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
@@ -458,7 +462,7 @@
 		});
 		async function deleteAllLLiked(event) {
 			event.preventDefault();
-			const url = `https://localhost:7160/api/TMemberLikes/dislikeall?mid=` + `${sessMemberId}`;
+			const url = `@Url.Content("~/api/TMemberLikes/dislikeall?mid=")${sessMemberId}`		
 			const response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(),

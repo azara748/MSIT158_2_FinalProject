@@ -225,8 +225,8 @@
        //<載入商品清單
                 const loadBPro = async () => {
 	    // (async function loadBPro() {
-                    const urlp = 'https://localhost:7160/api/BackProduct/SearchBackProduct';
-                    const responsep = await fetch(urlp, {
+            const urlp = `@Url.Content("~/api/BackProduct/SearchBackProduct")`
+            const responsep = await fetch(urlp, {
                         method: 'POST',
                         body: JSON.stringify(searchBata),
                         headers: {
@@ -430,8 +430,8 @@
         const newCardFunction = async () => {
                 //<加入下拉式選單_品牌名稱
                 const selectLabel = document.getElementById('selectLabel');
-                let urll = 'https://localhost:7160/api/TLabels/getLabelName?labid=0';
-                let responsel = await fetch(urll, {
+            let urll = `@Url.Content("~/api/TLabels/getLabelName?labid=0")`;
+            let responsel = await fetch(urll, {
                     method: 'POST',
                     body: JSON.stringify(),
                     headers: {
@@ -448,7 +448,7 @@
                 selectLabel.innerHTML += addlabop.join('');
                 //<加入下拉式選單_分類名稱
                 const selectSub = document.getElementById('selectSub');
-                let urlc = 'https://localhost:7160/api/TSubCategories/getSubName?subid=0';
+                let urlc =`@Url.Content("~/api/TSubCategories/getSubName?subid=0")`
                 let responsec = await fetch(urlc, {
                     method: 'POST',
                     body: JSON.stringify(),
@@ -469,7 +469,7 @@
                 const bsearchlabcat = async () => {
                     //<加入下拉式選單_品牌名稱
                     const blabel = document.getElementById('blabel');
-                    let urll = 'https://localhost:7160/api/TLabels/getLabelName?labid=0';
+                    let urll = `@Url.Content("~/api/TLabels/getLabelName?labid=0")`
                     let responsel = await fetch(urll, {
                         method: 'POST',
                         body: JSON.stringify(),
@@ -487,7 +487,7 @@
                     blabel.innerHTML += addlabop.join('');
                     //<加入下拉式選單_分類名稱
                     const bsub = document.getElementById('bsub');
-                    let urlc = 'https://localhost:7160/api/TSubCategories/getSubName?subid=0';
+                    let urlc = `@Url.Content("~/api/TSubCategories/getSubName?subid=0")`
                     let responsec = await fetch(urlc, {
                         method: 'POST',
                         body: JSON.stringify(),
@@ -519,7 +519,7 @@
                     "productphoto": newprophoto
                 };
                 console.log("新增按鈕!!!",addNewData);
-                const urln = 'https://localhost:7160/api/BackProduct/AddBackProduct';
+                const urln = `@Url.Content("~/api/BackProduct/AddBackProduct")`
                 const responsen = await fetch(urln, {
                     method: 'POST',
                     body: JSON.stringify(addNewData),
@@ -547,7 +547,7 @@
             //產出修改卡
             if (!updateBool) { idcardzone.innerHTML = ""; }
             else {
-                const urlu = 'https://localhost:7160/api/BackProduct/IDFindBackProduct?id=' + `${id}`;
+                const urlu = `@Url.Content("~/api/BackProduct/IDFindBackProduct?id=")${id}`
                 const responseu = await fetch(urlu, {
                     method: 'POST',
                     body: JSON.stringify(),
@@ -705,7 +705,7 @@
                 "productphoto": Updateprophoto
                 };
                 console.log("修改存檔", saveUPData);
-                const urlup = 'https://localhost:7160/api/BackProduct/UpdateBackProduct?id=' + `${id}`;
+                const urlup = `@Url.Content("~/api/BackProduct/UpdateBackProduct?id=")${id}`
                 const responseup = await fetch(urlup, {
                     method: 'POST',
                     body: JSON.stringify(saveUPData),
@@ -784,7 +784,7 @@
         });
         //下架單一商品
             const clickDelete = async (id) => {
-                const urld = 'https://localhost:7160/api/BackProduct/DownBackProduct?id='+`${id}`;
+                const urld = `@Url.Content("~/api/BackProduct/DownBackProduct?id=")${id}`
                 const responsend = await fetch(urld, {
                     method: 'POST',
                     body: JSON.stringify(),

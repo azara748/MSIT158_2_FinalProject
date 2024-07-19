@@ -240,7 +240,7 @@
         };
         //顯示分類按鈕
                 (async function loadCatli() {
-                    const urlC = 'https://localhost:7160/api/SubcatDTO/';
+                    const urlC = '@Url.Content("~/api/SubcatDTO/")';          
                     const responseC = await fetch(urlC);
                     const dataC = await responseC.json();
                     const liCat = dataC.map(cats => {
@@ -283,7 +283,7 @@
             let sortBy = ["", "UnitPrice", "bestsale", "", "coldpro", ""];
             let sortType = ["", "desc", "asc", "desc", "asc", "desc"];
             let ran = Math.ceil(Math.random() * 5);
-            const url = 'https://localhost:7160/api/SearchProduct';
+            const url = '@Url.Content("~/api/SearchProduct")';
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -321,7 +321,7 @@
         //顯示商品
         const loadPro = async () => {
             let memberid = Number(sessionStorage.getItem("mID"));
-            const url = 'https://localhost:7160/api/SearchProduct';
+            const url = '@Url.Content("~/api/SearchProduct")';
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(searchData),
@@ -388,7 +388,7 @@
         //顯示商品(條件維持)
         const loadPro2 = async () => {
             let memberid = Number(sessionStorage.getItem("mID"));
-            const url = 'https://localhost:7160/api/SearchProduct';
+            const url = '@Url.Content("~/api/SearchProduct")';
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(searchData),
@@ -455,7 +455,7 @@
                 location.href = `@Url.Content("~/HOME/Login")`;
             }
             else {
-                const url = `https://localhost:7160/api/TMemberLikes/addlike?mid=` + `${mMemberId}&pid=${mProductId}`;
+                const url = `@Url.Content("~/api/TMemberLikes/addlike?mid=")` + `${mMemberId}&pid=${mProductId}`;
                 const response = await fetch(url, {
                     method: 'POST',
                     body: JSON.stringify(),

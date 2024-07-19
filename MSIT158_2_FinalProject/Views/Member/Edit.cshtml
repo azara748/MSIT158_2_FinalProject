@@ -169,7 +169,7 @@
     <script>
         const memberId = document.querySelector('#Inputid').value;
         (async () => {
-            const urlA = `https://localhost:7160/api/TMembers/${memberId}`;
+            const urlA = `@Url.Content("~/api/TMembers/")${memberId}`;
             const responseA = await fetch(urlA);
             const dataA = await responseA.json();
             document.querySelector('#idShowphoto').innerHTML = `<img src="${dataA.base64Image}" style="height: 350px;"/>`;
@@ -249,7 +249,7 @@
                         for (const pair of fromdata.entries()) {
                             console.log(pair[0], pair[1]);
                         }
-                        const url = `https://localhost:7160/api/TMembers/${memberId}`;
+                        const url = `@Url.Content("~/api/TMembers/")${memberId}`;
                         const response = await fetch(url, {
                             method: 'PUT',
                             body: fromdata
@@ -260,7 +260,7 @@
                         divResult.innerHTML = `<p>會員姓名：${Jname}/${message}</p>`;
                         if (message) {
                             setTimeout(() => {
-                                window.location.href = "/Member/List";
+                                window.location.href = `@Url.Content("/Member/List")`
                             }, 3000); // 3000 毫秒 = 3 秒
                         }
                     } else

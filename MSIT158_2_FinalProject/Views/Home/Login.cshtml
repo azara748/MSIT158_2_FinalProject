@@ -199,7 +199,7 @@
                 };
 
                 const sendOauthData = async () => {
-                    const url3 = 'https://localhost:7160/api/TMembers/OauthCreate';
+                    const url3 = '@Url.Content("~/api/TMembers/OauthCreate")';
                     const response3 = await fetch(url3, {
                         method: 'POST',
                         body: JSON.stringify(OauthData),
@@ -306,7 +306,7 @@
                         "txtEmail": Jemail
                     };
 
-                    const url2 = 'https://localhost:7160/api/TMembers/MemberCheck';
+                    const url2 = '@Url.Content("~/api/TMembers/MemberCheck")';
                     const response2 = await fetch(url2, {
                         method: 'POST',
                         body: JSON.stringify(memberData2),

@@ -377,7 +377,7 @@
                     }
 
                     //const url = 'https://localhost:7160/api/TMembers/Create';
-                    const url = 'https://localhost:7160/api/TMembers/CreateCheckPassword';
+                    const url = '@Url.Content("~/api/TMembers/CreateCheckPassword")';
                     const response = await fetch(url, {
                         method: 'POST',
                         body: fromdata
@@ -396,7 +396,7 @@
                     divResult.innerHTML = `會員姓名：${Jname}：${message}`;
                     if (Jname) {
                         alert(`會員姓名：${Jname}：${message}`);
-                        window.location.href = "/Home/Login";
+                        window.location.href = '@Url.Content("~/Home/Login")';
                     }
 
                 } else

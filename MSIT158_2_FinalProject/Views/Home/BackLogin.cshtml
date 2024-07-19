@@ -55,7 +55,7 @@
                     console.log(pair[0], pair[1]);
                 }
 
-                const url = 'https://localhost:7160/api/TEmployees/Employeelogin';
+                const url = '@Url.Content("~/api/TEmployees/Employeelogin")';          
                 const response = await fetch(url, {
                     method: 'POST',
                     body: fromdata
@@ -73,7 +73,7 @@
                         "txtEmail": Jemail
                     };
 
-                    const url2 = 'https://localhost:7160/api/TEmployees/EmployeeCheck';
+                    const url2 = '@Url.Content("~/api/TEmployees/EmployeeCheck")';;
                     const response2 = await fetch(url2, {
                         method: 'POST',
                         body: JSON.stringify(memberData2),
@@ -88,7 +88,7 @@
 
                     if (message2 != null) {
                         alert(`${Jname2}：${message2}`);
-                        window.location.href = "/Powerbi/Index";
+                        window.location.href = '@Url.Content("~/Powerbi/Index")';;
                     }
                 }
 

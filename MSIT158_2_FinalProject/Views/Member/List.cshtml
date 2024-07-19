@@ -396,7 +396,7 @@
         };
 
         const loadMemberList = async () => {
-            const url = 'https://localhost:7160/api/TMembers/MemberSearch';
+            const url = `@Url.Content("~/api/TMembers/MemberSearch")`
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(searchData),
@@ -424,9 +424,9 @@
                             <td id="idtd9">${sex}</td>
                             <td id="idtd10">${vip}</td>
                             <td id="idtd11">
-                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a> 
-                            <!-- <a href="/Member/Details/${id}">Details</a> | -->
-                            <a href="#" class="btn btn-warning" onclick="return deleteMember(${id})">刪除</a>
+                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a>
+                                    <!-- <a href='@Url.Content("~/Member/Details/")${id}'>Details</a> | -->
+                                    <a href="#" class="btn btn-warning" onclick="return deleteMember(${id})">刪除</a>
                             </td>
                         </tr>
                                 `
@@ -452,7 +452,7 @@
         //刪除會員
         const deleteMember = async (id) => {
             if (confirm('確定要刪除嗎?')) {
-                const urlA = `https://localhost:7160/api/TMembers/MemberDelete${id}`;
+                const urlA = `@Url.Content("~/api/TMembers/MemberDelete/")${id}`;
                 const response = await fetch(urlA);
                 if (response.ok) {
                     alert('刪除成功');

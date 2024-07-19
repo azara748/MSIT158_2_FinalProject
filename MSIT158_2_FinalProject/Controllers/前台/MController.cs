@@ -1,5 +1,4 @@
-﻿using Blazor_MSIT158_2.Models.前台;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using MSIT158_2_FinalProject.Models;
