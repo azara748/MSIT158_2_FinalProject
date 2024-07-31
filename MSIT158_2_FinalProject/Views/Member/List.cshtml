@@ -368,6 +368,7 @@
             '生日',
             '性別',
             '會員等級',
+            '消費總額',
             '功能按鈕'
         ];
         //顯示隱藏按鈕
@@ -409,10 +410,10 @@
             //顯示會員資料
             const MLists = data.membersResult.map(mlist => {
                 const { id, memberName, cellphone, address, birthday, sex, password, salt, eMail, points, vip, vipphoto, memberPhoto, wallet } = mlist;
-                const count = 0;
+
                 return (
                     `
-                        <tr>
+                        <tr id="member-row-${id}">
                             <th scope="row" id="idtd1">${id}</th>
                             <td id="idtd2">${vipphoto ? `<img style="width: 30px; object-fit: contain;" src="data:image/jpeg;base64,${vipphoto}" alt="圖示"/>` : '無'}</td>
                             <td id="idtd3">${memberName}</td>
@@ -423,19 +424,29 @@
                             <td id="idtd8">${birthday}</td>
                             <td id="idtd9">${sex}</td>
                             <td id="idtd10">${vip}</td>
-                            <td id="idtd11">
-                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a> 
-                            <!-- <a href="/Member/Details/${id}">Details</a> | -->
+                            <td id="idtd11" class="sumAmount-${id}">加載中...</td>
+                            <td id="idtd12">
+                            <a href="/Member/Edit/${id}" class="btn btn-success">修改</a>
                             <a href="#" class="btn btn-warning" onclick="return deleteMember(${id})">刪除</a>
                             </td>
                         </tr>
-                                `
-                )
-            })
+                    `
+                );
+            });
             // 將生成的表格行字符串加入到 `tbody` 中
             divtbody.innerHTML = MLists.join("");
 
-
+            //異步加載每個會員的消費總額
+            data.membersResult.forEach(async mlist => {
+                const { id } = mlist;
+                const urlB = `https://localhost:7160/api/TMembers/MemberSumAmount${id}`;
+                const responseB = await fetch(urlB);
+                const sumAmountData = await responseB.json();
+                const sumAmount = sumAmountData.total;
+                // 格式化 sumAmount 為貨幣格式
+                const formattedSumAmount = new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD' }).format(sumAmount);
+                document.querySelector(`.sumAmount-${id}`).innerText = formattedSumAmount;
+            });
 
             //顯示分頁按鈕
             let liPages = "";
@@ -530,80 +541,6 @@
                     });
                 })(i);
             }
-
-
-
-            // const check1 = document.querySelector('#flexSwitchCheckChecked_1');
-            // const check2 = document.querySelector('#flexSwitchCheckChecked_2');
-            // const check3 = document.querySelector('#flexSwitchCheckChecked_3');
-            // const check4 = document.querySelector('#flexSwitchCheckChecked_4');
-            // const check5 = document.querySelector('#flexSwitchCheckChecked_5');
-            // const check6 = document.querySelector('#flexSwitchCheckChecked_6');
-            // const check7 = document.querySelector('#flexSwitchCheckChecked_7');
-            // const check8 = document.querySelector('#flexSwitchCheckChecked_8');
-            // const check9 = document.querySelector('#flexSwitchCheckChecked_9');
-            // const check10 = document.querySelector('#flexSwitchCheckChecked_10');
-            // const check11 = document.querySelector('#flexSwitchCheckChecked_11');
-            // const check12 = document.querySelector('#flexSwitchCheckChecked_12');
-            // const th1 = document.querySelector('#idth1');
-            // const th2 = document.querySelector('#idth2');
-            // const th3 = document.querySelector('#idth3');
-            // const th4 = document.querySelector('#idth4');
-            // const th5 = document.querySelector('#idth5');
-            // const th6 = document.querySelector('#idth6');
-            // const th7 = document.querySelector('#idth7');
-            // const th8 = document.querySelector('#idth8');
-            // const th9 = document.querySelector('#idth9');
-            // const th10 = document.querySelector('#idth10');
-            // const th11 = document.querySelector('#idth11');
-            // const th12 = document.querySelector('#idth12');
-            // const td1 = document.querySelectorAll('#idtd1');
-            // const td2 = document.querySelectorAll('#idtd2');
-            // const td3 = document.querySelectorAll('#idtd3');
-            // const td4 = document.querySelectorAll('#idtd4');
-            // const td5 = document.querySelectorAll('#idtd5');
-            // const td6 = document.querySelectorAll('#idtd6');
-            // const td7 = document.querySelectorAll('#idtd7');
-            // const td8 = document.querySelectorAll('#idtd8');
-            // const td9 = document.querySelectorAll('#idtd9');
-            // const td10 = document.querySelectorAll('#idtd10');
-            // const td11 = document.querySelectorAll('#idtd11');
-            // const td12 = document.querySelectorAll('#idtd12');
-
-            // for (let i = 1; i <= 12; i++) {
-            //     const check`${i}` = document.querySelector(`#flexSwitchCheckChecked_${i}`);
-            //     const th1`${i}` = document.querySelector(`#idth1${i}`);
-            //     const td1`${i}` = document.querySelectorAll(`#idtd1${i}`);
-            // }
-
-            // check2.addEventListener('change', function () {
-            //     if (this.checked) {
-            //         th2.style.display = '';
-            //         for (let i = 0; i < td2.length; i++) {
-            //             td2[i].style.display = '';
-            //         }
-            //     }
-            //     else {
-            //         th2.style.display = 'none';
-            //         for (let i = 0; i < td2.length; i++) {
-            //             td2[i].style.display = 'none';
-            //         }
-            //     }
-            // });
-            // check3.addEventListener('change', function () {
-            //     if (!this.checked) {
-            //         th3.style.display = 'none';
-            //         for (let i = 0; i < td3.length; i++) {
-            //             td3[i].style.display = 'none';
-            //         }
-            //     }
-            //     else {
-            //         th3.style.display = '';
-            //         for (let i = 0; i < td3.length; i++) {
-            //             td3[i].style.display = '';
-            //         }
-            //     }
-            // });
         };
     </script>
 }

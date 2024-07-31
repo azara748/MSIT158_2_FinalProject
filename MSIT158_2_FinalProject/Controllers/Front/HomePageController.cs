@@ -9,34 +9,44 @@ namespace MSIT158_2_FinalProject.Controllers.Front
 {
 	public class HomePageController : Controller
 	{
+        // 搜尋動作方法
         //public IActionResult Search()
         public async Task<IActionResult> Search()
 		{
             SelectShopContext db = new SelectShopContext();
-			var query = db.TSubCategories;
-			var subname = await query.Select(s => new subDTO
+            // 查詢 TSubCategories 表格中的資料
+            var query = db.TSubCategories;
+            // 將查詢結果投影到 subDTO 物件並轉為列表
+            var subname = await query.Select(s => new subDTO
 			{
 				SubCategoryId = s.SubCategoryId,
 				SubCategoryCname = s.SubCategoryCname
 			}).ToListAsync();
+            // 將結果傳遞到視圖
             return View(subname);
 		}
-		public IActionResult index(int? id)
+        // 首頁動作方法
+        public IActionResult index(int? id)
 		{
-			if (id == null||id<=0) { return RedirectToAction("Search"); }
-			ViewBag.Id = id;
+            // 檢查 id 是否為 null 或小於等於 0
+            if (id == null||id<=0) { return RedirectToAction("Search"); } // 重新導向到 Search 動作方法
+            ViewBag.Id = id;
 			return View();
 		}
+        // 真實首頁動作方法	
         public async Task <IActionResult> RealHome()
         {
 			SelectShopContext db = new SelectShopContext();
-			DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
-			var query = db.TProducts
+            // 取得當前日期
+            DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+            // 查詢 TProducts 表格中的資料，並包含 TKeywords 關聯資料，且條件是 Festival 包含 "父親節"。
+            var query = db.TProducts
 							   .Include(p => p.TKeywords)
 							   .Where(p => p.TKeywords.Any(k => k.Festival.Contains("父親節")))
 							   .AsQueryable();
 
-			var fatherProducts = await query.Select(pro => new faDTO
+            // 將查詢結果投影到 faDTO 物件並轉為列表，並計算各種屬性如 Score 和 isnew。
+            var fatherProducts = await query.Select(pro => new faDTO
 			{
 				ProductId = pro.ProductId,
 				ProductName = pro.ProductName,

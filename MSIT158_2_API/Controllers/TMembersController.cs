@@ -7,12 +7,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MSIT158_2_API.Models;
 using MSIT158_2_API.Models.DTO;
 using MSIT158_2_API.Models.DTO.Member;
 using MSIT158_2_API.ViewModel;
+using NuGet.Protocol;
 
 namespace MSIT158_2_API.Controllers
 {
@@ -24,7 +27,7 @@ namespace MSIT158_2_API.Controllers
         private readonly IWebHostEnvironment _hostEnvironment;
         private static string _pp = "";
         // 建構子注入資料庫上下文
-        public TMembersController(SelectShopContext context,IWebHostEnvironment hostEnvironment)
+        public TMembersController(SelectShopContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
@@ -85,8 +88,22 @@ namespace MSIT158_2_API.Controllers
 
             //如果沒有密碼，將無法寄信修改密碼
             if (string.IsNullOrEmpty(user.Password))
-                return BadRequest(new { message = "沒有密碼，將無法寄信修改密碼" });
+                return NotFound(new { message = "查無此人" });
 
+            // 生成重置令牌
+
+            string token = new Random().Next(100000, 1000000).ToString();
+            var resetToken = new CPasswordResetToken
+            {
+                Token = token,
+                UserId = user.MemberId,
+                Expiration = DateTime.UtcNow.AddHours(1) // 設置令牌有效期為1小時
+            };
+
+            // 將重置令牌存儲在內存中
+            CTokenStorage.Tokens[token] = resetToken;
+
+            // 發送重置密碼郵件
             string receive = user.EMail;
             string subject = $"{user.MemberName}用戶重新設定密碼";
             string messages = $"<h1>修改{user.MemberName}的密碼</h1>";
@@ -103,27 +120,35 @@ namespace MSIT158_2_API.Controllers
             //messages += "</form>";
             //messages += "<p>請點擊以下連結回到登入頁面:</p>";
             //messages += "<a href='https://localhost:7066/Home/Login'>回到登入頁面</a>點擊這裡";
+            messages += "<div class=\"mb-3\">";
+            messages += "<h2>驗證碼</h2>";
+            messages += "<label for=\"VerificationCode\" class=\"form-label\">驗證碼：</label>";
+            messages += $"<label for=\"VerificationCode\" class=\"form-label\">{token}</label>";
+            messages += "</div>";
             messages += "<a href='https://localhost:7066/Home/MemberForgetPasswordB'>修改密碼</a>點擊這裡";
-            //messages += "<script>console.log(\"test1\");</script>";
             new CEmailSender().getEmail(receive, subject, messages);
 
-            return Ok(new { message = "郵件已成功發送" });
+            return Ok(new { message = "重設密碼郵件已發送至您的信箱" });
         }
         //忘記密碼B(修改新密碼)
         [HttpPost("SenderEditPassword")]
-        public async Task<ActionResult<TMember>> SenderEditPassword([FromForm] CLoginViewModel vm)
+        public async Task<ActionResult<TMember>> SenderEditPassword([FromForm] CVerificationViewModel vm)
         {
+            if (!CTokenStorage.Tokens.TryGetValue(vm.txtVerificationCode, out var resetToken) || resetToken.Expiration <= DateTime.UtcNow)
+                return NotFound(new { message = "驗證碼無效或已過期" });
+
             TMember user = _context.TMembers.FirstOrDefault(t => t.EMail.Equals(vm.txtEmail));
             if (user == null)
-                return BadRequest(new { message = "沒有電子郵件，將修改密碼" });
+                return BadRequest(new { message = "沒有對應的電子郵件，用戶不存在" });
             // 從資料庫中獲取用戶的鹽和雜湊後的密碼
             string salt = user.Salt;
             string Passwordsalted = vm.txtPassword + salt;
             //密碼加密，使用 SHA256 演算法
             vm.txtPassword = GetSha256Hash(Passwordsalted);
             user.Password = vm.txtPassword;
+
+            CTokenStorage.Tokens.Remove(vm.txtVerificationCode);
             await _context.SaveChangesAsync();
-            //string json = JsonSerializer.Serialize(user);
 
             return Ok(new { message = "密碼修改成功", user });
         }

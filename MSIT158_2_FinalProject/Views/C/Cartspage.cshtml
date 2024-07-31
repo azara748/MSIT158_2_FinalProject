@@ -22,94 +22,94 @@
                         int f = 0;
                         int p = 0;
                         foreach (var v in ViewBag.會員購物車)
-                        {                      
-                                            <tr id='@("C"+f)'>
-                                            <th scope="row">
-                                                <div class="d-flex align-items-center">
-                                                <a href="~/P/Productpage/@v.ProductId">
-                                                <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <td>
-                                            <a href="~/P/Productpage/@v.ProductId">
-                                                    <p class="mb-0 mt-4" style="padding-top:13px">@v.ProductName</p>
-                                                    </a>
-                                            </td>
-                                            <td>
-                                                    <p class="mb-0 mt-4" style="padding-top:13px">@Convert.ToInt32(v.UnitPrice)</p>
-                                            </td>
-                                            <td>
-                                                <div class="input-group quantity mt-4" style="width: 100px;padding-top:6px">
-                                                    <div class="input-group-btn">
-                                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="mp(@f,'m',@v.CartId,@v.UnitPrice)">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
-                                                    </div>
-                                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("CQ"+f)'>
-                                                    <div class="input-group-btn" style="padding-left:5px;">
-                                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp(@f,'p',@v.CartId,@v.UnitPrice)">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                    <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+f)'>@Convert.ToInt32(@v.Qty * @v.UnitPrice)</p>
-                                            </td>
-                                            <td>
-                                                <div style="padding-top:6px">
+                        {
+                            <tr id='@("C"+f)'>
+                                <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                        <a href="~/P/Productpage/@v.ProductId">
+                                            <img src="data:image/jpeg;base64,@System.Convert.ToBase64String(v.ProductPhoto)" style="width: 80px; height: 80px;object-fit: contain;" alt="">
+                                        </a>
+                                    </div>
+                                </th>
+                                <td>
+                                    <a href="~/P/Productpage/@v.ProductId">
+                                        <p class="mb-0 mt-4" style="padding-top:13px">@v.ProductName</p>
+                                    </a>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4" style="padding-top:13px">@Convert.ToInt32(v.UnitPrice)</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;padding-top:6px">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="mp(@f,'m',@v.CartId,@v.UnitPrice)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("CQ"+f)'>
+                                        <div class="input-group-btn" style="padding-left:5px;">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp(@f,'p',@v.CartId,@v.UnitPrice)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+f)'>@Convert.ToInt32(@v.Qty * @v.UnitPrice)</p>
+                                </td>
+                                <td>
+                                    <div style="padding-top:6px">
                                         <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="dedet(@f,@Convert.ToInt32(v.UnitPrice),@v.CartId)">
-                                                        <i class="fa fa-times text-danger"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <i class="fa fa-times text-danger"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                             f++;
-                    }
+                        }
                         foreach (var v in ViewBag.會員購物車2)
                         {
-                                    <tr id='@("PK"+p)'>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center">
-                                                <img src="~/assets/Img/packageImages/@v.Picture" style="width: 80px; height: 80pxobject-fit: contain;" alt="">
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <p class="mb-0 mt-4" style="padding-top:13px">@v.PackName</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4" style="padding-top:13px">@Convert.ToInt32(@v.Price)</p>
-                                        </td>
-                                        <td>
-                                            <div class="input-group quantity mt-4" style="width: 100px;padding-top:6px">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="mp2(@p,'m',@v.PackageCartId,@v.Price)">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("QQ"+p)'>
-                                                <div class="input-group-btn" style="padding-left:5px;">
-                                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp2(@p,'p',@v.PackageCartId,@v.Price)">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+p)'>@Convert.ToInt32(v.Qty * v.Price)</p>
-                                        </td>
-                                        <td>
-                                            <div style="padding-top:6px">
-                                                <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="dedet2(@p,@Convert.ToInt32(v.Price),@v.PackageCartId)">
-                                                    <i class="fa fa-times text-danger"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                            <tr id='@("PK"+p)'>
+                                <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                        <img src="~/assets/Img/packageImages/@v.Picture" style="width: 80px; height: 80pxobject-fit: contain;" alt="">
+                                    </div>
+                                </th>
+                                <td>
+                                    <p class="mb-0 mt-4" style="padding-top:13px">@v.PackName</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4" style="padding-top:13px">@Convert.ToInt32(@v.Price)</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;padding-top:6px">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="mp2(@p,'m',@v.PackageCartId,@v.Price)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm text-center border-0" value="@v.Qty" style="margin-left:4px;width:50px" id='@("QQ"+p)'>
+                                        <div class="input-group-btn" style="padding-left:5px;">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="mp2(@p,'p',@v.PackageCartId,@v.Price)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4" style="padding-top:13px" id='@("P"+p)'>@Convert.ToInt32(v.Qty * v.Price)</p>
+                                </td>
+                                <td>
+                                    <div style="padding-top:6px">
+                                        <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="dedet2(@p,@Convert.ToInt32(v.Price),@v.PackageCartId)">
+                                            <i class="fa fa-times text-danger"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                             p++;
                         }
-                                                }
+                    }
                 </tbody>
             </table>
         </div>
@@ -135,7 +135,7 @@
                         </div>
                         @*<p class="mb-0 text-end">Shipping to Ukraine.</p>-->*@
                     </div>
-                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between" >
+                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                         <h5 class="mb-0 ps-4 me-4">總共</h5>
                         <p class="mb-0 pe-4" id="allw">$@Convert.ToInt32(ViewBag.總價 + @ViewBag.運費)</p>
                     </div>
@@ -149,6 +149,7 @@
 </div>
 @section Scripts {
     <script>
+        // 初始化總價和運費
         var 總價0 = all.innerHTML.replace("$", "")
         var 總價 = Number(總價0);
         var 運費 = Number(w.innerHTML)
@@ -211,9 +212,11 @@
         //     w.innerHTML = '$' + 運費
         //     allw.innerHTML = '$' + (總價 + 運費)
         // }
+
+        // 刪除購物車中的商品
         async function dedet(d, p, id, q) {
-            
-                             
+
+
             console.log("c" + d)
             if (!confirm("確定要刪除嗎?")) return
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI")/${id}`)
@@ -223,13 +226,15 @@
             document.getElementById("C" + d).innerHTML = "";
             document.getElementById("c" + d).innerHTML = "";
 
+            // 更新總價和顯示
             總價 -= Number(價錢) * Number(p)
             all.innerHTML = '$' + 總價
             allw.innerHTML = '$' + (總價 + 運費)
             SUBTOTAL.innerHTML = '$' + 總價
-            cartqty.innerHTML = Number(cartqty.innerHTML)-1
-            Items.innerHTML = Number(cartqty.innerHTML ) + "樣商品"
+            cartqty.innerHTML = Number(cartqty.innerHTML) - 1
+            Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
         }
+        // 刪除包裝商品
         async function dedet2(d, p, id, q) {
             if (!confirm("確定要刪除嗎?")) return
             var a2 = await fetch(`@Url.Content("~/C/deleteCartAPI2")/${id}`)
@@ -245,21 +250,22 @@
             cartqty.innerHTML = Number(cartqty.innerHTML) - 1
             Items.innerHTML = Number(cartqty.innerHTML) + "樣商品"
         }
-        async function mp(d,q,id,u) {
+        // 更新購物車中商品的數量和價格
+        async function mp(d, q, id, u) {
             if (q == "m" && document.getElementById("CQ" + d).value < 2) return;
             var a2 = await fetch(`@Url.Content("~/C/qtyCartAPI")/${id}/?q=${q}`)
             var b2 = await a2.text()
             if (b2 != "ok") return
             if (q == "p") {
-                document.getElementById("CQ"+d).value++;
-                var p = document.getElementById("P"+d).innerHTML.replace("$", "");
+                document.getElementById("CQ" + d).value++;
+                var p = document.getElementById("P" + d).innerHTML.replace("$", "");
                 var p1 = Number(p)
                 var u1 = Number(u)
                 console.log(p1)
                 console.log(u1)
                 console.log(總價)
                 p1 += u1
-                document.getElementById("P"+d).innerHTML = "$"+p1
+                document.getElementById("P" + d).innerHTML = "$" + p1
                 總價 += u1
                 all.innerHTML = '$' + 總價
                 allw.innerHTML = '$' + (總價 + 運費)
@@ -276,7 +282,8 @@
                 allw.innerHTML = '$' + (總價 + 運費)
             }
             cart1()
-        }    
+        }
+        // 更新包裝商品的數量和價格
         async function mp2(d, q, id, u) {
             if (q == "m" && document.getElementById("QQ" + d).value < 2) return;
             var a2 = await fetch(`@Url.Content("~/C/qtyCartAPI2")/${id}/?q=${q}`)
@@ -286,7 +293,7 @@
                 document.getElementById("QQ" + d).value++;
                 var p = document.getElementById("P" + d).innerHTML.replace("$", "");
                 var p1 = Number(p)
-                var u1 = Number(u)               
+                var u1 = Number(u)
                 p1 += u1
                 document.getElementById("P" + d).innerHTML = "$" + p1
                 總價 += u1
@@ -306,6 +313,7 @@
             }
             cart1()
         }
+        // 檢查購物車是否有商品，然後導航到運送頁面
         function 運送() {
             if (總價 == 0) {
                 window.alert("購物車沒東西喔，請先選購")
